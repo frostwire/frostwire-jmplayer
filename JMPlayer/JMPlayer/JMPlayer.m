@@ -60,6 +60,11 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
     
     [fullscreenWindow setBackgroundColor:[NSColor blueColor]];
     
+    
+    // initialize fullscreen controlls window
+    
+    
+    
 	return self;
 }
 
@@ -484,13 +489,13 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 		level = NSScreenSaverWindowLevel;
 		
 		[fullscreenWindow setLevel:level];
-		[fcControlWindow  setLevel:level];
+		//[fcControlWindow  setLevel:level];
 		
-		[fullscreenWindow orderWindow:NSWindowBelow relativeTo:[fcControlWindow windowNumber]];
+		//[fullscreenWindow orderWindow:NSWindowBelow relativeTo:[fcControlWindow windowNumber]];
 		[playerWindow orderWindow:NSWindowBelow relativeTo:[fullscreenWindow windowNumber]];
 	} else {
 		[fullscreenWindow setLevel:NSNormalWindowLevel];
-		[fcControlWindow  setLevel:NSNormalWindowLevel];
+		//[fcControlWindow  setLevel:NSNormalWindowLevel];
 	}
 }
 
@@ -607,6 +612,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 /*
  Animate window fading in/out
  */
+/*
 - (void) fadeWindow:(NSWindow *)window withEffect:(NSString *)effect
 {
 	
@@ -625,10 +631,11 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 	[anim startAnimation];
 	[anim release];
 }
-
+*/
 /*
  Handle animations ending `
  */
+/*
 - (void)animationDidEnd:(NSAnimation *)animation {
 	
 	runningAnimations--;
@@ -636,7 +643,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 	if (runningAnimations == 0)
 		[[NSNotificationCenter defaultCenter] postNotificationName:VVAnimationsDidEnd object:self];
 }
-
+*/
 
 
 @end

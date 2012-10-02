@@ -54,7 +54,7 @@ enum {
     JMPlayer_toggleFS        = 3
 };
 
-@interface JMPlayer : NSOpenGLView <MPlayerVideoRenderereDelegateProtocol, AWTCocoaComponent, NSAnimationDelegate>
+@interface JMPlayer : NSOpenGLView <MPlayerVideoRenderereDelegateProtocol, AWTCocoaComponent>
 {
     jobject jowner;
     
@@ -97,7 +97,7 @@ enum {
 	unsigned int runningAnimations;
     
     IBOutlet PlayerFullscreenWindow* fullscreenWindow;
-   	IBOutlet NSWindow *fcControlWindow;
+   	//IBOutlet NSWindow *fcControlWindow;
     NSWindow* playerWindow;
     NSView* playerSuperView;
     
@@ -132,14 +132,12 @@ enum {
 - (void) setWindowSizeMode:(int)mode withValue:(float)val;
 - (void) setOntop:(BOOL)ontop;
 
-
 - (void) updateOntop;
 
 // new:
 - (void) setAspectRatio:(float)aspect;
 //- (void) setAspectRatioFromPreferences;
 - (void) setVideoScaleMode:(MPEVideoScaleMode)scaleMode;
-
 
 - (void) fullscreenWindowMoved:(NSNotification *)notification;
 
