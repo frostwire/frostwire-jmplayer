@@ -239,7 +239,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
             SetSystemUIMode( kUIModeAllSuppressed, 0);
 		
 		// place fswin above video in player window
-		NSRect rect = [self convertRectToBacking: [self frame]];
+        NSRect rect = [self convertRect:[self frame] toView:nil];
 		rect = [playerWindow convertRectToScreen: rect];
 		[fullscreenWindow setFrame:rect display:NO animate:NO];
 		
