@@ -15,4 +15,5 @@
 *.DS_Store
 
 # per-user XCode project data
-*xcuserstate
+JMPlayer/JMPlayer.xcodeproj/xcuserdata/
+JMPlayer/JMPlayer.xcodeproj/project.xcworkspace/xcuserdata/
