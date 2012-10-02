@@ -1,0 +1,361 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		65BFF24415E033FA00CEF624 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF24315E033FA00CEF624 /* Cocoa.framework */; };
+		65BFF24E15E033FA00CEF624 /* JMPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 65BFF24D15E033FA00CEF624 /* JMPlayer.m */; };
+		65BFF25515E0342000CEF624 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF25415E0342000CEF624 /* JavaVM.framework */; };
+		65BFF25715E0342700CEF624 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF25615E0342700CEF624 /* OpenGL.framework */; };
+		65BFF25915E0342F00CEF624 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF25815E0342F00CEF624 /* CoreVideo.framework */; };
+		65BFF25E15E0352100CEF624 /* MPlayerVideoRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 65BFF25A15E0352100CEF624 /* MPlayerVideoRenderer.h */; };
+		65BFF25F15E0352100CEF624 /* MPlayerVideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 65BFF25B15E0352100CEF624 /* MPlayerVideoRenderer.m */; };
+		65BFF26615E0354C00CEF624 /* CocoaAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 65BFF26215E0354C00CEF624 /* CocoaAdditions.h */; };
+		65BFF26715E0354C00CEF624 /* CocoaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 65BFF26315E0354C00CEF624 /* CocoaAdditions.m */; };
+		65BFF26815E0354C00CEF624 /* Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 65BFF26415E0354C00CEF624 /* Debug.h */; };
+		65BFF26915E0354C00CEF624 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 65BFF26515E0354C00CEF624 /* Debug.m */; };
+		65BFF26F15E0397200CEF624 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF26E15E0397200CEF624 /* ExceptionHandling.framework */; };
+		65BFF27115E0397900CEF624 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF27015E0397900CEF624 /* libiconv.dylib */; };
+		85C6C9FA16123C1B00509B38 /* FullscreenControls.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C6C9ED16123C1B00509B38 /* FullscreenControls.h */; };
+		85C6C9FB16123C1B00509B38 /* FullscreenControls.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6C9EE16123C1B00509B38 /* FullscreenControls.m */; };
+		85C6C9FC16123C1B00509B38 /* FullscreenControlsScrubbingBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C6C9EF16123C1B00509B38 /* FullscreenControlsScrubbingBar.h */; };
+		85C6C9FD16123C1B00509B38 /* FullscreenControlsScrubbingBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6C9F016123C1B00509B38 /* FullscreenControlsScrubbingBar.m */; };
+		85C6C9FE16123C1B00509B38 /* FullscreenControlsView.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C6C9F116123C1B00509B38 /* FullscreenControlsView.h */; };
+		85C6C9FF16123C1B00509B38 /* FullscreenControlsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6C9F216123C1B00509B38 /* FullscreenControlsView.m */; };
+		85C6CA0016123C1B00509B38 /* FullscreenControlsVolumeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C6C9F316123C1B00509B38 /* FullscreenControlsVolumeSlider.h */; };
+		85C6CA0116123C1B00509B38 /* FullscreenControlsVolumeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6C9F416123C1B00509B38 /* FullscreenControlsVolumeSlider.m */; };
+		85C6CA0216123C1B00509B38 /* PlayerFullscreenWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C6C9F616123C1B00509B38 /* PlayerFullscreenWindow.h */; };
+		85C6CA0316123C1B00509B38 /* PlayerFullscreenWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6C9F716123C1B00509B38 /* PlayerFullscreenWindow.m */; };
+		85C6CA0816123CB000509B38 /* ScrubbingBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C6CA0616123CB000509B38 /* ScrubbingBar.h */; };
+		85C6CA0916123CB000509B38 /* ScrubbingBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6CA0716123CB000509B38 /* ScrubbingBar.m */; };
+		85C6CA0C16123CE500509B38 /* VolumeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C6CA0A16123CE400509B38 /* VolumeSlider.h */; };
+		85C6CA0D16123CE500509B38 /* VolumeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6CA0B16123CE500509B38 /* VolumeSlider.m */; };
+		85F6BEDB161396E30062F138 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85F6BEDA161396E20062F138 /* Carbon.framework */; };
+		85F6BEDF161398850062F138 /* PlayerWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F6BEDD161398850062F138 /* PlayerWindow.h */; };
+		85F6BEE0161398850062F138 /* PlayerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F6BEDE161398850062F138 /* PlayerWindow.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		65BFF24015E033FA00CEF624 /* libJMPlayer.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libJMPlayer.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		65BFF24315E033FA00CEF624 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		65BFF24615E033FA00CEF624 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		65BFF24715E033FA00CEF624 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		65BFF24815E033FA00CEF624 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		65BFF24C15E033FA00CEF624 /* JMPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JMPlayer.h; sourceTree = "<group>"; };
+		65BFF24D15E033FA00CEF624 /* JMPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JMPlayer.m; sourceTree = "<group>"; };
+		65BFF25415E0342000CEF624 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = System/Library/Frameworks/JavaVM.framework; sourceTree = SDKROOT; };
+		65BFF25615E0342700CEF624 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		65BFF25815E0342F00CEF624 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		65BFF25A15E0352100CEF624 /* MPlayerVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPlayerVideoRenderer.h; sourceTree = "<group>"; };
+		65BFF25B15E0352100CEF624 /* MPlayerVideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPlayerVideoRenderer.m; sourceTree = "<group>"; };
+		65BFF26215E0354C00CEF624 /* CocoaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocoaAdditions.h; sourceTree = "<group>"; };
+		65BFF26315E0354C00CEF624 /* CocoaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CocoaAdditions.m; sourceTree = "<group>"; };
+		65BFF26415E0354C00CEF624 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
+		65BFF26515E0354C00CEF624 /* Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Debug.m; sourceTree = "<group>"; };
+		65BFF26E15E0397200CEF624 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
+		65BFF27015E0397900CEF624 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		85C6C9ED16123C1B00509B38 /* FullscreenControls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenControls.h; sourceTree = "<group>"; };
+		85C6C9EE16123C1B00509B38 /* FullscreenControls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenControls.m; sourceTree = "<group>"; };
+		85C6C9EF16123C1B00509B38 /* FullscreenControlsScrubbingBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenControlsScrubbingBar.h; sourceTree = "<group>"; };
+		85C6C9F016123C1B00509B38 /* FullscreenControlsScrubbingBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenControlsScrubbingBar.m; sourceTree = "<group>"; };
+		85C6C9F116123C1B00509B38 /* FullscreenControlsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenControlsView.h; sourceTree = "<group>"; };
+		85C6C9F216123C1B00509B38 /* FullscreenControlsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenControlsView.m; sourceTree = "<group>"; };
+		85C6C9F316123C1B00509B38 /* FullscreenControlsVolumeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenControlsVolumeSlider.h; sourceTree = "<group>"; };
+		85C6C9F416123C1B00509B38 /* FullscreenControlsVolumeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenControlsVolumeSlider.m; sourceTree = "<group>"; };
+		85C6C9F616123C1B00509B38 /* PlayerFullscreenWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerFullscreenWindow.h; sourceTree = "<group>"; };
+		85C6C9F716123C1B00509B38 /* PlayerFullscreenWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerFullscreenWindow.m; sourceTree = "<group>"; };
+		85C6CA0616123CB000509B38 /* ScrubbingBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrubbingBar.h; sourceTree = "<group>"; };
+		85C6CA0716123CB000509B38 /* ScrubbingBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrubbingBar.m; sourceTree = "<group>"; };
+		85C6CA0A16123CE400509B38 /* VolumeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeSlider.h; sourceTree = "<group>"; };
+		85C6CA0B16123CE500509B38 /* VolumeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeSlider.m; sourceTree = "<group>"; };
+		85F6BEDA161396E20062F138 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		85F6BEDD161398850062F138 /* PlayerWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerWindow.h; sourceTree = "<group>"; };
+		85F6BEDE161398850062F138 /* PlayerWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerWindow.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		65BFF23D15E033FA00CEF624 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85F6BEDB161396E30062F138 /* Carbon.framework in Frameworks */,
+				65BFF27115E0397900CEF624 /* libiconv.dylib in Frameworks */,
+				65BFF26F15E0397200CEF624 /* ExceptionHandling.framework in Frameworks */,
+				65BFF25915E0342F00CEF624 /* CoreVideo.framework in Frameworks */,
+				65BFF25715E0342700CEF624 /* OpenGL.framework in Frameworks */,
+				65BFF25515E0342000CEF624 /* JavaVM.framework in Frameworks */,
+				65BFF24415E033FA00CEF624 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		65BFF23515E033FA00CEF624 = {
+			isa = PBXGroup;
+			children = (
+				65BFF24915E033FA00CEF624 /* JMPlayer */,
+				65BFF24215E033FA00CEF624 /* Frameworks */,
+				65BFF24115E033FA00CEF624 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		65BFF24115E033FA00CEF624 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65BFF24015E033FA00CEF624 /* libJMPlayer.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		65BFF24215E033FA00CEF624 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				65BFF24615E033FA00CEF624 /* AppKit.framework */,
+				65BFF24715E033FA00CEF624 /* CoreData.framework */,
+				65BFF24815E033FA00CEF624 /* Foundation.framework */,
+				85F6BEDA161396E20062F138 /* Carbon.framework */,
+				65BFF27015E0397900CEF624 /* libiconv.dylib */,
+				65BFF26E15E0397200CEF624 /* ExceptionHandling.framework */,
+				65BFF25815E0342F00CEF624 /* CoreVideo.framework */,
+				65BFF25615E0342700CEF624 /* OpenGL.framework */,
+				65BFF25415E0342000CEF624 /* JavaVM.framework */,
+				65BFF24315E033FA00CEF624 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		65BFF24915E033FA00CEF624 /* JMPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				85C6C9EC16123C1B00509B38 /* fullscreen */,
+				85C6C9F516123C1B00509B38 /* player */,
+				65BFF26215E0354C00CEF624 /* CocoaAdditions.h */,
+				65BFF26315E0354C00CEF624 /* CocoaAdditions.m */,
+				65BFF26415E0354C00CEF624 /* Debug.h */,
+				65BFF26515E0354C00CEF624 /* Debug.m */,
+				65BFF25A15E0352100CEF624 /* MPlayerVideoRenderer.h */,
+				65BFF25B15E0352100CEF624 /* MPlayerVideoRenderer.m */,
+				65BFF24C15E033FA00CEF624 /* JMPlayer.h */,
+				65BFF24D15E033FA00CEF624 /* JMPlayer.m */,
+			);
+			path = JMPlayer;
+			sourceTree = "<group>";
+		};
+		85C6C9EC16123C1B00509B38 /* fullscreen */ = {
+			isa = PBXGroup;
+			children = (
+				85C6C9ED16123C1B00509B38 /* FullscreenControls.h */,
+				85C6C9EE16123C1B00509B38 /* FullscreenControls.m */,
+				85C6C9EF16123C1B00509B38 /* FullscreenControlsScrubbingBar.h */,
+				85C6C9F016123C1B00509B38 /* FullscreenControlsScrubbingBar.m */,
+				85C6C9F116123C1B00509B38 /* FullscreenControlsView.h */,
+				85C6C9F216123C1B00509B38 /* FullscreenControlsView.m */,
+				85C6C9F316123C1B00509B38 /* FullscreenControlsVolumeSlider.h */,
+				85C6C9F416123C1B00509B38 /* FullscreenControlsVolumeSlider.m */,
+			);
+			path = fullscreen;
+			sourceTree = "<group>";
+		};
+		85C6C9F516123C1B00509B38 /* player */ = {
+			isa = PBXGroup;
+			children = (
+				85F6BEDD161398850062F138 /* PlayerWindow.h */,
+				85F6BEDE161398850062F138 /* PlayerWindow.m */,
+				85C6CA0A16123CE400509B38 /* VolumeSlider.h */,
+				85C6CA0B16123CE500509B38 /* VolumeSlider.m */,
+				85C6CA0616123CB000509B38 /* ScrubbingBar.h */,
+				85C6CA0716123CB000509B38 /* ScrubbingBar.m */,
+				85C6C9F616123C1B00509B38 /* PlayerFullscreenWindow.h */,
+				85C6C9F716123C1B00509B38 /* PlayerFullscreenWindow.m */,
+			);
+			path = player;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		65BFF23E15E033FA00CEF624 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65BFF25E15E0352100CEF624 /* MPlayerVideoRenderer.h in Headers */,
+				65BFF26615E0354C00CEF624 /* CocoaAdditions.h in Headers */,
+				65BFF26815E0354C00CEF624 /* Debug.h in Headers */,
+				85C6C9FA16123C1B00509B38 /* FullscreenControls.h in Headers */,
+				85C6C9FC16123C1B00509B38 /* FullscreenControlsScrubbingBar.h in Headers */,
+				85C6C9FE16123C1B00509B38 /* FullscreenControlsView.h in Headers */,
+				85C6CA0016123C1B00509B38 /* FullscreenControlsVolumeSlider.h in Headers */,
+				85C6CA0216123C1B00509B38 /* PlayerFullscreenWindow.h in Headers */,
+				85C6CA0816123CB000509B38 /* ScrubbingBar.h in Headers */,
+				85C6CA0C16123CE500509B38 /* VolumeSlider.h in Headers */,
+				85F6BEDF161398850062F138 /* PlayerWindow.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		65BFF23F15E033FA00CEF624 /* JMPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65BFF25115E033FA00CEF624 /* Build configuration list for PBXNativeTarget "JMPlayer" */;
+			buildPhases = (
+				65BFF23C15E033FA00CEF624 /* Sources */,
+				65BFF23D15E033FA00CEF624 /* Frameworks */,
+				65BFF23E15E033FA00CEF624 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JMPlayer;
+			productName = JMPlayer;
+			productReference = 65BFF24015E033FA00CEF624 /* libJMPlayer.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		65BFF23715E033FA00CEF624 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0440;
+			};
+			buildConfigurationList = 65BFF23A15E033FA00CEF624 /* Build configuration list for PBXProject "JMPlayer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 65BFF23515E033FA00CEF624;
+			productRefGroup = 65BFF24115E033FA00CEF624 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				65BFF23F15E033FA00CEF624 /* JMPlayer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		65BFF23C15E033FA00CEF624 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65BFF24E15E033FA00CEF624 /* JMPlayer.m in Sources */,
+				65BFF25F15E0352100CEF624 /* MPlayerVideoRenderer.m in Sources */,
+				65BFF26715E0354C00CEF624 /* CocoaAdditions.m in Sources */,
+				65BFF26915E0354C00CEF624 /* Debug.m in Sources */,
+				85C6C9FB16123C1B00509B38 /* FullscreenControls.m in Sources */,
+				85C6C9FD16123C1B00509B38 /* FullscreenControlsScrubbingBar.m in Sources */,
+				85C6C9FF16123C1B00509B38 /* FullscreenControlsView.m in Sources */,
+				85C6CA0116123C1B00509B38 /* FullscreenControlsVolumeSlider.m in Sources */,
+				85C6CA0316123C1B00509B38 /* PlayerFullscreenWindow.m in Sources */,
+				85C6CA0916123CB000509B38 /* ScrubbingBar.m in Sources */,
+				85C6CA0D16123CE500509B38 /* VolumeSlider.m in Sources */,
+				85F6BEE0161398850062F138 /* PlayerWindow.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		65BFF24F15E033FA00CEF624 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		65BFF25015E033FA00CEF624 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		65BFF25215E033FA00CEF624 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				PRODUCT_NAME = "lib$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		65BFF25315E033FA00CEF624 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				PRODUCT_NAME = "lib$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		65BFF23A15E033FA00CEF624 /* Build configuration list for PBXProject "JMPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65BFF24F15E033FA00CEF624 /* Debug */,
+				65BFF25015E033FA00CEF624 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		65BFF25115E033FA00CEF624 /* Build configuration list for PBXNativeTarget "JMPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65BFF25215E033FA00CEF624 /* Debug */,
+				65BFF25315E033FA00CEF624 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 65BFF23715E033FA00CEF624 /* Project object */;
+}

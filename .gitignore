@@ -10,3 +10,9 @@
 *.lai
 *.la
 *.a
+
+# Mac OSX files
+*.DS_Store
+
+# per-user XCode project data
+*xcuserstate
