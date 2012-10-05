@@ -37,35 +37,23 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
 @implementation JMPlayer
 
-- (id) initWithFrame: (jobject) owner frame:(NSRect) frame
+@synthesize appPath;
+
+- (id) initWithFrame: (jobject) owner frame:(NSRect) frame applicationPath:(NSString*) applicationPath
 {
 	self = [super initWithFrame:frame];
     jowner = owner;
     
-	buffer_name = [@"fwmplayer" retain];
+    appPath = applicationPath;
     
+	buffer_name = [@"fwmplayer" retain];
     
     // initialize self
     [self awakeFromNib];
 
-    
-    // initialize fullscreen window
-    NSRect fsRect;
-    fsRect.origin.x = 100;
-    fsRect.origin.y = 100;
-    fsRect.size.width = frame.size.width*4;
-    fsRect.size.height = frame.size.height*4;
+    fullscreenWindow = [[PlayerFullscreenWindow alloc] initWithContentRect:frame styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered  jmPlayer:self defer:NO ];
 
-    fullscreenWindow = [[PlayerFullscreenWindow alloc] initWithContentRect:fsRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered  jmPlayer:self defer:NO ];
-    
-    [fullscreenWindow setBackgroundColor:[NSColor blueColor]];
-    
-    
-    // initialize fullscreen controlls window
-    
-    
-    
-	return self;
+    return self;
 }
 
 -(void)awtMessage:(jint)messageID message:(jobject)message env:(JNIEnv*)env
@@ -659,7 +647,7 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM *vm, void *reserved) {
 }
 
 JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX_createNSView1
-(JNIEnv *env, jobject obj) {
+(JNIEnv *env, jobject obj, jstring appPath) {
     JMPlayer* view = nil;
     NS_DURING;
     int width = 200;
@@ -667,7 +655,13 @@ JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX_creat
     
     jobject jowner = (*env)->NewGlobalRef(env, obj);
     
-    view = [[JMPlayer alloc] initWithFrame : jowner frame:NSMakeRect(0, 0, width, height)];
+    // prepare application Path
+    const char *charPath = (*env)->GetStringUTFChars(env, appPath, NULL);//Java String to C Style string
+    NSString *pathNSString = [[[NSString alloc] initWithUTF8String:charPath] autorelease];
+    
+    view = [[JMPlayer alloc] initWithFrame : jowner frame:NSMakeRect(0, 0, width, height) applicationPath: pathNSString];
+    
+    (*env)->ReleaseStringUTFChars(env, appPath, charPath);
     
     NS_HANDLER;
     fprintf(stderr, "ERROR : Failed to create JMPlayer view\n");

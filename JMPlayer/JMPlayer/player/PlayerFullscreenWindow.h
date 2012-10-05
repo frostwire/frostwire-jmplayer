@@ -30,7 +30,7 @@
 
 @interface PlayerFullscreenWindow : PlayerWindow {
 
-	IBOutlet FullscreenControls *fullscreenControls;
+	FullscreenControls *fullscreenControls;
 	
 	BOOL isFullscreen;
 	BOOL mouseInWindow;

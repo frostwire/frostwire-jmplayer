@@ -106,7 +106,10 @@ enum {
 	IBOutlet FullscreenControls *fullScreenControls;
 }
 
-- (id) initWithFrame: (jobject) owner frame:(NSRect) frame;
+@property (nonatomic, retain) NSString* appPath;
+
+
+- (id) initWithFrame: (jobject) owner frame:(NSRect) frame applicationPath:(NSString*) applicationPath;
 
 // Render Thread methods
 - (void) toggleFullscreen;

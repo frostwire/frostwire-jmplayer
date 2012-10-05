@@ -32,7 +32,7 @@
 
 @interface FullscreenControls : NSWindow {//<MPlayerInterfaceClientProtocol> {
 	
-	IBOutlet PlayerFullscreenWindow *fcWindow;
+	PlayerFullscreenWindow *fcWindow;
 	IBOutlet NSButton *fcPlayButton;
     IBOutlet id fcVolumeSlider;
 	IBOutlet id fcScrubbingBar;
@@ -53,17 +53,25 @@
 	int currentState;
 	BOOL isOpen;
 	BOOL beingDragged;
+    
+    NSBundle* resourceBundle;
 	
+    JMPlayer* jm_player;
+    
 	//IBOutlet PlayerController *playerController;
 }
 
 @property (readonly,getter=window) PlayerFullscreenWindow *fcWindow;
 @property (readonly) BOOL beingDragged;
 
+-(id) initWithJMPlayer: (JMPlayer*) jmPlayer
+         fullscreenWindow: (PlayerFullscreenWindow*) playerFSWindow;
+
 - (void)fadeWith:(NSString*)effect;
 - (void)cycleTimeDisplayMode:(id)sender;
 
 - (void)show;
 - (void)hide;
+
 
 @end

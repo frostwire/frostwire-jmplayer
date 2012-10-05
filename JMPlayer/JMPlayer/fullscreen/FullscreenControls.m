@@ -25,48 +25,124 @@
 #import "FullscreenControls.h"
 #import <AppKit/AppKit.h>
 #import "Debug.h"
-
+#import "JMPlayer.h"
 #import "ScrubbingBar.h"
 //#import "TimestampTextField.h"
 
 @implementation FullscreenControls
 @synthesize beingDragged, fcWindow;
 
-- (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag {
+-(id) initWithJMPlayer: (JMPlayer*) jmPlayer
+      fullscreenWindow: (PlayerFullscreenWindow*) playerFSWindow {
 	
-    // Make the window borderless
-    FullscreenControls* result = [super initWithContentRect:contentRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
-	
-	// Prepare window transparency
-    [result setBackgroundColor: [NSColor clearColor]];
-    [result setAlphaValue:0.0];
-    [result setOpaque:NO];
-	
-	// Enable shadow
-    [result setHasShadow:YES];
-	
-	// Animation attributes
-	currentFade = 0;
-	currentState = 0;
-	
-	// Load images
-	fcPlayImageOn = [[NSImage imageNamed:@"fc_play_on"] retain];
-	fcPlayImageOff = [[NSImage imageNamed:@"fc_play"] retain];
-	fcPauseImageOn = [[NSImage imageNamed:@"fc_pause_on"] retain];
-	fcPauseImageOff = [[NSImage imageNamed:@"fc_pause"] retain];
-	
-    return result;
+    fcWindow = [playerFSWindow retain];
+    jm_player = jmPlayer;
+    
+    if (! [self initResourceBundle]) {
+        NSLog(@"Error");
+        [self release];
+        return nil;
+    }
+        
+    NSRect frame;
+    frame.origin.x = 0;
+    frame.origin.y = 0;
+    frame.size = [self determineWindowSize];
+    
+    if ( frame.size.width == 0.0 || frame.size.height == 0.0 ) {
+        NSLog(@"ERROR: failed to determine window size in initWithJMPlayer");
+        [self release];
+        return nil;
+    }
+    
+    if ( (self = [super initWithContentRect:frame
+                                  styleMask:NSBorderlessWindowMask
+                                    backing:NSBackingStoreBuffered
+                                      defer:NO]) ) {
+        // Prepare window transparency
+        [self setBackgroundColor: [NSColor clearColor]];
+        [self setAlphaValue:0.0];
+        [self setOpaque:NO];
+        
+        // Enable shadow
+        [self setHasShadow:YES];
+        
+        if ( ![self initUIControls] ) {
+            NSLog(@"Failed to init UI controls");
+            [self release];
+            return nil;
+        }
+        
+        // Animation attributes
+        currentFade = 0;
+        currentState = 0;
+        
+    }
+    
+    return self;
 }
 
-- (void)awakeFromNib
+- (BOOL)initResourceBundle
 {
-	// Redirect scrubbing event to player controller
-    /*
-	[[NSNotificationCenter defaultCenter] addObserver:playerController
-											 selector:@selector(progresBarClicked:)
-												 name:@"SBBarClickedNotification"
-											   object:fcScrubbingBar];
-     */
+    NSString* developmentPath = [NSString stringWithFormat:@"%@../lib/osx/JMPlayer-Bundle/JMPlayer-Bundle.bundle", jm_player.appPath];
+    NSString* path = [NSString stringWithFormat:@"%@JMPlayer-Bundle.bundle", jm_player.appPath];
+    
+    if ( (resourceBundle = [NSBundle bundleWithPath: path]) ) {
+        NSLog(@" found jmplayer bundle at: %@", path);
+        return YES;
+    } else if ( (resourceBundle = [NSBundle bundleWithPath: developmentPath])) {
+        NSLog(@" found jmplayer bundle at: %@", developmentPath);
+        return YES;
+    } else {
+        NSLog(@" ERROR: failed to find bundle path - dev path: %@  path: %@", developmentPath, path);
+        return NO;
+    }
+}
+
+- (NSSize)determineWindowSize
+{
+    NSString* imagePath = [resourceBundle pathForResource:@"fc_background" ofType:@"png"];
+    
+    if (nil == imagePath) {
+        NSLog(@"ERROR: could not file file path for fc_background");
+        return NSMakeSize(0.0, 0.0);
+    }
+    
+    NSImage *bkgnd = [[NSImage alloc] initByReferencingFile:imagePath];
+    NSSize size;
+    
+    size.height = bkgnd.size.height;
+    size.width = bkgnd.size.width;
+    
+    [bkgnd release];
+    
+    return size;
+}
+
+- (BOOL)initUIControls
+{
+    NSString* imagePath = [resourceBundle pathForResource:@"fc_background" ofType:@"png"];
+    
+    if (nil == imagePath) {
+        NSLog(@"ERROR: could not file file path for fc_background");
+        return NO;
+    }
+    
+    NSImage *bkgnd = [[[NSImage alloc] initByReferencingFile:imagePath] retain];
+    
+    NSRect frame;
+    frame.origin.x = frame.origin.y = 0;
+    frame.size = bkgnd.size;
+    
+    NSImageView * bkgndImageView = [[NSImageView alloc] init];
+    [bkgndImageView setImage:bkgnd];
+    [bkgndImageView setFrame:frame];
+    
+    [[self contentView] addSubview:bkgndImageView];
+    
+    [bkgndImageView release];
+
+    return YES;
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent

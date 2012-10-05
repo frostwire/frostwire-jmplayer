@@ -53,15 +53,7 @@
         
         [super setJMPlayer:jmPlayer];
         
-        
-        NSRect fsControllsRect;
-        fsControllsRect.origin.x = 0;
-        fsControllsRect.origin.y = 0;
-        fsControllsRect.size.width = 500;
-        fsControllsRect.size.height = 500;
-        
-        fullscreenControls = [[FullscreenControls alloc] initWithContentRect:fsControllsRect styleMask:NSBorderlessWindowMask backing:backingType defer:flag];
-        
+        fullscreenControls = [[FullscreenControls alloc] initWithJMPlayer:jmPlayer fullscreenWindow:self];
 	}
 
 	return self;
