@@ -11,6 +11,9 @@
 *.la
 *.a
 
+# vim temp files
+*~
+
 # Mac OSX files
 *.DS_Store
 
