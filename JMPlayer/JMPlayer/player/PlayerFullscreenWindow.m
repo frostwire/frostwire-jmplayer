@@ -219,7 +219,6 @@
 - (void) showOSD
 {
 	if (isFullscreen) {
-		
 		CGDisplayShowCursor(kCGDirectMainDisplay);
 		
 		if (![fullscreenControls isVisible])
@@ -232,13 +231,11 @@
 - (void)mouseMoved:(NSEvent *)theEvent
 {	
 	NSPoint mousePosition = [NSEvent mouseLocation];
-	//float sqrDelta = pow(lastMousePosition.x - mousePosition.x, 2) + pow(lastMousePosition.y - mousePosition.y, 2);
+	float sqrDelta = pow(lastMousePosition.x - mousePosition.x, 2) + pow(lastMousePosition.y - mousePosition.y, 2);
 	lastMousePosition = mousePosition;
 	
-	if(isFullscreen)
-       //&& [PREFS floatForKey:MPEFullscreenControlsHideTimeout] > 0
-	   //&& sqrDelta > [PREFS floatForKey:MPEFullscreenControlsSensitivity])
-     
+    // check if amount of mouse movement is >= 35 pixels
+	if( isFullscreen && sqrDelta > 35.0f )
 	{
 		[self showOSD];
 	}
@@ -249,7 +246,7 @@
 	if(!osdTimer || ![osdTimer isValid])
 	{
 		[osdTimer release];
-		osdTimer = [NSTimer	scheduledTimerWithTimeInterval:2000//[PREFS floatForKey:MPEFullscreenControlsHideTimeout]
+		osdTimer = [NSTimer	scheduledTimerWithTimeInterval:5
 													target:self
 												  selector:@selector(hideOSD)
 												  userInfo:nil repeats:NO];
@@ -257,7 +254,7 @@
 	}
 	else
 	{
-		[osdTimer setFireDate: [NSDate dateWithTimeIntervalSinceNow: 2000]];//[PREFS floatForKey:MPEFullscreenControlsHideTimeout]]];
+		[osdTimer setFireDate: [NSDate dateWithTimeIntervalSinceNow: 5]];
 	}
 }
 
