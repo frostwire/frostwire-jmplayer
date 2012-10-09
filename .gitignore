@@ -20,3 +20,7 @@ JMPlayer/JMPlayer.xcodeproj/project.xcworkspace/xcuserdata/
 
 JMPlayer-Bundle/JMPlayer-Bundle.xcodeproj/xuserdata/
 JMPlayer-Bundle/JMPlayer-Bundle.xcodeproj/project.xcworkspace/xcuserdata/
+
+# XCode compile directories
+*/build/
+*/DerivedData/
