@@ -122,12 +122,6 @@
 - (BOOL)initUIControls
 {
     NSString* imagePath = [resourceBundle pathForResource:@"fc_background" ofType:@"png"];
-    
-    if (nil == imagePath) {
-        NSLog(@"ERROR: could not file file path for fc_background");
-        return NO;
-    }
-    
     NSImage *bkgnd = [[[NSImage alloc] initByReferencingFile:imagePath] retain];
     
     NSRect frame;
@@ -175,7 +169,6 @@
 {
 	[fcWindow addChildWindow:self ordered:NSWindowAbove];
 	[self fadeWith:NSViewAnimationFadeInEffect];
-	//[[playerController playerInterface] addClient:self];
 }
 
 - (void)hide
@@ -188,7 +181,6 @@
 - (void)endHide
 {
 	[self orderOut:self];
-	//[[playerController playerInterface] removeClient:self];
 }
 
 - (void)fadeWith:(NSString*)effect
