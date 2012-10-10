@@ -29,6 +29,21 @@
 #import "ScrubbingBar.h"
 //#import "TimestampTextField.h"
 
+
+// private method declarations
+@interface FullscreenControls()
+
+- (NSButton*)createButtonWithFrame:(NSRect) frame
+                         Image:(NSImage*) image
+                    AlternateImage:(NSImage*) alternateImage
+                            Action:(SEL) action;
+- (void)onPlayButtonPressed;
+- (void)onFastForwardButtonPressed;
+- (void)onRewindButtonPressed;
+
+@end
+
+
 @implementation FullscreenControls
 @synthesize beingDragged, fcWindow;
 
@@ -73,9 +88,7 @@
             return nil;
         }
         
-        // Animation attributes
-        currentFade = 0;
-        currentState = 0;
+        isPlaying = NO;
         
     }
     
@@ -88,13 +101,10 @@
     NSString* path = [NSString stringWithFormat:@"%@JMPlayer-Bundle.bundle", jm_player.appPath];
     
     if ( (resourceBundle = [NSBundle bundleWithPath: path]) ) {
-        NSLog(@" found jmplayer bundle at: %@", path);
         return YES;
     } else if ( (resourceBundle = [NSBundle bundleWithPath: developmentPath])) {
-        NSLog(@" found jmplayer bundle at: %@", developmentPath);
         return YES;
-    } else {
-        NSLog(@" ERROR: failed to find bundle path - dev path: %@  path: %@", developmentPath, path);
+    } else { // failed to find resource bundle
         return NO;
     }
 }
@@ -121,23 +131,87 @@
 
 - (BOOL)initUIControls
 {
-    NSString* imagePath = [resourceBundle pathForResource:@"fc_background" ofType:@"png"];
-    NSImage *bkgnd = [[[NSImage alloc] initByReferencingFile:imagePath] retain];
     
-    NSRect frame;
-    frame.origin.x = frame.origin.y = 0;
-    frame.size = bkgnd.size;
+    // initialize images
+    // -----------------
+    NSImage *bkgndImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_background" ofType:@"png"]] autorelease];
     
-    NSImageView * bkgndImageView = [[NSImageView alloc] init];
-    [bkgndImageView setImage:bkgnd];
-    [bkgndImageView setFrame:frame];
+    NSImage *fastforwardButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_fast_forward" ofType:@"png"]] autorelease];
+    NSImage *fastforwardOnButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_fast_forward_on" ofType:@"png"]] autorelease];
+    NSImage *rewindButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_fast_rewind" ofType:@"png"]] autorelease];
+    NSImage *rewindOnButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_fast_rewind_on" ofType:@"png"]] autorelease];
     
+    playButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_play" ofType:@"png"]] retain];
+    playOnButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_play_on" ofType:@"png"]] retain];
+    pauseButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_pause" ofType:@"png"]] retain];
+    pauseOnButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_pause_on" ofType:@"png"]] retain];
+
+    
+    
+    // initialize sub-views/controls
+    // -----------------------------
+    
+    // background image view
+    NSRect bkgndFrame = NSMakeRect(0.0, 0.0, bkgndImage.size.width, bkgndImage.size.height);
+    NSImageView * bkgndImageView = [[[NSImageView alloc] initWithFrame:bkgndFrame] autorelease];
+    [bkgndImageView setImage:bkgndImage];
+    
+    
+    // play / pause button
+    NSRect playButtonFrame = NSMakeRect(204, 8, playButtonImage.size.width, playButtonImage.size.height);
+    playButton = [self createButtonWithFrame:playButtonFrame
+                                       Image:playButtonImage
+                              AlternateImage:playOnButtonImage
+                                      Action:@selector(onPlayButtonPressed)];
+    
+    // fast forward button
+    NSRect fastforwardFrame = NSMakeRect(242, 10, fastforwardButtonImage.size.width, fastforwardButtonImage.size.height );
+    NSButton *fastforwardButton = [self createButtonWithFrame:fastforwardFrame
+                                                        Image:fastforwardButtonImage
+                                               AlternateImage:fastforwardOnButtonImage
+                                                       Action:@selector(onFastForwardButtonPressed)];
+
+    // rewind button
+    NSRect rewindFrame = NSMakeRect(163, 10, rewindButtonImage.size.width, rewindButtonImage.size.height );
+    NSButton *rewindButton = [self createButtonWithFrame:rewindFrame
+                                                   Image:rewindButtonImage
+                                          AlternateImage:rewindOnButtonImage
+                                                  Action:@selector(onRewindButtonPressed)];
+    
+    // progress bar
+    // ...
+    
+    
+    // add sub-views/controls to contentView
+    // --------------------------------------
     [[self contentView] addSubview:bkgndImageView];
+    [[self contentView] addSubview:playButton positioned:NSWindowAbove relativeTo:bkgndImageView];
+    [[self contentView] addSubview:fastforwardButton positioned:NSWindowAbove relativeTo:bkgndImageView];
+    [[self contentView] addSubview:rewindButton positioned:NSWindowAbove relativeTo:bkgndImageView];
     
-    [bkgndImageView release];
+    [playButton setNeedsDisplay:YES];
+    [bkgndImageView setNeedsDisplay:YES];
 
     return YES;
 }
+
+- (NSButton*)createButtonWithFrame:(NSRect) frame
+                             Image:(NSImage*) image
+                    AlternateImage:(NSImage*) alternateImage
+                            Action:(SEL) action
+{
+    NSButton* button = [[[NSButton alloc] initWithFrame:frame] autorelease];
+    [button setTarget:self];
+    [button setAction:action];
+    [button setImage:image];
+    [button setAlternateImage:alternateImage];
+    [button.cell setBackgroundColor: [NSColor colorWithCalibratedWhite:0.0f alpha:0.0f]];
+    [button setButtonType:NSMomentaryChangeButton];
+    [button setBordered:NO];
+
+    return button;
+}
+
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
@@ -305,15 +379,41 @@
 }
 */
 
+- (void) onPlayButtonPressed
+{
+    NSLog(@" play button pressed ");
+    
+    if ( isPlaying == YES ) {
+        [playButton setImage: pauseButtonImage];
+        [playButton setAlternateImage: pauseOnButtonImage];
+    } else {
+        [playButton setImage:playButtonImage];
+        [playButton setAlternateImage:playOnButtonImage];
+    }
+    
+    isPlaying = !isPlaying;
+}
+
+- (void) onFastForwardButtonPressed
+{
+    NSLog(@" fast forward button pressed ");
+}
+
+- (void) onRewindButtonPressed
+{
+    NSLog(@" rewind button pressed ");   
+}
+
 - (void) dealloc
 {
-	[fcPlayImageOn release];
-	[fcPlayImageOff release];
-	[fcPauseImageOn release];
-	[fcPauseImageOff release];
+    [pauseButtonImage release];
+    [pauseOnButtonImage release];
+	[playButtonImage release];
+    [playOnButtonImage release];
 	
-	[animation release];
+    [animation release];
 	[super dealloc];
+    
 }
 
 @end

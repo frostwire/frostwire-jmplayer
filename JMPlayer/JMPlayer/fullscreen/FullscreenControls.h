@@ -41,18 +41,18 @@
 	IBOutlet id fcSubtitleCycleButton;
 	IBOutlet id fcFullscreenButton;
 	
-	NSImage *fcPlayImageOff;
-	NSImage *fcPlayImageOn;
-	NSImage *fcPauseImageOff;
-	NSImage *fcPauseImageOn;
-	
+	NSImage *pauseButtonImage;
+    NSImage *pauseOnButtonImage;
+	NSImage *playButtonImage;
+    NSImage *playOnButtonImage;
+	NSButton *playButton;
+    
 	NSPoint dragStartPoint;
 	
 	NSViewAnimation *animation;
-	int currentFade;
-	int currentState;
-	BOOL isOpen;
-	BOOL beingDragged;
+	//BOOL isOpen;
+	//BOOL beingDragged;
+    BOOL isPlaying;
     
     NSBundle* resourceBundle;
 	
