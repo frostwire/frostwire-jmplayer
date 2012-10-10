@@ -26,8 +26,7 @@
 #import <AppKit/AppKit.h>
 #import "Debug.h"
 #import "JMPlayer.h"
-#import "ScrubbingBar.h"
-//#import "TimestampTextField.h"
+#import "ProgressSlider.h"
 
 
 // private method declarations
@@ -179,8 +178,8 @@
                                                   Action:@selector(onRewindButtonPressed)];
     
     // progress bar
-    // ...
-    
+    CGPoint center = NSMakePoint([self frame].size.width * 0.5, [self frame].size.height * 0.6);
+    ProgressSlider *progress = [[[ProgressSlider alloc] initWithCenter:center viewWidth: [self frame].size.width] autorelease];
     
     // add sub-views/controls to contentView
     // --------------------------------------
@@ -188,9 +187,11 @@
     [[self contentView] addSubview:playButton positioned:NSWindowAbove relativeTo:bkgndImageView];
     [[self contentView] addSubview:fastforwardButton positioned:NSWindowAbove relativeTo:bkgndImageView];
     [[self contentView] addSubview:rewindButton positioned:NSWindowAbove relativeTo:bkgndImageView];
+    [[self contentView] addSubview:progress positioned:NSWindowAbove relativeTo:bkgndImageView];
     
-    [playButton setNeedsDisplay:YES];
-    [bkgndImageView setNeedsDisplay:YES];
+    //[bkgndImageView setNeedsDisplay:YES];
+    //[progressIndicator setNeedsDisplay:TRUE];
+    //[progressSlider setNeedsDisplay:TRUE];
 
     return YES;
 }
