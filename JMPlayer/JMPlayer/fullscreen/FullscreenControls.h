@@ -27,6 +27,7 @@
 
 //#import "MPlayerInterface.h"
 #import "PlayerFullscreenWindow.h"
+#import "ProgressSlider.h"
 
 @class TimestampTextField;
 
@@ -73,5 +74,5 @@
 - (void)show;
 - (void)hide;
 
-
+- (void)dealloc;
 @end

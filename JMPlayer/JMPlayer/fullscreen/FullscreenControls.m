@@ -179,7 +179,11 @@
     
     // progress bar
     CGPoint center = NSMakePoint([self frame].size.width * 0.5, [self frame].size.height * 0.6);
-    ProgressSlider *progress = [[[ProgressSlider alloc] initWithCenter:center viewWidth: [self frame].size.width] autorelease];
+    ProgressSlider* progressSlider = [[[ProgressSlider alloc] initWithCenter:center viewWidth: [self frame].size.width] autorelease];
+    
+    // progress bar - wire up
+    [progressSlider setDelegate:jm_player];
+    [jm_player setProgressSlider:progressSlider];
     
     // add sub-views/controls to contentView
     // --------------------------------------
@@ -187,11 +191,7 @@
     [[self contentView] addSubview:playButton positioned:NSWindowAbove relativeTo:bkgndImageView];
     [[self contentView] addSubview:fastforwardButton positioned:NSWindowAbove relativeTo:bkgndImageView];
     [[self contentView] addSubview:rewindButton positioned:NSWindowAbove relativeTo:bkgndImageView];
-    [[self contentView] addSubview:progress positioned:NSWindowAbove relativeTo:bkgndImageView];
-    
-    //[bkgndImageView setNeedsDisplay:YES];
-    //[progressIndicator setNeedsDisplay:TRUE];
-    //[progressSlider setNeedsDisplay:TRUE];
+    [[self contentView] addSubview:progressSlider positioned:NSWindowAbove relativeTo:bkgndImageView];
 
     return YES;
 }
@@ -411,7 +411,7 @@
     [pauseOnButtonImage release];
 	[playButtonImage release];
     [playOnButtonImage release];
-	
+    
     [animation release];
 	[super dealloc];
     

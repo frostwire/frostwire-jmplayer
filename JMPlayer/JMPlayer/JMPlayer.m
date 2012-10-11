@@ -37,7 +37,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
 @implementation JMPlayer
 
-@synthesize appPath;
+@synthesize appPath, progressSlider;
 
 - (id) initWithFrame: (jobject) owner frame:(NSRect) frame applicationPath:(NSString*) applicationPath
 {
@@ -633,6 +633,16 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 }
 */
 
+
+
+/*
+ * Java side notifications.
+ */
+
+- (void) onProgressSliderValueChanged:(int) seconds {
+    //TODO: call back into Java-side
+    NSLog(@"JMPlayer::onProgresSliderValueChanged() value: %d", seconds);
+}
 
 @end
 
