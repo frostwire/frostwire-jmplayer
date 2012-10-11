@@ -7,7 +7,6 @@
 //
 
 #import "ProgressSlider.h"
-#import "ProgressSliderCell.h"
 
 @interface ProgressSlider()
 
