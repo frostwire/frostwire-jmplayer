@@ -20,8 +20,6 @@
 		65BFF26915E0354C00CEF624 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 65BFF26515E0354C00CEF624 /* Debug.m */; };
 		65BFF26F15E0397200CEF624 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF26E15E0397200CEF624 /* ExceptionHandling.framework */; };
 		65BFF27115E0397900CEF624 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF27015E0397900CEF624 /* libiconv.dylib */; };
-		8523B51E1625D4EC009807E3 /* ProgressSliderCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8523B51C1625D4EC009807E3 /* ProgressSliderCell.h */; };
-		8523B51F1625D4EC009807E3 /* ProgressSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8523B51D1625D4EC009807E3 /* ProgressSliderCell.m */; };
 		8523B5221625DCE8009807E3 /* ProgressSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 8523B5201625DCE8009807E3 /* ProgressSlider.h */; };
 		8523B5231625DCE8009807E3 /* ProgressSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8523B5211625DCE8009807E3 /* ProgressSlider.m */; };
 		85C6C9FA16123C1B00509B38 /* FullscreenControls.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C6C9ED16123C1B00509B38 /* FullscreenControls.h */; };
@@ -58,8 +56,6 @@
 		65BFF26515E0354C00CEF624 /* Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Debug.m; sourceTree = "<group>"; };
 		65BFF26E15E0397200CEF624 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
 		65BFF27015E0397900CEF624 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
-		8523B51C1625D4EC009807E3 /* ProgressSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressSliderCell.h; sourceTree = "<group>"; };
-		8523B51D1625D4EC009807E3 /* ProgressSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressSliderCell.m; sourceTree = "<group>"; };
 		8523B5201625DCE8009807E3 /* ProgressSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressSlider.h; sourceTree = "<group>"; };
 		8523B5211625DCE8009807E3 /* ProgressSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressSlider.m; sourceTree = "<group>"; };
 		85C6C9ED16123C1B00509B38 /* FullscreenControls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenControls.h; sourceTree = "<group>"; };
@@ -153,8 +149,6 @@
 				85C6C9EE16123C1B00509B38 /* FullscreenControls.m */,
 				85C6C9F316123C1B00509B38 /* FullscreenControlsVolumeSlider.h */,
 				85C6C9F416123C1B00509B38 /* FullscreenControlsVolumeSlider.m */,
-				8523B51C1625D4EC009807E3 /* ProgressSliderCell.h */,
-				8523B51D1625D4EC009807E3 /* ProgressSliderCell.m */,
 				8523B5201625DCE8009807E3 /* ProgressSlider.h */,
 				8523B5211625DCE8009807E3 /* ProgressSlider.m */,
 			);
@@ -192,7 +186,6 @@
 				85C6CA0816123CB000509B38 /* ScrubbingBar.h in Headers */,
 				85C6CA0C16123CE500509B38 /* VolumeSlider.h in Headers */,
 				85F6BEDF161398850062F138 /* PlayerWindow.h in Headers */,
-				8523B51E1625D4EC009807E3 /* ProgressSliderCell.h in Headers */,
 				8523B5221625DCE8009807E3 /* ProgressSlider.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,7 +261,6 @@
 				85C6CA0916123CB000509B38 /* ScrubbingBar.m in Sources */,
 				85C6CA0D16123CE500509B38 /* VolumeSlider.m in Sources */,
 				85F6BEE0161398850062F138 /* PlayerWindow.m in Sources */,
-				8523B51F1625D4EC009807E3 /* ProgressSliderCell.m in Sources */,
 				8523B5231625DCE8009807E3 /* ProgressSlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
