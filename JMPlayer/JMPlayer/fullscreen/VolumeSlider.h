@@ -15,10 +15,13 @@
 @end
 
 @interface VolumeSlider : NSView
+{
+    NSSlider* slider;
+}
 
 @property (nonatomic, retain) id<VolumeSliderProtocol> delegate;
 
-- (id)initWithFrame:(NSRect)frameRect;
+- (id)initWithFrame:(NSRect)frameRect ApplicationPath:(NSString*) appPath;
 - (void)setVolume:(CGFloat)volume;
 
 @end
