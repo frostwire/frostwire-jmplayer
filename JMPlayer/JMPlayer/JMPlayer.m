@@ -636,12 +636,37 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
 
 /*
- * Java side notifications.
+ * Music Player client notifications.
  */
 
-- (void) onProgressSliderValueChanged:(int) seconds {
-    //TODO: call back into Java-side
-    NSLog(@"JMPlayer::onProgresSliderValueChanged() value: %d", seconds);
+-(void)onVolumeChanged:(CGFloat)volume {
+    // TODO: java callback for volume changed
+    NSLog(@"JMPlayer.onVolumeChanged");
+}
+
+-(void)onSeekToTime:(CGFloat)seconds {
+    // TODO: java callback for seek time changed
+    NSLog(@"JMPlayer.onSeekToTime");
+}
+
+-(void)onPlayPressed {
+    // TODO: java callback for play pressed
+    NSLog(@"JMPlayer.onPlayPressed");
+}
+
+-(void)onPausePressed {
+    // TODO: java callback for pause pressed
+    NSLog(@"JMPlayer.onPausePressed");
+}
+
+-(void)onFastForwardPressed {
+    // TODO: java callback for next pressed
+    NSLog(@"JMPlayer.onFastForwardPressed");
+}
+
+-(void)onRewindPressed {
+    // TODO: java callback for prev pressed
+    NSLog(@"JMPlayer.onRewindPressed");
 }
 
 @end

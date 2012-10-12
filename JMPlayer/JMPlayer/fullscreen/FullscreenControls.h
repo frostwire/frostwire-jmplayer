@@ -28,25 +28,50 @@
 //#import "MPlayerInterface.h"
 #import "PlayerFullscreenWindow.h"
 #import "ProgressSlider.h"
+#import "VolumeSlider.h"
 
 @class TimestampTextField;
 
-@interface FullscreenControls : NSWindow {//<MPlayerInterfaceClientProtocol> {
+@protocol MusicPlayerClientProtocol <NSObject>
+
+-(void)onVolumeChanged:(CGFloat)volume;
+-(void)onSeekToTime:(CGFloat)seconds;
+-(void)onPlayPressed;
+-(void)onPausePressed;
+-(void)onFastForwardPressed;
+-(void)onRewindPressed;
+
+@end
+
+@protocol MusicPlayerProtocol <NSObject>
+
+-(void)setVolume:(CGFloat)volume;
+-(void)play;
+-(void)pause;
+-(void)setMaxTime;
+-(void)setCurrentTime;
+
+@end
+
+@interface FullscreenControls : NSWindow <MusicPlayerProtocol, ProgressSliderProtocol, VolumeSliderProtocol> {
 	
 	PlayerFullscreenWindow *fcWindow;
-	IBOutlet NSButton *fcPlayButton;
-    IBOutlet id fcVolumeSlider;
-	IBOutlet id fcScrubbingBar;
-	IBOutlet TimestampTextField *fcTimeTextField;
-	IBOutlet id fcAudioCycleButton;
-	IBOutlet id fcSubtitleCycleButton;
-	IBOutlet id fcFullscreenButton;
+	//IBOutlet NSButton *fcPlayButton;
+    //IBOutlet id fcVolumeSlider;
+	//IBOutlet id fcScrubbingBar;
+	//IBOutlet TimestampTextField *fcTimeTextField;
+	//IBOutlet id fcAudioCycleButton;
+	//IBOutlet id fcSubtitleCycleButton;
+	//IBOutlet id fcFullscreenButton;
 	
 	NSImage *pauseButtonImage;
-    NSImage *pauseOnButtonImage;
 	NSImage *playButtonImage;
-    NSImage *playOnButtonImage;
-	NSButton *playButton;
+    NSButton *playButton;
+    NSButton *fastforwardButton;
+    NSButton *rewindButton;
+    NSButton *fullscreenButton;
+    VolumeSlider *volumeSlider;
+    ProgressSlider *progressSlider;
     
 	NSPoint dragStartPoint;
 	
@@ -58,15 +83,16 @@
     NSBundle* resourceBundle;
 	
     JMPlayer* jm_player;
-    
 	//IBOutlet PlayerController *playerController;
 }
 
+@property (nonatomic, retain) id<MusicPlayerClientProtocol> delegate;
 @property (readonly,getter=window) PlayerFullscreenWindow *fcWindow;
 @property (readonly) BOOL beingDragged;
 
--(id) initWithJMPlayer: (JMPlayer*) jmPlayer
-         fullscreenWindow: (PlayerFullscreenWindow*) playerFSWindow;
++(NSBundle*)findResourceBundleWithAppPath:(NSString*) appPath;
+
+-(id) initWithJMPlayer: (JMPlayer*) jmPlayer fullscreenWindow: (PlayerFullscreenWindow*) playerFSWindow;
 
 - (void)fadeWith:(NSString*)effect;
 - (void)cycleTimeDisplayMode:(id)sender;
@@ -75,4 +101,13 @@
 - (void)hide;
 
 - (void)dealloc;
+
+
+// MusicPlayerProtocol implementations
+-(void)setVolume:(CGFloat)volume;
+-(void)play;
+-(void)pause;
+-(void)setMaxTime;
+-(void)setCurrentTime;
+
 @end

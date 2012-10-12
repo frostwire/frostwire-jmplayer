@@ -22,6 +22,7 @@
 #import "MPlayerVideoRenderer.h"
 #import "PlayerFullscreenWindow.h"
 #import "ProgressSlider.h"
+#import "FullscreenControls.h"
 
 #import "Debug.h"
 
@@ -55,7 +56,7 @@ enum {
     JMPlayer_toggleFS        = 3
 };
 
-@interface JMPlayer : NSOpenGLView <MPlayerVideoRenderereDelegateProtocol, AWTCocoaComponent, ProgressSliderProtocol>
+@interface JMPlayer : NSOpenGLView <MPlayerVideoRenderereDelegateProtocol, AWTCocoaComponent, MusicPlayerClientProtocol>
 {
     jobject jowner;
     
@@ -106,6 +107,8 @@ enum {
     // Fullscreen controls
 	IBOutlet FullscreenControls *fullScreenControls;
 }
+
+@property (nonatomic, retain) id<MusicPlayerProtocol> player;
 @property (nonatomic, retain) ProgressSlider* progressSlider;
 @property (nonatomic, retain) NSString* appPath;
 
@@ -145,13 +148,18 @@ enum {
 
 - (void) fullscreenWindowMoved:(NSNotification *)notification;
 
+// --- MusicPlayerClientProtocol ---
+-(void)onVolumeChanged:(CGFloat)volume;
+-(void)onSeekToTime:(CGFloat)seconds;
+-(void)onPlayPressed;
+-(void)onPausePressed;
+-(void)onFastForwardPressed;
+-(void)onRewindPressed;
+
 // === from AppController ===
 - (BOOL) animateInterface;
 
 // === from PlayerController ===
 - (void) syncWindows:(BOOL)switchingToFullscreen;
-
-// --- ProgressSliderProtocol ----
-- (void) onProgressSliderValueChanged:(int) seconds;
 
 @end

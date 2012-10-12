@@ -27,24 +27,28 @@
 #import "Debug.h"
 #import "JMPlayer.h"
 #import "ProgressSlider.h"
-
+#import "VolumeSlider.h"
 
 // private method declarations
 @interface FullscreenControls()
 
-- (NSButton*)createButtonWithFrame:(NSRect) frame
-                         Image:(NSImage*) image
-                    AlternateImage:(NSImage*) alternateImage
-                            Action:(SEL) action;
+- (NSButton*)createButtonWithFrame:(NSRect) frame Image:(NSImage*) image Action:(SEL) action;
 - (void)onPlayButtonPressed;
 - (void)onFastForwardButtonPressed;
 - (void)onRewindButtonPressed;
+- (void)onFullScreenButtonPressed;
+
+- (void)onProgressSliderValueChanged:(CGFloat) seconds;
+- (void)onVolumeSliderVolumeChange:(CGFloat) volume;
+
+- (void)updatePlayButton;
 
 @end
 
 
 @implementation FullscreenControls
-@synthesize beingDragged, fcWindow;
+
+@synthesize beingDragged, fcWindow, delegate;
 
 -(id) initWithJMPlayer: (JMPlayer*) jmPlayer
       fullscreenWindow: (PlayerFullscreenWindow*) playerFSWindow {
@@ -52,7 +56,11 @@
     fcWindow = [playerFSWindow retain];
     jm_player = jmPlayer;
     
-    if (! [self initResourceBundle]) {
+    // wire up for callbacks
+    delegate = (id<MusicPlayerClientProtocol>)jmPlayer;
+    jmPlayer.player = self;
+    
+    if (! (resourceBundle = [FullscreenControls findResourceBundleWithAppPath:jm_player.appPath]) ) {
         NSLog(@"Error");
         [self release];
         return nil;
@@ -75,8 +83,10 @@
                                       defer:NO]) ) {
         // Prepare window transparency
         [self setBackgroundColor: [NSColor clearColor]];
-        [self setAlphaValue:0.0];
+        //[self setAlphaValue:0.0];
         [self setOpaque:NO];
+        
+        [self setIgnoresMouseEvents:FALSE];
         
         // Enable shadow
         [self setHasShadow:YES];
@@ -94,18 +104,17 @@
     return self;
 }
 
-- (BOOL)initResourceBundle
++ (NSBundle*)findResourceBundleWithAppPath:(NSString*) appPath
 {
-    NSString* developmentPath = [NSString stringWithFormat:@"%@../lib/osx/JMPlayer-Bundle/JMPlayer-Bundle.bundle", jm_player.appPath];
-    NSString* path = [NSString stringWithFormat:@"%@JMPlayer-Bundle.bundle", jm_player.appPath];
+    NSString *developmentPath = [NSString stringWithFormat:@"%@../lib/osx/JMPlayer-Bundle/JMPlayer-Bundle.bundle", appPath];
+    NSString *path = [NSString stringWithFormat:@"%@JMPlayer-Bundle.bundle", appPath];
+    NSBundle *bundle = nil;
     
-    if ( (resourceBundle = [NSBundle bundleWithPath: path]) ) {
-        return YES;
-    } else if ( (resourceBundle = [NSBundle bundleWithPath: developmentPath])) {
-        return YES;
-    } else { // failed to find resource bundle
-        return NO;
+    if ( !(bundle = [NSBundle bundleWithPath: path]) ) {
+        bundle = [NSBundle bundleWithPath: developmentPath];
     }
+    
+    return bundle;
 }
 
 - (NSSize)determineWindowSize
@@ -135,17 +144,11 @@
     // -----------------
     NSImage *bkgndImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_background" ofType:@"png"]] autorelease];
     
-    NSImage *fastforwardButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_fast_forward" ofType:@"png"]] autorelease];
-    NSImage *fastforwardOnButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_fast_forward_on" ofType:@"png"]] autorelease];
-    NSImage *rewindButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_fast_rewind" ofType:@"png"]] autorelease];
-    NSImage *rewindOnButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_fast_rewind_on" ofType:@"png"]] autorelease];
-    
+    NSImage *fastforwardButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_next" ofType:@"png"]] autorelease];
+    NSImage *rewindButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_previous" ofType:@"png"]] autorelease];
+    NSImage *fullscreenButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_fullscreen_exit" ofType:@"png"]] autorelease];
     playButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_play" ofType:@"png"]] retain];
-    playOnButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_play_on" ofType:@"png"]] retain];
     pauseButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_pause" ofType:@"png"]] retain];
-    pauseOnButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_pause_on" ofType:@"png"]] retain];
-
-    
     
     // initialize sub-views/controls
     // -----------------------------
@@ -154,59 +157,55 @@
     NSRect bkgndFrame = NSMakeRect(0.0, 0.0, bkgndImage.size.width, bkgndImage.size.height);
     NSImageView * bkgndImageView = [[[NSImageView alloc] initWithFrame:bkgndFrame] autorelease];
     [bkgndImageView setImage:bkgndImage];
-    
+    [[self contentView] addSubview:bkgndImageView];
     
     // play / pause button
-    NSRect playButtonFrame = NSMakeRect(204, 8, playButtonImage.size.width, playButtonImage.size.height);
-    playButton = [self createButtonWithFrame:playButtonFrame
-                                       Image:playButtonImage
-                              AlternateImage:playOnButtonImage
-                                      Action:@selector(onPlayButtonPressed)];
+    //NSRect playButtonFrame = NSMakeRect(243, 35, playButtonImage.size.width, playButtonImage.size.height);
+    NSRect playButtonFrame = NSMakeRect(216, 35, playButtonImage.size.width, playButtonImage.size.height);
+    playButton = [self createButtonWithFrame:playButtonFrame Image:playButtonImage Action:@selector(onPlayButtonPressed)];
+    [[self contentView] addSubview:playButton positioned:NSWindowAbove relativeTo:bkgndImageView];
     
     // fast forward button
-    NSRect fastforwardFrame = NSMakeRect(242, 10, fastforwardButtonImage.size.width, fastforwardButtonImage.size.height );
-    NSButton *fastforwardButton = [self createButtonWithFrame:fastforwardFrame
-                                                        Image:fastforwardButtonImage
-                                               AlternateImage:fastforwardOnButtonImage
-                                                       Action:@selector(onFastForwardButtonPressed)];
-
-    // rewind button
-    NSRect rewindFrame = NSMakeRect(163, 10, rewindButtonImage.size.width, rewindButtonImage.size.height );
-    NSButton *rewindButton = [self createButtonWithFrame:rewindFrame
-                                                   Image:rewindButtonImage
-                                          AlternateImage:rewindOnButtonImage
-                                                  Action:@selector(onRewindButtonPressed)];
-    
-    // progress bar
-    CGPoint center = NSMakePoint([self frame].size.width * 0.5, [self frame].size.height * 0.6);
-    ProgressSlider* progressSlider = [[[ProgressSlider alloc] initWithCenter:center viewWidth: [self frame].size.width] autorelease];
-    
-    // progress bar - wire up
-    [progressSlider setDelegate:jm_player];
-    [jm_player setProgressSlider:progressSlider];
-    
-    // add sub-views/controls to contentView
-    // --------------------------------------
-    [[self contentView] addSubview:bkgndImageView];
-    [[self contentView] addSubview:playButton positioned:NSWindowAbove relativeTo:bkgndImageView];
+    //NSRect fastforwardFrame = NSMakeRect(318, 40, fastforwardButtonImage.size.width, fastforwardButtonImage.size.height );
+    NSRect fastforwardFrame = NSMakeRect(286, 40, fastforwardButtonImage.size.width, fastforwardButtonImage.size.height );
+    fastforwardButton = [self createButtonWithFrame:fastforwardFrame Image:fastforwardButtonImage Action:@selector(onFastForwardButtonPressed)];
     [[self contentView] addSubview:fastforwardButton positioned:NSWindowAbove relativeTo:bkgndImageView];
+    
+    // rewind button
+    //NSRect rewindFrame = NSMakeRect(181, 40, rewindButtonImage.size.width, rewindButtonImage.size.height );
+    NSRect rewindFrame = NSMakeRect(162, 40, rewindButtonImage.size.width, rewindButtonImage.size.height );
+    rewindButton = [self createButtonWithFrame:rewindFrame Image:rewindButtonImage Action:@selector(onRewindButtonPressed)];
     [[self contentView] addSubview:rewindButton positioned:NSWindowAbove relativeTo:bkgndImageView];
+    
+    // exit fullscreen button
+    //NSRect fullscreenFrame = NSMakeRect(447, 53, fullscreenButtonImage.size.width, fullscreenButtonImage.size.height);
+    NSRect fullscreenFrame = NSMakeRect(402, 53, fullscreenButtonImage.size.width, fullscreenButtonImage.size.height);
+    fullscreenButton = [self createButtonWithFrame:fullscreenFrame Image:fullscreenButtonImage Action:@selector(onFullScreenButtonPressed)];
+    [[self contentView] addSubview:fullscreenButton positioned:NSWindowAbove relativeTo:bkgndImageView];
+    
+    // progress slider
+    CGPoint center = NSMakePoint([self frame].size.width * 0.5, [self frame].size.height * 0.2);
+    progressSlider = [[ProgressSlider alloc] initWithCenter:center viewWidth: [self frame].size.width];
+    [progressSlider setDelegate:self];
     [[self contentView] addSubview:progressSlider positioned:NSWindowAbove relativeTo:bkgndImageView];
-
+    
+    // volume slider
+    NSRect vsFrame = NSMakeRect(16, 60, 0.25 * self.frame.size.width, 25);
+    volumeSlider = [[VolumeSlider alloc] initWithFrame: vsFrame ApplicationPath:jm_player.appPath];
+    [volumeSlider setDelegate:self];
+    [[self contentView] addSubview:volumeSlider positioned:NSWindowAbove relativeTo:bkgndImageView];
+    
     return YES;
 }
 
 - (NSButton*)createButtonWithFrame:(NSRect) frame
                              Image:(NSImage*) image
-                    AlternateImage:(NSImage*) alternateImage
                             Action:(SEL) action
 {
-    NSButton* button = [[[NSButton alloc] initWithFrame:frame] autorelease];
+    NSButton* button = [[NSButton alloc] initWithFrame:frame];
     [button setTarget:self];
     [button setAction:action];
     [button setImage:image];
-    [button setAlternateImage:alternateImage];
-    [button.cell setBackgroundColor: [NSColor colorWithCalibratedWhite:0.0f alpha:0.0f]];
     [button setButtonType:NSMomentaryChangeButton];
     [button setBordered:NO];
 
@@ -380,41 +379,90 @@
 }
 */
 
-- (void) onPlayButtonPressed
-{
-    NSLog(@" play button pressed ");
-    
+- (void) updatePlayButton {
     if ( isPlaying == YES ) {
-        [playButton setImage: pauseButtonImage];
-        [playButton setAlternateImage: pauseOnButtonImage];
+        [playButton setImage:pauseButtonImage];
     } else {
         [playButton setImage:playButtonImage];
-        [playButton setAlternateImage:playOnButtonImage];
     }
-    
-    isPlaying = !isPlaying;
-}
-
-- (void) onFastForwardButtonPressed
-{
-    NSLog(@" fast forward button pressed ");
-}
-
-- (void) onRewindButtonPressed
-{
-    NSLog(@" rewind button pressed ");   
 }
 
 - (void) dealloc
 {
     [pauseButtonImage release];
-    [pauseOnButtonImage release];
 	[playButtonImage release];
-    [playOnButtonImage release];
+    
+    [playButton release];
+    [fastforwardButton release];
+    [rewindButton release];
+    [fullscreenButton release];
+    [volumeSlider release];
+    [progressSlider release];
     
     [animation release];
 	[super dealloc];
     
 }
+
+
+/*
+ * UI Control handlers - these all go straight to the JMPlayer, 
+ *   then to Java - only when Java notifies us back do we update the UI.
+ */
+-(void)onVolumeSliderVolumeChange:(CGFloat) volume {
+    [delegate onVolumeChanged:volume];
+}
+
+- (void)onProgressSliderValueChanged:(CGFloat) seconds {
+    [delegate onSeekToTime:seconds];
+}
+
+- (void) onPlayButtonPressed
+{
+    [delegate onPlayPressed];
+}
+
+- (void) onFastForwardButtonPressed
+{
+    [delegate onFastForwardPressed];
+}
+
+- (void) onRewindButtonPressed
+{
+    [delegate onRewindPressed];
+}
+
+- (void)onFullScreenButtonPressed
+{
+    [jm_player toggleFullscreen];
+}
+
+
+/*
+ * Java callback handlers
+ */
+-(void)setVolume:(CGFloat)volume {
+    [volumeSlider setVolume:volume];
+}
+
+-(void)play {
+    isPlaying = TRUE;
+    [self updatePlayButton];
+}
+
+-(void)pause {
+    isPlaying = FALSE;
+    [self updatePlayButton];
+}
+
+-(void)setMaxTime {
+    
+}
+
+-(void)setCurrentTime {
+    
+}
+
+
 
 @end
