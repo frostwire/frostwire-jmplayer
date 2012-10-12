@@ -44,6 +44,8 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 	self = [super initWithFrame:frame];
     jowner = owner;
     
+    //jniInterface = JNIInterface::GetInstance();
+    
     appPath = applicationPath;
     
 	buffer_name = [@"fwmplayer" retain];

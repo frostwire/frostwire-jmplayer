@@ -19,6 +19,8 @@
 //include for shared memory
 #include <sys/mman.h>
 
+//#include "JNIInterface.h"
+
 #import "MPlayerVideoRenderer.h"
 #import "PlayerFullscreenWindow.h"
 #import "ProgressSlider.h"
@@ -59,6 +61,7 @@ enum {
 @interface JMPlayer : NSOpenGLView <MPlayerVideoRenderereDelegateProtocol, AWTCocoaComponent, MusicPlayerClientProtocol>
 {
     jobject jowner;
+    //JNIInterface* jniInterface;
     
     MPlayerVideoRenderer *renderer;
     
