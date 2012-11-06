@@ -231,13 +231,14 @@
 - (void)mouseMoved:(NSEvent *)theEvent
 {	
 	NSPoint mousePosition = [NSEvent mouseLocation];
-	float sqrtDelta = pow(pow(lastMousePosition.x - mousePosition.x, 2) + pow(lastMousePosition.y - mousePosition.y, 2), 0.5);
+	float delta = pow(lastMousePosition.x - mousePosition.x, 2) + pow(lastMousePosition.y - mousePosition.y, 2);
 	lastMousePosition = mousePosition;
 	
-    // check if amount of mouse movement is >= 5 pixels
+    // check if amount of mouse movement is >= 5 pixels (sqrt(35)
+    //  - but ignoring sqrt calc for perf reasons
     // note this is pixels moved in one update from the OS, not
     // in one user's swipe.
-	if( isFullscreen && sqrtDelta > 5.0f )
+	if( isFullscreen && delta > 25.0f )
 	{
 		[self showOSD];
 	}
