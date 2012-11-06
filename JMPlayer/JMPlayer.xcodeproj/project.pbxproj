@@ -22,6 +22,8 @@
 		65BFF27115E0397900CEF624 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF27015E0397900CEF624 /* libiconv.dylib */; };
 		8523B5221625DCE8009807E3 /* ProgressSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 8523B5201625DCE8009807E3 /* ProgressSlider.h */; };
 		8523B5231625DCE8009807E3 /* ProgressSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8523B5211625DCE8009807E3 /* ProgressSlider.m */; };
+		854DC6B616497A2F00F7FB1F /* JNIInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 854DC6B416497A2F00F7FB1F /* JNIInterface.h */; };
+		854DC6B716497A2F00F7FB1F /* JNIInterface.mm in Sources */ = {isa = PBXBuildFile; fileRef = 854DC6B516497A2F00F7FB1F /* JNIInterface.mm */; };
 		854F9EB916271A26004F3704 /* VolumeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 854F9EB716271A26004F3704 /* VolumeSlider.h */; };
 		854F9EBA16271A26004F3704 /* VolumeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 854F9EB816271A26004F3704 /* VolumeSlider.m */; };
 		85C6C9FA16123C1B00509B38 /* FullscreenControls.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C6C9ED16123C1B00509B38 /* FullscreenControls.h */; };
@@ -54,6 +56,8 @@
 		65BFF27015E0397900CEF624 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		8523B5201625DCE8009807E3 /* ProgressSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressSlider.h; sourceTree = "<group>"; };
 		8523B5211625DCE8009807E3 /* ProgressSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressSlider.m; sourceTree = "<group>"; };
+		854DC6B416497A2F00F7FB1F /* JNIInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIInterface.h; sourceTree = "<group>"; };
+		854DC6B516497A2F00F7FB1F /* JNIInterface.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = JNIInterface.mm; sourceTree = "<group>"; };
 		854F9EB716271A26004F3704 /* VolumeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeSlider.h; sourceTree = "<group>"; };
 		854F9EB816271A26004F3704 /* VolumeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeSlider.m; sourceTree = "<group>"; };
 		85C6C9ED16123C1B00509B38 /* FullscreenControls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenControls.h; sourceTree = "<group>"; };
@@ -120,6 +124,8 @@
 		65BFF24915E033FA00CEF624 /* JMPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				854DC6B416497A2F00F7FB1F /* JNIInterface.h */,
+				854DC6B516497A2F00F7FB1F /* JNIInterface.mm */,
 				85C6C9EC16123C1B00509B38 /* fullscreen */,
 				85C6C9F516123C1B00509B38 /* player */,
 				65BFF26215E0354C00CEF624 /* CocoaAdditions.h */,
@@ -173,6 +179,7 @@
 				85F6BEDF161398850062F138 /* PlayerWindow.h in Headers */,
 				8523B5221625DCE8009807E3 /* ProgressSlider.h in Headers */,
 				854F9EB916271A26004F3704 /* VolumeSlider.h in Headers */,
+				854DC6B616497A2F00F7FB1F /* JNIInterface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +253,7 @@
 				85F6BEE0161398850062F138 /* PlayerWindow.m in Sources */,
 				8523B5231625DCE8009807E3 /* ProgressSlider.m in Sources */,
 				854F9EBA16271A26004F3704 /* VolumeSlider.m in Sources */,
+				854DC6B716497A2F00F7FB1F /* JNIInterface.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
