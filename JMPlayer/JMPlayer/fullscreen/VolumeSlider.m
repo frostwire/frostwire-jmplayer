@@ -64,6 +64,10 @@
     [slider setFloatValue:volume];
 }
 
+-(CGFloat)getVolume {
+    return slider.floatValue;
+}
+
 - (void)onSliderValueChange {
     if ( self.delegate ) {
         [ self.delegate onVolumeSliderVolumeChange:[slider floatValue]];

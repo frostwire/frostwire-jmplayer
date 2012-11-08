@@ -17,8 +17,13 @@ class JNIInterface
 public:
     
     ~JNIInterface();
+    
     static JNIInterface& GetInstance();
-    bool Initialize(JavaVM* jvm);
+    
+    bool Initialize(JNIEnv *env, jobject component);
+    
+    int getJNIIntValue(jobject integerObject);
+    float getJNIFloatValue(jobject floatObject);
     
     // JNI callback methods    
     void OnVolumeChanged(float volume);
@@ -27,6 +32,7 @@ public:
     void OnPausePressed();
     void OnFastForwardPressed();
     void OnRewindPressed();
+    void OnToggleFullscreenPressed();
     
 private:
     JNIInterface();
@@ -35,17 +41,18 @@ private:
     
     bool initialized;
     
-    JavaVM* jvm;
     JNIEnv* env;
     bool mustDetach;
     
-    jclass cls;
+    jobject owner;
+    jclass  cls;
     jmethodID changeVolumeID;
     jmethodID seekToTimeID;
     jmethodID playPressedID;
     jmethodID pausePressedID;
     jmethodID fastForwardPressedID;
     jmethodID rewindPressedID;
+    jmethodID toggleFullscreenPressedID;
 };
 
 #endif /* defined(__JMPlayer__JNIInterface__) */

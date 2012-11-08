@@ -7,6 +7,7 @@
 //
 
 #import "JMPlayer.h"
+#import "JNIInterface.h"
 
 #import <Carbon/Carbon.h>
 #import <Foundation/NSByteOrder.h>
@@ -61,6 +62,18 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 -(void)awtMessage:(jint)messageID message:(jobject)message env:(JNIEnv*)env
 {
     switch (messageID) {
+        case JMPlayer_volumeChanged:
+            [fullscreenWindow setVolume:(float)JNIInterface::GetInstance().getJNIFloatValue(message)];
+            break;
+        case JMPlayer_progressChanged:
+            [fullscreenWindow setCurrentTime:(float)JNIInterface::GetInstance().getJNIFloatValue(message)];
+            break;
+        case JMPlayer_stateChanged:
+            [fullscreenWindow setState:(int)JNIInterface::GetInstance().getJNIIntValue(message)];
+            break;
+        case JMPlayer_timeInitialized:
+            [fullscreenWindow setMaxTime:(float)JNIInterface::GetInstance().getJNIFloatValue(message)];
+            break;
         case JMPlayer_toggleFS:
             [self toggleFullscreen];
             break;
@@ -68,7 +81,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
             break;
         case JMPlayer_dispose:
             if(jowner != NULL){
-                (*env)->DeleteGlobalRef(env, jowner);
+                env->DeleteGlobalRef(jowner);
                 jowner = NULL;
             }
             break;
@@ -83,7 +96,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 	renderer = [[MPlayerVideoRenderer alloc] initWithContext:[self openGLContext] andConnectionName:buffer_name];
 	[renderer setDelegate:self];
     
-    ctx = [[self openGLContext] CGLContextObj];
+    ctx = (CGLContextObj)[[self openGLContext] CGLContextObj];
 }
 
 - (void) dealloc
@@ -164,9 +177,9 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
 - (void) update
 {
-	CGLLockContext([[self openGLContext] CGLContextObj]);
+	CGLLockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 	[[self openGLContext] update];
-	CGLUnlockContext([[self openGLContext] CGLContextObj]);
+	CGLUnlockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 }
 
 - (void) drawRect: (NSRect) bounds
@@ -642,38 +655,38 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
  */
 
 -(void)onVolumeChanged:(CGFloat)volume {
-    // TODO: java callback for volume changed
-    NSLog(@"JMPlayer.onVolumeChanged");
+    JNIInterface::GetInstance().OnVolumeChanged(volume);
 }
 
 -(void)onSeekToTime:(CGFloat)seconds {
-    // TODO: java callback for seek time changed
-    NSLog(@"JMPlayer.onSeekToTime");
+    JNIInterface::GetInstance().OnSeekToTime(seconds);
 }
 
 -(void)onPlayPressed {
-    // TODO: java callback for play pressed
-    NSLog(@"JMPlayer.onPlayPressed");
+    JNIInterface::GetInstance().OnPlayPressed();
 }
 
 -(void)onPausePressed {
-    // TODO: java callback for pause pressed
-    NSLog(@"JMPlayer.onPausePressed");
+    JNIInterface::GetInstance().OnPausePressed();
 }
 
 -(void)onFastForwardPressed {
-    // TODO: java callback for next pressed
-    NSLog(@"JMPlayer.onFastForwardPressed");
+    JNIInterface::GetInstance().OnFastForwardPressed();
 }
 
 -(void)onRewindPressed {
-    // TODO: java callback for prev pressed
-    NSLog(@"JMPlayer.onRewindPressed");
+    JNIInterface::GetInstance().OnRewindPressed();
+}
+
+-(void)onToggleFullscreenPressed {
+    JNIInterface::GetInstance().OnToggleFullscreenPressed();
 }
 
 @end
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     jvm = vm;
@@ -690,15 +703,17 @@ JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX_creat
     int width = 200;
     int height = 200;
     
-    jobject jowner = (*env)->NewGlobalRef(env, obj);
+    jobject jowner = (env)->NewGlobalRef(obj);
+    
+    JNIInterface::GetInstance().Initialize(env, jowner);
     
     // prepare application Path
-    const char *charPath = (*env)->GetStringUTFChars(env, appPath, NULL);//Java String to C Style string
+    const char *charPath = env->GetStringUTFChars(appPath, NULL);//Java String to C Style string
     NSString *pathNSString = [[[NSString alloc] initWithUTF8String:charPath] autorelease];
     
     view = [[JMPlayer alloc] initWithFrame : jowner frame:NSMakeRect(0, 0, width, height) applicationPath: pathNSString];
     
-    (*env)->ReleaseStringUTFChars(env, appPath, charPath);
+    env->ReleaseStringUTFChars(appPath, charPath);
     
     NS_HANDLER;
     fprintf(stderr, "ERROR : Failed to create JMPlayer view\n");
@@ -712,9 +727,9 @@ jint GetJNIEnv(JNIEnv **env, bool *mustDetach) {
 	jint getEnvErr = JNI_OK;
 	*mustDetach = false;
 	if (jvm) {
-		getEnvErr = (*jvm)->GetEnv(jvm, (void **)env, JNI_VERSION_1_4);
+		getEnvErr = jvm->GetEnv((void **)env, JNI_VERSION_1_4);
 		if (getEnvErr == JNI_EDETACHED) {
-			getEnvErr = (*jvm)->AttachCurrentThread(jvm, (void **)env, NULL);
+			getEnvErr = jvm->AttachCurrentThread((void **)env, NULL);
 			if (getEnvErr == JNI_OK) {
 				*mustDetach = true;
 			}
@@ -722,4 +737,8 @@ jint GetJNIEnv(JNIEnv **env, bool *mustDetach) {
 	}
 	return getEnvErr;
 }
+    
+#ifdef __cplusplus
+}
+#endif
 

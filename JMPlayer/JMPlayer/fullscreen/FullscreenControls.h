@@ -29,29 +29,11 @@
 #import "PlayerFullscreenWindow.h"
 #import "ProgressSlider.h"
 #import "VolumeSlider.h"
+#import "Protocols.h"
+
 
 @class TimestampTextField;
 
-@protocol MusicPlayerClientProtocol <NSObject>
-
--(void)onVolumeChanged:(CGFloat)volume;
--(void)onSeekToTime:(CGFloat)seconds;
--(void)onPlayPressed;
--(void)onPausePressed;
--(void)onFastForwardPressed;
--(void)onRewindPressed;
-
-@end
-
-@protocol MusicPlayerProtocol <NSObject>
-
--(void)setVolume:(CGFloat)volume;
--(void)play;
--(void)pause;
--(void)setMaxTime;
--(void)setCurrentTime;
-
-@end
 
 @interface FullscreenControls : NSWindow <MusicPlayerProtocol, ProgressSliderProtocol, VolumeSliderProtocol> {
 	
@@ -67,6 +49,7 @@
 	NSImage *pauseButtonImage;
 	NSImage *playButtonImage;
     NSButton *playButton;
+    NSButton *pauseButton;
     NSButton *fastforwardButton;
     NSButton *rewindButton;
     NSButton *fullscreenButton;
@@ -78,7 +61,6 @@
 	NSViewAnimation *animation;
 	//BOOL isOpen;
 	//BOOL beingDragged;
-    BOOL isPlaying;
     
     NSBundle* resourceBundle;
 	
@@ -105,9 +87,8 @@
 
 // MusicPlayerProtocol implementations
 -(void)setVolume:(CGFloat)volume;
--(void)play;
--(void)pause;
--(void)setMaxTime;
--(void)setCurrentTime;
+-(void)setState:(int)state;
+-(void)setMaxTime:(CGFloat)seconds;
+-(void)setCurrentTime:(CGFloat)seconds;
 
 @end

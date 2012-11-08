@@ -59,10 +59,6 @@
         frame.origin.y = (sliderHeight - frame.size.height) / 2.0;
         frame.origin.x = xPos;
         [timeRemainingTextField setFrame:frame];
-        
-        // set default time
-        [self setMaxTime:250];
-        [self setCurrentTime:17];
     }
     
     return self;
@@ -72,9 +68,19 @@
     delegate = del;
 }
 
+- (CGFloat) getMaxTime {
+    return maxTime;
+}
+
 - (void) setMaxTime:(CGFloat)seconds {
-    maxTime = seconds;
-    [self setCurrentTime:0];
+    if ( maxTime != seconds ) {
+        maxTime = seconds;
+        [self setCurrentTime:0];
+    }
+}
+
+- (CGFloat) getCurrentTime {
+    return currentTime;
 }
 
 - (void) setCurrentTime:(CGFloat)seconds {
@@ -119,7 +125,7 @@
         [textField setDrawsBackground:FALSE];
         [textField setAlignment: alignLeft ? NSLeftTextAlignment : NSRightTextAlignment];
         [textField setTextColor: [NSColor whiteColor]];
-        [textField setStringValue: [self timeStringForSeconds:7245 PrependNegative:TRUE]];
+        [textField setStringValue: @"--:--"];
     }
     
     return textField;

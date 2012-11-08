@@ -41,8 +41,6 @@
 - (void)onProgressSliderValueChanged:(CGFloat) seconds;
 - (void)onVolumeSliderVolumeChange:(CGFloat) volume;
 
-- (void)updatePlayButton;
-
 @end
 
 
@@ -96,8 +94,6 @@
             [self release];
             return nil;
         }
-        
-        isPlaying = NO;
         
     }
     
@@ -159,11 +155,16 @@
     [bkgndImageView setImage:bkgndImage];
     [[self contentView] addSubview:bkgndImageView];
     
-    // play / pause button
+    // play button
     //NSRect playButtonFrame = NSMakeRect(243, 35, playButtonImage.size.width, playButtonImage.size.height);
     NSRect playButtonFrame = NSMakeRect(216, 35, playButtonImage.size.width, playButtonImage.size.height);
     playButton = [self createButtonWithFrame:playButtonFrame Image:playButtonImage Action:@selector(onPlayButtonPressed)];
     [[self contentView] addSubview:playButton positioned:NSWindowAbove relativeTo:bkgndImageView];
+    
+    // pause button
+    //NSRect pauseButtonFrame = NSMakeRect(243, 35, pauseButtonImage.size.width, pauseButtonImage.size.height);
+    NSRect pauseButtonFrame = NSMakeRect(216, 35, pauseButtonImage.size.width, pauseButtonImage.size.height);
+    pauseButton = [self createButtonWithFrame:pauseButtonFrame Image:pauseButtonImage Action:@selector(onPauseButtonPressed)];
     
     // fast forward button
     //NSRect fastforwardFrame = NSMakeRect(318, 40, fastforwardButtonImage.size.width, fastforwardButtonImage.size.height );
@@ -379,13 +380,6 @@
 }
 */
 
-- (void) updatePlayButton {
-    if ( isPlaying == YES ) {
-        [playButton setImage:pauseButtonImage];
-    } else {
-        [playButton setImage:playButtonImage];
-    }
-}
 
 - (void) dealloc
 {
@@ -422,6 +416,11 @@
     [delegate onPlayPressed];
 }
 
+- (void) onPauseButtonPressed
+{
+    [delegate onPausePressed];
+}
+
 - (void) onFastForwardButtonPressed
 {
     [delegate onFastForwardPressed];
@@ -434,35 +433,44 @@
 
 - (void)onFullScreenButtonPressed
 {
-    [jm_player toggleFullscreen];
+    [delegate onToggleFullscreenPressed];
 }
 
 
 /*
  * Java callback handlers
  */
--(void)setVolume:(CGFloat)volume {
-    [volumeSlider setVolume:volume];
+
+-(void) setVolume:(CGFloat)volume {
+    if (volume != [volumeSlider getVolume]) {
+        [volumeSlider setVolume:volume];
+    }
 }
 
--(void)play {
-    isPlaying = TRUE;
-    [self updatePlayButton];
+-(void) setState:(int)state {
+    switch (state) {
+        case JMPlayer_statePlaying:
+            [playButton removeFromSuperview];
+            [[self contentView] addSubview:pauseButton];
+            break;
+        case JMPlayer_statePaused:
+            [pauseButton removeFromSuperview];
+            [[self contentView] addSubview:playButton];
+        case JMPlayer_stateStopped:
+            [pauseButton removeFromSuperview];
+            [[self contentView] addSubview:playButton];
+        default:
+            break;
+    }
 }
 
--(void)pause {
-    isPlaying = FALSE;
-    [self updatePlayButton];
+-(void) setMaxTime:(CGFloat)seconds {
+    [progressSlider setMaxTime:seconds];
 }
 
--(void)setMaxTime {
-    
+-(void) setCurrentTime:(CGFloat)seconds {
+    [progressSlider setCurrentTime:seconds];
 }
-
--(void)setCurrentTime {
-    
-}
-
 
 
 @end

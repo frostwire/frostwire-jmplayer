@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		65BFF24415E033FA00CEF624 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF24315E033FA00CEF624 /* Cocoa.framework */; };
-		65BFF24E15E033FA00CEF624 /* JMPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 65BFF24D15E033FA00CEF624 /* JMPlayer.m */; };
+		65BFF24E15E033FA00CEF624 /* JMPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65BFF24D15E033FA00CEF624 /* JMPlayer.mm */; };
 		65BFF25515E0342000CEF624 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF25415E0342000CEF624 /* JavaVM.framework */; };
 		65BFF25715E0342700CEF624 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF25615E0342700CEF624 /* OpenGL.framework */; };
 		65BFF25915E0342F00CEF624 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF25815E0342F00CEF624 /* CoreVideo.framework */; };
@@ -42,7 +42,7 @@
 		65BFF24715E033FA00CEF624 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		65BFF24815E033FA00CEF624 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		65BFF24C15E033FA00CEF624 /* JMPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JMPlayer.h; sourceTree = "<group>"; };
-		65BFF24D15E033FA00CEF624 /* JMPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JMPlayer.m; sourceTree = "<group>"; };
+		65BFF24D15E033FA00CEF624 /* JMPlayer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = JMPlayer.mm; sourceTree = "<group>"; };
 		65BFF25415E0342000CEF624 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = System/Library/Frameworks/JavaVM.framework; sourceTree = SDKROOT; };
 		65BFF25615E0342700CEF624 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		65BFF25815E0342F00CEF624 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -67,6 +67,7 @@
 		85F6BEDA161396E20062F138 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		85F6BEDD161398850062F138 /* PlayerWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerWindow.h; sourceTree = "<group>"; };
 		85F6BEDE161398850062F138 /* PlayerWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerWindow.m; sourceTree = "<group>"; };
+		85FB5E1C164B07990066FFDC /* Protocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Protocols.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,7 +136,7 @@
 				65BFF25A15E0352100CEF624 /* MPlayerVideoRenderer.h */,
 				65BFF25B15E0352100CEF624 /* MPlayerVideoRenderer.m */,
 				65BFF24C15E033FA00CEF624 /* JMPlayer.h */,
-				65BFF24D15E033FA00CEF624 /* JMPlayer.m */,
+				65BFF24D15E033FA00CEF624 /* JMPlayer.mm */,
 			);
 			path = JMPlayer;
 			sourceTree = "<group>";
@@ -149,6 +150,7 @@
 				8523B5211625DCE8009807E3 /* ProgressSlider.m */,
 				854F9EB716271A26004F3704 /* VolumeSlider.h */,
 				854F9EB816271A26004F3704 /* VolumeSlider.m */,
+				85FB5E1C164B07990066FFDC /* Protocols.h */,
 			);
 			path = fullscreen;
 			sourceTree = "<group>";
@@ -244,7 +246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65BFF24E15E033FA00CEF624 /* JMPlayer.m in Sources */,
+				65BFF24E15E033FA00CEF624 /* JMPlayer.mm in Sources */,
 				65BFF25F15E0352100CEF624 /* MPlayerVideoRenderer.m in Sources */,
 				65BFF26715E0354C00CEF624 /* CocoaAdditions.m in Sources */,
 				65BFF26915E0354C00CEF624 /* Debug.m in Sources */,

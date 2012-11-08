@@ -23,5 +23,6 @@
 
 - (id)initWithFrame:(NSRect)frameRect ApplicationPath:(NSString*) appPath;
 - (void)setVolume:(CGFloat)volume;
+- (CGFloat)getVolume;
 
 @end

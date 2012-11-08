@@ -281,4 +281,20 @@
 	isFullscreen = aBool;
 }
 
+-(void) setVolume:(CGFloat)volume {
+    [fullscreenControls setVolume:volume];
+}
+
+-(void) setState:(int)state {
+    [fullscreenControls setState:state];
+}
+
+-(void) setMaxTime:(CGFloat)seconds {
+    [fullscreenControls setMaxTime:seconds];
+}
+
+-(void) setCurrentTime:(CGFloat)seconds {
+    [fullscreenControls setCurrentTime:seconds];
+}
+
 @end

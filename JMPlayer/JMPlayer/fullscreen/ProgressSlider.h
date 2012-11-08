@@ -27,7 +27,9 @@
 }
 
 - (id)initWithCenter:(CGPoint)center viewWidth:(CGFloat)viewWidth;
+- (CGFloat)getMaxTime;
 - (void)setMaxTime:(CGFloat)seconds;
+- (CGFloat)getCurrentTime;
 - (void)setCurrentTime:(CGFloat)seconds;
 - (void)setDelegate:(id<ProgressSliderProtocol>)del;
 - (void)dealloc;

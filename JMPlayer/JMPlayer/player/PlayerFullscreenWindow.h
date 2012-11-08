@@ -24,11 +24,12 @@
 
 #import <Cocoa/Cocoa.h>
 #import "PlayerWindow.h"
+#import "Protocols.h"
 
 @class FullscreenControls;
 @class JMPlayer;
 
-@interface PlayerFullscreenWindow : PlayerWindow {
+@interface PlayerFullscreenWindow : PlayerWindow <MusicPlayerProtocol> {
 
 	FullscreenControls *fullscreenControls;
 	
@@ -58,5 +59,11 @@
 - (void) mouseExitedFSWindow;
 - (void) mouseEnteredFCWindow;
 - (void) mouseExitedFCWindow;
+
+// MusicPlayerProtocol
+-(void) setVolume:(CGFloat)volume;
+-(void) setState:(int)state;
+-(void) setMaxTime:(CGFloat)seconds;
+-(void) setCurrentTime:(CGFloat)seconds;
 
 @end

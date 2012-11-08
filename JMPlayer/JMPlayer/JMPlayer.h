@@ -55,7 +55,17 @@ typedef NSUInteger MPEVideoScaleMode;
 enum {
     JMPlayer_addNotify       = 1,
     JMPlayer_dispose         = 2,
-    JMPlayer_toggleFS        = 3
+    JMPlayer_volumeChanged   = 3,
+    JMPlayer_timeInitialized = 4,
+    JMPlayer_progressChanged = 5,
+    JMPlayer_stateChanged    = 6,
+    JMPlayer_toggleFS        = 7
+};
+
+enum {
+    JMPlayer_statePlaying = 1,
+    JMPlayer_statePaused = 2,
+    JMPlayer_stateStopped = 3
 };
 
 @interface JMPlayer : NSOpenGLView <MPlayerVideoRenderereDelegateProtocol, AWTCocoaComponent, MusicPlayerClientProtocol>
@@ -158,6 +168,7 @@ enum {
 -(void)onPausePressed;
 -(void)onFastForwardPressed;
 -(void)onRewindPressed;
+-(void)onToggleFullscreenPressed;
 
 // === from AppController ===
 - (BOOL) animateInterface;
