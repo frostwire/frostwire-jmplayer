@@ -124,7 +124,6 @@
     controllerFrame.origin.x = point.x;
     controllerFrame.origin.y = point.y;
     [fullscreenControls setFrame:controllerFrame display:YES];
-	}
 }
 
 - (void) stopMouseTracking
