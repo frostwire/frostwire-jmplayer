@@ -19,7 +19,6 @@
 		65BFF26815E0354C00CEF624 /* Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 65BFF26415E0354C00CEF624 /* Debug.h */; };
 		65BFF26915E0354C00CEF624 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 65BFF26515E0354C00CEF624 /* Debug.m */; };
 		65BFF26F15E0397200CEF624 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF26E15E0397200CEF624 /* ExceptionHandling.framework */; };
-		65BFF27115E0397900CEF624 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BFF27015E0397900CEF624 /* libiconv.dylib */; };
 		8523B5221625DCE8009807E3 /* ProgressSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 8523B5201625DCE8009807E3 /* ProgressSlider.h */; };
 		8523B5231625DCE8009807E3 /* ProgressSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8523B5211625DCE8009807E3 /* ProgressSlider.m */; };
 		854DC6B616497A2F00F7FB1F /* JNIInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 854DC6B416497A2F00F7FB1F /* JNIInterface.h */; };
@@ -51,7 +50,6 @@
 		65BFF26415E0354C00CEF624 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
 		65BFF26515E0354C00CEF624 /* Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Debug.m; sourceTree = "<group>"; };
 		65BFF26E15E0397200CEF624 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
-		65BFF27015E0397900CEF624 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		8523B5201625DCE8009807E3 /* ProgressSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressSlider.h; sourceTree = "<group>"; };
 		8523B5211625DCE8009807E3 /* ProgressSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressSlider.m; sourceTree = "<group>"; };
 		854DC6B416497A2F00F7FB1F /* JNIInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIInterface.h; sourceTree = "<group>"; };
@@ -72,7 +70,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				85F6BEDB161396E30062F138 /* Carbon.framework in Frameworks */,
-				65BFF27115E0397900CEF624 /* libiconv.dylib in Frameworks */,
 				65BFF26F15E0397200CEF624 /* ExceptionHandling.framework in Frameworks */,
 				65BFF25915E0342F00CEF624 /* CoreVideo.framework in Frameworks */,
 				65BFF25715E0342700CEF624 /* OpenGL.framework in Frameworks */,
@@ -108,7 +105,6 @@
 				65BFF24715E033FA00CEF624 /* CoreData.framework */,
 				65BFF24815E033FA00CEF624 /* Foundation.framework */,
 				85F6BEDA161396E20062F138 /* Carbon.framework */,
-				65BFF27015E0397900CEF624 /* libiconv.dylib */,
 				65BFF26E15E0397200CEF624 /* ExceptionHandling.framework */,
 				65BFF25815E0342F00CEF624 /* CoreVideo.framework */,
 				65BFF25615E0342700CEF624 /* OpenGL.framework */,
