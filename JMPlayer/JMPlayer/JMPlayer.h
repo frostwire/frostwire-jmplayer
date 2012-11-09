@@ -24,7 +24,6 @@
 #import "MPlayerVideoRenderer.h"
 #import "PlayerFullscreenWindow.h"
 #import "ProgressSlider.h"
-#import "FullscreenControls.h"
 
 #import "Debug.h"
 
@@ -49,9 +48,6 @@ enum {
 };
 typedef NSUInteger MPEVideoScaleMode;
 
-
-@class FullscreenControls;
-
 enum {
     JMPlayer_addNotify       = 1,
     JMPlayer_dispose         = 2,
@@ -71,7 +67,6 @@ enum {
 @interface JMPlayer : NSOpenGLView <MPlayerVideoRenderereDelegateProtocol, AWTCocoaComponent, MusicPlayerClientProtocol>
 {
     jobject jowner;
-    //JNIInterface* jniInterface;
     
     MPlayerVideoRenderer *renderer;
     
@@ -112,13 +107,8 @@ enum {
 	unsigned int runningAnimations;
     
     IBOutlet PlayerFullscreenWindow* fullscreenWindow;
-   	//IBOutlet NSWindow *fcControlWindow;
-    NSWindow* playerWindow;
+   	NSWindow* playerWindow;
     NSView* playerSuperView;
-    
-    // === PlayerController ===
-    // Fullscreen controls
-	IBOutlet FullscreenControls *fullScreenControls;
 }
 
 @property (nonatomic, retain) id<MusicPlayerProtocol> player;
@@ -132,33 +122,16 @@ enum {
 - (void) toggleFullscreen;
 - (void) finishToggleFullscreen;
 
-// Helper methods
-- (void) setFrame:(NSRect)frame onWindow:(NSWindow *)window blocking:(BOOL)blocking;
-
-// Main Thread methods
+- (void) setFrame:(NSRect)frame onWindow:(NSWindow *)window;
 - (NSString *)bufferName;
-
 - (BOOL) isFullscreen;
-//- (void) blackScreensExcept:(int)fullscreenId;
-//- (void) unblackScreens;
 
-// new:
 - (NSRect) videoFrame;
 - (void) reshape;
-- (void) resizeView;
-- (void) reshapeAndResize;
 - (void) close;
 - (void) finishClosing;
-- (void) setWindowSizeMode:(int)mode withValue:(float)val;
-- (void) setOntop:(BOOL)ontop;
-
 - (void) updateOntop;
-
-// new:
-- (void) setAspectRatio:(float)aspect;
-//- (void) setAspectRatioFromPreferences;
-- (void) setVideoScaleMode:(MPEVideoScaleMode)scaleMode;
-
+- (void) startRenderingWithSize:(NSValue *)sizeValue;
 - (void) fullscreenWindowMoved:(NSNotification *)notification;
 
 // --- MusicPlayerClientProtocol ---
@@ -169,11 +142,4 @@ enum {
 -(void)onFastForwardPressed;
 -(void)onRewindPressed;
 -(void)onToggleFullscreenPressed;
-
-// === from AppController ===
-- (BOOL) animateInterface;
-
-// === from PlayerController ===
-- (void) syncWindows:(BOOL)switchingToFullscreen;
-
 @end

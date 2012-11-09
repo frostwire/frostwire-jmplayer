@@ -23,16 +23,16 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import "PlayerWindow.h"
 #import "Protocols.h"
 
 @class FullscreenControls;
 @class JMPlayer;
 
-@interface PlayerFullscreenWindow : PlayerWindow <MusicPlayerProtocol> {
+@interface PlayerFullscreenWindow : NSWindow <MusicPlayerProtocol> {
 
 	FullscreenControls *fullscreenControls;
-	
+	JMPlayer *player;
+    
 	BOOL isFullscreen;
 	BOOL mouseInWindow;
 	BOOL mouseOverControls;

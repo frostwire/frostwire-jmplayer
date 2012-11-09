@@ -31,8 +31,6 @@
 		85C6CA0216123C1B00509B38 /* PlayerFullscreenWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C6C9F616123C1B00509B38 /* PlayerFullscreenWindow.h */; };
 		85C6CA0316123C1B00509B38 /* PlayerFullscreenWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6C9F716123C1B00509B38 /* PlayerFullscreenWindow.m */; };
 		85F6BEDB161396E30062F138 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85F6BEDA161396E20062F138 /* Carbon.framework */; };
-		85F6BEDF161398850062F138 /* PlayerWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F6BEDD161398850062F138 /* PlayerWindow.h */; };
-		85F6BEE0161398850062F138 /* PlayerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F6BEDE161398850062F138 /* PlayerWindow.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,8 +63,6 @@
 		85C6C9F616123C1B00509B38 /* PlayerFullscreenWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerFullscreenWindow.h; sourceTree = "<group>"; };
 		85C6C9F716123C1B00509B38 /* PlayerFullscreenWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerFullscreenWindow.m; sourceTree = "<group>"; };
 		85F6BEDA161396E20062F138 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		85F6BEDD161398850062F138 /* PlayerWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerWindow.h; sourceTree = "<group>"; };
-		85F6BEDE161398850062F138 /* PlayerWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerWindow.m; sourceTree = "<group>"; };
 		85FB5E1C164B07990066FFDC /* Protocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Protocols.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,8 +154,6 @@
 		85C6C9F516123C1B00509B38 /* player */ = {
 			isa = PBXGroup;
 			children = (
-				85F6BEDD161398850062F138 /* PlayerWindow.h */,
-				85F6BEDE161398850062F138 /* PlayerWindow.m */,
 				85C6C9F616123C1B00509B38 /* PlayerFullscreenWindow.h */,
 				85C6C9F716123C1B00509B38 /* PlayerFullscreenWindow.m */,
 			);
@@ -178,7 +172,6 @@
 				65BFF26815E0354C00CEF624 /* Debug.h in Headers */,
 				85C6C9FA16123C1B00509B38 /* FullscreenControls.h in Headers */,
 				85C6CA0216123C1B00509B38 /* PlayerFullscreenWindow.h in Headers */,
-				85F6BEDF161398850062F138 /* PlayerWindow.h in Headers */,
 				8523B5221625DCE8009807E3 /* ProgressSlider.h in Headers */,
 				854F9EB916271A26004F3704 /* VolumeSlider.h in Headers */,
 				854DC6B616497A2F00F7FB1F /* JNIInterface.h in Headers */,
@@ -252,7 +245,6 @@
 				65BFF26915E0354C00CEF624 /* Debug.m in Sources */,
 				85C6C9FB16123C1B00509B38 /* FullscreenControls.m in Sources */,
 				85C6CA0316123C1B00509B38 /* PlayerFullscreenWindow.m in Sources */,
-				85F6BEE0161398850062F138 /* PlayerWindow.m in Sources */,
 				8523B5231625DCE8009807E3 /* ProgressSlider.m in Sources */,
 				854F9EBA16271A26004F3704 /* VolumeSlider.m in Sources */,
 				854DC6B716497A2F00F7FB1F /* JNIInterface.mm in Sources */,
