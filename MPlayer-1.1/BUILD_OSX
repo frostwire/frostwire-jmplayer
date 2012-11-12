@@ -1,4 +1,4 @@
-!# /bin/bash
+#! /bin/bash
 ./configure --disable-iconv
 make
-cp mplayer ../../frostwire-desktop/lib/native/fwplayer
+cp mplayer ../../frostwire-desktop/lib/native/fwplayer_osx
