@@ -59,7 +59,7 @@ enum {
 enum {
     JMPlayer_statePlaying = 1,
     JMPlayer_statePaused = 2,
-    JMPlayer_stateStopped = 3
+    JMPlayer_stateClosed = 3
 };
 
 @interface JMPlayer : NSOpenGLView <MPlayerVideoRenderereDelegateProtocol, AWTCocoaComponent, MusicPlayerClientProtocol>

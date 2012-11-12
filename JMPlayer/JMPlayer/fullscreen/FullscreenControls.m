@@ -378,9 +378,11 @@
         case JMPlayer_statePaused:
             [pauseButton removeFromSuperview];
             [[self contentView] addSubview:playButton];
-        case JMPlayer_stateStopped:
+            break;
+        case JMPlayer_stateClosed:
             [pauseButton removeFromSuperview];
             [[self contentView] addSubview:playButton];
+            break;
         default:
             break;
     }
