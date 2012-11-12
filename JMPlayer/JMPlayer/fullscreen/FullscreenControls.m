@@ -38,7 +38,9 @@
 - (void)onRewindButtonPressed;
 - (void)onFullScreenButtonPressed;
 
-- (void)onProgressSliderValueChanged:(CGFloat) seconds;
+- (void)onProgressSliderValueChanged:(float) seconds;
+- (void)onProgressSliderStarted;
+- (void)onProgressSliderEnded;
 - (void)onVolumeSliderVolumeChange:(CGFloat) volume;
 
 @end
@@ -293,94 +295,6 @@
 	}
 }
 
-/*
-- (void) interface:(MPlayerInterface *)mi hasChangedStateTo:(NSNumber *)statenumber fromState:(NSNumber *)oldstatenumber
-{	
-	MIState state = [statenumber unsignedIntValue];
-	unsigned int stateMask = (1<<state);
-	MIState oldState = [oldstatenumber unsignedIntValue];
-	unsigned int oldStateMask = (1<<oldState);
-	
-	// First play after startup
-	if (state == MIStatePlaying && (oldStateMask & MIStateStartupMask)) {
-		[fcAudioCycleButton setEnabled:([[playerController playingItem] audioStreamCount] > 1)];
-		[fcSubtitleCycleButton setEnabled:([[playerController playingItem] subtitleCountForType:SubtitleTypeAll] > 0)];
-	}
-	
-	// Change of Play/Pause state
-	if (!!(stateMask & MIStatePPPlayingMask) != !!(oldStateMask & MIStatePPPlayingMask)) {
-		// Playing
-		if (stateMask & MIStatePPPlayingMask) {
-			// Update interface
-			[fcPlayButton setImage:fcPauseImageOff];
-			[fcPlayButton setAlternateImage:fcPauseImageOn];
-		// Pausing
-		} else {
-			// Update interface
-			[fcPlayButton setImage:fcPlayImageOff];
-			[fcPlayButton setAlternateImage:fcPlayImageOn];			
-		}
-	}
-	
-	// Change of Running/Stopped state
-	if (!!(stateMask & MIStateStoppedMask) != !!(oldStateMask & MIStateStoppedMask)) {
-		// Stopped
-		if (stateMask & MIStateStoppedMask) {
-			// Update interface
-			[fcTimeTextField setTimestamptWithCurrentTime:0 andTotalTime:0];
-			[fcFullscreenButton setEnabled:NO];
-			// Disable stream buttons
-			[fcAudioCycleButton setEnabled:NO];
-			[fcSubtitleCycleButton setEnabled:NO];
-		// Running
-		} else {
-			// Update interface
-			[fcFullscreenButton setEnabled:YES];
-		}
-	}
-	
-	// Update progress bar
-	if (stateMask & MIStateStoppedMask && !(oldStateMask & MIStateStoppedMask)) {
-		// Reset progress bar
-		[fcScrubbingBar setScrubStyle:MPEScrubbingBarEmptyStyle];
-		[fcScrubbingBar setDoubleValue:0];
-		[fcScrubbingBar setIndeterminate:NO];
-	} else if (stateMask & MIStateIntermediateMask && !(oldStateMask & MIStateIntermediateMask)) {
-		// Intermediate progress bar
-		[fcScrubbingBar setScrubStyle:MPEScrubbingBarProgressStyle];
-		[fcScrubbingBar setIndeterminate:YES];
-	} else if (stateMask & MIStatePositionMask && !(oldStateMask & MIStatePositionMask)) {
-		// Progress bar
-		if ([[playerController playingItem] length] > 0) {
-			[fcScrubbingBar setMaxValue: [[playerController playingItem] length]];
-			[fcScrubbingBar setScrubStyle:MPEScrubbingBarPositionStyle];
-		} else {
-			[fcScrubbingBar setScrubStyle:MPEScrubbingBarProgressStyle];
-			[fcScrubbingBar setMaxValue:100];
-			[fcScrubbingBar setIndeterminate:NO];
-		}
-	}
-}
-
-- (void) interface:(MPlayerInterface *)mi volumeUpdate:(NSNumber *)volume isMuted:(NSNumber *)muted
-{
-	[fcVolumeSlider setFloatValue:[volume floatValue]];
-}
-
-- (void) interface:(MPlayerInterface *)mi timeUpdate:(NSNumber *)newTime
-{
-	float seconds = [newTime floatValue];
-	
-	if ([[playerController playingItem] length] > 0)
-		[fcScrubbingBar setDoubleValue:seconds];
-	else
-		[fcScrubbingBar setDoubleValue:0];
-	
-	[fcTimeTextField setTimestamptWithCurrentTime:seconds andTotalTime:[[playerController movieInfo] length]];
-}
-*/
-
-
 - (void) dealloc
 {
     [pauseButtonImage release];
@@ -407,8 +321,16 @@
     [delegate onVolumeChanged:volume];
 }
 
-- (void)onProgressSliderValueChanged:(CGFloat) seconds {
+- (void)onProgressSliderValueChanged:(float) seconds {
     [delegate onSeekToTime:seconds];
+}
+
+- (void)onProgressSliderStarted {
+    [delegate onProgressSliderStarted];
+}
+
+- (void)onProgressSliderEnded {
+    [delegate onProgressSliderEnded];
 }
 
 - (void) onPlayButtonPressed

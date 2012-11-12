@@ -19,8 +19,6 @@
 //include for shared memory
 #include <sys/mman.h>
 
-//#include "JNIInterface.h"
-
 #import "MPlayerVideoRenderer.h"
 #import "PlayerFullscreenWindow.h"
 #import "ProgressSlider.h"
@@ -136,10 +134,12 @@ enum {
 
 // --- MusicPlayerClientProtocol ---
 -(void)onVolumeChanged:(CGFloat)volume;
--(void)onSeekToTime:(CGFloat)seconds;
+-(void)onSeekToTime:(float)seconds;
 -(void)onPlayPressed;
 -(void)onPausePressed;
 -(void)onFastForwardPressed;
 -(void)onRewindPressed;
 -(void)onToggleFullscreenPressed;
+-(void)onProgressSliderStarted;
+-(void)onProgressSliderEnded;
 @end

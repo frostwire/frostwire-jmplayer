@@ -23,14 +23,10 @@
  */
 
 #import <Cocoa/Cocoa.h>
-//#import "PlayerController.h"
-
-//#import "MPlayerInterface.h"
 #import "PlayerFullscreenWindow.h"
 #import "ProgressSlider.h"
 #import "VolumeSlider.h"
 #import "Protocols.h"
-
 
 @class TimestampTextField;
 
@@ -38,13 +34,6 @@
 @interface FullscreenControls : NSWindow <MusicPlayerProtocol, ProgressSliderProtocol, VolumeSliderProtocol> {
 	
 	PlayerFullscreenWindow *fcWindow;
-	//IBOutlet NSButton *fcPlayButton;
-    //IBOutlet id fcVolumeSlider;
-	//IBOutlet id fcScrubbingBar;
-	//IBOutlet TimestampTextField *fcTimeTextField;
-	//IBOutlet id fcAudioCycleButton;
-	//IBOutlet id fcSubtitleCycleButton;
-	//IBOutlet id fcFullscreenButton;
 	
 	NSImage *pauseButtonImage;
 	NSImage *playButtonImage;
@@ -59,13 +48,10 @@
 	NSPoint dragStartPoint;
 	
 	NSViewAnimation *animation;
-	//BOOL isOpen;
-	//BOOL beingDragged;
-    
+
     NSBundle* resourceBundle;
 	
     JMPlayer* jm_player;
-	//IBOutlet PlayerController *playerController;
 }
 
 @property (nonatomic, retain) id<MusicPlayerClientProtocol> delegate;

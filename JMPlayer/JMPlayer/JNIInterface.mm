@@ -7,6 +7,7 @@
 //
 
 #include "JNIInterface.h"
+#import <AppKit/AppKit.h>
 
 jint GetJNIEnv(JavaVM* jvm, JNIEnv **env, bool *mustDetach);
 
@@ -99,7 +100,21 @@ bool JNIInterface::Initialize(JNIEnv *env, jobject owner)
         printf("ERROR: JNIInterface::Initialize() unable to get method id for onToggleFullscreenPressed");
         return false;
     }
-        
+    
+    progressSliderStartedID = env->GetMethodID(cls, "onProgressSliderStarted", "()V");
+    if(progressSliderStartedID == 0 )
+    {
+        printf("ERROR: JNIInterface::Initialize() unable to get method id for onProgressSliderStarted");
+        return false;
+    }
+   
+    progressSliderEndedID = env->GetMethodID(cls, "onProgressSliderEnded", "()V");
+    if(progressSliderEndedID == 0 )
+    {
+        printf("ERROR: JNIInterface::Initialize() unable to get method id for onProgressSliderEnded");
+        return false;
+    }
+
     initialized = true;
     return true;
 }
@@ -190,6 +205,19 @@ void JNIInterface::OnToggleFullscreenPressed()
     }
 }
 
+void JNIInterface::OnProgressSliderStarted()
+{
+    if (initialized) {
+        env->CallVoidMethod(owner, progressSliderStartedID);
+    }
+}
+
+void JNIInterface::OnProgressSliderEnded()
+{
+    if (initialized) {
+        env->CallVoidMethod(owner, progressSliderEndedID);
+    }
+}
 
 jint GetJNIEnv(JavaVM* jvm, JNIEnv **env, bool *mustDetach) {
     jint getEnvErr = JNI_OK;
