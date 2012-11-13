@@ -20,5 +20,5 @@ help_mp.h
 mencoder
 mplayer
 version.h
-
+*.swp
 *.d
