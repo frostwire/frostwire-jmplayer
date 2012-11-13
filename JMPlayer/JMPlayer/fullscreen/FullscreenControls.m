@@ -83,9 +83,7 @@
                                       defer:NO]) ) {
         // Prepare window transparency
         [self setBackgroundColor: [NSColor clearColor]];
-        //[self setAlphaValue:0.0];
         [self setOpaque:NO];
-        
         [self setIgnoresMouseEvents:FALSE];
         
         // Enable shadow
@@ -213,33 +211,6 @@
     [button setBordered:NO];
 
     return button;
-}
-
-
-- (void)mouseDragged:(NSEvent *)theEvent
-{
-	NSPoint currentDragPoint;
-	NSPoint newOrigin;
-	
-    currentDragPoint = [self convertBaseToScreen:[self mouseLocationOutsideOfEventStream]];
-    newOrigin.x = currentDragPoint.x - dragStartPoint.x;
-    newOrigin.y = currentDragPoint.y - dragStartPoint.y;
-    
-    [self setFrameOrigin:newOrigin];
-}
-
-- (void)mouseDown:(NSEvent *)theEvent
-{    
-    NSRect windowFrame = [self frame];
-	dragStartPoint = [self convertBaseToScreen:[theEvent locationInWindow]];
-	dragStartPoint.x -= windowFrame.origin.x;
-	dragStartPoint.y -= windowFrame.origin.y;
-	beingDragged = YES;
-}
-
-- (void)mouseUp:(NSEvent *)theEvent
-{
-	beingDragged = NO;
 }
 
 - (void)show
