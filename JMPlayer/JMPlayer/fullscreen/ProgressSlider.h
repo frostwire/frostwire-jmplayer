@@ -7,14 +7,17 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "StartEndSliderCell.h"
 
 @protocol ProgressSliderProtocol <NSObject>
 
-- (void) onProgressSliderValueChanged:(int) seconds;
+- (void) onProgressSliderValueChanged:(float) seconds;
+- (void) onProgressSliderStarted;
+- (void) onProgressSliderEnded;
 
 @end
 
-@interface ProgressSlider : NSView
+@interface ProgressSlider : NSView <StartEndSliderProtocol>
 {
     CGFloat maxTime;
     CGFloat currentTime;
@@ -33,5 +36,8 @@
 - (void)setCurrentTime:(CGFloat)seconds;
 - (void)setDelegate:(id<ProgressSliderProtocol>)del;
 - (void)dealloc;
+
+- (void) onStartEndSliderStarted;
+- (void) onStartEndSliderEnded;
 
 @end

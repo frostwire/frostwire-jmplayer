@@ -33,6 +33,8 @@ public:
     void OnFastForwardPressed();
     void OnRewindPressed();
     void OnToggleFullscreenPressed();
+    void OnProgressSliderStarted();
+    void OnProgressSliderEnded();
     
 private:
     JNIInterface();
@@ -53,6 +55,8 @@ private:
     jmethodID fastForwardPressedID;
     jmethodID rewindPressedID;
     jmethodID toggleFullscreenPressedID;
+    jmethodID progressSliderStartedID;
+    jmethodID progressSliderEndedID;
 };
 
 #endif /* defined(__JMPlayer__JNIInterface__) */

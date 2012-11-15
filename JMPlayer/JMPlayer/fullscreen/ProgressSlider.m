@@ -47,10 +47,13 @@
         
         // create / position slider
         NSRect sliderFrame = NSMakeRect(xPos, 0.0, sliderWidth, sliderHeight);
+        [NSSlider setCellClass:[StartEndSliderCell class]];
         slider = [[NSSlider alloc] initWithFrame:sliderFrame];
+        [NSSlider setCellClass:[NSSliderCell class]];
         [slider setContinuous:TRUE];
         [slider setTarget:self];
         [slider setAction:@selector(onSliderValueChange)];
+        [slider.cell setStartEndDelegate:self];
         [self addSubview:slider];
         xPos += sliderWidth;
         
@@ -100,8 +103,7 @@
 
 - (void) onSliderValueChange {
 
-    int seconds = [slider floatValue] * maxTime;
-    
+    float seconds = [slider floatValue] * maxTime;
     [self setCurrentTime: seconds];
 
     if (delegate) {
@@ -110,6 +112,18 @@
     
 }
 
+
+- (void) onStartEndSliderStarted {
+    if (delegate) {
+        [delegate onProgressSliderStarted];
+    }
+}
+
+- (void) onStartEndSliderEnded {
+    if (delegate) {
+        [delegate onProgressSliderEnded];
+    }
+}
 
 - (NSTextField*) createTimeTextFieldWithSize: (NSSize) size AlignLeft:(BOOL) alignLeft {
     

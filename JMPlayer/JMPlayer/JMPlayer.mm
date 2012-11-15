@@ -347,7 +347,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
     JNIInterface::GetInstance().OnVolumeChanged(volume);
 }
 
--(void)onSeekToTime:(CGFloat)seconds {
+-(void)onSeekToTime:(float)seconds {
     JNIInterface::GetInstance().OnSeekToTime(seconds);
 }
 
@@ -369,6 +369,14 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
 -(void)onToggleFullscreenPressed {
     JNIInterface::GetInstance().OnToggleFullscreenPressed();
+}
+
+-(void)onProgressSliderStarted {
+    JNIInterface::GetInstance().OnProgressSliderStarted();
+}
+
+-(void)onProgressSliderEnded {
+    JNIInterface::GetInstance().OnProgressSliderEnded();
 }
 
 @end

@@ -19,8 +19,6 @@
 //include for shared memory
 #include <sys/mman.h>
 
-//#include "JNIInterface.h"
-
 #import "MPlayerVideoRenderer.h"
 #import "PlayerFullscreenWindow.h"
 #import "ProgressSlider.h"
@@ -61,7 +59,7 @@ enum {
 enum {
     JMPlayer_statePlaying = 1,
     JMPlayer_statePaused = 2,
-    JMPlayer_stateStopped = 3
+    JMPlayer_stateClosed = 3
 };
 
 @interface JMPlayer : NSOpenGLView <MPlayerVideoRenderereDelegateProtocol, AWTCocoaComponent, MusicPlayerClientProtocol>
@@ -136,10 +134,12 @@ enum {
 
 // --- MusicPlayerClientProtocol ---
 -(void)onVolumeChanged:(CGFloat)volume;
--(void)onSeekToTime:(CGFloat)seconds;
+-(void)onSeekToTime:(float)seconds;
 -(void)onPlayPressed;
 -(void)onPausePressed;
 -(void)onFastForwardPressed;
 -(void)onRewindPressed;
 -(void)onToggleFullscreenPressed;
+-(void)onProgressSliderStarted;
+-(void)onProgressSliderEnded;
 @end

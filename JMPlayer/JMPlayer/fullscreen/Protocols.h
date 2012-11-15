@@ -9,12 +9,14 @@
 @protocol MusicPlayerClientProtocol <NSObject>
 
 -(void)onVolumeChanged:(CGFloat)volume;
--(void)onSeekToTime:(CGFloat)seconds;
+-(void)onSeekToTime:(float)seconds;
 -(void)onPlayPressed;
 -(void)onPausePressed;
 -(void)onFastForwardPressed;
 -(void)onRewindPressed;
 -(void)onToggleFullscreenPressed;
+-(void)onProgressSliderStarted;
+-(void)onProgressSliderEnded;
 
 @end
 
