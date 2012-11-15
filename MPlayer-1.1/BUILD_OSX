@@ -486,6 +486,12 @@
     --disable-encoder=libaacplus \
 
 make
+echo Before Stripping
+ls -lh mplayer
 strip mplayer
+echo After Stripping, Before UPX
+ls -lh mplayer
 upx mplayer
+echo After UPX
+ls -lh mplayer
 cp mplayer ../../frostwire-desktop/lib/native/fwplayer_osx
