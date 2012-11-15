@@ -38,6 +38,5 @@ def gen_decoders():
         for item in found_decoders:
             print item
 
-
-
-
+if __name__=='__main__':
+    gen_decoders()
