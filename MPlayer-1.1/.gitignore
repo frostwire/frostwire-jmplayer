@@ -22,3 +22,4 @@ mplayer
 version.h
 *.swp
 *.d
+*.pyc
