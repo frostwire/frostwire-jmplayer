@@ -1,4 +1,5 @@
 # MPlayer-1.1 build ignore files
+DOCS/HTML/
 DOCS/xml/en/main.xml
 DOCS/xml/html-chunk.xsl
 DOCS/xml/html-single.xsl
