@@ -188,7 +188,6 @@
     --disable-decoder=zerocodec \
     --disable-decoder=zlib \
     --disable-decoder=zmbv \
-    --disable-decoder=aac \
     --disable-decoder=aac_latm \
     --disable-decoder=alac \
     --disable-decoder=als \
@@ -340,6 +339,7 @@
     --enable-decoder=vp6 \
     --enable-decoder=wmv1 \
     --enable-decoder=wmv2 \
+    --enable-decoder=aac \
     --enable-decoder=ac3 \
     --enable-decoder=flac \
     --enable-decoder=mp2 \
