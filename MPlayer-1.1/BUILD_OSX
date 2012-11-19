@@ -69,7 +69,6 @@
     --disable-decoder=frwu \
     --disable-decoder=gif \
     --disable-decoder=h261 \
-    --disable-decoder=h264 \
     --disable-decoder=h264_crystalhd \
     --disable-decoder=h264_vdpau \
     --disable-decoder=huffyuv \
@@ -141,8 +140,6 @@
     --disable-decoder=snow \
     --disable-decoder=sp5x \
     --disable-decoder=sunrast \
-    --disable-decoder=svq1 \
-    --disable-decoder=svq3 \
     --disable-decoder=targa \
     --disable-decoder=theora \
     --disable-decoder=thp \
@@ -171,7 +168,6 @@
     --disable-decoder=vmnc \
     --disable-decoder=vp3 \
     --disable-decoder=vp5 \
-    --disable-decoder=vp6 \
     --disable-decoder=vp6a \
     --disable-decoder=vp6f \
     --disable-decoder=vp8 \
@@ -335,9 +331,13 @@
     --enable-decoder=flv \
     --enable-decoder=h263 \
     --enable-decoder=h263i \
+    --enable-decoder=h264 \
     --enable-decoder=mpeg1video \
     --enable-decoder=mpeg2video \
     --enable-decoder=mpeg4 \
+    --enable-decoder=svq1 \
+    --enable-decoder=svq3 \
+    --enable-decoder=vp6 \
     --enable-decoder=wmv1 \
     --enable-decoder=wmv2 \
     --enable-decoder=ac3 \
@@ -484,6 +484,9 @@
     --disable-encoder=libxavs \
     --disable-encoder=libxvid \
     --disable-encoder=libaacplus \
+\
+\
+
 
 make
 echo Before Stripping
