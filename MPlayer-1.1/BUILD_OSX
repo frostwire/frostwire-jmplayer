@@ -283,7 +283,6 @@
     --disable-decoder=adpcm_ea_r3 \
     --disable-decoder=adpcm_ea_xas \
     --disable-decoder=adpcm_g722 \
-    --disable-decoder=adpcm_g726 \
     --disable-decoder=adpcm_ima_amv \
     --disable-decoder=adpcm_ima_apc \
     --disable-decoder=adpcm_ima_dk3 \
@@ -346,6 +345,7 @@
     --enable-decoder=vorbis \
     --enable-decoder=wmav1 \
     --enable-decoder=wmav2 \
+    --enable-decoder=adpcm_g726 \
     --disable-encoder=a64multi \
     --disable-encoder=a64multi5 \
     --disable-encoder=amv \
