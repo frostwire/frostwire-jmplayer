@@ -37,6 +37,8 @@ public:
     
     // JNI callback methods    
     void OnVolumeChanged(float volume);
+    void OnIncrementVolumePressed();
+    void OnDecrementVolumePressed();
     void OnSeekToTime(float seconds);
     void OnPlayPressed();
     void OnPausePressed();
@@ -59,6 +61,8 @@ private:
     jobject owner;
     jclass  cls;
     jmethodID changeVolumeID;
+    jmethodID volumeIncrementID;
+    jmethodID volumeDecrementID;
     jmethodID seekToTimeID;
     jmethodID playPressedID;
     jmethodID pausePressedID;

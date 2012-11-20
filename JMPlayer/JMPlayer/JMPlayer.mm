@@ -32,7 +32,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
 @implementation JMPlayer
 
-@synthesize appPath, progressSlider;
+@synthesize appPath, progressSlider, playerState;
 
 - (id) initWithFrame: (jobject) owner frame:(NSRect) frame applicationPath:(NSString*) applicationPath
 {
@@ -63,7 +63,8 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
             [fullscreenWindow setCurrentTime:(float)JNIInterface::GetInstance().getJNIFloatValue(message)];
             break;
         case JMPlayer_stateChanged:
-            [fullscreenWindow setState:(int)JNIInterface::GetInstance().getJNIIntValue(message)];
+            [self setPlayerState:JNIInterface::GetInstance().getJNIIntValue(message)];
+            [fullscreenWindow setState:[self playerState]];
             break;
         case JMPlayer_timeInitialized:
             [fullscreenWindow setMaxTime:(float)JNIInterface::GetInstance().getJNIFloatValue(message)];
@@ -387,6 +388,14 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
 -(void)onProgressSliderEnded {
     JNIInterface::GetInstance().OnProgressSliderEnded();
+}
+
+-(void)onIncrementVolumePressed {
+    JNIInterface::GetInstance().OnIncrementVolumePressed();
+}
+
+-(void)onDecrementVolumePressed {
+    JNIInterface::GetInstance().OnDecrementVolumePressed();
 }
 
 @end

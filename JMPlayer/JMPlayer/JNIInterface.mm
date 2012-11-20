@@ -68,6 +68,20 @@ bool JNIInterface::Initialize(JNIEnv *env, jobject owner)
         printf("ERROR: JNIInterface::Initialize() unable to get method id for onVolumeChanged");
         return false;
     }
+    
+    volumeIncrementID = env->GetMethodID(cls, "onIncrementVolumePressed", "()V");
+    if(volumeIncrementID == 0 )
+    {
+        printf("ERROR: JNIInterface::Initialize() unable to get method id for onIncrementVolumePressed");
+        return false;
+    }
+    
+    volumeDecrementID = env->GetMethodID(cls, "onDecrementVolumePressed", "()V");
+    if(volumeDecrementID == 0 )
+    {
+        printf("ERROR: JNIInterface::Initialize() unable to get method id for onDecrementVolumePressed");
+        return false;
+    }
         
     seekToTimeID = env->GetMethodID(cls, "onSeekToTime", "(F)V");
     if(seekToTimeID == 0 )
@@ -163,13 +177,24 @@ float JNIInterface::getJNIFloatValue(jobject floatObject) {
     return f;
 }
 
-
-
-
 void JNIInterface::OnVolumeChanged(float volume)
 {
     if (initialized) {
         env->CallVoidMethod(owner, changeVolumeID, volume);
+    }
+}
+
+void JNIInterface::OnIncrementVolumePressed()
+{
+    if (initialized) {
+        env->CallVoidMethod(owner, volumeIncrementID);
+    }
+}
+
+void JNIInterface::OnDecrementVolumePressed()
+{
+    if (initialized) {
+        env->CallVoidMethod(owner, volumeDecrementID);
     }
 }
 

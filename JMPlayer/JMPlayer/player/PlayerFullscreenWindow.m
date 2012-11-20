@@ -27,7 +27,7 @@
 #import "FullscreenControls.h"
 #import "JMPlayer.h"
 
-//#import "Preferences.h"
+#import <Carbon/Carbon.h>
 #import "Debug.h"
 
 #define INITIAL_FC_X_POS		0.5
@@ -62,16 +62,40 @@
 	return YES;
 }
 
-- (void)cancelOperation:(id)sender
-{
-	// handle escape and command-.
-	if ([player isFullscreen])
-		[player toggleFullscreen];
-}
-
 - (void)keyDown:(NSEvent *)theEvent
 {
-	[super keyDown:theEvent];
+	switch (theEvent.keyCode) {
+        case kVK_Space:
+        case kVK_ANSI_P:
+            if([player playerState] == JMPlayer_statePlaying) {
+                [player onPausePressed];
+            } else if ( [player playerState] == JMPlayer_statePaused) {
+                [player onPlayPressed];
+            }
+            break;
+        case kVK_ANSI_F:
+        case kVK_Escape:
+            [player toggleFullscreen];
+            break;
+        case kVK_ANSI_Period:
+        case kVK_RightArrow:
+            [player onFastForwardPressed];
+            break;
+        case kVK_ANSI_Comma:
+        case kVK_LeftArrow:
+            [player onRewindPressed];
+            break;
+        case kVK_UpArrow:
+        case kVK_ANSI_KeypadPlus:
+            [player onIncrementVolumePressed];
+            break;
+        case kVK_DownArrow:
+        case kVK_ANSI_Minus:
+            [player onDecrementVolumePressed];
+            break;
+        default:
+            break;
+    }
 }
 
 - (void) startMouseTracking

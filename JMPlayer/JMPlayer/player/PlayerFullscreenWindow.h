@@ -40,6 +40,8 @@
 	NSTrackingRectTag fsTrackTag, fcTrackTag;
 	NSTimer *osdTimer;
 	NSPoint lastMousePosition;
+    
+    int playerState;
 }
 
 -(id) initWithContentRect: (NSRect) contentRect 

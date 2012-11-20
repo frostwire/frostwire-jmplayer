@@ -119,9 +119,10 @@ enum {
     NSView* playerSuperView;
 }
 
-@property (nonatomic, retain) id<MusicPlayerProtocol> player;
-@property (nonatomic, retain) ProgressSlider* progressSlider;
-@property (nonatomic, retain) NSString* appPath;
+@property (nonatomic)           int playerState;
+@property (nonatomic, retain)   id<MusicPlayerProtocol> player;
+@property (nonatomic, retain)   ProgressSlider* progressSlider;
+@property (nonatomic, retain)   NSString* appPath;
 
 
 - (id) initWithFrame: (jobject) owner frame:(NSRect) frame applicationPath:(NSString*) applicationPath;
@@ -144,6 +145,8 @@ enum {
 
 // --- MusicPlayerClientProtocol ---
 -(void)onVolumeChanged:(CGFloat)volume;
+-(void)onIncrementVolumePressed;
+-(void)onDecrementVolumePressed;
 -(void)onSeekToTime:(float)seconds;
 -(void)onPlayPressed;
 -(void)onPausePressed;
