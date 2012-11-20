@@ -86,6 +86,7 @@
             [player onRewindPressed];
             break;
         case kVK_UpArrow:
+        case kVK_ANSI_Equal:
         case kVK_ANSI_KeypadPlus:
             [player onIncrementVolumePressed];
             break;
@@ -93,6 +94,10 @@
         case kVK_ANSI_Minus:
             [player onDecrementVolumePressed];
             break;
+        case kVK_Return:
+            if ( ([NSEvent modifierFlags] & NSControlKeyMask) == NSControlKeyMask ) {
+                [player toggleFullscreen];
+            }
         default:
             break;
     }
