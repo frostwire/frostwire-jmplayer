@@ -95,7 +95,8 @@
             [player onDecrementVolumePressed];
             break;
         case kVK_Return:
-            if ( ([NSEvent modifierFlags] & NSControlKeyMask) == NSControlKeyMask ) {
+            if ( (([NSEvent modifierFlags] & NSControlKeyMask) == NSControlKeyMask) ||
+                (([NSEvent modifierFlags] & NSCommandKeyMask) == NSCommandKeyMask)) {
                 [player toggleFullscreen];
             }
         default:
