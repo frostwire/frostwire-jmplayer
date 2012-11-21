@@ -1,5 +1,5 @@
 #! /bin/bash
-./configure --disable-iconv --disable-mencoder\
+./configure --disable-iconv --disable-mencoder --disable-x11 \
     \
     --disable-vidix --disable-vidix-pcidb --disable-matrixview --disable-xss \
     --disable-tga --disable-pnm --disable-md5sum --disable-yuv4mpeg \
