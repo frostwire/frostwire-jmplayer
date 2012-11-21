@@ -1,4 +1,4 @@
-VIDEO_DECODERS =['h263', 'h263i', 'h264', 'mpeg4', 'wmv1', 'wmv2', 'mpeg1video', 'mpeg2video', 'vp6', 'flv', 'svq1', 'svq3', 'xvid', 'x264']
+VIDEO_DECODERS =['h263', 'h263i', 'h264', 'mpeg4', 'wmv1', 'wmv2', 'mpeg1video', 'mpeg2video', 'vp6','vp6a','vp6f','vp8', 'flv', 'svq1', 'svq3', 'xvid', 'x264']
 AUDIO_DECODERS =['aac', 'mp3lame', 'mp3', 'ac3', 'flac', 'libfaac', 'adpcm_g726', 'vorbis', 'mp2', 'wmav1', 'wmav2']
 
 def gen_decoders():

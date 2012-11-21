@@ -15,7 +15,7 @@
     \
     --disable-tremor-internal --disable-win32dll \
     \
-    --disable-decoder=aasc \
+--disable-decoder=aasc \
     --disable-decoder=amv \
     --disable-decoder=anm \
     --disable-decoder=ansi \
@@ -168,9 +168,6 @@
     --disable-decoder=vmnc \
     --disable-decoder=vp3 \
     --disable-decoder=vp5 \
-    --disable-decoder=vp6a \
-    --disable-decoder=vp6f \
-    --disable-decoder=vp8 \
     --disable-decoder=vqa \
     --disable-decoder=wmv3 \
     --disable-decoder=wmv3_crystalhd \
@@ -335,6 +332,9 @@
     --enable-decoder=svq1 \
     --enable-decoder=svq3 \
     --enable-decoder=vp6 \
+    --enable-decoder=vp6a \
+    --enable-decoder=vp6f \
+    --enable-decoder=vp8 \
     --enable-decoder=wmv1 \
     --enable-decoder=wmv2 \
     --enable-decoder=aac \
@@ -484,9 +484,6 @@
     --disable-encoder=libxavs \
     --disable-encoder=libxvid \
     --disable-encoder=libaacplus \
-\
-\
-
 
 make
 echo Before Stripping
@@ -494,6 +491,7 @@ ls -lh mplayer
 strip mplayer
 echo After Stripping, Before UPX
 ls -lh mplayer
+cp mplayer mplayer.uncompressed
 upx mplayer
 echo After UPX
 ls -lh mplayer
