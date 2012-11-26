@@ -1,4 +1,14 @@
 #! /bin/bash
+#
+# The following ./configure flags should be the product of:
+# 1. ./configure
+# 2 all the codecs disabled past --disable-win32dll
+# will come out of THEN executing 'python gen_decoders.py'
+#
+# It's important to execute the python script only after
+# you've invoked ./configure one time, otherwise the gen_decoders.py
+# will not have the right .h to parse.
+#
 ./configure --disable-iconv --disable-mencoder --disable-x11 \
     \
     --disable-vidix --disable-vidix-pcidb --disable-matrixview --disable-xss \
