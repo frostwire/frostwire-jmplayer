@@ -73,7 +73,7 @@ ls -lh $MPLAYER_EXECUTABLE
 cp $MPLAYER_EXECUTABLE ../../frostwire-desktop/lib/native/$FWPLAYER_EXECUTABLE
 }
 
-#cleanConfigure
-#realConfigure
-#checkUPX
+cleanConfigure
+realConfigure
+checkUPX
 makeAll
