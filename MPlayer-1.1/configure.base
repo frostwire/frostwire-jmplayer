@@ -7,7 +7,7 @@
     --disable-alsa --disable-ossaudio --disable-arts --disable-esd \
     --disable-pulse --disable-jack --disable-openal --disable-nas \
     --disable-sgiaudio --disable-sunaudio --disable-kai --disable-dart \
-    --disable-win32waveout --disable-select \
+    --disable-select \
 	--extra-cflags="-Os" \
     --disable-tremor-internal --disable-win32dll \
     --enable-runtime-cpudetection \
@@ -28,5 +28,4 @@
     --disable-ass \
     --disable-crystalhd \
     --disable-fastmemcpy \
-    --enable-hardcoded-tables \
     --disable-sighandler \

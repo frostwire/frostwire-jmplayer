@@ -54,12 +54,14 @@ echo is windows? $isWINDOWS
 
 MPLAYER_EXECUTABLE=mplayer
 FWPLAYER_EXECUTABLE=fwplayer_osx
+UPX_PARAMETERS=
 
 if [ $isWINDOWS == 1 ]
 then
   echo "This is windows, appending .exe to executables"
   MPLAYER_EXECUTABLE=mplayer.exe
   FWPLAYER_EXECUTABLE=fwplayer.exe
+  UPX_PARAMETERS=--ultra-brute
 fi
 
 echo Before Stripping
@@ -71,7 +73,7 @@ cp $MPLAYER_EXECUTABLE $MPLAYER_EXECUTABLE.uncompressed
 
 #if your upx has not been compiled with LZMA the "--ultra-brute" flag will not work.
 #upx $MPLAYER_EXECUTABLE
-upx --ultra-brute $MPLAYER_EXECUTABLE
+upx $UPX_PARAMETERS $MPLAYER_EXECUTABLE
 
 echo After UPX
 ls -lh $MPLAYER_EXECUTABLE
