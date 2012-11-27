@@ -1,0 +1,18 @@
+#!/bin/bash
+./configure --disable-iconv --disable-mencoder --disable-x11 \
+    \
+    --disable-vidix --disable-vidix-pcidb --disable-matrixview --disable-xss \
+    --disable-tga --disable-pnm --disable-md5sum --disable-yuv4mpeg \
+    --disable-quartz \
+    \
+    --disable-vcd --disable-bluray --disable-dvdnav --disable-dvdread \
+    \
+    --disable-alsa --disable-ossaudio --disable-arts --disable-esd \
+    --disable-pulse --disable-jack --disable-openal --disable-nas \
+    --disable-sgiaudio --disable-sunaudio --disable-kai --disable-dart \
+    --disable-win32waveout --disable-select \
+    \
+    \
+	--extra-cflags="-Os" \
+    --disable-tremor-internal --disable-win32dll \
+    \
