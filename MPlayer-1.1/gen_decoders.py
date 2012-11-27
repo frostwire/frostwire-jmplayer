@@ -30,13 +30,15 @@ def gen_decoders():
         found_decoders = [item for item in VIDEO_DECODERS if item in decoders]
         found_decoders = found_decoders + [item for item in AUDIO_DECODERS if item in decoders]
 
-        print "  \n\n\n ************** \n  Missing decoders: \n **************\n"
-        for item in missing_decoders:
-            print item
+		# TODO: make gen_decoders(verbose=False) get this parameter from sys.argv.
+		# and uncomment this work if verbose == True.
+        #print "  \n\n\n ************** \n  Missing decoders: \n **************\n"
+        #for item in missing_decoders:
+        #    print item
 
-        print "  \n\n\n ************** \n  Found decoders: \n **************\n"
-        for item in found_decoders:
-            print item
+        #print "  \n\n\n ************** \n  Found decoders: \n **************\n"
+        #for item in found_decoders:
+        #    print item
 
 if __name__=='__main__':
     gen_decoders()
