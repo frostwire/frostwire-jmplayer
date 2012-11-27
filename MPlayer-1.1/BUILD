@@ -36,22 +36,28 @@ function checkUPX() {
 command -v upx >/dev/null 2>&1 || { echo >&2 "I require upx but it's not installed.  Aborting."; exit 1; }
 }
 
-#go!
-function makeAll() {
+function makeIt() {
 OLDPATH=$PATH
 #add yasm.exe to the path...
 PATH=$PATH:`pwd`
 make
 PATH=$OLDPATH
+}
+
+#go!
+function packIt() {
 
 #make final executable smaller and copy it to the frostwire-desktop/lib/native/ folder.
-isWINDOWS=`echo $C | awk '{print index($0,"MINGW32")}'`
+isWINDOWS=`uname -a | awk '{print index($0,"MINGW32")}'`
+
+echo is windows? $isWINDOWS
 
 MPLAYER_EXECUTABLE=mplayer
 FWPLAYER_EXECUTABLE=fwplayer_osx
 
 if [ $isWINDOWS == 1 ]
 then
+  echo "This is windows, appending .exe to executables"
   MPLAYER_EXECUTABLE=mplayer.exe
   FWPLAYER_EXECUTABLE=fwplayer.exe
 fi
@@ -76,4 +82,5 @@ cp $MPLAYER_EXECUTABLE ../../frostwire-desktop/lib/native/$FWPLAYER_EXECUTABLE
 cleanConfigure
 realConfigure
 checkUPX
-makeAll
+makeIt
+packIt
