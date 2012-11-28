@@ -9,7 +9,7 @@
     --disable-sgiaudio --disable-sunaudio --disable-kai --disable-dart \
     --disable-select \
 	--extra-cflags="-Os" \
-    --disable-tremor-internal --disable-win32dll \
+    --disable-tremor-internal \
     --enable-runtime-cpudetection \
     --disable-langinfo \
     --disable-vm --disable-xf86keysym --disable-radio-v4l2 --disable-radio-bsdbt848 --disable-tv --disable-tv-v4l1 \
@@ -18,7 +18,7 @@
     --disable-unrarexec \
     --disable-sortsub \
     --disable-enca --disable-maemo --disable-inet6 --disable-gethostbyname2 --disable-ftp --disable-vstream --disable-pthreads \
-    --disable-w32threads --disable-win32dll --disable-qtx  --disable-xanim --disable-real --disable-xvid --disable-xvid-lavc \
+    --disable-w32threads --disable-qtx  --disable-xanim --disable-real --disable-xvid --disable-xvid-lavc \
     --disable-x264 --disable-x264-lavc --disable-libdirac-lavc --disable-libschroedinger-lavc --disable-libvpx-lavc --disable-libnut \
     --disable-libavcodec_mpegaudio_hp \
     --disable-tremor-internal \
