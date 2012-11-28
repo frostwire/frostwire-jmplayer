@@ -61,7 +61,7 @@ then
   echo "This is windows, appending .exe to executables"
   MPLAYER_EXECUTABLE=mplayer.exe
   FWPLAYER_EXECUTABLE=fwplayer.exe
-  UPX_PARAMETERS=--ultra-brute
+#UPX_PARAMETERS=--ultra-brute
 fi
 
 echo Before Stripping
