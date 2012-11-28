@@ -13,7 +13,10 @@
 # - Use mingw, not cygwin. It seems the cygwin gcc compiler will add a cygwin1.dll dependency.
 # - We've included yasm.exe in this folder, mingw does not install yasm.exe
 # (See http://yasm.tortall.net/Download.html)
+# - DO NOT FORGET TO SIGN THE EXECUTABLE
+# signtool sign /a /n "FrostWire" /t http://timestamp.verisign.com/scripts/timstamp.dll /v c:\cygwin\home\username\frostwire-desktop\lib\native\fwplayer.exe
 #
+
 
 #clean up and create base configuration
 function cleanConfigure() {
