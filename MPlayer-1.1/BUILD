@@ -9,6 +9,9 @@
 # you've invoked ./configure one time, otherwise the gen_decoders.py
 # will not have the right .h to parse.
 #
+# MAC NOTES:
+# - To enable upx --ultra-brute, run: sudo port install upx +lzma
+#
 # WIN32 NOTES:
 # - Use mingw, not cygwin. It seems the cygwin gcc compiler will add a cygwin1.dll dependency.
 # - We've included yasm.exe in this folder, mingw does not install yasm.exe
@@ -57,7 +60,7 @@ echo is windows? $isWINDOWS
 
 MPLAYER_EXECUTABLE=mplayer
 FWPLAYER_EXECUTABLE=fwplayer_osx
-UPX_PARAMETERS=
+UPX_PARAMETERS=--ultra-brute
 
 if [ $isWINDOWS == 1 ]
 then
