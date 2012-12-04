@@ -20,6 +20,7 @@
 # signtool sign /a /n "FrostWire" /t http://timestamp.verisign.com/scripts/timstamp.dll /v c:\cygwin\home\username\frostwire-desktop\lib\native\fwplayer.exe
 #
 
+export MACOSX_DEPLOYMENT_TARGET=10.6
 
 #clean up and create base configuration
 function cleanConfigure() {
