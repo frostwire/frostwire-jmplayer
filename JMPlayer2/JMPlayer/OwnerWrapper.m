@@ -229,3 +229,37 @@ jint GetJNIEnv(JNIEnv **env, bool *mustDetach)
 	}
 	return getEnvErr;
 }
+
+int IntegerValue(JNIEnv*env, jobject integerObject) {
+    
+    jclass cls = (*env)->FindClass(env, "java/lang/Integer");
+    
+    if(cls == NULL){
+        return 0;
+    }
+    
+    jmethodID getVal = (*env)->GetMethodID(env, cls, "intValue", "()I");
+    if(getVal == NULL){
+        return 0;
+    }
+    
+    int i = (*env)->CallIntMethod(env, integerObject, getVal);
+    return i;
+}
+
+float FloatValue(JNIEnv*env, jobject floatObject) {
+    
+    jclass cls = (*env)->FindClass(env, "java/lang/Float");
+    
+    if(cls == NULL){
+        return 0;
+    }
+    
+    jmethodID getVal = (*env)->GetMethodID(env, cls, "floatValue", "()F");
+    if(getVal == NULL){
+        return 0;
+    }
+    
+    float f = (*env)->CallFloatMethod(env, floatObject, getVal);
+    return f;
+}

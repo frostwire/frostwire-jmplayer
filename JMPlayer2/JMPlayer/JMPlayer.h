@@ -28,6 +28,7 @@ extern "C" {
 #endif
     
     JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_createNSView(JNIEnv *, jobject);
+    JNIEXPORT void JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_awtMessage(JNIEnv *, jobject, jlong view, jint messageID, jobject message);
     
 #ifdef __cplusplus
 }

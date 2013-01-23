@@ -10,6 +10,9 @@
 
 #include "jni.h"
 
+int IntegerValue(JNIEnv*env, jobject obj);
+float FloatValue(JNIEnv*env, jobject obj);
+
 @interface OwnerWrapper : NSObject
 {
     jobject owner;

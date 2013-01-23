@@ -367,39 +367,40 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 {
     [owner OnDecrementVolumePressed];
 }
-/*
- -(void)awtMessage:(jint)messageID message:(jobject)message env:(JNIEnv*)env
- {
- switch (messageID) {
- case JMPlayer_volumeChanged:
- [fullscreenWindow setVolume:(float)JNIInterface::GetInstance().getJNIFloatValue(message)];
- break;
- case JMPlayer_progressChanged:
- [fullscreenWindow setCurrentTime:(float)JNIInterface::GetInstance().getJNIFloatValue(message)];
- break;
- case JMPlayer_stateChanged:
- [self setPlayerState:JNIInterface::GetInstance().getJNIIntValue(message)];
- [fullscreenWindow setState:[self playerState]];
- break;
- case JMPlayer_timeInitialized:
- [fullscreenWindow setMaxTime:(float)JNIInterface::GetInstance().getJNIFloatValue(message)];
- break;
- case JMPlayer_toggleFS:
- [self toggleFullscreen];
- break;
- case JMPlayer_addNotify:
- break;
- case JMPlayer_dispose:
- if(jowner != NULL){
- env->DeleteGlobalRef(jowner);
- jowner = NULL;
- }
- break;
- default:
- fprintf(stderr, "JMPlayer Error : Unknown message received (%d)\n", (int) messageID);
- break;
- }
- }*/
+
+-(void)awtMessage:(jint)messageID message:(jobject)message env:(JNIEnv*)env
+{
+    switch (messageID) {
+        case JMPlayer_volumeChanged:
+            [fullscreenWindow setVolume:FloatValue(env, message)];
+            break;
+        case JMPlayer_progressChanged:
+            [fullscreenWindow setCurrentTime:FloatValue(env, message)];
+            break;
+        case JMPlayer_stateChanged:
+            [self setPlayerState:IntegerValue(env, message)];
+            [fullscreenWindow setState:[self playerState]];
+            break;
+        case JMPlayer_timeInitialized:
+            [fullscreenWindow setMaxTime:FloatValue(env, message)];
+            break;
+        case JMPlayer_toggleFS:
+            [self toggleFullscreen];
+            break;
+        case JMPlayer_addNotify:
+            break;
+        case JMPlayer_dispose:
+            if(jowner != NULL)
+            {
+                (*env)->DeleteGlobalRef(env, jowner);
+                jowner = NULL;
+            }
+            break;
+        default:
+            fprintf(stderr, "JMPlayer Error : Unknown message received (%d)\n", (int) messageID);
+            break;
+    }
+}
 
 @end
 
@@ -436,4 +437,11 @@ JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_crea
         fprintf(stderr, "ERROR : Failed to create JMPlayer view\n");
         return 0;
     }
+}
+
+JNIEXPORT void JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_awtMessage(JNIEnv* env, jobject obj, jlong view, jint messageID, jobject message)
+{
+    JMPlayer* player = (JMPlayer*)view;
+    
+    [player awtMessage:messageID message:message env:env];
 }
