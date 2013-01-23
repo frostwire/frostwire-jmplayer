@@ -31,7 +31,7 @@
 
 @property (nonatomic, retain) id<VolumeSliderProtocol> delegate;
 
-- (id)initWithFrame:(NSRect)frameRect ApplicationPath:(NSString*) appPath;
+- (id)initWithFrame:(NSRect)frameRect;
 - (void)setVolume:(CGFloat)volume;
 - (CGFloat)getVolume;
 

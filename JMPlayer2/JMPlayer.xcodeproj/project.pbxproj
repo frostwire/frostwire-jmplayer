@@ -30,6 +30,7 @@
 		659D61B516AE1EAC00E43C2A /* PlayerFullscreenWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 659D61AA16AE1EAC00E43C2A /* PlayerFullscreenWindow.m */; };
 		659D61B716AE21F600E43C2A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 659D61B616AE21F600E43C2A /* OpenGL.framework */; };
 		659D61B916AE220F00E43C2A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 659D61B816AE220E00E43C2A /* CoreVideo.framework */; };
+		659D61C316B07C2900E43C2A /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 659D61C216B07C2900E43C2A /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		659D61AA16AE1EAC00E43C2A /* PlayerFullscreenWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerFullscreenWindow.m; sourceTree = "<group>"; };
 		659D61B616AE21F600E43C2A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		659D61B816AE220E00E43C2A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		659D61C216B07C2900E43C2A /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				659D61C316B07C2900E43C2A /* Carbon.framework in Frameworks */,
 				659D61B916AE220F00E43C2A /* CoreVideo.framework in Frameworks */,
 				659D61B716AE21F600E43C2A /* OpenGL.framework in Frameworks */,
 				659D617516ADEB4B00E43C2A /* Cocoa.framework in Frameworks */,
@@ -80,8 +83,6 @@
 		659D616616ADEB4B00E43C2A = {
 			isa = PBXGroup;
 			children = (
-				659D61B816AE220E00E43C2A /* CoreVideo.framework */,
-				659D61B616AE21F600E43C2A /* OpenGL.framework */,
 				659D617A16ADEB4B00E43C2A /* JMPlayer */,
 				659D617316ADEB4B00E43C2A /* Frameworks */,
 				659D617216ADEB4B00E43C2A /* Products */,
@@ -99,7 +100,10 @@
 		659D617316ADEB4B00E43C2A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				659D61B816AE220E00E43C2A /* CoreVideo.framework */,
+				659D61B616AE21F600E43C2A /* OpenGL.framework */,
 				659D617416ADEB4B00E43C2A /* Cocoa.framework */,
+				659D61C216B07C2900E43C2A /* Carbon.framework */,
 				659D617616ADEB4B00E43C2A /* Other Frameworks */,
 			);
 			name = Frameworks;

@@ -21,9 +21,15 @@
 JMPlayer/JMPlayer.xcodeproj/xcuserdata/
 JMPlayer/JMPlayer.xcodeproj/project.xcworkspace/xcuserdata/
 
+JMPlayer2/JMPlayer.xcodeproj/xcuserdata/
+JMPlayer2/JMPlayer.xcodeproj/project.xcworkspace/xcuserdata/
+
 JMPlayer-Bundle/JMPlayer-Bundle.xcodeproj/xuserdata/
 JMPlayer-Bundle/JMPlayer-Bundle.xcodeproj/project.xcworkspace/xcuserdata/
 
 # XCode compile directories
 */build/
 */DerivedData/
+
+MPlayer-1.1/configure.out
+MPlayer-1.1/mplayer.uncompressed

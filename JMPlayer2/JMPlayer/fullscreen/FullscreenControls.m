@@ -60,11 +60,12 @@
     delegate = (id<MusicPlayerClientProtocol>)jmPlayer;
     jmPlayer.player = self;
     
+    /*
     if (! (resourceBundle = [FullscreenControls findResourceBundleWithAppPath:jm_player.appPath]) ) {
         NSLog(@"Error");
         [self release];
         return nil;
-    }
+    }*/
         
     NSRect frame;
     frame.origin.x = 0;
@@ -192,7 +193,7 @@
     
     // volume slider
     NSRect vsFrame = NSMakeRect(16, 60, 0.25 * self.frame.size.width, 25);
-    volumeSlider = [[VolumeSlider alloc] initWithFrame: vsFrame ApplicationPath:jm_player.appPath];
+    volumeSlider = [[VolumeSlider alloc] initWithFrame: vsFrame];
     [volumeSlider setDelegate:self];
     [[self contentView] addSubview:volumeSlider positioned:NSWindowAbove relativeTo:bkgndImageView];
     

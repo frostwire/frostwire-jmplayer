@@ -11,25 +11,22 @@
 #import "jni.h"
 
 #import <AppKit/AppKit.h>
-
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/gl.h>
 #import <QuartzCore/QuartzCore.h>
 
-//include for shared memory
 #include <sys/mman.h>
 
 #import "MPlayerVideoRenderer.h"
 #import "PlayerFullscreenWindow.h"
 #import "ProgressSlider.h"
-
 #import "Debug.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
     
-    JNIEXPORT void JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_addNSView(JNIEnv *, jobject);
+    JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_createNSView(JNIEnv *, jobject);
     
 #ifdef __cplusplus
 }
@@ -39,14 +36,17 @@ extern "C" {
 #define		WSM_FIT_SCREEN	2
 #define		WSM_FIT_WIDTH	3
 
-enum {
+enum
+{
 	MPEScaleModeZoomToFit,
 	MPEScaleModeZoomToFill,
 	MPEScaleModeStretchToFill
 };
+
 typedef NSUInteger MPEVideoScaleMode;
 
-enum {
+enum
+{
     JMPlayer_addNotify       = 1,
     JMPlayer_dispose         = 2,
     JMPlayer_volumeChanged   = 3,
@@ -56,7 +56,8 @@ enum {
     JMPlayer_toggleFS        = 7
 };
 
-enum {
+enum
+{
     JMPlayer_statePlaying = 1,
     JMPlayer_statePaused = 2,
     JMPlayer_stateClosed = 3
@@ -112,10 +113,9 @@ enum {
 @property (nonatomic)           int playerState;
 @property (nonatomic, retain)   id<MusicPlayerProtocol> player;
 @property (nonatomic, retain)   ProgressSlider* progressSlider;
-@property (nonatomic, retain)   NSString* appPath;
 
 
-- (id) initWithFrame: (jobject) owner frame:(NSRect) frame applicationPath:(NSString*) applicationPath;
+- (id) initWithFrame: (jobject) owner frame:(NSRect) frame;
 
 // Render Thread methods
 - (void) toggleFullscreen;
