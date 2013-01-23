@@ -21,6 +21,7 @@
 #import "PlayerFullscreenWindow.h"
 #import "ProgressSlider.h"
 #import "Debug.h"
+#import "OwnerWrapper.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,6 +67,7 @@ enum
 @interface JMPlayer : NSOpenGLView <MPlayerVideoRenderereDelegateProtocol, MusicPlayerClientProtocol>
 {
     jobject jowner;
+    OwnerWrapper* owner;
     
     MPlayerVideoRenderer *renderer;
     
@@ -115,7 +117,7 @@ enum
 @property (nonatomic, retain)   ProgressSlider* progressSlider;
 
 
-- (id) initWithFrame: (jobject) owner frame:(NSRect) frame;
+- (id) initWithFrame: (jobject) theOwner frame:(NSRect) frame;
 
 // Render Thread methods
 - (void) toggleFullscreen;

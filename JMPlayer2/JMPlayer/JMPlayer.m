@@ -17,15 +17,20 @@
 
 static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
+JavaVM* jvm = NULL;
+
+jint GetJNIEnv(JNIEnv **env, bool *mustDetach);
+
 @implementation JMPlayer
 
 @synthesize progressSlider;
 @synthesize playerState;
 
-- (id) initWithFrame: (jobject) owner frame:(NSRect) frame
+- (id) initWithFrame: (jobject) theOwner frame:(NSRect) frame
 {
 	self = [super initWithFrame:frame];
-    jowner = owner;
+    jowner = theOwner;
+    owner = [[OwnerWrapper alloc] initWithOwner:theOwner];
     
 	buffer_name = [@"fwmplayer" retain];
     
@@ -143,7 +148,8 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
     if(!isFullscreen)
     {
 		switchingToFullscreen = YES;
-	} else
+	}
+    else
     {
 		switchingToFullscreen = NO;
 		isFullscreen = NO;
@@ -393,6 +399,16 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
 @end
 
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
+{
+    jvm = vm;
+    return JNI_VERSION_1_6;
+}
+
+JNIEXPORT void JNICALL JNI_OnUnload(JavaVM *vm, void *reserved)
+{
+}
+
 JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_createNSView(JNIEnv *env, jobject obj)
 {
     @try
@@ -425,8 +441,28 @@ JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_crea
         
         return (jlong)view;
     }
-    @catch (NSException *e) {
+    @catch (NSException *e)
+    {
         fprintf(stderr, "ERROR : Failed to create JMPlayer view\n");
         return 0;
     }
+}
+
+jint GetJNIEnv(JNIEnv **env, bool *mustDetach)
+{
+	jint getEnvErr = JNI_OK;
+	*mustDetach = false;
+	if (jvm)
+    {
+		getEnvErr = (*jvm)->GetEnv(jvm, (void **)env, JNI_VERSION_1_4);
+		if (getEnvErr == JNI_EDETACHED)
+        {
+			getEnvErr = (*jvm)->AttachCurrentThread(jvm, (void **)env, NULL);
+			if (getEnvErr == JNI_OK)
+            {
+				*mustDetach = true;
+			}
+		}
+	}
+	return getEnvErr;
 }

@@ -31,6 +31,8 @@
 		659D61B716AE21F600E43C2A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 659D61B616AE21F600E43C2A /* OpenGL.framework */; };
 		659D61B916AE220F00E43C2A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 659D61B816AE220E00E43C2A /* CoreVideo.framework */; };
 		659D61C316B07C2900E43C2A /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 659D61C216B07C2900E43C2A /* Carbon.framework */; };
+		659D61D216B099AF00E43C2A /* OwnerWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 659D61D016B099AF00E43C2A /* OwnerWrapper.h */; };
+		659D61D316B099AF00E43C2A /* OwnerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 659D61D116B099AF00E43C2A /* OwnerWrapper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +65,8 @@
 		659D61B616AE21F600E43C2A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		659D61B816AE220E00E43C2A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		659D61C216B07C2900E43C2A /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		659D61D016B099AF00E43C2A /* OwnerWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OwnerWrapper.h; sourceTree = "<group>"; };
+		659D61D116B099AF00E43C2A /* OwnerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OwnerWrapper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +134,8 @@
 				659D61A216AE1EAC00E43C2A /* Debug.m */,
 				659D61A616AE1EAC00E43C2A /* MPlayerVideoRenderer.h */,
 				659D61A716AE1EAC00E43C2A /* MPlayerVideoRenderer.m */,
+				659D61D016B099AF00E43C2A /* OwnerWrapper.h */,
+				659D61D116B099AF00E43C2A /* OwnerWrapper.m */,
 				659D617D16ADEB4B00E43C2A /* JMPlayer.h */,
 				659D617E16ADEB4B00E43C2A /* JMPlayer.m */,
 				659D61A816AE1EAC00E43C2A /* player */,
@@ -181,6 +187,7 @@
 				659D61AF16AE1EAC00E43C2A /* jni_md.h in Headers */,
 				659D61B216AE1EAC00E43C2A /* MPlayerVideoRenderer.h in Headers */,
 				659D61B416AE1EAC00E43C2A /* PlayerFullscreenWindow.h in Headers */,
+				659D61D216B099AF00E43C2A /* OwnerWrapper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +250,7 @@
 				659D61AE16AE1EAC00E43C2A /* Debug.m in Sources */,
 				659D61B316AE1EAC00E43C2A /* MPlayerVideoRenderer.m in Sources */,
 				659D61B516AE1EAC00E43C2A /* PlayerFullscreenWindow.m in Sources */,
+				659D61D316B099AF00E43C2A /* OwnerWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
