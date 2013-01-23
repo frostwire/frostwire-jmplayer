@@ -17,20 +17,16 @@
 
 static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
-JavaVM* jvm = NULL;
-
-jint GetJNIEnv(JNIEnv **env, bool *mustDetach);
-
 @implementation JMPlayer
 
 @synthesize progressSlider;
 @synthesize playerState;
 
-- (id) initWithFrame: (jobject) theOwner frame:(NSRect) frame
+- (id) initWithFrame: (JNIEnv*) env theOwner: (jobject) theOwner frame:(NSRect) frame
 {
 	self = [super initWithFrame:frame];
     jowner = theOwner;
-    owner = [[OwnerWrapper alloc] initWithOwner:theOwner];
+    owner = [[OwnerWrapper alloc] initWithOwner:env theOwner:theOwner];
     
 	buffer_name = [@"fwmplayer" retain];
     
@@ -321,47 +317,55 @@ jint GetJNIEnv(JNIEnv **env, bool *mustDetach);
  */
 
 -(void)onVolumeChanged:(CGFloat)volume {
-    //JNIInterface::GetInstance().OnVolumeChanged(volume);
+    [owner OnVolumeChanged:volume];
 }
 
 -(void)onSeekToTime:(float)seconds {
-    //JNIInterface::GetInstance().OnSeekToTime(seconds);
+    [owner OnSeekToTime:seconds];
 }
 
 -(void)onPlayPressed {
-    //JNIInterface::GetInstance().OnPlayPressed();
+    [owner OnPlayPressed];
 }
 
--(void)onPausePressed {
-    //JNIInterface::GetInstance().OnPausePressed();
+-(void)onPausePressed
+{
+    [owner OnPausePressed];
 }
 
--(void)onFastForwardPressed {
-    //JNIInterface::GetInstance().OnFastForwardPressed();
+-(void)onFastForwardPressed
+{
+    [owner OnFastForwardPressed];
 }
 
--(void)onRewindPressed {
-    //JNIInterface::GetInstance().OnRewindPressed();
+-(void)onRewindPressed
+{
+    [owner OnRewindPressed];
 }
 
--(void)onToggleFullscreenPressed {
-    //JNIInterface::GetInstance().OnToggleFullscreenPressed();
+-(void)onToggleFullscreenPressed
+{
+    [owner OnToggleFullscreenPressed];
 }
 
--(void)onProgressSliderStarted {
-    //JNIInterface::GetInstance().OnProgressSliderStarted();
+-(void)onProgressSliderStarted
+{
+    [owner OnProgressSliderStarted];
 }
 
--(void)onProgressSliderEnded {
-    //JNIInterface::GetInstance().OnProgressSliderEnded();
+-(void)onProgressSliderEnded
+{
+    [owner OnProgressSliderEnded];
 }
 
--(void)onIncrementVolumePressed {
-    //JNIInterface::GetInstance().OnIncrementVolumePressed();
+-(void)onIncrementVolumePressed
+{
+    [owner OnIncrementVolumePressed];
 }
 
--(void)onDecrementVolumePressed {
-    //JNIInterface::GetInstance().OnDecrementVolumePressed();
+-(void)onDecrementVolumePressed
+{
+    [owner OnDecrementVolumePressed];
 }
 /*
  -(void)awtMessage:(jint)messageID message:(jobject)message env:(JNIEnv*)env
@@ -399,16 +403,6 @@ jint GetJNIEnv(JNIEnv **env, bool *mustDetach);
 
 @end
 
-JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
-{
-    jvm = vm;
-    return JNI_VERSION_1_6;
-}
-
-JNIEXPORT void JNICALL JNI_OnUnload(JavaVM *vm, void *reserved)
-{
-}
-
 JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_createNSView(JNIEnv *env, jobject obj)
 {
     @try
@@ -431,11 +425,7 @@ JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_crea
         int width = 800;
         int height = 600;
         
-        jobject jowner = (*env)->NewGlobalRef(env, obj);
-        
-        //JNIInterface::GetInstance().Initialize(env, jowner);
-        
-        view = [[JMPlayer alloc] initWithFrame : jowner frame:NSMakeRect(0, 0, width, height)];
+        view = [[JMPlayer alloc] initWithFrame : env theOwner:obj frame:NSMakeRect(0, 0, width, height)];
             
         [playerWindow setContentView:view];
         
@@ -446,23 +436,4 @@ JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_crea
         fprintf(stderr, "ERROR : Failed to create JMPlayer view\n");
         return 0;
     }
-}
-
-jint GetJNIEnv(JNIEnv **env, bool *mustDetach)
-{
-	jint getEnvErr = JNI_OK;
-	*mustDetach = false;
-	if (jvm)
-    {
-		getEnvErr = (*jvm)->GetEnv(jvm, (void **)env, JNI_VERSION_1_4);
-		if (getEnvErr == JNI_EDETACHED)
-        {
-			getEnvErr = (*jvm)->AttachCurrentThread(jvm, (void **)env, NULL);
-			if (getEnvErr == JNI_OK)
-            {
-				*mustDetach = true;
-			}
-		}
-	}
-	return getEnvErr;
 }

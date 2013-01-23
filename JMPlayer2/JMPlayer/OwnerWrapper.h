@@ -27,7 +27,8 @@
     jmethodID progressSliderEndedID;
 }
 
--(id) initWithOwner:(jobject) theOwner;
+-(id) initWithOwner:(JNIEnv*) env theOwner: (jobject) theOwner;
+
 -(void) OnVolumeChanged:(float) volume;
 -(void) OnIncrementVolumePressed;
 -(void) OnDecrementVolumePressed;
@@ -39,5 +40,9 @@
 -(void) OnToggleFullscreenPressed;
 -(void) OnProgressSliderStarted;
 -(void) OnProgressSliderEnded;
+
+-(void) initMethodIDs: (JNIEnv*) env;
+-(void) invokeJavaMethodFloat: (jmethodID) mID param: (float) f;
+-(void) invokeJavaMethod: (jmethodID) mID;
 
 @end

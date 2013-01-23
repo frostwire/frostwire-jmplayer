@@ -117,7 +117,7 @@ enum
 @property (nonatomic, retain)   ProgressSlider* progressSlider;
 
 
-- (id) initWithFrame: (jobject) theOwner frame:(NSRect) frame;
+- (id) initWithFrame: (JNIEnv*) env theOwner: (jobject) theOwner frame:(NSRect) frame;
 
 // Render Thread methods
 - (void) toggleFullscreen;
