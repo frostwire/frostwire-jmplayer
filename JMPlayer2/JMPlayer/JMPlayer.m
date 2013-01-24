@@ -21,6 +21,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
 @synthesize progressSlider;
 @synthesize playerState;
+@synthesize mouseIsOver;
 
 - (id) initWithFrame: (JNIEnv*) env theOwner: (jobject) theOwner frame:(NSRect) frame
 {
@@ -36,6 +37,8 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
     ctx = (CGLContextObj)[[self openGLContext] CGLContextObj];
     
     fullscreenWindow = [[PlayerFullscreenWindow alloc] initWithContentRect:frame styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered  jmPlayer:self defer:NO ];
+    
+    mouseIsOver = NO;
     
     return self;
 }
@@ -427,8 +430,27 @@ JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_crea
         int height = 600;
         
         view = [[JMPlayer alloc] initWithFrame : env theOwner:obj frame:NSMakeRect(0, 0, width, height)];
-            
+        
+        // add JMPlayer view as a content view
         [playerWindow setContentView:view];
+        /*{
+            NSWindow* window = playerWindow;
+            NSRect window_frame = [window frame];
+            NSView* v = view;
+            NSView* cv = [playerWindow contentView];
+            [cv setAutoresizesSubviews:YES];
+            
+            //NSRect vframe = [v frame];
+            [v setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+            
+            //NSView* tmp_superview = [[[NSView alloc] initWithFrame:vframe] autorelease];
+            //[tmp_superview addSubview:v];
+            //[tmp_superview setAutoresizesSubviews:YES];
+            //[tmp_superview setFrame:window_frame];
+            
+            //[v removeFromSuperview];
+            [cv addSubview:v];
+        }*/
         
         return (jlong)view;
     }

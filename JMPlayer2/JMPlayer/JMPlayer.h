@@ -111,12 +111,14 @@ enum
     IBOutlet PlayerFullscreenWindow* fullscreenWindow;
    	NSWindow* playerWindow;
     NSView* playerSuperView;
+    
+    BOOL mouseIsOver;
 }
 
 @property (nonatomic)           int playerState;
 @property (nonatomic, retain)   id<MusicPlayerProtocol> player;
 @property (nonatomic, retain)   ProgressSlider* progressSlider;
-
+@property (nonatomic) BOOL mouseIsOver;
 
 - (id) initWithFrame: (JNIEnv*) env theOwner: (jobject) theOwner frame:(NSRect) frame;
 
