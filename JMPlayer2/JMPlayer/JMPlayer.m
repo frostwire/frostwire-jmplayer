@@ -405,6 +405,74 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
     }
 }
 
+-(void) deliverJavaMouseEvent: (NSEvent *) event {
+//    BOOL isEnabled = YES;
+//    NSWindow* window = [self window];
+//    if ([window isKindOfClass: [AWTWindow_Panel class]] || [window isKindOfClass: [AWTWindow_Normal class]]) {
+//        isEnabled = [(AWTWindow*)[window delegate] isEnabled];
+//    }
+//    
+//    if (!isEnabled) {
+//        return;
+//    }
+    
+    NSEventType type = [event type];
+    
+    // check synthesized mouse entered/exited events
+    if ((type == NSMouseEntered && mouseIsOver) || (type == NSMouseExited && !mouseIsOver)) {
+        return;
+    }else if ((type == NSMouseEntered && !mouseIsOver) || (type == NSMouseExited && mouseIsOver)) {
+        mouseIsOver = !mouseIsOver;
+    }
+    
+    /*
+    [AWTToolkit eventCountPlusPlus];
+    
+    JNIEnv *env = [ThreadUtilities getJNIEnv];
+    
+    NSPoint eventLocation = [event locationInWindow];
+    NSPoint localPoint = [self convertPoint: eventLocation fromView: nil];
+    NSPoint absP = [NSEvent mouseLocation];
+    
+    // Convert global numbers between Cocoa's coordinate system and Java.
+    // TODO: need consitent way for doing that both with global as well as with local coordinates.
+    // The reason to do it here is one more native method for getting screen dimension otherwise.
+    
+    NSRect screenRect = [[NSScreen mainScreen] frame];
+    absP.y = screenRect.size.height - absP.y;
+    jint clickCount;
+    
+    if (type == NSMouseEntered ||
+        type == NSMouseExited ||
+        type == NSScrollWheel ||
+        type == NSMouseMoved) {
+        clickCount = 0;
+    } else {
+        clickCount = [event clickCount];
+    }
+    
+    static JNF_CLASS_CACHE(jc_NSEvent, "sun/lwawt/macosx/event/NSEvent");
+    static JNF_CTOR_CACHE(jctor_NSEvent, jc_NSEvent, "(IIIIIIIIDD)V");
+    jobject jEvent = JNFNewObject(env, jctor_NSEvent,
+                                  [event type],
+                                  [event modifierFlags],
+                                  clickCount,
+                                  [event buttonNumber],
+                                  (jint)localPoint.x, (jint)localPoint.y,
+                                  (jint)absP.x, (jint)absP.y,
+                                  [event deltaY],
+                                  [event deltaX]);
+    if (jEvent == nil) {
+        // Unable to create event by some reason.
+        return;
+    }
+    
+    static JNF_CLASS_CACHE(jc_PlatformView, "sun/lwawt/macosx/CPlatformView");
+    static JNF_MEMBER_CACHE(jm_deliverMouseEvent, jc_PlatformView, "deliverMouseEvent", "(Lsun/lwawt/macosx/event/NSEvent;)V");
+    JNFCallVoidMethod(env, m_cPlatformView, jm_deliverMouseEvent, jEvent);
+     */
+}
+
 @end
 
 JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_createNSView(JNIEnv *env, jobject obj)

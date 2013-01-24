@@ -151,4 +151,6 @@ enum
 -(void)onProgressSliderStarted;
 -(void)onProgressSliderEnded;
 
+- (void) deliverJavaMouseEvent: (NSEvent *) event;
+
 @end
