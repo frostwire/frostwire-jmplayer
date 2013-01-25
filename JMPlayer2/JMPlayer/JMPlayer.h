@@ -27,7 +27,7 @@
 extern "C" {
 #endif
     
-    JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_createNSView(JNIEnv *, jobject);
+    JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_createNSView(JNIEnv *, jobject, jstring);
     JNIEXPORT void JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_awtMessage(JNIEnv *, jobject, jlong view, jint messageID, jobject message);
     
 #ifdef __cplusplus
@@ -120,7 +120,7 @@ enum
 @property (nonatomic, retain)   ProgressSlider* progressSlider;
 @property (nonatomic) BOOL mouseIsOver;
 
-- (id) initWithFrame: (JNIEnv*) env theOwner: (jobject) theOwner frame:(NSRect) frame;
+- (id) initWithFrame: (JNIEnv*) env theOwner: (jobject) theOwner frame:(NSRect) frame imagesPath : (NSString*) imagesPath;
 
 // Render Thread methods
 - (void) toggleFullscreen;

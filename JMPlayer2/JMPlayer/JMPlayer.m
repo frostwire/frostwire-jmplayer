@@ -23,7 +23,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 @synthesize playerState;
 @synthesize mouseIsOver;
 
-- (id) initWithFrame: (JNIEnv*) env theOwner: (jobject) theOwner frame:(NSRect) frame
+- (id) initWithFrame: (JNIEnv*) env theOwner: (jobject) theOwner frame:(NSRect) frame imagesPath : (NSString*) imagesPath
 {
 	self = [super initWithFrame:frame];
     jowner = theOwner;
@@ -36,7 +36,7 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 	[renderer setDelegate:self];
     ctx = (CGLContextObj)[[self openGLContext] CGLContextObj];
     
-    fullscreenWindow = [[PlayerFullscreenWindow alloc] initWithContentRect:frame styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered  jmPlayer:self defer:NO ];
+    fullscreenWindow = [[PlayerFullscreenWindow alloc] initWithContentRect:frame styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered  jmPlayer:self defer:NO imagesPath:imagesPath];
     
     mouseIsOver = NO;
     
@@ -475,7 +475,18 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
 
 @end
 
-JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_createNSView(JNIEnv *env, jobject obj)
+NSString *JavaStringToNSString(JNIEnv *env, jstring aString)
+{
+    if(aString == NULL)
+        return nil;
+    
+    const jchar *chars = (*env)->GetStringChars(env, aString, NULL);
+    NSString *resultString = [NSString stringWithCharacters:(UniChar *)chars length:(*env)->GetStringLength(env, aString)];
+    (*env)->ReleaseStringChars(env, aString, chars);
+    return resultString;
+}
+
+JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_createNSView(JNIEnv *env, jobject obj, jstring imagesPath)
 {
     @try
     {
@@ -497,7 +508,8 @@ JNIEXPORT jlong JNICALL Java_com_frostwire_gui_mplayer_MPlayerComponentOSX2_crea
         int width = 800;
         int height = 600;
         
-        view = [[JMPlayer alloc] initWithFrame : env theOwner:obj frame:NSMakeRect(0, 0, width, height)];
+        NSString* theImagesPath = JavaStringToNSString(env, imagesPath);
+        view = [[JMPlayer alloc] initWithFrame : env theOwner:obj frame:NSMakeRect(0, 0, width, height) imagesPath:theImagesPath];
         
         // add JMPlayer view as a content view
         [playerWindow setContentView:view];

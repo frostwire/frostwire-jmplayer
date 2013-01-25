@@ -21,17 +21,15 @@
 
 @implementation VolumeSlider
 
-- (id)initWithFrame:(NSRect)frame
+- (id)initWithFrame:(NSRect)frame imagesPath : (NSString*) imagesPath
 {
     if (self = [super initWithFrame:frame]) {
         
         // create 3 controls: volume off, slider, volume on
         // centered vertically and stretching to fit entire width of frame.
         
-        NSBundle *resourceBundle = nil;//[FullscreenControls findResourceBundleWithAppPath:appPath];
-        
-        NSImage *volumeOffImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_volume_off" ofType:@"png"]] autorelease];
-        NSImage *volumeOnImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_volume_on" ofType:@"png"]] autorelease];
+        NSImage *volumeOffImage = [[[NSImage alloc] initByReferencingFile:[imagesPath stringByAppendingString:@"fc_volume_off.png"]] autorelease];
+        NSImage *volumeOnImage = [[[NSImage alloc] initByReferencingFile:[imagesPath stringByAppendingString:@"fc_volume_on.png"]] autorelease];
         
         int spacer = 5;
         int xPos = spacer;

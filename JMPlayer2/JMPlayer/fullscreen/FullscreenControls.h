@@ -48,19 +48,17 @@
 	NSPoint dragStartPoint;
 	
 	NSViewAnimation *animation;
-
-    NSBundle* resourceBundle;
 	
     JMPlayer* jm_player;
+    
+    NSString* imagesPath;
 }
 
 @property (nonatomic, retain) id<MusicPlayerClientProtocol> delegate;
 @property (readonly,getter=window) PlayerFullscreenWindow *fcWindow;
 @property (readonly) BOOL beingDragged;
 
-+(NSBundle*)findResourceBundleWithAppPath:(NSString*) appPath;
-
--(id) initWithJMPlayer: (JMPlayer*) jmPlayer fullscreenWindow: (PlayerFullscreenWindow*) playerFSWindow;
+-(id) initWithJMPlayer: (JMPlayer*) jmPlayer fullscreenWindow: (PlayerFullscreenWindow*) playerFSWindow theImagesPath : (NSString*) theImagesPath;
 
 - (void)fadeWith:(NSString*)effect;
 - (void)cycleTimeDisplayMode:(id)sender;

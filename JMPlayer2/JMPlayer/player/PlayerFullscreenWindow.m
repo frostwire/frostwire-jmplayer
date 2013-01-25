@@ -40,8 +40,9 @@
 				styleMask: (unsigned int) styleMask
                   backing: (NSBackingStoreType) backingType
                  jmPlayer: (JMPlayer*) jmPlayer
-				 	defer: (BOOL) flag {
-	
+				 	defer: (BOOL) flag
+                imagesPath : (NSString*) imagesPath
+{	
 	if ((self = [super initWithContentRect:contentRect
 								 styleMask: NSBorderlessWindowMask 
 								   backing:backingType
@@ -51,7 +52,7 @@
         
         player = jmPlayer;
         
-        fullscreenControls = [[FullscreenControls alloc] initWithJMPlayer:jmPlayer fullscreenWindow:self];
+        fullscreenControls = [[FullscreenControls alloc] initWithJMPlayer:jmPlayer fullscreenWindow:self theImagesPath:imagesPath];
 	}
 
 	return self;

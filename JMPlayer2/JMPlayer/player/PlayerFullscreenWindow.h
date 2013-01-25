@@ -48,7 +48,8 @@
 				styleMask: (unsigned int) styleMask 
 				  backing: (NSBackingStoreType) backingType
                  jmPlayer: (JMPlayer*) jmPlayer
-					defer: (BOOL) flag;
+					defer: (BOOL) flag
+                imagesPath : (NSString*) imagesPath;
 
 - (void) hideOSD;
 - (void) showOSD;

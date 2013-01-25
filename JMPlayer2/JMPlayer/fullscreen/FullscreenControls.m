@@ -51,22 +51,18 @@
 @synthesize beingDragged, fcWindow, delegate;
 
 -(id) initWithJMPlayer: (JMPlayer*) jmPlayer
-      fullscreenWindow: (PlayerFullscreenWindow*) playerFSWindow {
+      fullscreenWindow: (PlayerFullscreenWindow*) playerFSWindow
+        theImagesPath : (NSString*) theImagesPath
+{
 	
     fcWindow = [playerFSWindow retain];
     jm_player = jmPlayer;
+    imagesPath = [theImagesPath retain];
     
     // wire up for callbacks
     delegate = (id<MusicPlayerClientProtocol>)jmPlayer;
     jmPlayer.player = self;
     
-    /*
-    if (! (resourceBundle = [FullscreenControls findResourceBundleWithAppPath:jm_player.appPath]) ) {
-        NSLog(@"Error");
-        [self release];
-        return nil;
-    }*/
-        
     NSRect frame;
     frame.origin.x = 0;
     frame.origin.y = 0;
@@ -101,22 +97,9 @@
     return self;
 }
 
-+ (NSBundle*)findResourceBundleWithAppPath:(NSString*) appPath
-{
-    NSString *developmentPath = [NSString stringWithFormat:@"%@../lib/osx/JMPlayer-Bundle/JMPlayer-Bundle.bundle", appPath];
-    NSString *path = [NSString stringWithFormat:@"%@JMPlayer-Bundle.bundle", appPath];
-    NSBundle *bundle = nil;
-    
-    if ( !(bundle = [NSBundle bundleWithPath: path]) ) {
-        bundle = [NSBundle bundleWithPath: developmentPath];
-    }
-    
-    return bundle;
-}
-
 - (NSSize)determineWindowSize
 {
-    NSString* imagePath = [resourceBundle pathForResource:@"fc_background" ofType:@"png"];
+    NSString* imagePath = [imagesPath stringByAppendingString:@"fc_background.png"];
     
     if (nil == imagePath) {
         NSLog(@"ERROR: could not file file path for fc_background");
@@ -139,13 +122,13 @@
     
     // initialize images
     // -----------------
-    NSImage *bkgndImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_background" ofType:@"png"]] autorelease];
+    NSImage *bkgndImage = [[[NSImage alloc] initByReferencingFile:[imagesPath stringByAppendingString:@"fc_background.png"]] autorelease];
     
-    NSImage *fastforwardButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_next" ofType:@"png"]] autorelease];
-    NSImage *rewindButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_previous" ofType:@"png"]] autorelease];
-    NSImage *fullscreenButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_fullscreen_exit" ofType:@"png"]] autorelease];
-    playButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_play" ofType:@"png"]] retain];
-    pauseButtonImage = [[[NSImage alloc] initByReferencingFile:[resourceBundle pathForResource:@"fc_pause" ofType:@"png"]] retain];
+    NSImage *fastforwardButtonImage = [[[NSImage alloc] initByReferencingFile:[imagesPath stringByAppendingString:@"fc_next.png"]] autorelease];
+    NSImage *rewindButtonImage = [[[NSImage alloc] initByReferencingFile:[imagesPath stringByAppendingString:@"fc_previous.png"]] autorelease];
+    NSImage *fullscreenButtonImage = [[[NSImage alloc] initByReferencingFile:[imagesPath stringByAppendingString:@"fc_fullscreen_exit.png"]] autorelease];
+    playButtonImage = [[[NSImage alloc] initByReferencingFile:[imagesPath stringByAppendingString:@"fc_play.png"]] retain];
+    pauseButtonImage = [[[NSImage alloc] initByReferencingFile:[imagesPath stringByAppendingString:@"fc_pause.png"]] retain];
     
     // initialize sub-views/controls
     // -----------------------------
@@ -193,7 +176,7 @@
     
     // volume slider
     NSRect vsFrame = NSMakeRect(16, 60, 0.25 * self.frame.size.width, 25);
-    volumeSlider = [[VolumeSlider alloc] initWithFrame: vsFrame];
+    volumeSlider = [[VolumeSlider alloc] initWithFrame: vsFrame imagesPath:imagesPath];
     [volumeSlider setDelegate:self];
     [[self contentView] addSubview:volumeSlider positioned:NSWindowAbove relativeTo:bkgndImageView];
     
