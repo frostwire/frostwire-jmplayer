@@ -234,7 +234,10 @@
  */
 - (void) stop {
 	
-	isRendering = NO;
+    isRendering = NO;
+	
+    // render a blank frame
+    [self renderOpenGL];
 	
 	//make sure we destroy the shared buffer
 	if (munmap(image_data, image_width*image_height*image_bytes) == -1)
