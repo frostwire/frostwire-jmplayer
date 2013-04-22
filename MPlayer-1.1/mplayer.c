@@ -2761,7 +2761,7 @@ int main(int argc, char *argv[])
     int profile_config_loaded;
     int i;
 
-    common_preinit();
+    common_preinit(&argc, &argv);
 
     // Create the config context and register the options
     mconfig = m_config_new();
