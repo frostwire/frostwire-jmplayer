@@ -40,6 +40,13 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
     
     mouseIsOver = NO;
     
+    int opts = (NSTrackingActiveAlways | NSTrackingInVisibleRect |  NSTrackingMouseMoved);
+    area = [[NSTrackingArea alloc] initWithRect:[self bounds]
+                                                        options:opts
+                                                          owner:self
+                                                       userInfo:nil];
+    [self addTrackingArea:area];
+    
     return self;
 }
 
@@ -405,6 +412,30 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
     }
 }
 
+- (void)mouseMoved:(NSEvent *)theEvent
+{
+    [super mouseMoved:theEvent];
+    NSPoint mousePosition = [NSEvent mouseLocation];
+	float delta = pow(lastMousePosition.x - mousePosition.x, 2) + pow(lastMousePosition.y - mousePosition.y, 2);
+	lastMousePosition = mousePosition;
+	
+    // check if amount of mouse movement is >= 5 pixels (sqrt(35)
+    //  - but ignoring sqrt calc for perf reasons
+    // note this is pixels moved in one update from the OS, not
+    // in one user's swipe.
+	if(delta > 25.0f )
+	{
+		[owner OnMouseMoved];
+	}
+}
+
+- (void)mouseUp:(NSEvent*)event {
+    [super mouseUp:event];
+    if (event.clickCount > 1) {
+        [owner OnMouseDoubleClick];
+    }
+}
+
 -(void) deliverJavaMouseEvent: (NSEvent *) event {
 //    BOOL isEnabled = YES;
 //    NSWindow* window = [self window];
@@ -418,7 +449,6 @@ static NSString *VVAnimationsDidEnd = @"VVAnimationsDidEnd";
     
     NSEventType type = [event type];
     
-    // check synthesized mouse entered/exited events
     if ((type == NSMouseEntered && mouseIsOver) || (type == NSMouseExited && !mouseIsOver)) {
         return;
     }else if ((type == NSMouseEntered && !mouseIsOver) || (type == NSMouseExited && mouseIsOver)) {

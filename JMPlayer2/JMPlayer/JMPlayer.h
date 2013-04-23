@@ -113,6 +113,9 @@ enum
     NSView* playerSuperView;
     
     BOOL mouseIsOver;
+    
+    NSPoint lastMousePosition;
+    NSTrackingArea *area;
 }
 
 @property (nonatomic)           int playerState;

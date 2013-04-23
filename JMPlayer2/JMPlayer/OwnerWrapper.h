@@ -28,6 +28,8 @@ float FloatValue(JNIEnv*env, jobject obj);
     jmethodID toggleFullscreenPressedID;
     jmethodID progressSliderStartedID;
     jmethodID progressSliderEndedID;
+    jmethodID mouseMovedID;
+    jmethodID mouseDoubleClickID;
 }
 
 -(id) initWithOwner:(JNIEnv*) env theOwner: (jobject) theOwner;
@@ -43,6 +45,8 @@ float FloatValue(JNIEnv*env, jobject obj);
 -(void) OnToggleFullscreenPressed;
 -(void) OnProgressSliderStarted;
 -(void) OnProgressSliderEnded;
+-(void) OnMouseMoved;
+-(void) OnMouseDoubleClick;
 
 -(void) initMethodIDs: (JNIEnv*) env;
 -(void) invokeJavaMethodFloat: (jmethodID) mID param: (float) f;

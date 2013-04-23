@@ -80,6 +80,16 @@ jint GetJNIEnv(JNIEnv **env, bool *mustDetach);
     [self invokeJavaMethod:progressSliderEndedID];
 }
 
+-(void) OnMouseMoved
+{
+    [self invokeJavaMethod:mouseMovedID];
+}
+
+-(void) OnMouseDoubleClick
+{
+    [self invokeJavaMethod:mouseDoubleClickID];
+}
+
 -(void) initMethodIDs: (JNIEnv*) env;
 {
     // initialize the class object & method ids
@@ -154,6 +164,18 @@ jint GetJNIEnv(JNIEnv **env, bool *mustDetach);
     if (progressSliderEndedID == 0)
     {
         printf("ERROR: JNIInterface::Initialize() unable to get method id for onProgressSliderEnded");
+    }
+    
+    mouseMovedID = (*env)->GetMethodID(env, cls, "onMouseMoved", "()V");
+    if (mouseMovedID == 0)
+    {
+        printf("ERROR: JNIInterface::Initialize() unable to get method id for onMouseMoved");
+    }
+    
+    mouseDoubleClickID = (*env)->GetMethodID(env, cls, "onMouseDoubleClick", "()V");
+    if (mouseMovedID == 0)
+    {
+        printf("ERROR: JNIInterface::Initialize() unable to get method id for onMouseDoubleClick");
     }
 }
 
