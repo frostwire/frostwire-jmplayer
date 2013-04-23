@@ -437,18 +437,6 @@ const m_option_t noconfig_opts[] = {
     {NULL, NULL, 0, 0, 0, 0, NULL}
 };
 
-/**
- * Initialization code to be run at the very start, must not depend
- * on option values.
- */
-void common_preinit(void)
-{
-    InitTimer();
-    srand(GetTimerMS());
-
-    mp_msg_init();
-}
-
 #ifdef __MINGW32__
 static int get_win32_cmdline(int *argc_ptr, char **argv_ptr[])
 {
@@ -537,6 +525,25 @@ static void sanitize_os(void)
     // request 1ms timer resolution
     timeBeginPeriod(1);
 #endif
+}
+
+/**
+ * Initialization code to be run at the very start, must not depend
+ * on option values.
+ */
+void common_preinit(int *argc_ptr, char **argv_ptr[])
+{
+#ifdef __MINGW32__
+    get_win32_cmdline(argc_ptr, argv_ptr);
+#else
+    (void)argc_ptr;
+    (void)argv_ptr;
+#endif
+    sanitize_os();
+    InitTimer();
+    srand(GetTimerMS());
+
+    mp_msg_init();
 }
 
 /**
