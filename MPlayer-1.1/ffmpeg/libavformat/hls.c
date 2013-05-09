@@ -277,7 +277,7 @@ static int parse_playlist(HLSContext *c, const char *url,
             continue;
         } else if (line[0]) {
             if (is_variant) {
-                if (!new_variant(c, bandwidth, line, url)) {
+                if (!new_variant(c, bandwidth, line, url + 3)) {
                     ret = AVERROR(ENOMEM);
                     goto fail;
                 }
