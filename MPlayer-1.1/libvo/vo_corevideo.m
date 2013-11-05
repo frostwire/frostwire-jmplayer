@@ -48,6 +48,8 @@
 
 #include "osdep/keycodes.h"
 #include "osx_common.h"
+//#include <gl.h> //added this to be able to build on Mavericks.
+#include "/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers/gl.h"
 
 //Cocoa
 NSDistantObject *mplayerosxProxy;
