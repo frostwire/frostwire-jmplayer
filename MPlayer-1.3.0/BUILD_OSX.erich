@@ -494,7 +494,8 @@ ls -lh mplayer
 strip mplayer
 echo After Stripping, Before UPX
 ls -lh mplayer
-upx mplayer
+cp mplayer mplayer.upxed
+upx --ultra-brute mplayer.upxed
 echo After UPX
-ls -lh mplayer
-cp mplayer ../../frostwire/desktop/lib/native/fwplayer_osx
+ls -lh mplayer.upxed
+cp mplayer.upxed ../../frostwire/desktop/lib/native/fwplayer_osx
