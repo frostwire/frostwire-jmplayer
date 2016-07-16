@@ -63,7 +63,6 @@
  --disable-tga \
  --disable-toolame \
  --disable-tremor-internal \
- --disable-tremor-internal \
  --disable-tv \
  --disable-tv-bsdbt848 \
  --disable-tv-v4l1 \
