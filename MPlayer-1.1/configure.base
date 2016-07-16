@@ -11,7 +11,7 @@
   --disable-dvdnav \
   --disable-dvdread \
   --disable-dvdread-internal \
-  --disable-enca --disable-maemo \
+  --disable-enca \
   --disable-esd \
   --disable-faac \
   --disable-faac-lavc \
@@ -36,6 +36,7 @@
   --disable-libschroedinger-lavc \
   --disable-libvpx-lavc \
   --disable-mad \
+  --disable-maemo \
   --disable-matrixview \
   --disable-md5sum \
   --disable-mencoder \
