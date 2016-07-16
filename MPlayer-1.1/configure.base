@@ -51,7 +51,7 @@
  --disable-pvr \
  --disable-qtx \
  --disable-quartz \
- --disable-radio-bsdbt848 
+ --disable-radio-bsdbt848 \
  --disable-radio-v4l2 \
  --disable-real \
  --disable-rtc \
@@ -86,4 +86,4 @@
  --disable-xvid-lavc \
  --disable-yuv4mpeg \
  --enable-runtime-cpudetection \
- --extra-cflags="-Os -mmacosx-version-min=10.6" \
+ --extra-cflags="-Os -mmacosx-version-min=10.6"
