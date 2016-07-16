@@ -36,7 +36,7 @@
 
 
 
-#define CONFIGURATION ""
+#define CONFIGURATION "--disable-iconv --disable-mencoder --disable-x11 --disable-vidix --disable-vidix-pcidb --disable-matrixview --disable-xss --disable-tga --disable-pnm --disable-md5sum --disable-yuv4mpeg --disable-quartz --disable-vcd --disable-bluray --disable-dvdnav --disable-dvdread --disable-alsa --disable-ossaudio --disable-arts --disable-esd --disable-pulse --disable-jack --disable-openal --disable-nas --disable-sgiaudio --disable-sunaudio --disable-kai --disable-dart --disable-select --extra-cflags=-Os -mmacosx-version-min=10.6 --enable-runtime-cpudetection --disable-langinfo --disable-vm --disable-xf86keysym --disable-radio-v4l2 --disable-radio-bsdbt848 --disable-tv --disable-tv-v4l1 --disable-tv-v4l2 --disable-tv-bsdbt848 --disable-pvr --disable-rtc --disable-cdparanoia --disable-cddb --disable-unrarexec --disable-sortsub --disable-enca --disable-maemo --disable-inet6 --disable-gethostbyname2 --disable-ftp --disable-vstream --disable-pthreads --disable-w32threads --disable-qtx --disable-xanim --disable-real --disable-xvid --disable-xvid-lavc --disable-x264 --disable-x264-lavc --disable-libdirac-lavc --disable-libschroedinger-lavc --disable-libvpx-lavc --disable-libnut --disable-libavcodec_mpegaudio_hp --disable-faac --disable-faac-lavc --disable-ladspa --disable-libbs2b --disable-libdv --disable-mad --disable-mp3lame --disable-mp3lame-lavc --disable-toolame --disable-twolame --disable-libmpeg2 --disable-libmpeg2-internal --disable-libopenjpeg --disable-ass --disable-crystalhd --disable-fastmemcpy --disable-sighandler --disable-decoder=aasc --disable-decoder=amv --disable-decoder=anm --disable-decoder=ansi --disable-decoder=asv1 --disable-decoder=asv2 --disable-decoder=aura --disable-decoder=aura2 --disable-decoder=avrp --disable-decoder=avs --disable-decoder=avui --disable-decoder=ayuv --disable-decoder=bethsoftvid --disable-decoder=bfi --disable-decoder=bink --disable-decoder=bmp --disable-decoder=bmv_video --disable-decoder=c93 --disable-decoder=cavs --disable-decoder=cdgraphics --disable-decoder=cdxl --disable-decoder=cinepak --disable-decoder=cljr --disable-decoder=cscd --disable-decoder=cyuv --disable-decoder=dfa --disable-decoder=dirac --disable-decoder=dnxhd --disable-decoder=dpx --disable-decoder=dsicinvideo --disable-decoder=dvvideo --disable-decoder=dxa --disable-decoder=dxtory --disable-decoder=eacmv --disable-decoder=eamad --disable-decoder=eatgq --disable-decoder=eatgv --disable-decoder=eatqi --disable-decoder=eightbps --disable-decoder=eightsvx_exp --disable-decoder=eightsvx_fib --disable-decoder=escape124 --disable-decoder=escape130 --disable-decoder=exr --disable-decoder=ffv1 --disable-decoder=ffvhuff --disable-decoder=flashsv --disable-decoder=flashsv2 --disable-decoder=flic --disable-decoder=fourxm --disable-decoder=fraps --disable-decoder=frwu --disable-decoder=gif --disable-decoder=h261 --disable-decoder=h264_crystalhd --disable-decoder=h264_vdpau --disable-decoder=huffyuv --disable-decoder=idcin --disable-decoder=iff_byterun1 --disable-decoder=iff_ilbm --disable-decoder=indeo2 --disable-decoder=indeo3 --disable-decoder=indeo4 --disable-decoder=indeo5 --disable-decoder=interplay_video --disable-decoder=jpeg2000 --disable-decoder=jpegls --disable-decoder=jv --disable-decoder=kgv1 --disable-decoder=kmvc --disable-decoder=lagarith --disable-decoder=loco --disable-decoder=mdec --disable-decoder=mimic --disable-decoder=mjpeg --disable-decoder=mjpegb --disable-decoder=mmvideo --disable-decoder=motionpixels --disable-decoder=mpeg_xvmc --disable-decoder=mpeg4_crystalhd --disable-decoder=mpeg4_vdpau --disable-decoder=mpegvideo --disable-decoder=mpeg_vdpau --disable-decoder=mpeg1_vdpau --disable-decoder=mpeg2_crystalhd --disable-decoder=msmpeg4_crystalhd --disable-decoder=msmpeg4v1 --disable-decoder=msmpeg4v2 --disable-decoder=msmpeg4v3 --disable-decoder=msrle --disable-decoder=msvideo1 --disable-decoder=mszh --disable-decoder=mxpeg --disable-decoder=nuv --disable-decoder=pam --disable-decoder=pbm --disable-decoder=pcx --disable-decoder=pgm --disable-decoder=pgmyuv --disable-decoder=pictor --disable-decoder=png --disable-decoder=ppm --disable-decoder=prores --disable-decoder=prores_lgpl --disable-decoder=ptx --disable-decoder=qdraw --disable-decoder=qpeg --disable-decoder=qtrle --disable-decoder=r10k --disable-decoder=r210 --disable-decoder=rawvideo --disable-decoder=rl2 --disable-decoder=roq --disable-decoder=rpza --disable-decoder=rv10 --disable-decoder=rv20 --disable-decoder=rv30 --disable-decoder=rv40 --disable-decoder=s302m --disable-decoder=sgi --disable-decoder=smacker --disable-decoder=smc --disable-decoder=snow --disable-decoder=sp5x --disable-decoder=sunrast --disable-decoder=targa --disable-decoder=theora --disable-decoder=thp --disable-decoder=tiertexseqvideo --disable-decoder=tiff --disable-decoder=tmv --disable-decoder=truemotion1 --disable-decoder=truemotion2 --disable-decoder=tscc --disable-decoder=txd --disable-decoder=ulti --disable-decoder=utvideo --disable-decoder=v210 --disable-decoder=v210x --disable-decoder=v308 --disable-decoder=v408 --disable-decoder=v410 --disable-decoder=vb --disable-decoder=vble --disable-decoder=vc1_crystalhd --disable-decoder=vc1_vdpau --disable-decoder=vc1image --disable-decoder=vcr1 --disable-decoder=vmdvideo --disable-decoder=vmnc --disable-decoder=vp3 --disable-decoder=vp5 --disable-decoder=vqa --disable-decoder=wmv3_crystalhd --disable-decoder=wmv3_vdpau --disable-decoder=wmv3image --disable-decoder=wnv1 --disable-decoder=xan_wc3 --disable-decoder=xan_wc4 --disable-decoder=xbm --disable-decoder=xl --disable-decoder=xwd --disable-decoder=y41p --disable-decoder=yop --disable-decoder=yuv4 --disable-decoder=zerocodec --disable-decoder=zlib --disable-decoder=zmbv --disable-decoder=aac_latm --disable-decoder=alac --disable-decoder=als --disable-decoder=amrnb --disable-decoder=amrwb --disable-decoder=ape --disable-decoder=atrac1 --disable-decoder=atrac3 --disable-decoder=binkaudio_dct --disable-decoder=binkaudio_rdft --disable-decoder=bmv_audio --disable-decoder=cook --disable-decoder=dca --disable-decoder=dsicinaudio --disable-decoder=eac3 --disable-decoder=ffwavesynth --disable-decoder=g723_1 --disable-decoder=g729 --disable-decoder=gsm --disable-decoder=gsm_ms --disable-decoder=imc --disable-decoder=mace3 --disable-decoder=mace6 --disable-decoder=mlp --disable-decoder=mp1 --disable-decoder=mp1float --disable-decoder=mp2float --disable-decoder=mp3float --disable-decoder=mp3adu --disable-decoder=mp3adufloat --disable-decoder=mp3on4 --disable-decoder=mp3on4float --disable-decoder=mpc7 --disable-decoder=mpc8 --disable-decoder=nellymoser --disable-decoder=qcelp --disable-decoder=qdm2 --disable-decoder=ra_144 --disable-decoder=ra_288 --disable-decoder=ralf --disable-decoder=shorten --disable-decoder=sipr --disable-decoder=smackaud --disable-decoder=sonic --disable-decoder=truehd --disable-decoder=truespeech --disable-decoder=tta --disable-decoder=twinvq --disable-decoder=vmdaudio --disable-decoder=wavpack --disable-decoder=wmalossless --disable-decoder=wmavoice --disable-decoder=ws_snd1 --disable-decoder=pcm_bluray --disable-decoder=pcm_dvd --disable-decoder=pcm_zork --disable-decoder=interplay_dpcm --disable-decoder=roq_dpcm --disable-decoder=sol_dpcm --disable-decoder=xan_dpcm --disable-decoder=adpcm_4xm --disable-decoder=adpcm_adx --disable-decoder=adpcm_ct --disable-decoder=adpcm_ea --disable-decoder=adpcm_ea_maxis_xa --disable-decoder=adpcm_ea_r1 --disable-decoder=adpcm_ea_r2 --disable-decoder=adpcm_ea_r3 --disable-decoder=adpcm_ea_xas --disable-decoder=adpcm_g722 --disable-decoder=adpcm_ima_amv --disable-decoder=adpcm_ima_apc --disable-decoder=adpcm_ima_dk3 --disable-decoder=adpcm_ima_dk4 --disable-decoder=adpcm_ima_ea_eacs --disable-decoder=adpcm_ima_ea_sead --disable-decoder=adpcm_ima_iss --disable-decoder=adpcm_ima_qt --disable-decoder=adpcm_ima_smjpeg --disable-decoder=adpcm_ima_wav --disable-decoder=adpcm_ima_ws --disable-decoder=adpcm_ms --disable-decoder=adpcm_sbpro_2 --disable-decoder=adpcm_sbpro_3 --disable-decoder=adpcm_sbpro_4 --disable-decoder=adpcm_swf --disable-decoder=adpcm_thp --disable-decoder=adpcm_xa --disable-decoder=adpcm_yamaha --disable-decoder=ass --disable-decoder=dvbsub --disable-decoder=dvdsub --disable-decoder=jacosub --disable-decoder=microdvd --disable-decoder=pgssub --disable-decoder=srt --disable-decoder=xsub --disable-decoder=libcelt --disable-decoder=libgsm --disable-decoder=libgsm_ms --disable-decoder=libopencore_amrnb --disable-decoder=libopencore_amrwb --disable-decoder=libopenjpeg --disable-decoder=libschroedinger --disable-decoder=libspeex --disable-decoder=libstagefright_h264 --disable-decoder=libutvideo --disable-decoder=libvorbis --disable-decoder=libvpx --disable-decoder=bintext --disable-decoder=xbin --disable-decoder=idf --enable-decoder=flv --enable-decoder=h263 --enable-decoder=h263i --enable-decoder=h264 --enable-decoder=mpeg1video --enable-decoder=mpeg2video --enable-decoder=mpeg4 --enable-decoder=svq1 --enable-decoder=svq3 --enable-decoder=vc1 --enable-decoder=vp6 --enable-decoder=vp6a --enable-decoder=vp6f --enable-decoder=vp8 --enable-decoder=wmv1 --enable-decoder=wmv2 --enable-decoder=wmv3 --enable-decoder=aac --enable-decoder=ac3 --enable-decoder=flac --enable-decoder=mp2 --enable-decoder=mp3 --enable-decoder=vorbis --enable-decoder=wmapro --enable-decoder=wmav1 --enable-decoder=wmav2 --enable-decoder=pcm_alaw --enable-decoder=pcm_f32be --enable-decoder=pcm_f32le --enable-decoder=pcm_f64be --enable-decoder=pcm_f64le --enable-decoder=pcm_lxf --enable-decoder=pcm_mulaw --enable-decoder=pcm_s8 --enable-decoder=pcm_s8_planar --enable-decoder=pcm_s16be --enable-decoder=pcm_s16le --enable-decoder=pcm_s16le_planar --enable-decoder=pcm_s24be --enable-decoder=pcm_s24daud --enable-decoder=pcm_s24le --enable-decoder=pcm_s32be --enable-decoder=pcm_s32le --enable-decoder=pcm_u8 --enable-decoder=pcm_u16be --enable-decoder=pcm_u16le --enable-decoder=pcm_u24be --enable-decoder=pcm_u24le --enable-decoder=pcm_u32be --enable-decoder=pcm_u32le --enable-decoder=adpcm_g726 --disable-encoder=a64multi --disable-encoder=a64multi5 --disable-encoder=amv --disable-encoder=asv1 --disable-encoder=asv2 --disable-encoder=avrp --disable-encoder=avui --disable-encoder=ayuv --disable-encoder=bmp --disable-encoder=cljr --disable-encoder=dnxhd --disable-encoder=dpx --disable-encoder=dvvideo --disable-encoder=ffv1 --disable-encoder=ffvhuff --disable-encoder=flashsv --disable-encoder=flashsv2 --disable-encoder=flv --disable-encoder=gif --disable-encoder=h261 --disable-encoder=h263 --disable-encoder=h263p --disable-encoder=huffyuv --disable-encoder=jpeg2000 --disable-encoder=jpegls --disable-encoder=ljpeg --disable-encoder=mjpeg --disable-encoder=mpeg1video --disable-encoder=mpeg2video --disable-encoder=mpeg4 --disable-encoder=msmpeg4v2 --disable-encoder=msmpeg4v3 --disable-encoder=msvideo1 --disable-encoder=pam --disable-encoder=pbm --disable-encoder=pcx --disable-encoder=pgm --disable-encoder=pgmyuv --disable-encoder=png --disable-encoder=ppm --disable-encoder=prores --disable-encoder=prores_anatoliy --disable-encoder=prores_kostya --disable-encoder=qtrle --disable-encoder=r10k --disable-encoder=r210 --disable-encoder=rawvideo --disable-encoder=roq --disable-encoder=rv10 --disable-encoder=rv20 --disable-encoder=sgi --disable-encoder=snow --disable-encoder=sunrast --disable-encoder=svq1 --disable-encoder=targa --disable-encoder=tiff --disable-encoder=v210 --disable-encoder=v308 --disable-encoder=v408 --disable-encoder=v410 --disable-encoder=wmv1 --disable-encoder=wmv2 --disable-encoder=xbm --disable-encoder=xwd --disable-encoder=y41p --disable-encoder=yuv4 --disable-encoder=zlib --disable-encoder=zmbv --disable-encoder=aac --disable-encoder=ac3 --disable-encoder=ac3_fixed --disable-encoder=alac --disable-encoder=dca --disable-encoder=eac3 --disable-encoder=flac --disable-encoder=g723_1 --disable-encoder=mp2 --disable-encoder=nellymoser --disable-encoder=ra_144 --disable-encoder=sonic --disable-encoder=sonic_ls --disable-encoder=vorbis --disable-encoder=wmav1 --disable-encoder=wmav2 --disable-encoder=pcm_alaw --disable-encoder=pcm_f32be --disable-encoder=pcm_f32le --disable-encoder=pcm_f64be --disable-encoder=pcm_f64le --disable-encoder=pcm_mulaw --disable-encoder=pcm_s8 --disable-encoder=pcm_s16be --disable-encoder=pcm_s16le --disable-encoder=pcm_s24be --disable-encoder=pcm_s24daud --disable-encoder=pcm_s24le --disable-encoder=pcm_s32be --disable-encoder=pcm_s32le --disable-encoder=pcm_u8 --disable-encoder=pcm_u16be --disable-encoder=pcm_u16le --disable-encoder=pcm_u24be --disable-encoder=pcm_u24le --disable-encoder=pcm_u32be --disable-encoder=pcm_u32le --disable-encoder=roq_dpcm --disable-encoder=adpcm_adx --disable-encoder=adpcm_g722 --disable-encoder=adpcm_g726 --disable-encoder=adpcm_ima_qt --disable-encoder=adpcm_ima_wav --disable-encoder=adpcm_ms --disable-encoder=adpcm_swf --disable-encoder=adpcm_yamaha --disable-encoder=ass --disable-encoder=dvbsub --disable-encoder=dvdsub --disable-encoder=srt --disable-encoder=xsub --disable-encoder=libfaac --disable-encoder=libgsm --disable-encoder=libgsm_ms --disable-encoder=libmp3lame --disable-encoder=libopencore_amrnb --disable-encoder=libopenjpeg --disable-encoder=libschroedinger --disable-encoder=libspeex --disable-encoder=libtheora --disable-encoder=libutvideo --disable-encoder=libvo_aacenc --disable-encoder=libvo_amrwbenc --disable-encoder=libvorbis --disable-encoder=libvpx --disable-encoder=libx264 --disable-encoder=libx264rgb --disable-encoder=libxavs --disable-encoder=libxvid --disable-encoder=libaacplus"
 
 #define MPLAYER_DATADIR "/usr/local/share/mplayer"
 #define MPLAYER_CONFDIR "/usr/local/etc/mplayer"
@@ -91,18 +91,18 @@
 
 
 /* system functions */
-#define HAVE_GETHOSTBYNAME2 1
+#undef HAVE_GETHOSTBYNAME2
 #define HAVE_GETTIMEOFDAY 1
 #undef HAVE_CLOCK_GETTIME
 #define HAVE_GLOB 1
 #define HAVE_GMTIME_R 1
-#define HAVE_LANGINFO 1
+#undef HAVE_LANGINFO
 #define HAVE_LOCALTIME_R 1
 #define memalign(a, b) malloc(b)
 #define HAVE_MEMALIGN 0
 #define HAVE_NANOSLEEP 1
 #define HAVE_POSIX_SELECT 1
-#define HAVE_AUDIO_SELECT 1
+#undef HAVE_AUDIO_SELECT
 #define HAVE_SETENV 1
 #define HAVE_SETMODE 0
 #define HAVE_SHM 1
@@ -121,7 +121,7 @@
 #define HAVE_DOS_PATHS 0
 #define EXTERN_ASM _
 #define EXTERN_PREFIX "_"
-#define CONFIG_ICONV 1
+#undef CONFIG_ICONV
 #undef HAVE_LIBKSTAT
 #undef CONFIG_MACOSX_BUNDLE
 #undef CONFIG_MACOSX_FINDER
@@ -132,7 +132,7 @@
 #undef CONFIG_QUICKTIME
 
 #undef HAVE_RTC
-#define CONFIG_UNRAR_EXEC 1
+#undef CONFIG_UNRAR_EXEC
 
 
 /* configurable options */
@@ -140,11 +140,11 @@
 #undef CONFIG_CRASH_DEBUG
 #undef MP_DEBUG
 #undef CONFIG_DYNAMIC_PLUGINS
-#define CONFIG_FASTMEMCPY 1
+#undef CONFIG_FASTMEMCPY
 #undef CONFIG_MENU
-#define CONFIG_RUNTIME_CPUDETECT 0
-#define CONFIG_SIGHANDLER 1
-#define CONFIG_SORTSUB 1
+#define CONFIG_RUNTIME_CPUDETECT 1
+#undef CONFIG_SIGHANDLER
+#undef CONFIG_SORTSUB
 #define CONFIG_STREAM_CACHE 1
 #undef PTHREAD_CACHE
 
@@ -177,16 +177,16 @@
 #define ARCH_X86_64 1
 #define ARCH_PPC64 0
 #define HAVE_ALTIVEC 0
-#define HAVE_XOP 0
+#define HAVE_XOP 1
 #define HAVE_AVX 1
-#define HAVE_AVX2 0
-#define HAVE_FMA3 0
-#define HAVE_FMA4 0
+#define HAVE_AVX2 1
+#define HAVE_FMA3 1
+#define HAVE_FMA4 1
 #define HAVE_MMX 1
 #define HAVE_MMX2 1
 #define HAVE_MMXEXT 1
-#define HAVE_AMD3DNOW 0
-#define HAVE_AMD3DNOWEXT 0
+#define HAVE_AMD3DNOW 1
+#define HAVE_AMD3DNOWEXT 1
 #define HAVE_SSE 1
 #define HAVE_SSE2 1
 #define HAVE_SSE3 1
@@ -208,16 +208,16 @@
 #define HAVE_VIS 0
 #define HAVE_MVI 0
 #define HAVE_ALTIVEC_EXTERNAL 0
-#define HAVE_XOP_EXTERNAL 0
+#define HAVE_XOP_EXTERNAL 1
 #define HAVE_AVX_EXTERNAL 1
-#define HAVE_AVX2_EXTERNAL 0
-#define HAVE_FMA3_EXTERNAL 0
-#define HAVE_FMA4_EXTERNAL 0
+#define HAVE_AVX2_EXTERNAL 1
+#define HAVE_FMA3_EXTERNAL 1
+#define HAVE_FMA4_EXTERNAL 1
 #define HAVE_MMX_EXTERNAL 1
 #define HAVE_MMX2_EXTERNAL 1
 #define HAVE_MMXEXT_EXTERNAL 1
-#define HAVE_AMD3DNOW_EXTERNAL 0
-#define HAVE_AMD3DNOWEXT_EXTERNAL 0
+#define HAVE_AMD3DNOW_EXTERNAL 1
+#define HAVE_AMD3DNOWEXT_EXTERNAL 1
 #define HAVE_SSE_EXTERNAL 1
 #define HAVE_SSE2_EXTERNAL 1
 #define HAVE_SSE3_EXTERNAL 1
@@ -239,16 +239,16 @@
 #define HAVE_VIS_EXTERNAL 0
 #define HAVE_MVI_EXTERNAL 0
 #define HAVE_ALTIVEC_INLINE 0
-#define HAVE_XOP_INLINE 0
+#define HAVE_XOP_INLINE 1
 #define HAVE_AVX_INLINE 1
-#define HAVE_AVX2_INLINE 0
-#define HAVE_FMA3_INLINE 0
-#define HAVE_FMA4_INLINE 0
+#define HAVE_AVX2_INLINE 1
+#define HAVE_FMA3_INLINE 1
+#define HAVE_FMA4_INLINE 1
 #define HAVE_MMX_INLINE 1
 #define HAVE_MMX2_INLINE 1
 #define HAVE_MMXEXT_INLINE 1
-#define HAVE_AMD3DNOW_INLINE 0
-#define HAVE_AMD3DNOWEXT_INLINE 0
+#define HAVE_AMD3DNOW_INLINE 1
+#define HAVE_AMD3DNOWEXT_INLINE 1
 #define HAVE_SSE_INLINE 1
 #define HAVE_SSE2_INLINE 1
 #define HAVE_SSE3_INLINE 1
@@ -280,7 +280,7 @@
 #undef CONFIG_DVDNAV
 #undef CONFIG_DVDREAD
 #undef CONFIG_LIBCDIO
-#define CONFIG_VCD 1
+#undef CONFIG_VCD
 
 
 /* codec libraries */
@@ -295,9 +295,9 @@
 #define CONFIG_ILBC 0
 #undef CONFIG_LIBOPUS
 #undef CONFIG_LIBMAD
-#define CONFIG_MP3LAME 1
-#define CONFIG_MP3LAME_PRESET 1
-#define CONFIG_MP3LAME_PRESET_MEDIUM 1
+#undef CONFIG_MP3LAME
+#undef CONFIG_MP3LAME_PRESET
+#undef CONFIG_MP3LAME_PRESET_MEDIUM
 #undef CONFIG_MPG123
 #undef CONFIG_MUSEPACK
 #undef CONFIG_SPEEX
@@ -306,8 +306,8 @@
 
 #undef CONFIG_TWOLAME
 
-#define CONFIG_X264 1
-#define CONFIG_XVID4 1
+#undef CONFIG_X264
+#undef CONFIG_XVID4
 #define CONFIG_ZLIB 1
 
 #undef CONFIG_LIBNUT
@@ -316,10 +316,10 @@
 /* binary codecs */
 #undef CONFIG_QTX_CODECS
 #undef CONFIG_QTX_CODECS_WIN32
-#define CONFIG_REALCODECS 1
+#undef CONFIG_REALCODECS
 #undef WIN32_LOADER
 #undef CONFIG_WIN32DLL
-#define CONFIG_XANIM 1
+#undef CONFIG_XANIM
 #undef CONFIG_XMMS
 #define BINARY_CODECS_PATH "/usr/local/lib/codecs"
 #define XMMS_INPUT_PLUGIN_DIR ""
@@ -340,8 +340,8 @@
 
 
 #undef CONFIG_NAS
-#define CONFIG_OPENAL 1
-#define OPENAL_AL_H 1
+
+
 #undef CONFIG_OSS_AUDIO
 #define PATH_DEV_DSP ""
 #define PATH_DEV_MIXER ""
@@ -369,7 +369,7 @@
 #undef CONFIG_RADIO_CAPTURE
 #undef CONFIG_RADIO_V4L
 #undef CONFIG_RADIO_V4L2
-#define CONFIG_TV 1
+#undef CONFIG_TV
 
 #undef CONFIG_TV_DSHOW
 #undef CONFIG_TV_V4L
@@ -378,19 +378,19 @@
 
 
 /* font stuff */
-#define CONFIG_ASS 1
-#define CONFIG_ASS_INTERNAL 1
+#undef CONFIG_ASS
+#undef CONFIG_ASS_INTERNAL
 #define CONFIG_BITMAP_FONT 1
 #undef CONFIG_ENCA
-#define CONFIG_FONTCONFIG 1
-#define CONFIG_FREETYPE 1
+#undef CONFIG_FONTCONFIG
+#undef CONFIG_FREETYPE
 #undef CONFIG_FRIBIDI
 
 
 /* networking */
 #define HAVE_CLOSESOCKET 0
-#define CONFIG_FTP 1
-#define HAVE_AF_INET6 1
+#undef CONFIG_FTP
+#undef HAVE_AF_INET6
 #define HAVE_INET_ATON 1
 #define HAVE_INET_PTON 1
 #undef CONFIG_LIVE555
@@ -424,22 +424,22 @@
 
 #define CONFIG_GL 1
 
-#define CONFIG_GL_X11 1
+
 
 
 
 #define CONFIG_GL_OSX 1
-#define CONFIG_MATRIXVIEW 1
+#undef CONFIG_MATRIXVIEW
 #undef CONFIG_IVTV
 #define CONFIG_JPEG 1
 
-#define CONFIG_MD5SUM 1
+#undef CONFIG_MD5SUM
 #undef CONFIG_MGA
 #define CONFIG_MLIB 0
 #undef CONFIG_MNG
 #define CONFIG_POSTPROC 1
 #define CONFIG_PNG 1
-#define CONFIG_PNM 1
+#undef CONFIG_PNM
 #undef CONFIG_QUARTZ
 #undef CONFIG_S3FB
 #undef CONFIG_SDL
@@ -447,7 +447,7 @@
 #undef CONFIG_SVGALIB
 #undef CONFIG_TDFXFB
 #undef CONFIG_XVR100
-#define CONFIG_TGA 1
+#undef CONFIG_TGA
 #undef CONFIG_V4L2_DECODER
 #define CONFIG_VDPAU 0
 #undef CONFIG_VESA
@@ -466,18 +466,18 @@
 #undef CONFIG_VIDIX_DRV_SIS
 #undef CONFIG_VIDIX_DRV_UNICHROME
 
-#define CONFIG_XF86VM 1
+#undef CONFIG_XF86VM
 #undef CONFIG_WII
-#define CONFIG_X11 1
-#define CONFIG_XDPMS 1
-#define CONFIG_XF86XK 1
-#define CONFIG_XINERAMA 1
+#undef CONFIG_X11
+#undef CONFIG_XDPMS
+#undef CONFIG_XF86XK
+#undef CONFIG_XINERAMA
 #undef CONFIG_XMGA
-#define CONFIG_XSS 1
-#define CONFIG_XV 1
+#undef CONFIG_XSS
+#undef CONFIG_XV
 #define CONFIG_XVMC 0
 
-#define CONFIG_YUV4MPEG 1
+#undef CONFIG_YUV4MPEG
 #undef CONFIG_ZR
 
 
@@ -496,7 +496,7 @@
 
 /* selectable features */
 #define CONFIG_HARDCODED_TABLES 0
-#define CONFIG_MPEGAUDIO_HP 1
+
 #define CONFIG_NETWORK 1
 
 
@@ -518,9 +518,9 @@
 #define CONFIG_LIBOPENJPEG 0
 #define CONFIG_LIBRTMP 0
 #define CONFIG_LIBSCHROEDINGER 0
-#define CONFIG_LIBMP3LAME 1
-#define CONFIG_LIBX264 1
-#define CONFIG_LIBXVID 1
+#define CONFIG_LIBMP3LAME 0
+#define CONFIG_LIBX264 0
+#define CONFIG_LIBXVID 0
 
 /* system features */
 #define HAVE_FAST_64BIT 1
@@ -532,15 +532,15 @@
 #define HAVE_LOCAL_ALIGNED_32 1
 #define HAVE_OS2THREADS 0
 #define CONFIG_PIC 1
-#define HAVE_PTHREADS 1
-#define HAVE_PTHREAD_CANCEL 1
+#define HAVE_PTHREADS 0
+#define HAVE_PTHREAD_CANCEL 0
 #define HAVE_SOCKLEN_T 1
 #define HAVE_STRUCT_ADDRINFO 1
 #define HAVE_STRUCT_IPV6_MREQ 1
 #define HAVE_STRUCT_SOCKADDR_IN6 1
 #define HAVE_STRUCT_SOCKADDR_SA_LEN 1
 #define HAVE_STRUCT_SOCKADDR_STORAGE 1
-#define HAVE_THREADS 1
+#define HAVE_THREADS 0
 #define HAVE_W32THREADS 0
 
 #define HAVE_XMM_CLOBBERS 1
@@ -713,75 +713,75 @@
 #define LIBAV_CONFIGURATION FFMPEG_CONFIGURATION
 #define LIBAV_LICENSE FFMPEG_LICENSE
 
-#define CONFIG_AASC_DECODER 1
+#define CONFIG_AASC_DECODER 0
 #define CONFIG_AIC_DECODER 1
 #define CONFIG_ALIAS_PIX_DECODER 1
-#define CONFIG_AMV_DECODER 1
-#define CONFIG_ANM_DECODER 1
-#define CONFIG_ANSI_DECODER 1
+#define CONFIG_AMV_DECODER 0
+#define CONFIG_ANM_DECODER 0
+#define CONFIG_ANSI_DECODER 0
 #define CONFIG_APNG_DECODER 1
-#define CONFIG_ASV1_DECODER 1
-#define CONFIG_ASV2_DECODER 1
-#define CONFIG_AURA_DECODER 1
-#define CONFIG_AURA2_DECODER 1
-#define CONFIG_AVRP_DECODER 1
+#define CONFIG_ASV1_DECODER 0
+#define CONFIG_ASV2_DECODER 0
+#define CONFIG_AURA_DECODER 0
+#define CONFIG_AURA2_DECODER 0
+#define CONFIG_AVRP_DECODER 0
 #define CONFIG_AVRN_DECODER 1
-#define CONFIG_AVS_DECODER 1
-#define CONFIG_AVUI_DECODER 1
-#define CONFIG_AYUV_DECODER 1
-#define CONFIG_BETHSOFTVID_DECODER 1
-#define CONFIG_BFI_DECODER 1
-#define CONFIG_BINK_DECODER 1
-#define CONFIG_BMP_DECODER 1
-#define CONFIG_BMV_VIDEO_DECODER 1
+#define CONFIG_AVS_DECODER 0
+#define CONFIG_AVUI_DECODER 0
+#define CONFIG_AYUV_DECODER 0
+#define CONFIG_BETHSOFTVID_DECODER 0
+#define CONFIG_BFI_DECODER 0
+#define CONFIG_BINK_DECODER 0
+#define CONFIG_BMP_DECODER 0
+#define CONFIG_BMV_VIDEO_DECODER 0
 #define CONFIG_BRENDER_PIX_DECODER 1
-#define CONFIG_C93_DECODER 1
-#define CONFIG_CAVS_DECODER 1
-#define CONFIG_CDGRAPHICS_DECODER 1
-#define CONFIG_CDXL_DECODER 1
+#define CONFIG_C93_DECODER 0
+#define CONFIG_CAVS_DECODER 0
+#define CONFIG_CDGRAPHICS_DECODER 0
+#define CONFIG_CDXL_DECODER 0
 #define CONFIG_CFHD_DECODER 1
-#define CONFIG_CINEPAK_DECODER 1
-#define CONFIG_CLJR_DECODER 1
+#define CONFIG_CINEPAK_DECODER 0
+#define CONFIG_CLJR_DECODER 0
 #define CONFIG_CLLC_DECODER 1
 #define CONFIG_COMFORTNOISE_DECODER 1
 #define CONFIG_CPIA_DECODER 1
-#define CONFIG_CSCD_DECODER 1
-#define CONFIG_CYUV_DECODER 1
+#define CONFIG_CSCD_DECODER 0
+#define CONFIG_CYUV_DECODER 0
 #define CONFIG_DDS_DECODER 1
-#define CONFIG_DFA_DECODER 1
-#define CONFIG_DIRAC_DECODER 1
-#define CONFIG_DNXHD_DECODER 1
-#define CONFIG_DPX_DECODER 1
-#define CONFIG_DSICINVIDEO_DECODER 1
+#define CONFIG_DFA_DECODER 0
+#define CONFIG_DIRAC_DECODER 0
+#define CONFIG_DNXHD_DECODER 0
+#define CONFIG_DPX_DECODER 0
+#define CONFIG_DSICINVIDEO_DECODER 0
 #define CONFIG_DVAUDIO_DECODER 1
-#define CONFIG_DVVIDEO_DECODER 1
-#define CONFIG_DXA_DECODER 1
-#define CONFIG_DXTORY_DECODER 1
+#define CONFIG_DVVIDEO_DECODER 0
+#define CONFIG_DXA_DECODER 0
+#define CONFIG_DXTORY_DECODER 0
 #define CONFIG_DXV_DECODER 1
-#define CONFIG_EACMV_DECODER 1
-#define CONFIG_EAMAD_DECODER 1
-#define CONFIG_EATGQ_DECODER 1
-#define CONFIG_EATGV_DECODER 1
-#define CONFIG_EATQI_DECODER 1
-#define CONFIG_EIGHTBPS_DECODER 1
-#define CONFIG_EIGHTSVX_EXP_DECODER 1
-#define CONFIG_EIGHTSVX_FIB_DECODER 1
-#define CONFIG_ESCAPE124_DECODER 1
-#define CONFIG_ESCAPE130_DECODER 1
-#define CONFIG_EXR_DECODER 1
-#define CONFIG_FFV1_DECODER 1
-#define CONFIG_FFVHUFF_DECODER 1
+#define CONFIG_EACMV_DECODER 0
+#define CONFIG_EAMAD_DECODER 0
+#define CONFIG_EATGQ_DECODER 0
+#define CONFIG_EATGV_DECODER 0
+#define CONFIG_EATQI_DECODER 0
+#define CONFIG_EIGHTBPS_DECODER 0
+#define CONFIG_EIGHTSVX_EXP_DECODER 0
+#define CONFIG_EIGHTSVX_FIB_DECODER 0
+#define CONFIG_ESCAPE124_DECODER 0
+#define CONFIG_ESCAPE130_DECODER 0
+#define CONFIG_EXR_DECODER 0
+#define CONFIG_FFV1_DECODER 0
+#define CONFIG_FFVHUFF_DECODER 0
 #define CONFIG_FIC_DECODER 1
-#define CONFIG_FLASHSV_DECODER 1
-#define CONFIG_FLASHSV2_DECODER 1
-#define CONFIG_FLIC_DECODER 1
+#define CONFIG_FLASHSV_DECODER 0
+#define CONFIG_FLASHSV2_DECODER 0
+#define CONFIG_FLIC_DECODER 0
 #define CONFIG_FLV_DECODER 1
-#define CONFIG_FOURXM_DECODER 1
-#define CONFIG_FRAPS_DECODER 1
-#define CONFIG_FRWU_DECODER 1
+#define CONFIG_FOURXM_DECODER 0
+#define CONFIG_FRAPS_DECODER 0
+#define CONFIG_FRWU_DECODER 0
 #define CONFIG_G2M_DECODER 1
-#define CONFIG_GIF_DECODER 1
-#define CONFIG_H261_DECODER 1
+#define CONFIG_GIF_DECODER 0
+#define CONFIG_H261_DECODER 0
 #define CONFIG_H263_DECODER 1
 #define CONFIG_H263I_DECODER 1
 #define CONFIG_H263P_DECODER 1
@@ -797,27 +797,27 @@
 #define CONFIG_HNM4_VIDEO_DECODER 1
 #define CONFIG_HQ_HQA_DECODER 1
 #define CONFIG_HQX_DECODER 1
-#define CONFIG_HUFFYUV_DECODER 1
-#define CONFIG_IDCIN_DECODER 1
-#define CONFIG_IFF_ILBM_DECODER 1
-#define CONFIG_INDEO2_DECODER 1
-#define CONFIG_INDEO3_DECODER 1
-#define CONFIG_INDEO4_DECODER 1
-#define CONFIG_INDEO5_DECODER 1
-#define CONFIG_INTERPLAY_VIDEO_DECODER 1
-#define CONFIG_JPEG2000_DECODER 1
-#define CONFIG_JPEGLS_DECODER 1
-#define CONFIG_JV_DECODER 1
-#define CONFIG_KGV1_DECODER 1
-#define CONFIG_KMVC_DECODER 1
-#define CONFIG_LAGARITH_DECODER 1
-#define CONFIG_LOCO_DECODER 1
-#define CONFIG_MDEC_DECODER 1
-#define CONFIG_MIMIC_DECODER 1
-#define CONFIG_MJPEG_DECODER 1
-#define CONFIG_MJPEGB_DECODER 1
-#define CONFIG_MMVIDEO_DECODER 1
-#define CONFIG_MOTIONPIXELS_DECODER 1
+#define CONFIG_HUFFYUV_DECODER 0
+#define CONFIG_IDCIN_DECODER 0
+#define CONFIG_IFF_ILBM_DECODER 0
+#define CONFIG_INDEO2_DECODER 0
+#define CONFIG_INDEO3_DECODER 0
+#define CONFIG_INDEO4_DECODER 0
+#define CONFIG_INDEO5_DECODER 0
+#define CONFIG_INTERPLAY_VIDEO_DECODER 0
+#define CONFIG_JPEG2000_DECODER 0
+#define CONFIG_JPEGLS_DECODER 0
+#define CONFIG_JV_DECODER 0
+#define CONFIG_KGV1_DECODER 0
+#define CONFIG_KMVC_DECODER 0
+#define CONFIG_LAGARITH_DECODER 0
+#define CONFIG_LOCO_DECODER 0
+#define CONFIG_MDEC_DECODER 0
+#define CONFIG_MIMIC_DECODER 0
+#define CONFIG_MJPEG_DECODER 0
+#define CONFIG_MJPEGB_DECODER 0
+#define CONFIG_MMVIDEO_DECODER 0
+#define CONFIG_MOTIONPIXELS_DECODER 0
 #define CONFIG_MPEG_XVMC_DECODER 0
 #define CONFIG_MPEG1VIDEO_DECODER 1
 #define CONFIG_MPEG2VIDEO_DECODER 1
@@ -825,7 +825,7 @@
 #define CONFIG_MPEG4_CRYSTALHD_DECODER 0
 #define CONFIG_MPEG4_MMAL_DECODER 0
 #define CONFIG_MPEG4_VDPAU_DECODER 0
-#define CONFIG_MPEGVIDEO_DECODER 1
+#define CONFIG_MPEGVIDEO_DECODER 0
 #define CONFIG_MPEG_VDPAU_DECODER 0
 #define CONFIG_MPEG1_VDPAU_DECODER 0
 #define CONFIG_MPEG2_MMAL_DECODER 0
@@ -833,203 +833,203 @@
 #define CONFIG_MPEG2_QSV_DECODER 0
 #define CONFIG_MSA1_DECODER 1
 #define CONFIG_MSMPEG4_CRYSTALHD_DECODER 0
-#define CONFIG_MSMPEG4V1_DECODER 1
-#define CONFIG_MSMPEG4V2_DECODER 1
-#define CONFIG_MSMPEG4V3_DECODER 1
-#define CONFIG_MSRLE_DECODER 1
+#define CONFIG_MSMPEG4V1_DECODER 0
+#define CONFIG_MSMPEG4V2_DECODER 0
+#define CONFIG_MSMPEG4V3_DECODER 0
+#define CONFIG_MSRLE_DECODER 0
 #define CONFIG_MSS1_DECODER 1
 #define CONFIG_MSS2_DECODER 1
-#define CONFIG_MSVIDEO1_DECODER 1
-#define CONFIG_MSZH_DECODER 1
+#define CONFIG_MSVIDEO1_DECODER 0
+#define CONFIG_MSZH_DECODER 0
 #define CONFIG_MTS2_DECODER 1
 #define CONFIG_MVC1_DECODER 1
 #define CONFIG_MVC2_DECODER 1
-#define CONFIG_MXPEG_DECODER 1
-#define CONFIG_NUV_DECODER 1
+#define CONFIG_MXPEG_DECODER 0
+#define CONFIG_NUV_DECODER 0
 #define CONFIG_PAF_VIDEO_DECODER 1
-#define CONFIG_PAM_DECODER 1
-#define CONFIG_PBM_DECODER 1
-#define CONFIG_PCX_DECODER 1
-#define CONFIG_PGM_DECODER 1
-#define CONFIG_PGMYUV_DECODER 1
-#define CONFIG_PICTOR_DECODER 1
-#define CONFIG_PNG_DECODER 1
-#define CONFIG_PPM_DECODER 1
-#define CONFIG_PRORES_DECODER 1
-#define CONFIG_PRORES_LGPL_DECODER 1
-#define CONFIG_PTX_DECODER 1
-#define CONFIG_QDRAW_DECODER 1
-#define CONFIG_QPEG_DECODER 1
-#define CONFIG_QTRLE_DECODER 1
-#define CONFIG_R10K_DECODER 1
-#define CONFIG_R210_DECODER 1
-#define CONFIG_RAWVIDEO_DECODER 1
-#define CONFIG_RL2_DECODER 1
-#define CONFIG_ROQ_DECODER 1
-#define CONFIG_RPZA_DECODER 1
+#define CONFIG_PAM_DECODER 0
+#define CONFIG_PBM_DECODER 0
+#define CONFIG_PCX_DECODER 0
+#define CONFIG_PGM_DECODER 0
+#define CONFIG_PGMYUV_DECODER 0
+#define CONFIG_PICTOR_DECODER 0
+#define CONFIG_PNG_DECODER 0
+#define CONFIG_PPM_DECODER 0
+#define CONFIG_PRORES_DECODER 0
+#define CONFIG_PRORES_LGPL_DECODER 0
+#define CONFIG_PTX_DECODER 0
+#define CONFIG_QDRAW_DECODER 0
+#define CONFIG_QPEG_DECODER 0
+#define CONFIG_QTRLE_DECODER 0
+#define CONFIG_R10K_DECODER 0
+#define CONFIG_R210_DECODER 0
+#define CONFIG_RAWVIDEO_DECODER 0
+#define CONFIG_RL2_DECODER 0
+#define CONFIG_ROQ_DECODER 0
+#define CONFIG_RPZA_DECODER 0
 #define CONFIG_RSCC_DECODER 1
-#define CONFIG_RV10_DECODER 1
-#define CONFIG_RV20_DECODER 1
-#define CONFIG_RV30_DECODER 1
-#define CONFIG_RV40_DECODER 1
-#define CONFIG_S302M_DECODER 1
+#define CONFIG_RV10_DECODER 0
+#define CONFIG_RV20_DECODER 0
+#define CONFIG_RV30_DECODER 0
+#define CONFIG_RV40_DECODER 0
+#define CONFIG_S302M_DECODER 0
 #define CONFIG_SANM_DECODER 1
 #define CONFIG_SCREENPRESSO_DECODER 1
 #define CONFIG_SDX2_DPCM_DECODER 1
-#define CONFIG_SGI_DECODER 1
+#define CONFIG_SGI_DECODER 0
 #define CONFIG_SGIRLE_DECODER 1
-#define CONFIG_SMACKER_DECODER 1
-#define CONFIG_SMC_DECODER 1
+#define CONFIG_SMACKER_DECODER 0
+#define CONFIG_SMC_DECODER 0
 #define CONFIG_SMVJPEG_DECODER 1
-#define CONFIG_SNOW_DECODER 1
-#define CONFIG_SP5X_DECODER 1
-#define CONFIG_SUNRAST_DECODER 1
+#define CONFIG_SNOW_DECODER 0
+#define CONFIG_SP5X_DECODER 0
+#define CONFIG_SUNRAST_DECODER 0
 #define CONFIG_SVQ1_DECODER 1
 #define CONFIG_SVQ3_DECODER 1
-#define CONFIG_TARGA_DECODER 1
+#define CONFIG_TARGA_DECODER 0
 #define CONFIG_TARGA_Y216_DECODER 1
 #define CONFIG_TDSC_DECODER 1
-#define CONFIG_THEORA_DECODER 1
-#define CONFIG_THP_DECODER 1
-#define CONFIG_TIERTEXSEQVIDEO_DECODER 1
-#define CONFIG_TIFF_DECODER 1
-#define CONFIG_TMV_DECODER 1
-#define CONFIG_TRUEMOTION1_DECODER 1
-#define CONFIG_TRUEMOTION2_DECODER 1
-#define CONFIG_TSCC_DECODER 1
+#define CONFIG_THEORA_DECODER 0
+#define CONFIG_THP_DECODER 0
+#define CONFIG_TIERTEXSEQVIDEO_DECODER 0
+#define CONFIG_TIFF_DECODER 0
+#define CONFIG_TMV_DECODER 0
+#define CONFIG_TRUEMOTION1_DECODER 0
+#define CONFIG_TRUEMOTION2_DECODER 0
+#define CONFIG_TSCC_DECODER 0
 #define CONFIG_TSCC2_DECODER 1
-#define CONFIG_TXD_DECODER 1
-#define CONFIG_ULTI_DECODER 1
-#define CONFIG_UTVIDEO_DECODER 1
-#define CONFIG_V210_DECODER 1
-#define CONFIG_V210X_DECODER 1
-#define CONFIG_V308_DECODER 1
-#define CONFIG_V408_DECODER 1
-#define CONFIG_V410_DECODER 1
-#define CONFIG_VB_DECODER 1
-#define CONFIG_VBLE_DECODER 1
+#define CONFIG_TXD_DECODER 0
+#define CONFIG_ULTI_DECODER 0
+#define CONFIG_UTVIDEO_DECODER 0
+#define CONFIG_V210_DECODER 0
+#define CONFIG_V210X_DECODER 0
+#define CONFIG_V308_DECODER 0
+#define CONFIG_V408_DECODER 0
+#define CONFIG_V410_DECODER 0
+#define CONFIG_VB_DECODER 0
+#define CONFIG_VBLE_DECODER 0
 #define CONFIG_VC1_DECODER 1
 #define CONFIG_VC1_CRYSTALHD_DECODER 0
 #define CONFIG_VC1_VDPAU_DECODER 0
-#define CONFIG_VC1IMAGE_DECODER 1
+#define CONFIG_VC1IMAGE_DECODER 0
 #define CONFIG_VC1_MMAL_DECODER 0
 #define CONFIG_VC1_QSV_DECODER 0
-#define CONFIG_VCR1_DECODER 1
-#define CONFIG_VMDVIDEO_DECODER 1
-#define CONFIG_VMNC_DECODER 1
-#define CONFIG_VP3_DECODER 1
-#define CONFIG_VP5_DECODER 1
+#define CONFIG_VCR1_DECODER 0
+#define CONFIG_VMDVIDEO_DECODER 0
+#define CONFIG_VMNC_DECODER 0
+#define CONFIG_VP3_DECODER 0
+#define CONFIG_VP5_DECODER 0
 #define CONFIG_VP6_DECODER 1
 #define CONFIG_VP6A_DECODER 1
 #define CONFIG_VP6F_DECODER 1
 #define CONFIG_VP7_DECODER 1
 #define CONFIG_VP8_DECODER 1
 #define CONFIG_VP9_DECODER 1
-#define CONFIG_VQA_DECODER 1
+#define CONFIG_VQA_DECODER 0
 #define CONFIG_WEBP_DECODER 1
 #define CONFIG_WMV1_DECODER 1
 #define CONFIG_WMV2_DECODER 1
 #define CONFIG_WMV3_DECODER 1
 #define CONFIG_WMV3_CRYSTALHD_DECODER 0
 #define CONFIG_WMV3_VDPAU_DECODER 0
-#define CONFIG_WMV3IMAGE_DECODER 1
-#define CONFIG_WNV1_DECODER 1
-#define CONFIG_XAN_WC3_DECODER 1
-#define CONFIG_XAN_WC4_DECODER 1
-#define CONFIG_XBM_DECODER 1
+#define CONFIG_WMV3IMAGE_DECODER 0
+#define CONFIG_WNV1_DECODER 0
+#define CONFIG_XAN_WC3_DECODER 0
+#define CONFIG_XAN_WC4_DECODER 0
+#define CONFIG_XBM_DECODER 0
 #define CONFIG_XFACE_DECODER 1
-#define CONFIG_XL_DECODER 1
-#define CONFIG_XWD_DECODER 1
-#define CONFIG_Y41P_DECODER 1
-#define CONFIG_YOP_DECODER 1
-#define CONFIG_YUV4_DECODER 1
+#define CONFIG_XL_DECODER 0
+#define CONFIG_XWD_DECODER 0
+#define CONFIG_Y41P_DECODER 0
+#define CONFIG_YOP_DECODER 0
+#define CONFIG_YUV4_DECODER 0
 #define CONFIG_ZERO12V_DECODER 1
-#define CONFIG_ZEROCODEC_DECODER 1
-#define CONFIG_ZLIB_DECODER 1
-#define CONFIG_ZMBV_DECODER 1
+#define CONFIG_ZEROCODEC_DECODER 0
+#define CONFIG_ZLIB_DECODER 0
+#define CONFIG_ZMBV_DECODER 0
 #define CONFIG_AAC_DECODER 1
 #define CONFIG_AAC_FIXED_DECODER 1
-#define CONFIG_AAC_LATM_DECODER 1
+#define CONFIG_AAC_LATM_DECODER 0
 #define CONFIG_AC3_DECODER 1
 #define CONFIG_AC3_FIXED_DECODER 1
-#define CONFIG_ALAC_DECODER 1
-#define CONFIG_ALS_DECODER 1
-#define CONFIG_AMRNB_DECODER 1
-#define CONFIG_AMRWB_DECODER 1
-#define CONFIG_APE_DECODER 1
-#define CONFIG_ATRAC1_DECODER 1
-#define CONFIG_ATRAC3_DECODER 1
+#define CONFIG_ALAC_DECODER 0
+#define CONFIG_ALS_DECODER 0
+#define CONFIG_AMRNB_DECODER 0
+#define CONFIG_AMRWB_DECODER 0
+#define CONFIG_APE_DECODER 0
+#define CONFIG_ATRAC1_DECODER 0
+#define CONFIG_ATRAC3_DECODER 0
 #define CONFIG_ATRAC3P_DECODER 1
-#define CONFIG_BINKAUDIO_DCT_DECODER 1
-#define CONFIG_BINKAUDIO_RDFT_DECODER 1
-#define CONFIG_BMV_AUDIO_DECODER 1
-#define CONFIG_COOK_DECODER 1
-#define CONFIG_DCA_DECODER 1
+#define CONFIG_BINKAUDIO_DCT_DECODER 0
+#define CONFIG_BINKAUDIO_RDFT_DECODER 0
+#define CONFIG_BMV_AUDIO_DECODER 0
+#define CONFIG_COOK_DECODER 0
+#define CONFIG_DCA_DECODER 0
 #define CONFIG_DSD_LSBF_DECODER 1
 #define CONFIG_DSD_MSBF_DECODER 1
 #define CONFIG_DSD_LSBF_PLANAR_DECODER 1
 #define CONFIG_DSD_MSBF_PLANAR_DECODER 1
-#define CONFIG_DSICINAUDIO_DECODER 1
+#define CONFIG_DSICINAUDIO_DECODER 0
 #define CONFIG_DSS_SP_DECODER 1
-#define CONFIG_EAC3_DECODER 1
+#define CONFIG_EAC3_DECODER 0
 #define CONFIG_EVRC_DECODER 1
-#define CONFIG_FFWAVESYNTH_DECODER 1
+#define CONFIG_FFWAVESYNTH_DECODER 0
 #define CONFIG_FLAC_DECODER 1
-#define CONFIG_G723_1_DECODER 1
-#define CONFIG_G729_DECODER 1
-#define CONFIG_GSM_DECODER 1
-#define CONFIG_GSM_MS_DECODER 1
+#define CONFIG_G723_1_DECODER 0
+#define CONFIG_G729_DECODER 0
+#define CONFIG_GSM_DECODER 0
+#define CONFIG_GSM_MS_DECODER 0
 #define CONFIG_IAC_DECODER 1
-#define CONFIG_IMC_DECODER 1
+#define CONFIG_IMC_DECODER 0
 #define CONFIG_INTERPLAY_ACM_DECODER 1
-#define CONFIG_MACE3_DECODER 1
-#define CONFIG_MACE6_DECODER 1
+#define CONFIG_MACE3_DECODER 0
+#define CONFIG_MACE6_DECODER 0
 #define CONFIG_METASOUND_DECODER 1
-#define CONFIG_MLP_DECODER 1
-#define CONFIG_MP1_DECODER 1
-#define CONFIG_MP1FLOAT_DECODER 1
+#define CONFIG_MLP_DECODER 0
+#define CONFIG_MP1_DECODER 0
+#define CONFIG_MP1FLOAT_DECODER 0
 #define CONFIG_MP2_DECODER 1
-#define CONFIG_MP2FLOAT_DECODER 1
+#define CONFIG_MP2FLOAT_DECODER 0
 #define CONFIG_MP3_DECODER 1
-#define CONFIG_MP3FLOAT_DECODER 1
-#define CONFIG_MP3ADU_DECODER 1
-#define CONFIG_MP3ADUFLOAT_DECODER 1
-#define CONFIG_MP3ON4_DECODER 1
-#define CONFIG_MP3ON4FLOAT_DECODER 1
-#define CONFIG_MPC7_DECODER 1
-#define CONFIG_MPC8_DECODER 1
-#define CONFIG_NELLYMOSER_DECODER 1
+#define CONFIG_MP3FLOAT_DECODER 0
+#define CONFIG_MP3ADU_DECODER 0
+#define CONFIG_MP3ADUFLOAT_DECODER 0
+#define CONFIG_MP3ON4_DECODER 0
+#define CONFIG_MP3ON4FLOAT_DECODER 0
+#define CONFIG_MPC7_DECODER 0
+#define CONFIG_MPC8_DECODER 0
+#define CONFIG_NELLYMOSER_DECODER 0
 #define CONFIG_ON2AVC_DECODER 1
 #define CONFIG_OPUS_DECODER 1
 #define CONFIG_PAF_AUDIO_DECODER 1
-#define CONFIG_QCELP_DECODER 1
-#define CONFIG_QDM2_DECODER 1
-#define CONFIG_RA_144_DECODER 1
-#define CONFIG_RA_288_DECODER 1
-#define CONFIG_RALF_DECODER 1
-#define CONFIG_SHORTEN_DECODER 1
-#define CONFIG_SIPR_DECODER 1
-#define CONFIG_SMACKAUD_DECODER 1
-#define CONFIG_SONIC_DECODER 1
+#define CONFIG_QCELP_DECODER 0
+#define CONFIG_QDM2_DECODER 0
+#define CONFIG_RA_144_DECODER 0
+#define CONFIG_RA_288_DECODER 0
+#define CONFIG_RALF_DECODER 0
+#define CONFIG_SHORTEN_DECODER 0
+#define CONFIG_SIPR_DECODER 0
+#define CONFIG_SMACKAUD_DECODER 0
+#define CONFIG_SONIC_DECODER 0
 #define CONFIG_TAK_DECODER 1
-#define CONFIG_TRUEHD_DECODER 1
-#define CONFIG_TRUESPEECH_DECODER 1
-#define CONFIG_TTA_DECODER 1
-#define CONFIG_TWINVQ_DECODER 1
-#define CONFIG_VMDAUDIO_DECODER 1
+#define CONFIG_TRUEHD_DECODER 0
+#define CONFIG_TRUESPEECH_DECODER 0
+#define CONFIG_TTA_DECODER 0
+#define CONFIG_TWINVQ_DECODER 0
+#define CONFIG_VMDAUDIO_DECODER 0
 #define CONFIG_VORBIS_DECODER 1
-#define CONFIG_WAVPACK_DECODER 1
-#define CONFIG_WMALOSSLESS_DECODER 1
+#define CONFIG_WAVPACK_DECODER 0
+#define CONFIG_WMALOSSLESS_DECODER 0
 #define CONFIG_WMAPRO_DECODER 1
 #define CONFIG_WMAV1_DECODER 1
 #define CONFIG_WMAV2_DECODER 1
-#define CONFIG_WMAVOICE_DECODER 1
-#define CONFIG_WS_SND1_DECODER 1
+#define CONFIG_WMAVOICE_DECODER 0
+#define CONFIG_WS_SND1_DECODER 0
 #define CONFIG_XMA1_DECODER 1
 #define CONFIG_XMA2_DECODER 1
 #define CONFIG_PCM_ALAW_DECODER 1
-#define CONFIG_PCM_BLURAY_DECODER 1
-#define CONFIG_PCM_DVD_DECODER 1
+#define CONFIG_PCM_BLURAY_DECODER 0
+#define CONFIG_PCM_DVD_DECODER 0
 #define CONFIG_PCM_F32BE_DECODER 1
 #define CONFIG_PCM_F32LE_DECODER 1
 #define CONFIG_PCM_F64BE_DECODER 1
@@ -1056,64 +1056,64 @@
 #define CONFIG_PCM_U24LE_DECODER 1
 #define CONFIG_PCM_U32BE_DECODER 1
 #define CONFIG_PCM_U32LE_DECODER 1
-#define CONFIG_PCM_ZORK_DECODER 1
-#define CONFIG_INTERPLAY_DPCM_DECODER 1
-#define CONFIG_ROQ_DPCM_DECODER 1
-#define CONFIG_SOL_DPCM_DECODER 1
-#define CONFIG_XAN_DPCM_DECODER 1
-#define CONFIG_ADPCM_4XM_DECODER 1
-#define CONFIG_ADPCM_ADX_DECODER 1
+#define CONFIG_PCM_ZORK_DECODER 0
+#define CONFIG_INTERPLAY_DPCM_DECODER 0
+#define CONFIG_ROQ_DPCM_DECODER 0
+#define CONFIG_SOL_DPCM_DECODER 0
+#define CONFIG_XAN_DPCM_DECODER 0
+#define CONFIG_ADPCM_4XM_DECODER 0
+#define CONFIG_ADPCM_ADX_DECODER 0
 #define CONFIG_ADPCM_AFC_DECODER 1
 #define CONFIG_ADPCM_AICA_DECODER 1
-#define CONFIG_ADPCM_CT_DECODER 1
+#define CONFIG_ADPCM_CT_DECODER 0
 #define CONFIG_ADPCM_DTK_DECODER 1
-#define CONFIG_ADPCM_EA_DECODER 1
-#define CONFIG_ADPCM_EA_MAXIS_XA_DECODER 1
-#define CONFIG_ADPCM_EA_R1_DECODER 1
-#define CONFIG_ADPCM_EA_R2_DECODER 1
-#define CONFIG_ADPCM_EA_R3_DECODER 1
-#define CONFIG_ADPCM_EA_XAS_DECODER 1
-#define CONFIG_ADPCM_G722_DECODER 1
+#define CONFIG_ADPCM_EA_DECODER 0
+#define CONFIG_ADPCM_EA_MAXIS_XA_DECODER 0
+#define CONFIG_ADPCM_EA_R1_DECODER 0
+#define CONFIG_ADPCM_EA_R2_DECODER 0
+#define CONFIG_ADPCM_EA_R3_DECODER 0
+#define CONFIG_ADPCM_EA_XAS_DECODER 0
+#define CONFIG_ADPCM_G722_DECODER 0
 #define CONFIG_ADPCM_G726_DECODER 1
 #define CONFIG_ADPCM_G726LE_DECODER 1
-#define CONFIG_ADPCM_IMA_AMV_DECODER 1
-#define CONFIG_ADPCM_IMA_APC_DECODER 1
-#define CONFIG_ADPCM_IMA_DK3_DECODER 1
-#define CONFIG_ADPCM_IMA_DK4_DECODER 1
-#define CONFIG_ADPCM_IMA_EA_EACS_DECODER 1
-#define CONFIG_ADPCM_IMA_EA_SEAD_DECODER 1
-#define CONFIG_ADPCM_IMA_ISS_DECODER 1
+#define CONFIG_ADPCM_IMA_AMV_DECODER 0
+#define CONFIG_ADPCM_IMA_APC_DECODER 0
+#define CONFIG_ADPCM_IMA_DK3_DECODER 0
+#define CONFIG_ADPCM_IMA_DK4_DECODER 0
+#define CONFIG_ADPCM_IMA_EA_EACS_DECODER 0
+#define CONFIG_ADPCM_IMA_EA_SEAD_DECODER 0
+#define CONFIG_ADPCM_IMA_ISS_DECODER 0
 #define CONFIG_ADPCM_IMA_OKI_DECODER 1
-#define CONFIG_ADPCM_IMA_QT_DECODER 1
+#define CONFIG_ADPCM_IMA_QT_DECODER 0
 #define CONFIG_ADPCM_IMA_RAD_DECODER 1
-#define CONFIG_ADPCM_IMA_SMJPEG_DECODER 1
-#define CONFIG_ADPCM_IMA_WAV_DECODER 1
-#define CONFIG_ADPCM_IMA_WS_DECODER 1
-#define CONFIG_ADPCM_MS_DECODER 1
+#define CONFIG_ADPCM_IMA_SMJPEG_DECODER 0
+#define CONFIG_ADPCM_IMA_WAV_DECODER 0
+#define CONFIG_ADPCM_IMA_WS_DECODER 0
+#define CONFIG_ADPCM_MS_DECODER 0
 #define CONFIG_ADPCM_PSX_DECODER 1
-#define CONFIG_ADPCM_SBPRO_2_DECODER 1
-#define CONFIG_ADPCM_SBPRO_3_DECODER 1
-#define CONFIG_ADPCM_SBPRO_4_DECODER 1
-#define CONFIG_ADPCM_SWF_DECODER 1
-#define CONFIG_ADPCM_THP_DECODER 1
+#define CONFIG_ADPCM_SBPRO_2_DECODER 0
+#define CONFIG_ADPCM_SBPRO_3_DECODER 0
+#define CONFIG_ADPCM_SBPRO_4_DECODER 0
+#define CONFIG_ADPCM_SWF_DECODER 0
+#define CONFIG_ADPCM_THP_DECODER 0
 #define CONFIG_ADPCM_THP_LE_DECODER 1
 #define CONFIG_ADPCM_VIMA_DECODER 1
-#define CONFIG_ADPCM_XA_DECODER 1
-#define CONFIG_ADPCM_YAMAHA_DECODER 1
+#define CONFIG_ADPCM_XA_DECODER 0
+#define CONFIG_ADPCM_YAMAHA_DECODER 0
 #define CONFIG_SSA_DECODER 1
-#define CONFIG_ASS_DECODER 1
+#define CONFIG_ASS_DECODER 0
 #define CONFIG_CCAPTION_DECODER 1
-#define CONFIG_DVBSUB_DECODER 1
-#define CONFIG_DVDSUB_DECODER 1
-#define CONFIG_JACOSUB_DECODER 1
-#define CONFIG_MICRODVD_DECODER 1
+#define CONFIG_DVBSUB_DECODER 0
+#define CONFIG_DVDSUB_DECODER 0
+#define CONFIG_JACOSUB_DECODER 0
+#define CONFIG_MICRODVD_DECODER 0
 #define CONFIG_MOVTEXT_DECODER 1
 #define CONFIG_MPL2_DECODER 1
-#define CONFIG_PGSSUB_DECODER 1
+#define CONFIG_PGSSUB_DECODER 0
 #define CONFIG_PJS_DECODER 1
 #define CONFIG_REALTEXT_DECODER 1
 #define CONFIG_SAMI_DECODER 1
-#define CONFIG_SRT_DECODER 1
+#define CONFIG_SRT_DECODER 0
 #define CONFIG_STL_DECODER 1
 #define CONFIG_SUBRIP_DECODER 1
 #define CONFIG_SUBVIEWER_DECODER 1
@@ -1121,7 +1121,7 @@
 #define CONFIG_TEXT_DECODER 1
 #define CONFIG_VPLAYER_DECODER 1
 #define CONFIG_WEBVTT_DECODER 1
-#define CONFIG_XSUB_DECODER 1
+#define CONFIG_XSUB_DECODER 0
 #define CONFIG_LIBCELT_DECODER 0
 #define CONFIG_LIBDCADEC_DECODER 0
 #define CONFIG_LIBFDK_AAC_DECODER 0
@@ -1139,157 +1139,157 @@
 #define CONFIG_LIBVPX_VP8_DECODER 0
 #define CONFIG_LIBVPX_VP9_DECODER 0
 #define CONFIG_LIBZVBI_TELETEXT_DECODER 0
-#define CONFIG_BINTEXT_DECODER 1
-#define CONFIG_XBIN_DECODER 1
-#define CONFIG_IDF_DECODER 1
-#define CONFIG_A64MULTI_ENCODER 1
-#define CONFIG_A64MULTI5_ENCODER 1
-#define CONFIG_ALIAS_PIX_ENCODER 1
-#define CONFIG_AMV_ENCODER 1
-#define CONFIG_APNG_ENCODER 1
-#define CONFIG_ASV1_ENCODER 1
-#define CONFIG_ASV2_ENCODER 1
-#define CONFIG_AVRP_ENCODER 1
-#define CONFIG_AVUI_ENCODER 1
-#define CONFIG_AYUV_ENCODER 1
-#define CONFIG_BMP_ENCODER 1
-#define CONFIG_CINEPAK_ENCODER 1
-#define CONFIG_CLJR_ENCODER 1
-#define CONFIG_COMFORTNOISE_ENCODER 1
-#define CONFIG_DNXHD_ENCODER 1
-#define CONFIG_DPX_ENCODER 1
-#define CONFIG_DVVIDEO_ENCODER 1
-#define CONFIG_FFV1_ENCODER 1
-#define CONFIG_FFVHUFF_ENCODER 1
-#define CONFIG_FLASHSV_ENCODER 1
-#define CONFIG_FLASHSV2_ENCODER 1
-#define CONFIG_FLV_ENCODER 1
-#define CONFIG_GIF_ENCODER 1
-#define CONFIG_H261_ENCODER 1
-#define CONFIG_H263_ENCODER 1
-#define CONFIG_H263P_ENCODER 1
+#define CONFIG_BINTEXT_DECODER 0
+#define CONFIG_XBIN_DECODER 0
+#define CONFIG_IDF_DECODER 0
+#define CONFIG_A64MULTI_ENCODER 0
+#define CONFIG_A64MULTI5_ENCODER 0
+#define CONFIG_ALIAS_PIX_ENCODER 0
+#define CONFIG_AMV_ENCODER 0
+#define CONFIG_APNG_ENCODER 0
+#define CONFIG_ASV1_ENCODER 0
+#define CONFIG_ASV2_ENCODER 0
+#define CONFIG_AVRP_ENCODER 0
+#define CONFIG_AVUI_ENCODER 0
+#define CONFIG_AYUV_ENCODER 0
+#define CONFIG_BMP_ENCODER 0
+#define CONFIG_CINEPAK_ENCODER 0
+#define CONFIG_CLJR_ENCODER 0
+#define CONFIG_COMFORTNOISE_ENCODER 0
+#define CONFIG_DNXHD_ENCODER 0
+#define CONFIG_DPX_ENCODER 0
+#define CONFIG_DVVIDEO_ENCODER 0
+#define CONFIG_FFV1_ENCODER 0
+#define CONFIG_FFVHUFF_ENCODER 0
+#define CONFIG_FLASHSV_ENCODER 0
+#define CONFIG_FLASHSV2_ENCODER 0
+#define CONFIG_FLV_ENCODER 0
+#define CONFIG_GIF_ENCODER 0
+#define CONFIG_H261_ENCODER 0
+#define CONFIG_H263_ENCODER 0
+#define CONFIG_H263P_ENCODER 0
 #define CONFIG_HAP_ENCODER 0
-#define CONFIG_HUFFYUV_ENCODER 1
-#define CONFIG_JPEG2000_ENCODER 1
-#define CONFIG_JPEGLS_ENCODER 1
-#define CONFIG_LJPEG_ENCODER 1
-#define CONFIG_MJPEG_ENCODER 1
+#define CONFIG_HUFFYUV_ENCODER 0
+#define CONFIG_JPEG2000_ENCODER 0
+#define CONFIG_JPEGLS_ENCODER 0
+#define CONFIG_LJPEG_ENCODER 0
+#define CONFIG_MJPEG_ENCODER 0
 #define CONFIG_MPEG1VIDEO_ENCODER 1
-#define CONFIG_MPEG2VIDEO_ENCODER 1
-#define CONFIG_MPEG4_ENCODER 1
-#define CONFIG_MSMPEG4V2_ENCODER 1
-#define CONFIG_MSMPEG4V3_ENCODER 1
-#define CONFIG_MSVIDEO1_ENCODER 1
-#define CONFIG_PAM_ENCODER 1
-#define CONFIG_PBM_ENCODER 1
-#define CONFIG_PCX_ENCODER 1
-#define CONFIG_PGM_ENCODER 1
-#define CONFIG_PGMYUV_ENCODER 1
+#define CONFIG_MPEG2VIDEO_ENCODER 0
+#define CONFIG_MPEG4_ENCODER 0
+#define CONFIG_MSMPEG4V2_ENCODER 0
+#define CONFIG_MSMPEG4V3_ENCODER 0
+#define CONFIG_MSVIDEO1_ENCODER 0
+#define CONFIG_PAM_ENCODER 0
+#define CONFIG_PBM_ENCODER 0
+#define CONFIG_PCX_ENCODER 0
+#define CONFIG_PGM_ENCODER 0
+#define CONFIG_PGMYUV_ENCODER 0
 #define CONFIG_PNG_ENCODER 1
-#define CONFIG_PPM_ENCODER 1
-#define CONFIG_PRORES_ENCODER 1
-#define CONFIG_PRORES_AW_ENCODER 1
-#define CONFIG_PRORES_KS_ENCODER 1
-#define CONFIG_QTRLE_ENCODER 1
-#define CONFIG_R10K_ENCODER 1
-#define CONFIG_R210_ENCODER 1
-#define CONFIG_RAWVIDEO_ENCODER 1
-#define CONFIG_ROQ_ENCODER 1
-#define CONFIG_RV10_ENCODER 1
-#define CONFIG_RV20_ENCODER 1
-#define CONFIG_S302M_ENCODER 1
-#define CONFIG_SGI_ENCODER 1
+#define CONFIG_PPM_ENCODER 0
+#define CONFIG_PRORES_ENCODER 0
+#define CONFIG_PRORES_AW_ENCODER 0
+#define CONFIG_PRORES_KS_ENCODER 0
+#define CONFIG_QTRLE_ENCODER 0
+#define CONFIG_R10K_ENCODER 0
+#define CONFIG_R210_ENCODER 0
+#define CONFIG_RAWVIDEO_ENCODER 0
+#define CONFIG_ROQ_ENCODER 0
+#define CONFIG_RV10_ENCODER 0
+#define CONFIG_RV20_ENCODER 0
+#define CONFIG_S302M_ENCODER 0
+#define CONFIG_SGI_ENCODER 0
 #define CONFIG_SNOW_ENCODER 1
-#define CONFIG_SUNRAST_ENCODER 1
-#define CONFIG_SVQ1_ENCODER 1
-#define CONFIG_TARGA_ENCODER 1
-#define CONFIG_TIFF_ENCODER 1
-#define CONFIG_UTVIDEO_ENCODER 1
-#define CONFIG_V210_ENCODER 1
-#define CONFIG_V308_ENCODER 1
-#define CONFIG_V408_ENCODER 1
-#define CONFIG_V410_ENCODER 1
-#define CONFIG_VC2_ENCODER 1
-#define CONFIG_WRAPPED_AVFRAME_ENCODER 1
-#define CONFIG_WMV1_ENCODER 1
-#define CONFIG_WMV2_ENCODER 1
-#define CONFIG_XBM_ENCODER 1
-#define CONFIG_XFACE_ENCODER 1
-#define CONFIG_XWD_ENCODER 1
-#define CONFIG_Y41P_ENCODER 1
-#define CONFIG_YUV4_ENCODER 1
-#define CONFIG_ZLIB_ENCODER 1
-#define CONFIG_ZMBV_ENCODER 1
-#define CONFIG_AAC_ENCODER 1
-#define CONFIG_AC3_ENCODER 1
-#define CONFIG_AC3_FIXED_ENCODER 1
-#define CONFIG_ALAC_ENCODER 1
-#define CONFIG_DCA_ENCODER 1
-#define CONFIG_EAC3_ENCODER 1
-#define CONFIG_FLAC_ENCODER 1
-#define CONFIG_G723_1_ENCODER 1
-#define CONFIG_MP2_ENCODER 1
-#define CONFIG_MP2FIXED_ENCODER 1
-#define CONFIG_NELLYMOSER_ENCODER 1
-#define CONFIG_RA_144_ENCODER 1
-#define CONFIG_SONIC_ENCODER 1
-#define CONFIG_SONIC_LS_ENCODER 1
-#define CONFIG_TTA_ENCODER 1
-#define CONFIG_VORBIS_ENCODER 1
-#define CONFIG_WAVPACK_ENCODER 1
-#define CONFIG_WMAV1_ENCODER 1
-#define CONFIG_WMAV2_ENCODER 1
-#define CONFIG_PCM_ALAW_ENCODER 1
-#define CONFIG_PCM_F32BE_ENCODER 1
-#define CONFIG_PCM_F32LE_ENCODER 1
-#define CONFIG_PCM_F64BE_ENCODER 1
-#define CONFIG_PCM_F64LE_ENCODER 1
-#define CONFIG_PCM_MULAW_ENCODER 1
-#define CONFIG_PCM_S8_ENCODER 1
-#define CONFIG_PCM_S8_PLANAR_ENCODER 1
-#define CONFIG_PCM_S16BE_ENCODER 1
-#define CONFIG_PCM_S16BE_PLANAR_ENCODER 1
-#define CONFIG_PCM_S16LE_ENCODER 1
-#define CONFIG_PCM_S16LE_PLANAR_ENCODER 1
-#define CONFIG_PCM_S24BE_ENCODER 1
-#define CONFIG_PCM_S24DAUD_ENCODER 1
-#define CONFIG_PCM_S24LE_ENCODER 1
-#define CONFIG_PCM_S24LE_PLANAR_ENCODER 1
-#define CONFIG_PCM_S32BE_ENCODER 1
-#define CONFIG_PCM_S32LE_ENCODER 1
-#define CONFIG_PCM_S32LE_PLANAR_ENCODER 1
-#define CONFIG_PCM_U8_ENCODER 1
-#define CONFIG_PCM_U16BE_ENCODER 1
-#define CONFIG_PCM_U16LE_ENCODER 1
-#define CONFIG_PCM_U24BE_ENCODER 1
-#define CONFIG_PCM_U24LE_ENCODER 1
-#define CONFIG_PCM_U32BE_ENCODER 1
-#define CONFIG_PCM_U32LE_ENCODER 1
-#define CONFIG_ROQ_DPCM_ENCODER 1
-#define CONFIG_ADPCM_ADX_ENCODER 1
-#define CONFIG_ADPCM_G722_ENCODER 1
-#define CONFIG_ADPCM_G726_ENCODER 1
-#define CONFIG_ADPCM_IMA_QT_ENCODER 1
-#define CONFIG_ADPCM_IMA_WAV_ENCODER 1
-#define CONFIG_ADPCM_MS_ENCODER 1
-#define CONFIG_ADPCM_SWF_ENCODER 1
-#define CONFIG_ADPCM_YAMAHA_ENCODER 1
-#define CONFIG_SSA_ENCODER 1
-#define CONFIG_ASS_ENCODER 1
-#define CONFIG_DVBSUB_ENCODER 1
-#define CONFIG_DVDSUB_ENCODER 1
-#define CONFIG_MOVTEXT_ENCODER 1
-#define CONFIG_SRT_ENCODER 1
-#define CONFIG_SUBRIP_ENCODER 1
-#define CONFIG_TEXT_ENCODER 1
-#define CONFIG_WEBVTT_ENCODER 1
-#define CONFIG_XSUB_ENCODER 1
+#define CONFIG_SUNRAST_ENCODER 0
+#define CONFIG_SVQ1_ENCODER 0
+#define CONFIG_TARGA_ENCODER 0
+#define CONFIG_TIFF_ENCODER 0
+#define CONFIG_UTVIDEO_ENCODER 0
+#define CONFIG_V210_ENCODER 0
+#define CONFIG_V308_ENCODER 0
+#define CONFIG_V408_ENCODER 0
+#define CONFIG_V410_ENCODER 0
+#define CONFIG_VC2_ENCODER 0
+#define CONFIG_WRAPPED_AVFRAME_ENCODER 0
+#define CONFIG_WMV1_ENCODER 0
+#define CONFIG_WMV2_ENCODER 0
+#define CONFIG_XBM_ENCODER 0
+#define CONFIG_XFACE_ENCODER 0
+#define CONFIG_XWD_ENCODER 0
+#define CONFIG_Y41P_ENCODER 0
+#define CONFIG_YUV4_ENCODER 0
+#define CONFIG_ZLIB_ENCODER 0
+#define CONFIG_ZMBV_ENCODER 0
+#define CONFIG_AAC_ENCODER 0
+#define CONFIG_AC3_ENCODER 0
+#define CONFIG_AC3_FIXED_ENCODER 0
+#define CONFIG_ALAC_ENCODER 0
+#define CONFIG_DCA_ENCODER 0
+#define CONFIG_EAC3_ENCODER 0
+#define CONFIG_FLAC_ENCODER 0
+#define CONFIG_G723_1_ENCODER 0
+#define CONFIG_MP2_ENCODER 0
+#define CONFIG_MP2FIXED_ENCODER 0
+#define CONFIG_NELLYMOSER_ENCODER 0
+#define CONFIG_RA_144_ENCODER 0
+#define CONFIG_SONIC_ENCODER 0
+#define CONFIG_SONIC_LS_ENCODER 0
+#define CONFIG_TTA_ENCODER 0
+#define CONFIG_VORBIS_ENCODER 0
+#define CONFIG_WAVPACK_ENCODER 0
+#define CONFIG_WMAV1_ENCODER 0
+#define CONFIG_WMAV2_ENCODER 0
+#define CONFIG_PCM_ALAW_ENCODER 0
+#define CONFIG_PCM_F32BE_ENCODER 0
+#define CONFIG_PCM_F32LE_ENCODER 0
+#define CONFIG_PCM_F64BE_ENCODER 0
+#define CONFIG_PCM_F64LE_ENCODER 0
+#define CONFIG_PCM_MULAW_ENCODER 0
+#define CONFIG_PCM_S8_ENCODER 0
+#define CONFIG_PCM_S8_PLANAR_ENCODER 0
+#define CONFIG_PCM_S16BE_ENCODER 0
+#define CONFIG_PCM_S16BE_PLANAR_ENCODER 0
+#define CONFIG_PCM_S16LE_ENCODER 0
+#define CONFIG_PCM_S16LE_PLANAR_ENCODER 0
+#define CONFIG_PCM_S24BE_ENCODER 0
+#define CONFIG_PCM_S24DAUD_ENCODER 0
+#define CONFIG_PCM_S24LE_ENCODER 0
+#define CONFIG_PCM_S24LE_PLANAR_ENCODER 0
+#define CONFIG_PCM_S32BE_ENCODER 0
+#define CONFIG_PCM_S32LE_ENCODER 0
+#define CONFIG_PCM_S32LE_PLANAR_ENCODER 0
+#define CONFIG_PCM_U8_ENCODER 0
+#define CONFIG_PCM_U16BE_ENCODER 0
+#define CONFIG_PCM_U16LE_ENCODER 0
+#define CONFIG_PCM_U24BE_ENCODER 0
+#define CONFIG_PCM_U24LE_ENCODER 0
+#define CONFIG_PCM_U32BE_ENCODER 0
+#define CONFIG_PCM_U32LE_ENCODER 0
+#define CONFIG_ROQ_DPCM_ENCODER 0
+#define CONFIG_ADPCM_ADX_ENCODER 0
+#define CONFIG_ADPCM_G722_ENCODER 0
+#define CONFIG_ADPCM_G726_ENCODER 0
+#define CONFIG_ADPCM_IMA_QT_ENCODER 0
+#define CONFIG_ADPCM_IMA_WAV_ENCODER 0
+#define CONFIG_ADPCM_MS_ENCODER 0
+#define CONFIG_ADPCM_SWF_ENCODER 0
+#define CONFIG_ADPCM_YAMAHA_ENCODER 0
+#define CONFIG_SSA_ENCODER 0
+#define CONFIG_ASS_ENCODER 0
+#define CONFIG_DVBSUB_ENCODER 0
+#define CONFIG_DVDSUB_ENCODER 0
+#define CONFIG_MOVTEXT_ENCODER 0
+#define CONFIG_SRT_ENCODER 0
+#define CONFIG_SUBRIP_ENCODER 0
+#define CONFIG_TEXT_ENCODER 0
+#define CONFIG_WEBVTT_ENCODER 0
+#define CONFIG_XSUB_ENCODER 0
 #define CONFIG_LIBFAAC_ENCODER 0
 #define CONFIG_LIBFDK_AAC_ENCODER 0
 #define CONFIG_LIBGSM_ENCODER 0
 #define CONFIG_LIBGSM_MS_ENCODER 0
 #define CONFIG_LIBILBC_ENCODER 0
-#define CONFIG_LIBMP3LAME_ENCODER 1
+#define CONFIG_LIBMP3LAME_ENCODER 0
 #define CONFIG_LIBOPENCORE_AMRNB_ENCODER 0
 #define CONFIG_LIBOPENJPEG_ENCODER 0
 #define CONFIG_LIBOPUS_ENCODER 0
@@ -1307,11 +1307,11 @@
 #define CONFIG_LIBWEBP_ANIM_ENCODER 0
 #define CONFIG_LIBWEBP_ENCODER 0
 #define CONFIG_LIBX262_ENCODER 0
-#define CONFIG_LIBX264_ENCODER 1
+#define CONFIG_LIBX264_ENCODER 0
 #define CONFIG_LIBX264RGB_ENCODER 0
 #define CONFIG_LIBX265_ENCODER 0
 #define CONFIG_LIBXAVS_ENCODER 0
-#define CONFIG_LIBXVID_ENCODER 1
+#define CONFIG_LIBXVID_ENCODER 0
 #define CONFIG_LIBOPENH264_ENCODER 0
 #define CONFIG_H264_QSV_ENCODER 0
 #define CONFIG_NVENC_ENCODER 0
