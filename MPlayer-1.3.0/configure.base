@@ -50,7 +50,6 @@
  --disable-os2threads \
  --disable-ossaudio \
  --disable-pnm \
- --disable-pthreads \
  --disable-pulse \
  --disable-pvr \
  --disable-qtx \
