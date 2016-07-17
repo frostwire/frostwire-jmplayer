@@ -21,21 +21,31 @@
 #
 
 export MACOSX_DEPLOYMENT_TARGET=10.6
+#make final executable smaller and copy it to the frostwire-desktop/lib/native/ folder.
+isWINDOWS=`uname -a | awk '{print index($0,"MINGW32")}'`
 
-#clean up and create base configuration
+CONFIGURE_BASE_FILE=configure.base.osx
+if [ $isWINDOWS == 1]
+then
+   CONFIGURE_BASE_FILE=configure.base.win
+fi
+echo using configure base file $CONFIGURE_BASE_FILE
+
+#clean up
 function cleanConfigure() {
-make clean
-./configure
+  make clean
+  # we run configure the first time to generate the config.h file that gen_decoders.py needs.
+  ./$CONFIGURE_BASE_FILE
 }
 
 #generate the full blown configure file.
 #configure.base has the base compilation flags without the decoders.
 function realConfigure() {
-python gen_decoders.py > configure.codec_flags
-cat configure.base configure.codec_flags > configure.out
-rm configure.codec_flags
-chmod +x configure.out
-./configure.out
+  python gen_decoders.py > configure.codec_flags
+  cat $CONFIGURE_BASE_FILE configure.codec_flags > configure.out
+  rm configure.codec_flags
+  chmod +x configure.out
+  #./configure.out
 }
 
 #check if UPX is installed, if not abort.
@@ -53,9 +63,6 @@ PATH=$OLDPATH
 
 #go!
 function packIt() {
-
-#make final executable smaller and copy it to the frostwire-desktop/lib/native/ folder.
-isWINDOWS=`uname -a | awk '{print index($0,"MINGW32")}'`
 
 echo is windows? $isWINDOWS
 
