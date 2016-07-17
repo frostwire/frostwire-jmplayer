@@ -11,6 +11,12 @@
 *.la
 *.a
 
+# Generated files
+**/config.h
+**/config.mak
+**/config.log
+**/config.mak
+
 # vim temp files
 *~
 
@@ -31,5 +37,11 @@ JMPlayer-Bundle/JMPlayer-Bundle.xcodeproj/project.xcworkspace/xcuserdata/
 */build/
 */DerivedData/
 
-MPlayer-1.1/configure.out
-MPlayer-1.1/mplayer.uncompressed
+
+*/mplayer.upx
+*/mplayer.uncompressed
+*/.cproject
+*/.project
+*/configure.codec_flags
+*/configure.out
+*/ffmpeg/config.asm
