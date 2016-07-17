@@ -41,3 +41,4 @@ function packIt() {
 
 checkUPX
 packIt
+cp mplayer ../../frostwire/desktop/lib/native/fwplayer_osx
