@@ -489,13 +489,13 @@
 
 
 make
-echo Before Stripping
-ls -lh mplayer
-strip mplayer
-echo After Stripping, Before UPX
-ls -lh mplayer
-cp mplayer mplayer.upxed
-upx --ultra-brute mplayer.upxed
-echo After UPX
-ls -lh mplayer.upxed
-cp mplayer.upxed ../../frostwire/desktop/lib/native/fwplayer_osx
+#echo Before Stripping
+#ls -lh mplayer
+#strip mplayer
+#echo After Stripping, Before UPX
+#ls -lh mplayer
+#cp mplayer mplayer.upxed
+#upx --ultra-brute mplayer.upxed
+#echo After UPX
+#ls -lh mplayer.upxed
+#cp mplayer.upxed ../../frostwire/desktop/lib/native/fwplayer_osx

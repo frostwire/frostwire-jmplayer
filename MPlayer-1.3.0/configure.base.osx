@@ -16,8 +16,6 @@
  --disable-faac \
  --disable-faac-lavc \
  --disable-fastmemcpy \
- --disable-fontconfig \
- --disable-freetype \
  --disable-ftp \
  --disable-gethostbyname2 \
  --disable-iconv \

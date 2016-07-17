@@ -34,8 +34,9 @@ echo using configure base file $CONFIGURE_BASE_FILE
 #clean up
 function cleanConfigure() {
   make clean
+  rm configure.out
   # we run configure the first time to generate the config.h file that gen_decoders.py needs.
-  ./$CONFIGURE_BASE_FILE
+  ./configure
 }
 
 #generate the full blown configure file.
@@ -45,7 +46,7 @@ function realConfigure() {
   cat $CONFIGURE_BASE_FILE configure.codec_flags > configure.out
   rm configure.codec_flags
   chmod +x configure.out
-  #./configure.out
+  ./configure.out
 }
 
 
