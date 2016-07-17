@@ -3,7 +3,6 @@
  --disable-alsa \
  --disable-arts \
  --disable-ass \
- --disable-bitmap-font \
  --disable-bluray \
  --disable-cddb \
  --disable-cdparanoia \

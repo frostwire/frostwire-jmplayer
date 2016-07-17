@@ -15,15 +15,15 @@ def gen_decoders():
                 encoders.append( line[15:line.find("_ENCODER")].lower() );
 				
         for d in [d for d in decoders if d not in VIDEO_DECODERS and d not in AUDIO_DECODERS]:
-            msg = "  --disable-decoder=" + d + " \\"
+            msg = " --disable-decoder=" + d + " \\"
             print msg
     
         for d in [d for d in decoders if d in VIDEO_DECODERS or d in AUDIO_DECODERS]:
-            msg = "  --enable-decoder=" + d + " \\"
+            msg = " --enable-decoder=" + d + " \\"
             print msg
 
         for e in encoders:
-            print "  --disable-encoder=" + e + " \\"
+            print " --disable-encoder=" + e + " \\"
 
         missing_decoders = [item for item in VIDEO_DECODERS if item not in decoders]
         missing_decoders = missing_decoders + [item for item in AUDIO_DECODERS if item not in decoders]

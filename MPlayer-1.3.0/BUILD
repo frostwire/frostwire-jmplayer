@@ -46,6 +46,8 @@ function realConfigure() {
   cat $CONFIGURE_BASE_FILE configure.codec_flags > configure.out
   rm configure.codec_flags
   chmod +x configure.out
+  less configure.out
+  less config.h
   ./configure.out
 }
 
@@ -60,5 +62,4 @@ function makeIt() {
 
 cleanConfigure
 realConfigure
-checkUPX
 makeIt

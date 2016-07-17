@@ -38,3 +38,6 @@ function packIt() {
 
   cp $MPLAYER_EXECUTABLE ../../frostwire/desktop/lib/native/$FWPLAYER_EXECUTABLE
 }
+
+checkUPX
+packIt
