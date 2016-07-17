@@ -48,55 +48,16 @@ function realConfigure() {
   #./configure.out
 }
 
-#check if UPX is installed, if not abort.
-function checkUPX() {
-command -v upx >/dev/null 2>&1 || { echo >&2 "I require upx but it's not installed.  Aborting."; exit 1; }
-}
 
 function makeIt() {
-OLDPATH=$PATH
-#add yasm.exe to the path...
-PATH=$PATH:`pwd`
-make
-PATH=$OLDPATH
-}
-
-#go!
-function packIt() {
-
-echo is windows? $isWINDOWS
-
-MPLAYER_EXECUTABLE=mplayer
-FWPLAYER_EXECUTABLE=fwplayer_osx
-UPX_PARAMETERS=--ultra-brute
-
-if [ $isWINDOWS == 1 ]
-then
-  echo "This is windows, appending .exe to executables"
-  MPLAYER_EXECUTABLE=mplayer.exe
-  FWPLAYER_EXECUTABLE=fwplayer.exe
-  UPX_PARAMETERS=--ultra-brute
-fi
-
-echo Before Stripping
-ls -lh $MPLAYER_EXECUTABLE
-strip $MPLAYER_EXECUTABLE
-echo After Stripping, Before UPX
-ls -lh $MPLAYER_EXECUTABLE
-cp $MPLAYER_EXECUTABLE $MPLAYER_EXECUTABLE.uncompressed
-
-#if your upx has not been compiled with LZMA the "--ultra-brute" flag will not work.
-#upx $MPLAYER_EXECUTABLE
-upx $UPX_PARAMETERS $MPLAYER_EXECUTABLE
-
-echo After UPX
-ls -lh $MPLAYER_EXECUTABLE
-
-cp $MPLAYER_EXECUTABLE ../../frostwire/desktop/lib/native/$FWPLAYER_EXECUTABLE
+  OLDPATH=$PATH
+  #add yasm.exe to the path...
+  PATH=$PATH:`pwd`
+  make
+  PATH=$OLDPATH
 }
 
 cleanConfigure
 realConfigure
 checkUPX
 makeIt
-packIt
