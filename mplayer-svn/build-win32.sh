@@ -2,7 +2,7 @@
 ./configure \
     --enable-openssl-nondistributable --enable-runtime-cpudetection \
     --extra-cflags="-Os -I/home/aldenml/Development/openssl-1.0.2h/include" \
-    --extra-ldflags="-L/home/aldenml/Development/openssl-1.0.2h -lcrypto -lssl" \
+    --extra-ldflags="-L/home/aldenml/Development/openssl-1.0.2h -lssl -lcrypto" \
     --windres=i686-w64-mingw32-windres \
     --disable-iconv --disable-mencoder \
     \
@@ -209,7 +209,6 @@
     --disable-decoder=g729 \
     --disable-decoder=gsm \
     --disable-decoder=gsm_ms \
-    --disable-decoder=imc \
     --disable-decoder=mace3 \
     --disable-decoder=mace6 \
     --disable-decoder=mlp \
@@ -491,10 +490,10 @@
 
 make
 echo Before Stripping
-ls -lh mplayer
-i686-w64-mingw32-strip -s mplayer
+ls -lh mplayer.exe
+i686-w64-mingw32-strip -s mplayer.exe
 echo After Stripping, Before UPX
-ls -lh mplayer
-upx -9 --ultra-brute  mplayer
+ls -lh mplayer.exe
+upx -9 --ultra-brute mplayer.exe
 echo After UPX
 ls -lh mplayer
