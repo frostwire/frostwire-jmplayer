@@ -179,7 +179,6 @@
     --disable-decoder=vp6f \
     --disable-decoder=vp7 \
     --disable-decoder=vp8_cuvid \
-    --disable-decoder=vp9 \
     --disable-decoder=vp9_cuvid \
     --disable-decoder=libvpx_vp8 \
     --disable-decoder=libvpx_vp9 \
@@ -340,12 +339,15 @@
     --enable-decoder=h263 \
     --enable-decoder=h263i \
     --enable-decoder=h264 \
+    --enable-decoder=hevc \
     --enable-decoder=mpeg1video \
     --enable-decoder=mpeg2video \
     --enable-decoder=mpeg4 \
     --enable-decoder=svq1 \
     --enable-decoder=svq3 \
     --enable-decoder=vp6 \
+    --enable-decoder=vp8 \
+    --enable-decoder=vp9 \
     --enable-decoder=wmv1 \
     --enable-decoder=wmv2 \
     --enable-decoder=aac \
@@ -506,6 +508,9 @@
     --disable-encoder=h264_qsv \
     --disable-encoder=h264_vaapi \
     --disable-encoder=h264_videotoolbox \
+    --disable-encoder=hevc_nvenc \
+    --disable-encoder=hevc_qsv \
+    --disable-encoder=hevc_vaapi \
 \
 \
 
@@ -516,6 +521,6 @@ ls -lh mplayer.exe
 i686-w64-mingw32-strip -s mplayer.exe
 echo After Stripping, Before UPX
 ls -lh mplayer.exe
-upx -9 mplayer.exe
+upx -9 -o mplayer-upx.exe mplayer.exe
 echo After UPX
-ls -lh mplayer
+ls -lh mplayer-upx.exe
