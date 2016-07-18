@@ -31,9 +31,7 @@ function packIt() {
 
   #if your upx has not been compiled with LZMA the "--ultra-brute" flag will not work.
   #upx $MPLAYER_EXECUTABLE
-  #upx $UPX_PARAMETERS $MPLAYER_EXECUTABLE
-
-  ld /usr/local/opt/gnutls/lib/libgnutls.30.dylib mplayer.uncompressed -o mplayer_gnutlsed
+  upx $UPX_PARAMETERS $MPLAYER_EXECUTABLE
 
   echo After UPX
   ls -lh $MPLAYER_EXECUTABLE
