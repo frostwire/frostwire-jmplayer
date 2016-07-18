@@ -87,4 +87,4 @@
  --enable-openssl-nondistributable \
  --enable-runtime-cpudetection \
  --extra-cflags="-Os -mmacosx-version-min=10.6" \
- -disable-gnutls \
+ --disable-gnutls \
