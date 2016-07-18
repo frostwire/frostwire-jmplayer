@@ -76,6 +76,12 @@
     --disable-decoder=h261 \
     --disable-decoder=h264_crystalhd \
     --disable-decoder=h264_vdpau \
+    --disable-decoder=h264_cuvid \
+    --disable-decoder=h264_mediacodec \
+    --disable-decoder=h264_mmal \
+    --disable-decoder=h264_qsv \
+    --disable-decoder=h264_vda \
+    --disable-decoder=h264_vdpau \
     --disable-decoder=huffyuv \
     --disable-decoder=idcin \
     --disable-decoder=iff_byterun1 \
@@ -171,7 +177,12 @@
     --disable-decoder=vp5 \
     --disable-decoder=vp6a \
     --disable-decoder=vp6f \
-    --disable-decoder=vp8 \
+    --disable-decoder=vp7 \
+    --disable-decoder=vp8_cuvid \
+    --disable-decoder=vp9 \
+    --disable-decoder=vp9_cuvid \
+    --disable-decoder=libvpx_vp8 \
+    --disable-decoder=libvpx_vp9 \
     --disable-decoder=vqa \
     --disable-decoder=wmv3 \
     --disable-decoder=wmv3_crystalhd \
@@ -479,11 +490,22 @@
     --disable-encoder=libvo_amrwbenc \
     --disable-encoder=libvorbis \
     --disable-encoder=libvpx \
+    --disable-encoder=libvpx_vp8 \
+    --disable-encoder=libvpx_vp9 \
     --disable-encoder=libx264 \
     --disable-encoder=libx264rgb \
     --disable-encoder=libxavs \
     --disable-encoder=libxvid \
     --disable-encoder=libaacplus \
+    --disable-encoder=libopenh264 \
+    --disable-encoder=nvenc \
+    --disable-encoder=nvenc_h264 \
+    --disable-encoder=nvenc_hevc \
+    --disable-encoder=h264_nvenc \
+    --disable-encoder=h264_omx \
+    --disable-encoder=h264_qsv \
+    --disable-encoder=h264_vaapi \
+    --disable-encoder=h264_videotoolbox \
 \
 \
 
@@ -494,6 +516,6 @@ ls -lh mplayer.exe
 i686-w64-mingw32-strip -s mplayer.exe
 echo After Stripping, Before UPX
 ls -lh mplayer.exe
-upx -9 --ultra-brute mplayer.exe
+upx -9 mplayer.exe
 echo After UPX
 ls -lh mplayer
