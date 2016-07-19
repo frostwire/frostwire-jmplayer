@@ -17,6 +17,7 @@
  --disable-fastmemcpy \
  --disable-ftp \
  --disable-gethostbyname2 \
+ --disable-gnutls \
  --disable-iconv \
  --disable-inet6 \
  --disable-jack \
@@ -86,5 +87,6 @@
  --disable-yuv4mpeg \
  --enable-openssl-nondistributable \
  --enable-runtime-cpudetection \
- --extra-cflags="-Os -mmacosx-version-min=10.6" \
- --disable-gnutls \
+ --enable-static \
+ --extra-cflags="-I/usr/X11/include -Os -mmacosx-version-min=10.6" \
+ --extra-ldflags="-L/usr/X11/lib" \
