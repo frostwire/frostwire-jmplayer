@@ -1,4 +1,4 @@
-VIDEO_DECODERS =['h263', 'h263i', 'h264', 'mpeg4', 'wmv1', 'wmv2', 'wmv3', 'mpeg1video', 'mpeg2video', 'vp6','vp6a','vp6f','vp8', 'flv', 'svq1', 'svq3', 'xvid', 'x264', 'vc1']
+VIDEO_DECODERS =['h263', 'h263i', 'h264', 'mpeg4', 'wmv1', 'wmv2', 'wmv3', 'mpeg1video', 'mpeg2video', 'vp6','vp6a','vp6f','vp8', 'flv', 'svq1', 'svq3', 'xvid', 'x264', 'vc1', 'vp8', 'vp9', 'hevc']
 AUDIO_DECODERS =['aac', 'mp3lame', 'mp3', 'ac3', 'flac', 'libfaac', 'adpcm_g726', 'vorbis', 'mp2', 'wmav1', 'wmav2', 'wmapro' ,'pcm_alaw','pcm_f32be','pcm_f32le', 'pcm_f64be', 'pcm_f64le', 'pcm_lxf', 'pcm_mulaw', 'pcm_s8', 'pcm_s8_planar', 'pcm_s16be', 'pcm_s16le', 'pcm_s16le_planar', 'pcm_s24be', 'pcm_s24daud', 'pcm_s24le', 'pcm_s32be', 'pcm_s32le', 'pcm_u8', 'pcm_u16be', 'pcm_u16le', 'pcm_u24be', 'pcm_u24le', 'pcm_u32be', 'pcm_u32le']
 
 def gen_decoders():
