@@ -1,6 +1,6 @@
 #!/bin/bash
 ./configure \
-    --enable-openssl-nondistributable --enable-runtime-cpudetection \
+    --enable-openssl-nondistributable --enable-runtime-cpudetection --enable-static \
     --extra-cflags="-Os -I/home/aldenml/Development/openssl-1.0.2h/include" \
     --extra-ldflags="-L/home/aldenml/Development/openssl-1.0.2h -lssl -lcrypto" \
     --windres=i686-w64-mingw32-windres \
@@ -521,6 +521,7 @@ ls -lh mplayer.exe
 i686-w64-mingw32-strip -s mplayer.exe
 echo After Stripping, Before UPX
 ls -lh mplayer.exe
+rm -rf mplayer-upx.exe
 upx -9 -o mplayer-upx.exe mplayer.exe
 echo After UPX
 ls -lh mplayer-upx.exe
