@@ -30,3 +30,18 @@ $ svn checkout svn://svn.mplayerhq.hu/mplayer/trunk mplayer-trunk
 $ cp build-win32.sh mplayer-trunk
 $ cd mplayer-trunk
 $ ./build-win32.sh
+
+---------------------------
+macOS
+===========================
+
+Preparations
+$ brew install upx
+$ brew install yasm
+
+Prepare mplayer
+
+$ svn checkout svn://svn.mplayerhq.hu/mplayer/trunk mplayer-trunk
+$ cp build-macos.sh mplayer-trunk
+$ cd mplayer-trunk
+$ ./build-macos.sh
