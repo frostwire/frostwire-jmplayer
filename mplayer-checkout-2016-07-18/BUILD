@@ -25,7 +25,7 @@ export MACOSX_DEPLOYMENT_TARGET=10.6
 isWINDOWS=`uname -a | awk '{print index($0,"MINGW32")}'`
 
 CONFIGURE_BASE_FILE=configure.base.osx
-if [ $isWINDOWS == 1]
+if [ $isWINDOWS == 1 ]
 then
    CONFIGURE_BASE_FILE=configure.base.win
 fi
