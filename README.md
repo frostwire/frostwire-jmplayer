@@ -11,3 +11,5 @@ The frostwire-jmplayer project (JMPlayer) contains the sources for the <a href="
 
 <a href="https://github.com/frostwire/frostwire-jmplayer/tree/master/MPlayer-1.1">MPlayer-1.1</a> is the original mplayer 1.1 executable source.  our version of it compiles to not use the dependency for libiconv. the build script BUILD compiles the project and copies the mplayer result to fwplayer_osx (for mac) or fwplayer.exe (for Win32) located in frostwire-desktop/lib/native folder.
 
+As of September 2019
+<a href="https://github.com/frostwire/frostwire-jmplayer/tree/master/mplayer-svn>mplayer-svn</a> contains one step build bash scripts to create fwplayer_osx and fwplayer.exe. These scripts will checkout mplayer code from svn and ffmpeg code from git repos.

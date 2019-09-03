@@ -39,15 +39,10 @@ Preparations
 $ brew install upx
 $ brew install yasm
 
-Prepare mplayer
+Build mplayer and ffmpeg with minimum dependencies
 
-$ svn checkout svn://svn.mplayerhq.hu/mplayer/trunk mplayer-trunk
-$ cp build-macos.sh mplayer-trunk
-$ cd mplayer-trunk
 $ ./build-macos.sh
 
-if you have problems with automatic detection of CoreVideo and CoreAudio is probably
-because you are using an SDK too new. Toy around with the inclusion of
-#include <Kernel/Availability.h>
-#include <Kernel/AvailabilityMacros.h>
-in configure and relevant audio and video source code files.
+This script will check out mplayer's code with SVN.
+Its configure script will in turn clone ffmpeg with git.
+The final result should be fwplayer_osx on this folder.
