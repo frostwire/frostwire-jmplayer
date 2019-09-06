@@ -75,15 +75,18 @@ verify_ffmpeg_flags() {
   return 0
 }
 
-##############################################################################
+################################################################################
+# checkout mplayer from subversion
+################################################################################
 checkout_mplayer() {
   if [ ! -d "mplayer-trunk" ]; then
       svn checkout svn://svn.mplayerhq.hu/mplayer/trunk mplayer-trunk
-      # development mode
       if [ ! -d "mplayer-trunk" ]; then
-        cp -pr ../mplayer-1.4-svn-clone mplayer-trunk
+        echo "checkout_mplayer: check your svn installation or network connection, could not checkout mplayer svn repo"
+        return 1
       fi
   fi
+  return 0
 }
 
 ################################################################################
