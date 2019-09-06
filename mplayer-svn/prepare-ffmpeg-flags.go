@@ -77,7 +77,7 @@ func load_available_codecs(encoders bool) []string {
 		panic(err)
 	}
 	subject := (map[bool]string{true: "encoders", false: "decoders"})[encoders]
-	cmd := exec.Command("./configure", fmt.Sprintf("--list-%s", subject))
+	cmd := exec.Command("sh", "configure", fmt.Sprintf("--list-%s", subject))
 	cmd.Dir = "mplayer-trunk/ffmpeg"
 	codecs_bytes, err := cmd.Output()
 	if err != nil {
