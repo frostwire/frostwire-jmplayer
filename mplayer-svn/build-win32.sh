@@ -1,8 +1,9 @@
 #!/bin/bash
+OPENSSL_ROOT=${HOME}/src/openssl
 ./configure \
     --enable-openssl-nondistributable --enable-runtime-cpudetection --enable-static \
-    --extra-cflags="-Os -I/home/aldenml/Development/openssl-1.0.2h/include" \
-    --extra-ldflags="-L/home/aldenml/Development/openssl-1.0.2h -lssl -lcrypto" \
+    --extra-cflags="-Os -I${OPENSSL_ROOT}/include" \
+    --extra-ldflags="-L${OPENSSL_ROOT}/lib -lssl -lcrypto" \
     --windres=i686-w64-mingw32-windres \
     --disable-iconv --disable-mencoder \
     \

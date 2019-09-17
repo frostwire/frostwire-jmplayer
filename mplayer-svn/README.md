@@ -43,7 +43,7 @@ cd mplayer-trunk
 Make sure cygwin has the following packages installed:
 
 ```
-automake, automake1.9, wget, curl, dos2unix, emacs, gcc-core, gcc-debuginfo, gcc-g++, gcc-tools-epochN-autoconf, gcc-tools-epochN-automake, gettext, make, openssh, python27, wget, yasm, jpeg, libjpeg-devel, libpng, libpng-devel, libpng-tools, libpng16, lbpng16-devel, zlib, zlib-devel
+automake, automake1.9, wget, curl, dos2unix, emacs, gcc-core, gcc-debuginfo, gcc-g++, gcc-tools-epochN-autoconf, gcc-tools-epochN-automake, gettext, make, openssh, python27, wget, yasm, jpeg, libjpeg-devel, libpng, libpng-devel, libpng-tools, libpng16, lbpng16-devel, zlib, zlib-devel, liblzma-devel, liblzma5, libiconv-devel
 ```
 
 It's convenient to manage cygwin packages with something like debian's `apt`, try installing `apt-cyg`
