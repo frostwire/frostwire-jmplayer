@@ -45,35 +45,35 @@ if [ ! -d "mplayer-trunk/ffmpeg" ]; then
   exit 1
 fi
 
-# prepare_ffmpeg_flags
-# verify_ffmpeg_flags || exit 1
+prepare_ffmpeg_flags
+verify_ffmpeg_flags || exit 1
 
-# if_cygwin dos2unix_fixes_pre_ffmpeg_configure
+if_cygwin dos2unix_fixes_pre_ffmpeg_configure
 
-# pushd mplayer-trunk/ffmpeg
-# ./configure \
-# --enable-nonfree \
-# --enable-openssl \
-# --disable-programs \
-# --disable-bsfs \
-# --disable-muxers \
-# --disable-demuxers \
-# --disable-devices \
-# --disable-filters \
-# --disable-iconv \
-# --disable-alsa \
-# --disable-openal \
-# ${ENABLED_PROTOCOLS_FLAGS} \
-# ${DISABLED_DECODERS_FLAGS} \
-# ${ENABLED_DECODERS_FLAGS} \
-# ${DISABLED_ENCODERS_FLAGS}
+pushd mplayer-trunk/ffmpeg
+./configure \
+--enable-nonfree \
+--enable-openssl \
+--disable-programs \
+--disable-bsfs \
+--disable-muxers \
+--disable-demuxers \
+--disable-devices \
+--disable-filters \
+--disable-iconv \
+--disable-alsa \
+--disable-openal \
+${ENABLED_PROTOCOLS_FLAGS} \
+${DISABLED_DECODERS_FLAGS} \
+${ENABLED_DECODERS_FLAGS} \
+${DISABLED_ENCODERS_FLAGS}
 
-# popd
-# if_cygwin dos2unix_fixes_post_ffmpeg_configure
-# pushd mplayer-trunk/ffmpeg
+popd
+if_cygwin dos2unix_fixes_post_ffmpeg_configure
+pushd mplayer-trunk/ffmpeg
 
-# make -j 8 #first make ffmpeg
-# popd
+make -j 8 #first make ffmpeg
+popd
 
 # Paths found in MacOS 10.14.6 - September 2019
 MACOS_FRAMEWORKS='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks'
