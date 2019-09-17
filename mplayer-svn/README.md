@@ -1,43 +1,3 @@
-# WINDOWS (in Ubuntu 14.04)
-
-## Preparations (in /home/<user>/Development)
-
-```bash
-sudo apt-get update
-sudo apt-get install -qq yasm
-sudo apt-get install upx
-sudo apt-get install -qq mingw-w64
-sudo rm /usr/i686-w64-mingw32/lib/libwinpthread.dll.a
-sudo rm /usr/i686-w64-mingw32/lib/libwinpthread-1.dll
-sudo rm /usr/x86_64-w64-mingw32/lib/libwinpthread.dll.a
-sudo rm /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll
-```
-
-## Compile OpenSSL
-
-```
-bash
-wget -O openssl.tar.gz http://openssl.org/source/openssl-1.0.2h.tar.gz
-tar -xzf openssl.tar.gz
-sed -i 's/if !defined(OPENSSL_SYS_WINCE) && !defined(OPENSSL_SYS_WIN32_CYGWIN)/if 0/g' openssl-1.0.2h/crypto/rand/rand_win.c
-cd openssl-1.0.2h/
-export CC=i686-w64-mingw32-gcc
-./Configure mingw --prefix=/home/<user>/Development/openssl-win32-x86
-make
-make install
-```
-
-## Prepare mplayer
-
-```bash
-export CC=i686-w64-mingw32-gcc
-svn checkout svn://svn.mplayerhq.hu/mplayer/trunk mplayer-trunk
-cp build-win32.sh mplayer-trunk
-cd mplayer-trunk
-./build-win32.sh
-```
-
----------------------------
 # WINDOWS (CYGWIN_NT-6.1)
 
 Make sure cygwin has the following packages installed:
@@ -78,7 +38,6 @@ wget https://www.openssl.org/source/openssl-1.1.1d.tar.gz
 make
 make install
 ```
-
 ---------------------------
 # macOS
 
@@ -87,12 +46,14 @@ brew install upx
 brew install yasm
 ```
 
+# Build fwplayer
+
 Build mplayer and ffmpeg with minimum dependencies
 
 ```bash
-./build-macos.sh
+./build.sh
 ```
 
 This script will check out mplayer's code with SVN.
 Its configure script will in turn clone ffmpeg with git.
-The final result should be fwplayer_osx on this folder.
+The final result should be `fwplayer.exe` for Windows or `fwplayer_osx` for macOS on this folder.
