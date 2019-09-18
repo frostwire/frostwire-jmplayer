@@ -137,6 +137,7 @@ ${CONFIG_CYGWIN_OPTS} \
 --disable-win32dll
 
 if_cygwin dos2unix_fixes_post_mplayer_configure
+if_cygwin fix_mplayer_version_h
 
 if [ is_cygwin ]; then
   svn patch ../mplayer_stream_stream_c.patch
