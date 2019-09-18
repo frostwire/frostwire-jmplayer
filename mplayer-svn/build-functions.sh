@@ -150,6 +150,12 @@ dos2unix_fixes_post_mplayer_configure() {
   dos2unix stream/*
 }
 
+fix_mplayer_version_h() {
+  cp version.h version.h.broken
+  tr -d '\r' < version.h.broken > version.h
+  rm -f version.h.broken
+}
+
 strip_and_upx_final_executable() {
 	FWPLAYER_EXEC="fwplayer_osx"
 	MPLAYER_EXEC="mplayer"
