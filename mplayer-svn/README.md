@@ -29,15 +29,10 @@ git config --global core.eol lf
 
 For subversion make sure to copy the contents of the `dot_subversion_config` file contents into/end of your `~/.subversion/config` file.
 
-## Build OpenSSL
+# Build openssl
 
-```bash
-cd ~/src
-wget https://www.openssl.org/source/openssl-1.1.1d.tar.gz
-./Configure Cygwin-x86_64 --prefix=${HOME}/src/openssl
-make
-make install
-```
+A `build-openssl.sh` script has been included for you to build fresh OpenSSL binaries and libraries
+
 ---------------------------
 # macOS
 
