@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -x
 
-is_linux() {
-    return $(expr substr $(uname) 1 5) == "Linux"
-}
+source build-functions.sh
 
 OPENSSL_VERSION='1.1.1d'
 OPENSSL_SRC=${HOME}/src/openssl-${OPENSSL_VERSION}
@@ -51,3 +49,5 @@ make clean
 make
 make install_sw
 popd
+
+export OPENSSL_ROOT=${OPENSSL_PREFIX}
