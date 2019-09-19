@@ -43,6 +43,9 @@ prepare_ffmpeg_flags() {
   if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
     prep_ffmpeg_flags_executable='prepare-ffmpeg-flags.exe'
   fi
+  if [ is_cygwin ]; then
+    prep_ffmpeg_flags_executable='prepare-ffmpeg-flags.exe'
+  fi
   
   if [ ! -f "prepare-ffmpeg-flags" ]; then
     echo "Error: prepare-ffmpeg-flags binary not found, can't prepare ffmpeg flags"
@@ -118,6 +121,44 @@ clone_ffmpeg() {
   fi
   popd
   return 0
+}
+
+prepare_ffmpeg() {
+  prepare_ffmpeg_flags
+  verify_ffmpeg_flags || exit 1
+  TARGET_OS="darwin"
+  CYGWIN_FFMPEG_OPTIONS=""
+  if [ is_cygwin ]; then
+      dos2unix_fixes_pre_ffmpeg_configure
+      TARGET_OS="mingw64"
+      CYGWIN_FFMPEG_OPTIONS="--cc=x86_64-w64-mingw32-gcc"
+  fi
+  pushd mplayer-trunk/ffmpeg
+  ./configure \
+      --target-os=${TARGET_OS} \
+      ${CYGWIN_FFMPEG_OPTIONS} \
+      --enable-nonfree \
+      --enable-openssl \
+      --disable-doc \
+      --disable-programs \
+      --disable-bsfs \
+      --disable-muxers \
+      --disable-demuxers \
+      --disable-devices \
+      --disable-filters \
+      --disable-iconv \
+      --disable-alsa \
+      --disable-openal \
+      --disable-lzma \
+      --extra-cflags="-fno-reorder-functions" \
+      ${ENABLED_PROTOCOLS_FLAGS} \
+      ${DISABLED_DECODERS_FLAGS} \
+      ${ENABLED_DECODERS_FLAGS} \
+      ${DISABLED_ENCODERS_FLAGS}
+
+  popd
+  if_cygwin dos2unix_fixes_post_ffmpeg_configure
+  pushd mplayer-trunk/ffmpeg
 }
 
 ################################################################################

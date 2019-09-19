@@ -45,35 +45,10 @@ if [ ! -d "mplayer-trunk/ffmpeg" ]; then
   exit 1
 fi
 
-prepare_ffmpeg_flags
-verify_ffmpeg_flags || exit 1
 
-if_cygwin dos2unix_fixes_pre_ffmpeg_configure
-
-pushd mplayer-trunk/ffmpeg
-./configure \
---enable-nonfree \
---enable-openssl \
---disable-programs \
---disable-bsfs \
---disable-muxers \
---disable-demuxers \
---disable-devices \
---disable-filters \
---disable-iconv \
---disable-alsa \
---disable-openal \
-${ENABLED_PROTOCOLS_FLAGS} \
-${DISABLED_DECODERS_FLAGS} \
-${ENABLED_DECODERS_FLAGS} \
-${DISABLED_ENCODERS_FLAGS}
-
-popd
-if_cygwin dos2unix_fixes_post_ffmpeg_configure
-pushd mplayer-trunk/ffmpeg
-
-make -j 8 #first make ffmpeg
-popd
+#prepare_ffmpeg
+#make -j 8 #first make ffmpeg
+#popd
 
 # Paths found in MacOS 10.14.6 - September 2019
 MACOS_FRAMEWORKS='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks'
@@ -81,26 +56,25 @@ MACOS_USR_INCLUDES='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/incl
 
 WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-nullability-completeness -Wno-logical-op-parentheses -Wno-parentheses -Wdangling-else'
 
-EXTRA_LDFLAGS='-framework CoreMedia -framework Security -framework VideoToolbox -liconv -llzma -Lffmpeg/libavutil -lavutil'
+EXTRA_LDFLAGS='-framework CoreMedia -framework Security -framework VideoToolbox -liconv -Lffmpeg/libavutil -lavutil'
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
-CONFIG_CYGWIN_OPTS=' '
+CONFIG_CYGWIN_OPTS=''
 
 
 if [ is_cygwin ]; then
   WARNING_FLAGS='-Wno-error=implicit-function-declaration -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else'
-  CONFIG_CYGWIN_OPTS='--disable-pthreads '
-  EXTRA_LDFLAGS='-L/usr/lib/w32api -lkernel32 -L/usr/lib -liconv -llzma -Lffmpeg/libavutil -lavutil'
-  EXTRA_CFLAGS="${WARNING_FLAGS} -I/usr/include/w32api -I${OPENSSL_ROOT}/include"
+  CONFIG_CYGWIN_OPTS='--disable-pthreads --target=x86_64 --enable-cross-compile --host-cc=x86_64-w64-mingw32-gcc'
+  EXTRA_LDFLAGS='-L/usr/lib/w32api -L/usr/share/lib -Lffmpeg/libavutil -lkernel32 -liconv -lavutil'
+  EXTRA_CFLAGS="${WARNING_FLAGS} -I/usr/x86_64-w64-mingw32/sys-root/mingw/include -I/usr/include/w32api -I${OPENSSL_ROOT}/include"
 fi
 
 ################################################################################
 # Configure MPlayer Build
 ################################################################################
-# TRY: --disable-autodetect
+# --enable-runtime-cpudetection \
 pushd mplayer-trunk
 ./configure \
 --enable-openssl-nondistributable \
---enable-runtime-cpudetection \
 --extra-cflags="${EXTRA_CFLAGS}" \
 --extra-ldflags="${EXTRA_LDFLAGS}" \
 ${CONFIG_CYGWIN_OPTS} \
