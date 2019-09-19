@@ -45,10 +45,13 @@ if [ ! -d "mplayer-trunk/ffmpeg" ]; then
   exit 1
 fi
 
+prepare_ffmpeg_flags
+verify_ffmpeg_flags || exit 1
 
-#prepare_ffmpeg
-#make -j 8 #first make ffmpeg
-#popd
+# First we need to build ffmpeg
+prepare_ffmpeg
+make -j 8
+popd
 
 # Paths found in MacOS 10.14.6 - September 2019
 MACOS_FRAMEWORKS='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks'
@@ -58,26 +61,28 @@ WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-d
 
 EXTRA_LDFLAGS='-framework CoreMedia -framework Security -framework VideoToolbox -liconv -Lffmpeg/libavutil -lavutil'
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
-CONFIG_CYGWIN_OPTS=''
+CONFIG_LINUX_OPTS=''
 
-
-if [ is_cygwin ]; then
+if [ is_linux ]; then
+  CC="x86_64-w64-mingw32-gcc"
+  CC="x86_64-w64-mingw32-gcc-posix"
+  CC="i686-w64-mingw32-gcc"
   WARNING_FLAGS='-Wno-error=implicit-function-declaration -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else'
-  CONFIG_CYGWIN_OPTS='--disable-pthreads --target=x86_64 --enable-cross-compile --host-cc=x86_64-w64-mingw32-gcc'
-  EXTRA_LDFLAGS='-L/usr/lib/w32api -L/usr/share/lib -Lffmpeg/libavutil -lkernel32 -liconv -lavutil'
-  EXTRA_CFLAGS="${WARNING_FLAGS} -I/usr/x86_64-w64-mingw32/sys-root/mingw/include -I/usr/include/w32api -I${OPENSSL_ROOT}/include"
+  #--enable-runtime-cpudetection --enable-static 
+  CONFIG_LINUX_OPTS='--windres=i686-w64-mingw32-windres --disable-pthreads --target=x86_64 --enable-cross-compile --host-cc=x86_64-w64-mingw32-gcc'
+  EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto -Lffmpeg/libavutil -lavutil"
+  EXTRA_CFLAGS="${WARNING_FLAGS} -Os -I/usr/i686-w64-mingw32/include -I${OPENSSL_ROOT}/include"
 fi
 
 ################################################################################
 # Configure MPlayer Build
 ################################################################################
-# --enable-runtime-cpudetection \
 pushd mplayer-trunk
 ./configure \
 --enable-openssl-nondistributable \
 --extra-cflags="${EXTRA_CFLAGS}" \
 --extra-ldflags="${EXTRA_LDFLAGS}" \
-${CONFIG_CYGWIN_OPTS} \
+${CONFIG_LINUX_OPTS} \
 --disable-gnutls \
 --disable-iconv \
 --disable-mencoder \
@@ -109,16 +114,6 @@ ${CONFIG_CYGWIN_OPTS} \
 --disable-win32waveout \
 --disable-select \
 --disable-win32dll
-
-if [ is_cygwin ]; then
-  dos2unix_fixes_post_mplayer_configure
-  # includes stringapiset.h
-  svn patch ../mplayer_stream_stream_c.patch
-  # generates the buggy version.h file
-  make version.h
-  # remove the ^M (CR) characters
-  fix_mplayer_version_h
-fi
 
 make -j 8
 

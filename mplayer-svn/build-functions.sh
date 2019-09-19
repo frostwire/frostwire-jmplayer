@@ -37,22 +37,17 @@ prepare_ffmpeg_flags() {
   if [ ! -f "prepare-ffmpeg-flags" ]; then
     echo "Building prepare-ffmpeg-flags..."
     go build prepare-ffmpeg-flags.go
+    upx -9 -o prepare-ffmpeg-flags.upx prepare-ffmpeg-flags
+    rm prepare-ffmpeg-flags
+    mv prepare-ffmpeg-flags.upx prepare-ffmpeg-flags
   fi
 
-  prep_ffmpeg_flags_executable='prepare-ffmpeg-flags'
-  if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    prep_ffmpeg_flags_executable='prepare-ffmpeg-flags.exe'
-  fi
-  if [ is_cygwin ]; then
-    prep_ffmpeg_flags_executable='prepare-ffmpeg-flags.exe'
-  fi
-  
   if [ ! -f "prepare-ffmpeg-flags" ]; then
     echo "Error: prepare-ffmpeg-flags binary not found, can't prepare ffmpeg flags"
     echo
     exit 1
   fi
-  eval `./${prep_ffmpeg_flags_executable}`
+  eval `./prepare-ffmpeg-flags`
   return 0
 }
 
@@ -108,7 +103,12 @@ clone_ffmpeg() {
     return 0
   fi
   if [ ! -d "ffmpeg" ]; then
-      git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
+      #git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
+      FFMPEG_VERSION="4.2.1"      
+      wget -4 https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz
+      tar xvfz ffmpeg-${FFMPEG_VERSION}.tar.gz
+      rm ffmpeg-${FFMPEG_VERSION}.tar.gz
+      mv ffmpeg-${FFMPEG_VERSION} ffmpeg
       popd
       patch mplayer-trunk/ffmpeg/libavformat/tls_openssl.c ffmpeg_tls_openssl.patch
       pushd mplayer-trunk
@@ -124,19 +124,21 @@ clone_ffmpeg() {
 }
 
 prepare_ffmpeg() {
-  prepare_ffmpeg_flags
-  verify_ffmpeg_flags || exit 1
   TARGET_OS="darwin"
-  CYGWIN_FFMPEG_OPTIONS=""
-  if [ is_cygwin ]; then
-      dos2unix_fixes_pre_ffmpeg_configure
+  LINUX_FFMPEG_OPTIONS=""
+  if [ is_linux ]; then
+      CC="x86_64-w64-mingw32-gcc"
+      CC="x86_64-w64-mingw32-gcc-posix"
+      CC="i686-w64-mingw32-gcc"
       TARGET_OS="mingw64"
-      CYGWIN_FFMPEG_OPTIONS="--cc=x86_64-w64-mingw32-gcc"
+      LINUX_FFMPEG_OPTIONS="--cc=${CC} --enable-cross-compile"
   fi
   pushd mplayer-trunk/ffmpeg
+  echo "About to configure ffmpeg"
+  read
   ./configure \
       --target-os=${TARGET_OS} \
-      ${CYGWIN_FFMPEG_OPTIONS} \
+      ${LINUX_FFMPEG_OPTIONS} \
       --enable-nonfree \
       --enable-openssl \
       --disable-doc \
@@ -150,84 +152,55 @@ prepare_ffmpeg() {
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
-      --extra-cflags="-fno-reorder-functions" \
+      --extra-cflags="-Os -fno-reorder-functions" \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
       ${ENABLED_DECODERS_FLAGS} \
       ${DISABLED_ENCODERS_FLAGS}
-
+  echo Finished configure ffmpeg, what happened
+  read
   popd
-  if_cygwin dos2unix_fixes_post_ffmpeg_configure
   pushd mplayer-trunk/ffmpeg
 }
 
 ################################################################################
-# cygwin compatibiliy issues solved with dos2unix
+# linux helpers
 ################################################################################
-is_cygwin() {
-    return $(expr substr $(uname) 1 6) == "CYGWIN"
-}
-
-if_cygwin() {
-    test is_cygwin && $@
-}
-
-dos2unix_fixes_pre_ffmpeg_configure() {
-  dos2unix mplayer-trunk/configure
-  dos2unix mplayer-trunk/help/*
-  dos2unix mplayer-trunk/ffmpeg/configure
-  dos2unix mplayer-trunk/ffmpeg/*
-}
-
-dos2unix_fixes_post_ffmpeg_configure() {
-  dos2unix *
-  dos2unix etc/*.conf
-  dos2unix help/*.sh
-}
-
-dos2unix_fixes_post_mplayer_configure() {
-  dos2unix *
-  dos2unix etc/*  
-  dos2unix stream/*
-}
-
-fix_mplayer_version_h() {
-  cp version.h version.h.broken
-  tr -d '\r' < version.h.broken > version.h
-  rm -f version.h.broken
+is_linux() {
+    return $(expr substr $(uname) 1 5) == "Linux"
 }
 
 strip_and_upx_final_executable() {
-	FWPLAYER_EXEC="fwplayer_osx"
-	MPLAYER_EXEC="mplayer"
-	MPLAYER_UPX_EXEC="mplayer-upx"
+  FWPLAYER_EXEC="fwplayer_osx"
+  MPLAYER_EXEC="mplayer"
+  MPLAYER_UPX_EXEC="mplayer-upx"
 
-    if [ is_cygwin ]; then
-	  FWPLAYER_EXEC="fwplayer.exe"
-	  MPLAYER_EXEC="mplayer.exe"
-	  MPLAYER_UPX_EXEC="mplayer-upx.exe"
-	fi
-
-	if [ -f "${MPLAYER_EXEC}" ]; then
-	  echo Before Stripping
-	  ls -lh ${MPLAYER_EXEC}
-	  strip ${MPLAYER_EXEC}
-	  echo After Stripping, Before UPX
-	  ls -lh ${MPLAYER_EXEC}
-	  if [ -f "${MPLAYER_UPX_EXEC}" ]; then
-		rm -rf ${MPLAYER_UPX_EXEC}
-	  fi
-	  upx -9 -o ${MPLAYER_UPX_EXEC} ${MPLAYER_EXEC}
-	  echo After UPX
-	  ls -lh ${MPLAYER_UPX_EXEC}
-	  if [ ! -f "${MPLAYER_UPX_EXEC}" ]; then
-		set +x
-		echo "Error: could not create ${MPLAYER_UPX_EXEC}"
-	  else
-		cp -p ${MPLAYER_UPX_EXEC} ../${FWPLAYER_EXEC}
-	  fi
-	else
-	  set +x
-	  echo "Error: build failed, mplayer executable was not created"
-	fi
+  if [ is_linux ]; then
+    FWPLAYER_EXEC="fwplayer.exe"
+    MPLAYER_EXEC="mplayer.exe"
+    MPLAYER_UPX_EXEC="mplayer-upx.exe"
+  fi
+  
+  if [ -f "${MPLAYER_EXEC}" ]; then
+    echo Before Stripping
+    ls -lh ${MPLAYER_EXEC}
+    strip ${MPLAYER_EXEC}
+    echo After Stripping, Before UPX
+    ls -lh ${MPLAYER_EXEC}
+    if [ -f "${MPLAYER_UPX_EXEC}" ]; then
+      rm -rf ${MPLAYER_UPX_EXEC}
+    fi
+    upx -9 -o ${MPLAYER_UPX_EXEC} ${MPLAYER_EXEC}
+    echo After UPX
+    ls -lh ${MPLAYER_UPX_EXEC}
+    if [ ! -f "${MPLAYER_UPX_EXEC}" ]; then
+      set +x
+      echo "Error: could not create ${MPLAYER_UPX_EXEC}"
+    else
+      cp -p ${MPLAYER_UPX_EXEC} ../${FWPLAYER_EXEC}
+    fi
+  else
+    set +x
+    echo "Error: build failed, mplayer executable was not created"
+  fi
 }
