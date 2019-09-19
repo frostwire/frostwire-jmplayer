@@ -63,7 +63,7 @@ EXTRA_LDFLAGS='-framework CoreMedia -framework Security -framework VideoToolbox 
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
 CONFIG_LINUX_OPTS=''
 
-if [ is_linux == true ]; then
+if [ is_linux ]; then
   CC="x86_64-w64-mingw32-gcc"
   CC="x86_64-w64-mingw32-gcc-posix"
   CC="i686-w64-mingw32-gcc"
