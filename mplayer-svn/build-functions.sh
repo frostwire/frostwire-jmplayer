@@ -135,7 +135,6 @@ prepare_ffmpeg() {
   fi
   pushd mplayer-trunk/ffmpeg
   echo "About to configure ffmpeg"
-  read
   ./configure \
       --target-os=${TARGET_OS} \
       ${LINUX_FFMPEG_OPTIONS} \
@@ -157,7 +156,7 @@ prepare_ffmpeg() {
       ${DISABLED_DECODERS_FLAGS} \
       ${ENABLED_DECODERS_FLAGS} \
       ${DISABLED_ENCODERS_FLAGS}
-  echo Finished configure ffmpeg, what happened
+  echo Finished configure ffmpeg, Press [Enter] to continue...
   read
   popd
   pushd mplayer-trunk/ffmpeg
@@ -165,9 +164,13 @@ prepare_ffmpeg() {
 
 ################################################################################
 # linux helpers
-################################################################################
+###############################################################################
 is_linux() {
-    return $(expr substr $(uname) 1 5) == "Linux"
+    if [ "Linux" == *"$(uname -s)"* ]; then
+      return 0
+    else
+      return 1
+    fi
 }
 
 strip_and_upx_final_executable() {
