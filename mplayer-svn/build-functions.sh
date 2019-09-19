@@ -126,12 +126,14 @@ clone_ffmpeg() {
 prepare_ffmpeg() {
   TARGET_OS="darwin"
   LINUX_FFMPEG_OPTIONS=""
-  if [ is_linux ]; then
+  EXTRA_CFLAGS="-Os"
+  if [ is_linux == true ]; then
       CC="x86_64-w64-mingw32-gcc"
       CC="x86_64-w64-mingw32-gcc-posix"
       CC="i686-w64-mingw32-gcc"
       TARGET_OS="mingw64"
       LINUX_FFMPEG_OPTIONS="--cc=${CC} --enable-cross-compile"
+      EXTRA_CFLAGS="-Os -fno-reorder-functions"
   fi
   pushd mplayer-trunk/ffmpeg
   echo "About to configure ffmpeg"
@@ -151,7 +153,7 @@ prepare_ffmpeg() {
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
-      --extra-cflags="-Os -fno-reorder-functions" \
+      --extra-cflags="${EXTRA_CFLAGS}" \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
       ${ENABLED_DECODERS_FLAGS} \
@@ -166,11 +168,10 @@ prepare_ffmpeg() {
 # linux helpers
 ###############################################################################
 is_linux() {
-    if [ "Linux" == *"$(uname -s)"* ]; then
-      return 0
-    else
-      return 1
+    if [[ "$(uname -a)" =~ "Linux" ]]; then
+      true
     fi
+    false
 }
 
 strip_and_upx_final_executable() {
@@ -178,7 +179,7 @@ strip_and_upx_final_executable() {
   MPLAYER_EXEC="mplayer"
   MPLAYER_UPX_EXEC="mplayer-upx"
 
-  if [ is_linux ]; then
+  if [ is_linux == true ]; then
     FWPLAYER_EXEC="fwplayer.exe"
     MPLAYER_EXEC="mplayer.exe"
     MPLAYER_UPX_EXEC="mplayer-upx.exe"

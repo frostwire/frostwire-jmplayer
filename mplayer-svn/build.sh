@@ -14,13 +14,13 @@ if [ -z "${OPENSSL_ROOT}" ]; then
     echo
     echo "   It should point to an openssl installation folder (not the sources)"
     echo
-    echo "   try: 'export OPENSSL_ROOT=${HOME}/src/openssl'"
+    echo "   try: 'export OPENSSL_ROOT=${HOME}/src/openssl'           (mac, to build for mac)"
+    echo "    or: 'export OPENSSL_ROOT=${HOME}/src/openssl-win32-x86' (ubuntu, to build for windows)"
     echo
     exit 1
 fi
 
 export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
-
 source build-functions.sh
 
 prepare_enabled_protocol_flags
@@ -59,11 +59,11 @@ MACOS_USR_INCLUDES='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/incl
 
 WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-nullability-completeness -Wno-logical-op-parentheses -Wno-parentheses -Wdangling-else'
 
-EXTRA_LDFLAGS='-framework CoreMedia -framework Security -framework VideoToolbox -liconv -Lffmpeg/libavutil -lavutil'
+EXTRA_LDFLAGS='-framework CoreMedia -framework Security -framework VideoToolbox -liconv -Lffmpeg/libavutil -lavutil -L${OPENSSL_ROOT}/lib -lssl -lcrypto'
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
 CONFIG_LINUX_OPTS=''
 
-if [ is_linux ]; then
+if [ is_linux == true ]; then
   CC="x86_64-w64-mingw32-gcc"
   CC="x86_64-w64-mingw32-gcc-posix"
   CC="i686-w64-mingw32-gcc"
