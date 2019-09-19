@@ -168,8 +168,10 @@ prepare_ffmpeg() {
 # linux helpers
 ###############################################################################
 is_linux() {
-    if [[ "$(uname -a)" == "Linux" ]]; then
-      return 0
+    TYPE=$(uname -s)
+    if [ ${TYPE} == "Linux" ]
+    then
+	return 0
     fi
     return 1
 }
