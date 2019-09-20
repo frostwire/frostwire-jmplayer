@@ -23,6 +23,16 @@ fi
 export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
 source build-functions.sh
 
+if [ ! -f is_linux ]; then
+    gcc -Os is_linux.c -o is_linux
+    strip is_linux
+fi
+
+if [ ! -f is_linux ]; then
+  echo "Could not find or build is_linux.c, please check what's wrong"
+  exit 1
+fi
+
 prepare_enabled_protocol_flags
 if [ -z "${ENABLED_PROTOCOLS_FLAGS}" ]; then
   echo "Error: ENABLED_PROTOCOLS_FLAGS is unset"
@@ -63,7 +73,7 @@ EXTRA_LDFLAGS='-framework CoreMedia -framework Security -framework VideoToolbox 
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
 CONFIG_LINUX_OPTS=''
 
-if [ is_linux ]; then
+if [ $(./is_linux) -eq 0 ]; then
   CC="x86_64-w64-mingw32-gcc"
   CC="x86_64-w64-mingw32-gcc-posix"
   CC="i686-w64-mingw32-gcc"

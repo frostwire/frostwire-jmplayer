@@ -127,7 +127,7 @@ prepare_ffmpeg() {
   TARGET_OS="darwin"
   LINUX_FFMPEG_OPTIONS=""
   EXTRA_CFLAGS="-Os"
-  if [ is_linux ]; then
+  if [ $(./is_linux) -eq 0 ]; then
       CC="x86_64-w64-mingw32-gcc"
       CC="x86_64-w64-mingw32-gcc-posix"
       CC="i686-w64-mingw32-gcc"
@@ -167,21 +167,12 @@ prepare_ffmpeg() {
 ################################################################################
 # linux helpers
 ###############################################################################
-is_linux() {
-    TYPE=$(uname -s)
-    if [ ${TYPE} == "Linux" ]
-    then
-	return 0
-    fi
-    return 1
-}
-
 strip_and_upx_final_executable() {
   FWPLAYER_EXEC="fwplayer_osx"
   MPLAYER_EXEC="mplayer"
   MPLAYER_UPX_EXEC="mplayer-upx"
 
-  if [ is_linux ]; then
+  if [ $(../is_linux) -eq 0 ]; then
     FWPLAYER_EXEC="fwplayer.exe"
     MPLAYER_EXEC="mplayer.exe"
     MPLAYER_UPX_EXEC="mplayer-upx.exe"
