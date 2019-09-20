@@ -189,8 +189,11 @@ strip_and_upx_final_executable() {
   FWPLAYER_EXEC="fwplayer_osx"
   MPLAYER_EXEC="mplayer"
   MPLAYER_UPX_EXEC="mplayer-upx"
+  FORCE_OPTION=""
 
   if [ ${IS_LINUX} -eq 0 ]; then
+    #CantPackException: superfluous data between sections (try --force)
+    FORCE_OPTION="--force"
     FWPLAYER_EXEC="fwplayer.exe"
     MPLAYER_EXEC="mplayer.exe"
     MPLAYER_UPX_EXEC="mplayer-upx.exe"
@@ -205,7 +208,7 @@ strip_and_upx_final_executable() {
     if [ -f "${MPLAYER_UPX_EXEC}" ]; then
       rm -rf ${MPLAYER_UPX_EXEC}
     fi
-    upx -9 -o ${MPLAYER_UPX_EXEC} ${MPLAYER_EXEC}
+    upx ${FORCE_OPTION} -9 -o ${MPLAYER_UPX_EXEC} ${MPLAYER_EXEC}
     echo After UPX
     ls -lh ${MPLAYER_UPX_EXEC}
     if [ ! -f "${MPLAYER_UPX_EXEC}" ]; then
