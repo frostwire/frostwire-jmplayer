@@ -33,6 +33,7 @@ if [ ! -f is_linux ]; then
   exit 1
 fi
 
+# returns 0 if true, 1 if false. output return codes from processes is always stored in $?
 ./is_linux
 IS_LINUX=$?
 
@@ -58,13 +59,15 @@ if [ ! -d "mplayer-trunk/ffmpeg" ]; then
   exit 1
 fi
 
-prepare_ffmpeg_flags
-verify_ffmpeg_flags || exit 1
+#prepare_ffmpeg_flags
+#verify_ffmpeg_flags || exit 1
 
 # First we need to build ffmpeg
-prepare_ffmpeg
-make -j 8
-popd
+#prepare_ffmpeg
+#make -j 8
+#popd
+#echo "FFMpeg compilation finished"
+#press_any_key
 
 # Paths found in MacOS 10.14.6 - September 2019
 MACOS_FRAMEWORKS='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks'
@@ -82,20 +85,18 @@ if [ ${IS_LINUX} -eq 0 ]; then
   CC="i686-w64-mingw32-gcc"
   WARNING_FLAGS='-Wno-error=implicit-function-declaration -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else'
   #--enable-runtime-cpudetection --enable-static 
-  CONFIG_LINUX_OPTS='--windres=i686-w64-mingw32-windres --disable-pthreads --target=x86_64 --enable-cross-compile --host-cc=x86_64-w64-mingw32-gcc'
+  CONFIG_LINUX_OPTS="--enable-runtime-cpudetection --enable-static --windres=i686-w64-mingw32-windres --disable-pthreads --target=i686 --enable-cross-compile --cc=${CC}"
   EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto -Lffmpeg/libavutil -lavutil"
-  EXTRA_CFLAGS="${WARNING_FLAGS} -Os -I/usr/i686-w64-mingw32/include -I${OPENSSL_ROOT}/include"
+  EXTRA_CFLAGS="${WARNING_FLAGS} -mtune=i686 -fPIC -Os -I/usr/i686-w64-mingw32/include -I/usr/include -I${OPENSSL_ROOT}/include"
 fi
-
 ################################################################################
 # Configure MPlayer Build
 ################################################################################
+press_any_key
 pushd mplayer-trunk
 ./configure \
---enable-openssl-nondistributable \
---extra-cflags="${EXTRA_CFLAGS}" \
---extra-ldflags="${EXTRA_LDFLAGS}" \
 ${CONFIG_LINUX_OPTS} \
+--enable-openssl-nondistributable \
 --disable-gnutls \
 --disable-iconv \
 --disable-mencoder \
@@ -126,8 +127,11 @@ ${CONFIG_LINUX_OPTS} \
 --disable-dart \
 --disable-win32waveout \
 --disable-select \
---disable-win32dll
+--disable-win32dll \
+--extra-cflags="${EXTRA_CFLAGS}" \
+--extra-ldflags="${EXTRA_LDFLAGS}"
 
+press_any_key
 make -j 8
 
 strip_and_upx_final_executable
