@@ -127,14 +127,17 @@ prepare_ffmpeg() {
   TARGET_OS="darwin"
   LINUX_FFMPEG_OPTIONS=""
   EXTRA_CFLAGS="-Os"
-  if [ $(./is_linux) -eq 0 ]; then
+  EXTRA_LDFLAGS=""
+  if [ ${IS_LINUX} ]; then
       CC="x86_64-w64-mingw32-gcc"
       CC="x86_64-w64-mingw32-gcc-posix"
       CC="i686-w64-mingw32-gcc"
       TARGET_OS="mingw64"
       LINUX_FFMPEG_OPTIONS="--cc=${CC} --enable-cross-compile"
-      EXTRA_CFLAGS="-Os -fno-reorder-functions"
+      EXTRA_CFLAGS="-Os -fno-reorder-functions -I${OPENSSL_ROOT}/include"
+      EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto"
   fi
+  read
   pushd mplayer-trunk/ffmpeg
   echo "About to configure ffmpeg"
   ./configure \
@@ -154,6 +157,7 @@ prepare_ffmpeg() {
       --disable-openal \
       --disable-lzma \
       --extra-cflags="${EXTRA_CFLAGS}" \
+      --extra-ldflags="${EXTRA_LDFLAGS}" \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
       ${ENABLED_DECODERS_FLAGS} \
@@ -172,7 +176,7 @@ strip_and_upx_final_executable() {
   MPLAYER_EXEC="mplayer"
   MPLAYER_UPX_EXEC="mplayer-upx"
 
-  if [ $(../is_linux) -eq 0 ]; then
+  if [ ${IS_LINUX} -eq 0 ]; then
     FWPLAYER_EXEC="fwplayer.exe"
     MPLAYER_EXEC="mplayer.exe"
     MPLAYER_UPX_EXEC="mplayer-upx.exe"

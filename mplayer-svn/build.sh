@@ -33,6 +33,9 @@ if [ ! -f is_linux ]; then
   exit 1
 fi
 
+./is_linux
+IS_LINUX=$?
+
 prepare_enabled_protocol_flags
 if [ -z "${ENABLED_PROTOCOLS_FLAGS}" ]; then
   echo "Error: ENABLED_PROTOCOLS_FLAGS is unset"
@@ -73,7 +76,7 @@ EXTRA_LDFLAGS='-framework CoreMedia -framework Security -framework VideoToolbox 
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
 CONFIG_LINUX_OPTS=''
 
-if [ $(./is_linux) -eq 0 ]; then
+if [ ${IS_LINUX} -eq 0 ]; then
   CC="x86_64-w64-mingw32-gcc"
   CC="x86_64-w64-mingw32-gcc-posix"
   CC="i686-w64-mingw32-gcc"
