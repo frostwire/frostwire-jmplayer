@@ -9,10 +9,9 @@ OPENSSL_PREFIX=${HOME}/src/openssl
 
 TARGET="darwin64-x86_64-cc"
 if [ is_linux ]; then
-    OPENSSL_PREFIX=${HOME}/src/openssl-win32-x86
-    TARGET="mingw"
-    #export CC=x86_64-w64-mingw32-gcc-posix (has incompatibilities issues with ld towards the end)
-    export CC=i686-w64-mingw32-gcc
+    OPENSSL_PREFIX=${HOME}/src/openssl-win64-x86_64
+    TARGET="mingw64"
+    export CC=x86_64-w64-mingw32-gcc
 fi
 
 if [ ! -d "${OPENSSL_SRC}" ]; then
@@ -41,11 +40,12 @@ if [ ! -d "${OPENSSL_PREFIX}" ]; then
 fi
 
 # OPENSSL_NO_OPTS taken from jlibtorrent build script
-OPENSSL_NO_OPTS="no-afalgeng no-async no-autoalginit no-autoerrinit no-capieng no-cms no-comp no-deprecated no-dgram no-dso no-dtls no-dynamic-engine no-egd no-engine no-err no-filenames no-gost no-hw no-makedepend no-multiblock no-nextprotoneg no-posix-io no-psk no-rdrand no-sctp no-shared no-sock no-srp no-srtp no-static-engine no-stdio no-threads no-ui-console no-zlib no-zlib-dynamic -fno-strict-aliasing -fvisibility=hidden -Os"
+OPENSSL_NO_OPTS="no-idea no-mdc2 no-rc5 no-afalgeng no-async no-autoalginit no-autoerrinit no-capieng no-cms no-comp no-deprecated no-dgram no-dso no-dtls no-dynamic-engine no-egd no-engine no-err no-filenames no-gost no-hw no-makedepend no-multiblock no-nextprotoneg no-posix-io no-psk no-rdrand no-sctp no-shared no-sock no-srp no-srtp no-static-engine no-stdio no-threads no-ui-console no-zlib no-zlib-dynamic -fno-strict-aliasing -fvisibility=hidden -Os"
 
 pushd ${OPENSSL_SRC}
 make clean
 ./Configure ${TARGET} ${OPENSSL_NO_OPTS} --prefix=${OPENSSL_PREFIX}
+read -s -n 1 -p "[Press any key to continue]"
 make
 make install_sw
 popd
