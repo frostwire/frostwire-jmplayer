@@ -128,7 +128,7 @@ prepare_ffmpeg() {
   LINUX_FFMPEG_OPTIONS=""
   EXTRA_CFLAGS="-Os"
   EXTRA_LDFLAGS=""
-  if [ ${IS_LINUX} ]; then
+  if [ ${IS_LINUX} -eq 0 ]; then
       CC="x86_64-w64-mingw32-gcc"
       CC="x86_64-w64-mingw32-gcc-posix"
       CC="i686-w64-mingw32-gcc"
