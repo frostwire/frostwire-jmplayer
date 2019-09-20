@@ -15,7 +15,7 @@ if [ -z "${OPENSSL_ROOT}" ]; then
     echo "   It should point to an openssl installation folder (not the sources)"
     echo
     echo "   try: 'export OPENSSL_ROOT=${HOME}/src/openssl'           (mac, to build for mac)"
-    echo "    or: 'export OPENSSL_ROOT=${HOME}/src/openssl-win32-x86' (ubuntu, to build for windows)"
+    echo "    or: 'export OPENSSL_ROOT=${HOME}/src/openssl-win64-x86_64' (ubuntu, to build for windows)"
     echo
     exit 1
 fi
@@ -81,13 +81,13 @@ CONFIG_LINUX_OPTS=''
 
 if [ ${IS_LINUX} -eq 0 ]; then
   CC="x86_64-w64-mingw32-gcc"
-  CC="x86_64-w64-mingw32-gcc-posix"
-  CC="i686-w64-mingw32-gcc"
+  WINDRES="x86_64-w64-mingw32-windres"
   WARNING_FLAGS='-Wno-error=implicit-function-declaration -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else'
   #--enable-runtime-cpudetection --enable-static 
-  CONFIG_LINUX_OPTS="--enable-runtime-cpudetection --enable-static --windres=i686-w64-mingw32-windres --disable-pthreads --target=i686 --enable-cross-compile --cc=${CC}"
+  CONFIG_LINUX_OPTS="--enable-static --windres=${WINDRES} --disable-pthreads --target=x86_64-mingw32 --enable-cross-compile --cc=${CC} --enable-winsock2_h"
+  # Maybe -L/usr/x86_64-w64-mingw32/lib
   EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto -Lffmpeg/libavutil -lavutil"
-  EXTRA_CFLAGS="${WARNING_FLAGS} -mtune=i686 -fPIC -Os -I/usr/i686-w64-mingw32/include -I/usr/include -I${OPENSSL_ROOT}/include"
+  EXTRA_CFLAGS="${WARNING_FLAGS} -mtune=generic -fPIC -Os -I/usr/x86_64-w64-mingw32/include -I${OPENSSL_ROOT}/include"
 fi
 ################################################################################
 # Configure MPlayer Build

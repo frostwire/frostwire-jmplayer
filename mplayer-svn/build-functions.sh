@@ -142,8 +142,6 @@ prepare_ffmpeg() {
   EXTRA_LDFLAGS=""
   if [ ${IS_LINUX} -eq 0 ]; then
       CC="x86_64-w64-mingw32-gcc"
-      CC="x86_64-w64-mingw32-gcc-posix"
-      CC="i686-w64-mingw32-gcc"
       TARGET_OS="mingw64"
       LINUX_FFMPEG_OPTIONS="--cc=${CC} --enable-cross-compile"
       #-fno-reorder-functions
