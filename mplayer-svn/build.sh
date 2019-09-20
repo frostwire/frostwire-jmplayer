@@ -59,15 +59,15 @@ if [ ! -d "mplayer-trunk/ffmpeg" ]; then
   exit 1
 fi
 
-#prepare_ffmpeg_flags
-#verify_ffmpeg_flags || exit 1
+prepare_ffmpeg_flags
+verify_ffmpeg_flags || exit 1
 
 # First we need to build ffmpeg
-#prepare_ffmpeg
-#make -j 8
-#popd
-#echo "FFMpeg compilation finished"
-#press_any_key
+prepare_ffmpeg
+make -j 8
+popd
+echo "FFMpeg compilation finished"
+press_any_key
 
 # Paths found in MacOS 10.14.6 - September 2019
 MACOS_FRAMEWORKS='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks'
