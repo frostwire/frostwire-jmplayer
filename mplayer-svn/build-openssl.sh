@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
-set -x
+################################################################################
+# Author: @gubatron - September 2019
+################################################################################
+# set -x
 
 source build-functions.sh
 
 OPENSSL_VERSION='1.1.1d'
 OPENSSL_SRC=${HOME}/src/openssl-${OPENSSL_VERSION}
 OPENSSL_PREFIX=${HOME}/src/openssl
+
+if [ ! -d "${HOME}/src" ]; then
+    mkdir ${HOME}/src
+fi
 
 TARGET="darwin64-x86_64-cc"
 if [ is_linux ]; then

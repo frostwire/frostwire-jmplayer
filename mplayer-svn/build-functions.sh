@@ -17,7 +17,6 @@ prepare_enabled_protocol_flags() {
   done
   return 0
 }
-
 ################################################################################
 # Uses golang written tool to generate the ffmpeg flags to be stored in the
 # following bash variables:
@@ -56,7 +55,6 @@ prepare_ffmpeg_flags() {
   eval `./prepare-ffmpeg-flags`
   return 0
 }
-
 ################################################################################
 # Makes sure the following variables holding FFMpeg configurations are set
 # DISABLED_DECODERS_FLAGS
@@ -89,7 +87,6 @@ verify_ffmpeg_flags() {
 
   return 0
 }
-
 ################################################################################
 # checkout mplayer from subversion
 ################################################################################
@@ -103,14 +100,13 @@ checkout_mplayer() {
   fi
   return 0
 }
-
 ################################################################################
-# clone ffmpeg source code from github repo into mplayer's source folder
+# downloads ffmpeg source code from github repo into mplayer's source folder
 ################################################################################
-clone_ffmpeg() {
+download_ffmpeg() {
   pushd mplayer-trunk
   if [ -d "ffmpeg" ]; then
-    echo "clone_ffmpeg: skipping, already have ffmpeg sources"
+    echo "download_ffmpeg: skipping, already have ffmpeg sources"
     popd
     return 0
   fi
@@ -127,7 +123,7 @@ clone_ffmpeg() {
   fi
   if [ ! -d "ffmpeg" ]; then
       set +x
-      echo "Aborting: Could not git clone ffmpeg"
+      echo "download_ffmmpeg aborting: Could not git clone ffmpeg"
       popd
       return 1
   fi
@@ -135,7 +131,7 @@ clone_ffmpeg() {
   return 0
 }
 
-prepare_ffmpeg() {
+configure_ffmpeg() {
   TARGET_OS="darwin"
   LINUX_FFMPEG_OPTIONS=""
   EXTRA_CFLAGS="-Os"
@@ -149,7 +145,7 @@ prepare_ffmpeg() {
       EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto"
   fi
   pushd mplayer-trunk/ffmpeg
-  echo "About to ffmpeg configure"
+  echo "configure_ffmpeg: About to ffmpeg configure"
   press_any_key
   ./configure \
       --target-os=${TARGET_OS} \
@@ -175,7 +171,7 @@ prepare_ffmpeg() {
       ${DISABLED_ENCODERS_FLAGS} \
       --extra-cflags="${EXTRA_CFLAGS}" \
       --extra-ldflags="${EXTRA_LDFLAGS}"
-  echo "Finished ffmpeg configure"
+  echo "configure_ffmpeg: Finished ffmpeg configure"
   press_any_key
   popd
   pushd mplayer-trunk/ffmpeg

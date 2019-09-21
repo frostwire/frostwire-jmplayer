@@ -1,37 +1,30 @@
-# WINDOWS (CYGWIN_NT-6.1)
+# What is this?
 
-Make sure cygwin has the following packages installed:
+Here we have a `build.sh` script that's meant to build the binaries for `fwplayer.exe` and `fwplayer_osx`, the custom mplayer builds included with FrostWire for Desktop.
 
-```
-automake, automake1.9, wget, curl, dos2unix, emacs, gcc-core, gcc-debuginfo, gcc-g++, gcc-tools-epochN-autoconf, gcc-tools-epochN-automake, gettext, make, openssh, python27, wget, yasm, jpeg, libjpeg-devel, libpng, libpng-devel, libpng-tools, libpng16, lbpng16-devel, zlib, zlib-devel, liblzma-devel, liblzma5, libiconv-devel
-```
-
-It's convenient to manage cygwin packages with something like debian's `apt`, try installing `apt-cyg`
-
-```bash
-wget https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg
-chmod +x apt-cyg
-mv apt-cyg /usr/local/bin
-```
-
-You will need to install (outside of cygwin)
-- golang (builds the executable to prepare the encoder flags)
-- git
-- subversion (TortoiseSVN) [mplayer is still in subversion-land]
-
-## EOL issues with Windows
-
-Make sure git has been configured to use LF line endings and not CRLF ("\r\n" Windows)
-```
-git config --global core.autocrlf false
-git config --global core.eol lf
-```
-
-For subversion make sure to copy the contents of the `dot_subversion_config` file contents into/end of your `~/.subversion/config` file.
+The `build.sh` script works on macOS to make a native binary and it also works in Ubuntu to cross compile a windows 64-bit binary
 
 # Build openssl
 
-A `build-openssl.sh` script has been included for you to build fresh OpenSSL binaries and libraries
+A `build-openssl.sh` script has been included for you to build fresh OpenSSL binaries and libraries, it's meant to work on both Ubuntu (perhaps on other Linux distros) and macOS
+
+The resulting binaries will be stored in:
+
+`${HOME}/src/openssl-openssl-win64-x86_64` when building for Windows in macOS
+`${HOME}/src/openssl` for macOS
+
+Note: the current .tar.gz that it downloads from openssl.org has an error in on .c file
+where developers left a "return return value" at the end of a function, just remove the redundant "return" and try to rebuild again. This error should go away with further OpenSSL updates.
+
+# Ubuntu (x86_64)
+
+Make sure you have all dependencies and tools necessary to cross compile the code
+`./prepare-ubuntu-environment.sh`
+
+Build
+`./build.sh`
+
+That's it, you should have a `fwplayer.exe` binary on this folder when the script is done
 
 ---------------------------
 # macOS
@@ -49,6 +42,4 @@ Build mplayer and ffmpeg with minimum dependencies
 ./build.sh
 ```
 
-This script will check out mplayer's code with SVN.
-Its configure script will in turn clone ffmpeg with git.
-The final result should be `fwplayer.exe` for Windows or `fwplayer_osx` for macOS on this folder.
+That's it, you should have a `fwplayer_osx` binary on this folder when the script is done

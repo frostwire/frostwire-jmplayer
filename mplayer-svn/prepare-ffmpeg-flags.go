@@ -1,3 +1,10 @@
+/////////////////////////////////////////////////////////////////////////////////
+// Author: @gubatron - September 2019
+// Outputs the values of DISABLED_DECODERS_FLAGS, ENABLED_DECODERS_FLAGS
+// and DISABLED_ENCODER_FLAGS so they can be evaluated as bash script variables
+//
+// The enabled decoder values are loaded from enabled-decoders.txt
+/////////////////////////////////////////////////////////////////////////////////
 package main
 
 import (
