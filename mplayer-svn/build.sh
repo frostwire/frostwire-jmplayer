@@ -74,7 +74,8 @@ MACOS_USR_INCLUDES='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/incl
 
 WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-nullability-completeness -Wno-logical-op-parentheses -Wno-parentheses -Wdangling-else'
 
-EXTRA_LDFLAGS='-framework CoreMedia -framework Security -framework VideoToolbox -liconv -Lffmpeg/libavutil -lavutil -L${OPENSSL_ROOT}/lib -lssl -lcrypto'
+EXTRA_LDFLAGS="-framework CoreMedia -framework Security -framework VideoToolbox -liconv -Lffmpeg/libavutil -lavutil -L${OPENSSL_ROOT}/lib -lssl -lcrypto"
+
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
 CONFIG_LINUX_OPTS=''
 
