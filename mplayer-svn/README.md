@@ -34,6 +34,10 @@ brew install upx
 brew install yasm
 ```
 
+# building upx on mac from source
+You will probably need to build ucl, here are some notes of how I managed to build on macOS with m1 (arm64) cpu
+https://gist.github.com/gubatron/c8ecee2d54033a0b131812324e5a7a33
+
 # Build fwplayer
 
 Build mplayer and ffmpeg with minimum dependencies
