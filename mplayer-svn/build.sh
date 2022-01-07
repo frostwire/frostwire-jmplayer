@@ -32,9 +32,31 @@ if [ ! -f is_linux ]; then
   exit 1
 fi
 
+if [ ! -f is_macos ]; then
+    gcc -Os is_macos.c -o is_macos
+    strip is_macos
+fi
+
+if [ ! -f is_macos ]; then
+  echo "Could not find or build is_macos.c, please check what's wrong"
+  exit 1
+fi
+
+
 # returns 0 if true, 1 if false. output return codes from processes is always stored in $?
 ./is_linux
 IS_LINUX=$?
+./is_macos
+IS_MACOS=$?
+
+if [ ${IS_LINUX} -eq 0 ]; then
+  echo "It's LINUX"
+fi
+if [ ${IS_MACOS} -eq 0 ]; then
+    ARCH=`arch`
+    echo "It's MacOS (${ARCH})"
+fi
+press_any_key
 
 prepare_enabled_protocol_flags
 if [ -z "${ENABLED_PROTOCOLS_FLAGS}" ]; then

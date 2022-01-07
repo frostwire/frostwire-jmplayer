@@ -6,7 +6,7 @@
 
 source build-functions.sh
 
-OPENSSL_VERSION='1.1.1d'
+OPENSSL_VERSION='1.1.1m'
 OPENSSL_SRC=${HOME}/src/openssl-${OPENSSL_VERSION}
 OPENSSL_PREFIX=${HOME}/src/openssl
 
@@ -14,7 +14,8 @@ if [ ! -d "${HOME}/src" ]; then
     mkdir ${HOME}/src
 fi
 
-TARGET="darwin64-x86_64-cc"
+ARCH=`arch`
+TARGET="darwin64-${ARCH}-cc"
 ./is_linux
 IS_LINUX=$?
 if [ ${IS_LINUX} -eq 0 ]; then

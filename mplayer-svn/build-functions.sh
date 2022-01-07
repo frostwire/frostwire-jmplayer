@@ -172,13 +172,12 @@ configure_ffmpeg() {
       --extra-cflags="${EXTRA_CFLAGS}" \
       --extra-ldflags="${EXTRA_LDFLAGS}"
   echo "configure_ffmpeg: Finished ffmpeg configure"
-  press_any_key
   popd
   pushd mplayer-trunk/ffmpeg
 }
 
 press_any_key() {
-    read -s -N 1 -p "[Press any key to continue]" && echo ""
+    read -s -n 1 -p "[Press any key to continue]" && echo ""
 }
 
 strip_and_upx_final_executable() {
