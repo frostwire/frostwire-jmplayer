@@ -136,7 +136,7 @@ configure_ffmpeg() {
   LINUX_FFMPEG_OPTIONS=""
   EXTRA_CFLAGS="-Os"
   EXTRA_LDFLAGS=""
-  if [ ${IS_LINUX} -eq 0 ]; then
+  if [ ${IS_WINDOWS} -eq 1 ]; then
       CC="x86_64-w64-mingw32-gcc"
       TARGET_OS="mingw64"
       LINUX_FFMPEG_OPTIONS="--cc=${CC} --enable-cross-compile"
@@ -177,16 +177,16 @@ configure_ffmpeg() {
 }
 
 press_any_key() {
-    read -s -n 1 -p "[Press any key to continue]" && echo ""
+  read -s -n 1 -p "[Press any key to continue]" && echo ""
 }
 
 strip_and_upx_final_executable() {
-  FWPLAYER_EXEC="fwplayer_osx"
+  FWPLAYER_EXEC="fwplayer_osx.${ARCH}" #we don't do linux, they can install mplayer with apt install
   MPLAYER_EXEC="mplayer"
   MPLAYER_UPX_EXEC="mplayer-upx"
   FORCE_OPTION=""
 
-  if [ ${IS_LINUX} -eq 0 ]; then
+  if [ ${IS_WINDOWS} -eq 1 ]; then
     #CantPackException: superfluous data between sections (try --force)
     FORCE_OPTION="--force"
     FWPLAYER_EXEC="fwplayer.exe"
@@ -203,6 +203,15 @@ strip_and_upx_final_executable() {
     if [ -f "${MPLAYER_UPX_EXEC}" ]; then
       rm -rf ${MPLAYER_UPX_EXEC}
     fi
+
+    # if it's mac with arm64 skip UPXing
+    if [ ${IS_MACOS} -eq 1 ] && [ ${ARCH} == "arm64" ]; then
+        cp -p ${MPLAYER_EXEC} ../${FWPLAYER_EXEC}
+        echo "Skipping UPX, never works on arm64"
+        echo "Done."
+        return 0
+    fi
+    
     upx ${FORCE_OPTION} -9 -o ${MPLAYER_UPX_EXEC} ${MPLAYER_EXEC}
     echo After UPX
     ls -lh ${MPLAYER_UPX_EXEC}
@@ -216,4 +225,5 @@ strip_and_upx_final_executable() {
     set +x
     echo "Error: build failed, mplayer executable was not created"
   fi
+  echo "Done."
 }
