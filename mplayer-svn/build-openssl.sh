@@ -60,7 +60,7 @@ fi
 OPENSSL_NO_OPTS="no-idea no-mdc2 no-rc5 no-afalgeng no-async no-autoalginit no-autoerrinit no-capieng no-cms no-comp no-deprecated no-dgram no-dso no-dtls no-dynamic-engine no-egd no-engine no-err no-filenames no-gost no-hw no-makedepend no-multiblock no-nextprotoneg no-posix-io no-psk no-rdrand no-sctp no-shared no-sock no-srp no-srtp no-static-engine no-stdio no-threads no-ui-console no-zlib no-zlib-dynamic -fno-strict-aliasing -fvisibility=hidden -Os"
 
 pushd ${OPENSSL_SRC}
-make 
+make clean 
 ./Configure ${TARGET} ${OPENSSL_NO_OPTS} --prefix=${OPENSSL_PREFIX}
 read -s -n 1 -p "[Press any key to continue]"
 make
