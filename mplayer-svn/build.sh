@@ -57,11 +57,15 @@ IS_LINUX=$?
 IS_MACOS=$?
 ./is_windows.exe
 IS_WINDOWS=$?
- ARCH=`arch`
+ARCH=`arch`
 echo IS_LINUX=${IS_LINUX}
 echo IS_MACOS=${IS_MACOS}
 echo IS_WINDOWS=${IS_WINDOWS}
 
+if [ ${ARCH} == "i386" ]; then
+    ARCH=x86_64
+fi
+    
 if [ ${IS_LINUX} -eq 1 ]; then
   echo "It's Linux (${ARCH})"
 fi
