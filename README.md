@@ -1,15 +1,49 @@
-frostwire-jmplayer
-==================
+# What is this?
 
-The frostwire-jmplayer project (JMPlayer) contains the sources for the <a href="https://github.com/frostwire/frostwire-desktop">frostwire</a> media player.
+Here we have a `build.sh` script that's meant to build the binaries for `fwplayer.exe` and `fwplayer_osx`, the custom mplayer builds included with FrostWire for Desktop.
 
-<a href="https://github.com/frostwire/frostwire-jmplayer/tree/master/MPlayer-OSX-Extended">MPlayer-OSX-Extended</a> is the original source that the JMPlayer is based on. it is a library that provides a gui wrapper on top of the MPlayer video-playback process.
+The `build.sh` script works on macOS to make a native binary and it also works in Ubuntu to cross compile a windows 64-bit binary
 
-<a href="https://github.com/frostwire/frostwire-jmplayer/tree/master/JMPlayer-Bundle">JMPlayer-Bundle</a> is the mac osx resource bundle containing the images resources for the fullscreen overlay controll popup.
+# Build openssl
 
-<a href="https://github.com/frostwire/frostwire-jmplayer/tree/master/JMPlayer">JMPlayer</a> is the native library used on mac osx platforms to interface between the java frostwire player and the native mplayer process. it is the library which reads the video buffer produced by the mplayer process and renders it to a NSView on the screen as well as shows an overlay control dialog in fullscreen view.
+A `build-openssl.sh` script has been included for you to build fresh OpenSSL binaries and libraries, it's meant to work on both Ubuntu (perhaps on other Linux distros) and macOS
 
-<a href="https://github.com/frostwire/frostwire-jmplayer/tree/master/MPlayer-1.1">MPlayer-1.1</a> is the original mplayer 1.1 executable source.  our version of it compiles to not use the dependency for libiconv. the build script BUILD compiles the project and copies the mplayer result to fwplayer_osx (for mac) or fwplayer.exe (for Win32) located in frostwire-desktop/lib/native folder.
+The resulting binaries will be stored in:
 
-As of September 2019
-<a href="https://github.com/frostwire/frostwire-jmplayer/tree/master/mplayer-svn">mplayer-svn</a> contains one step build bash scripts to create fwplayer_osx and fwplayer.exe. These scripts will checkout mplayer code from svn and ffmpeg code from git repos.
+`${HOME}/src/openssl-openssl-win64-x86_64` when building for Windows in macOS
+`${HOME}/src/openssl` for macOS
+
+Note: the current .tar.gz that it downloads from openssl.org has an error in on .c file
+where developers left a "return return value" at the end of a function, just remove the redundant "return" and try to rebuild again. This error should go away with further OpenSSL updates.
+
+# Ubuntu (x86_64)
+
+Make sure you have all dependencies and tools necessary to cross compile the code
+`./prepare-ubuntu-environment.sh`
+
+Build
+`./build.sh`
+
+That's it, you should have a `fwplayer.exe` binary on this folder when the script is done
+
+---------------------------
+# macOS
+
+```bash
+brew install upx
+brew install yasm
+```
+
+# building upx on mac from source
+You will probably need to build ucl, here are some notes of how I managed to build on macOS with m1 (arm64) cpu
+https://gist.github.com/gubatron/c8ecee2d54033a0b131812324e5a7a33
+
+# Build fwplayer
+
+Build mplayer and ffmpeg with minimum dependencies
+
+```bash
+./build.sh
+```
+
+That's it, you should have a `fwplayer_osx` binary on this folder when the script is done
