@@ -112,7 +112,7 @@ download_ffmpeg() {
   fi
   if [ ! -d "ffmpeg" ]; then
       #git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
-      FFMPEG_VERSION="4.2.1"      
+      FFMPEG_VERSION="5.0.2"
       wget -4 https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz
       tar xvfz ffmpeg-${FFMPEG_VERSION}.tar.gz
       rm ffmpeg-${FFMPEG_VERSION}.tar.gz

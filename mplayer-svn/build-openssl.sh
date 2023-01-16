@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 ################################################################################
-# Author: @gubatron - September 2019
+# Author: @gubatron - September 2019 - January 2023
 ################################################################################
 # set -x
 
 source build-functions.sh
 
-OPENSSL_VERSION='1.1.1m'
+OPENSSL_VERSION='1.1.1s'
 OPENSSL_SRC=${HOME}/src/openssl-${OPENSSL_VERSION}
 OPENSSL_PREFIX=${HOME}/src/openssl
 
@@ -34,6 +34,7 @@ if [ ! -d "${OPENSSL_SRC}" ]; then
     if [ ! -f  "${OPENSSL_SRC}.tar.gz" ]; then
 	pushd ${HOME}/src
 	echo wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+        wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
     exit 1
 	tar xvfz openssl-${OPENSSL_VERSION}.tar.gz
 	popd
