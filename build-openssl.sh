@@ -17,6 +17,9 @@ fi
 ARCH=`arch`
 TARGET="darwin64-${ARCH}-cc"
 
+./is_macos
+IS_MACOS=$?
+
 if [ ! -f is_windows.exe ]; then
   echo "is_windows.exe not found, aborting."
   exit 1
@@ -35,7 +38,6 @@ if [ ! -d "${OPENSSL_SRC}" ]; then
 	pushd ${HOME}/src
 	echo wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
-    exit 1
 	tar xvfz openssl-${OPENSSL_VERSION}.tar.gz
 	popd
     fi
