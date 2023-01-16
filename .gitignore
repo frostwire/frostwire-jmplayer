@@ -45,3 +45,7 @@ JMPlayer-Bundle/JMPlayer-Bundle.xcodeproj/project.xcworkspace/xcuserdata/
 */configure.codec_flags
 */configure.out
 */ffmpeg/config.asm
+
+is_linux
+is_macos
+is_windows.exe
