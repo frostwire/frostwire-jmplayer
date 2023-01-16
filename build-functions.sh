@@ -111,12 +111,12 @@ download_ffmpeg() {
     return 0
   fi
   if [ ! -d "ffmpeg" ]; then
-      #git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
-      FFMPEG_VERSION="5.0.2"
-      wget -4 https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz
-      tar xvfz ffmpeg-${FFMPEG_VERSION}.tar.gz
-      rm ffmpeg-${FFMPEG_VERSION}.tar.gz
-      mv ffmpeg-${FFMPEG_VERSION} ffmpeg
+      git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
+      #FFMPEG_VERSION="5.0.2"
+      #wget -4 https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz
+      #tar xvfz ffmpeg-${FFMPEG_VERSION}.tar.gz
+      #rm ffmpeg-${FFMPEG_VERSION}.tar.gz
+      #mv ffmpeg-${FFMPEG_VERSION} ffmpeg
       popd
       patch mplayer-trunk/ffmpeg/libavformat/tls_openssl.c ffmpeg_tls_openssl.patch
       pushd mplayer-trunk
