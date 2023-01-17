@@ -50,7 +50,6 @@ Build mplayer and ffmpeg with minimum dependencies
 
 ```bash
 ./build-os-checkers.sh
-./prepare-ubuntu-environment.sh
 ./build-openssl.sh
 ```
 
