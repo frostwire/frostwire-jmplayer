@@ -18,8 +18,14 @@ where developers left a "return return value" at the end of a function, just rem
 
 # Ubuntu (x86_64)
 
+We use Linux to cross-compile `fwplayer.exe`, the windows executable.
+
 Make sure you have all dependencies and tools necessary to cross compile the code
-`./prepare-ubuntu-environment.sh`
+```bash
+./build-os-checkers.sh
+./prepare-ubuntu-environment.sh
+./build-openssl.sh
+```
 
 Build
 `./build.sh`
@@ -43,6 +49,13 @@ https://gist.github.com/gubatron/c8ecee2d54033a0b131812324e5a7a33
 Build mplayer and ffmpeg with minimum dependencies
 
 ```bash
+./build-os-checkers.sh
+./prepare-ubuntu-environment.sh
+./build-openssl.sh
+```
+
+Build
+```
 ./build.sh
 ```
 
