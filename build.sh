@@ -23,44 +23,14 @@ fi
 export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
 source build-functions.sh
 
-if [ ! -f is_linux ] && [ ! -f is_linux.exe ]; then
-    gcc -Os is_linux.c -o is_linux
-fi
-
-if [ ! -f is_linux ] && [ ! -f is_linux.exe ]; then
-  echo "Could not find or build is_linux.c, please check what's wrong"
-  exit 1
-fi
-
-if [ ! -f is_macos ] && [ ! -f is_macos.exe ]; then
-    gcc -Os is_macos.c -o is_macos
-fi
-
-if [ ! -f is_macos ]  && [ ! -f is_macos.exe ]; then
-  echo "Could not find or build is_macos.c, please check what's wrong"
-  exit 1
-fi
-
-if [ ! -f is_windows.exe ]; then
-    gcc -Os is_windows.c -o is_windows.exe
-fi
-
-if [ ! -f is_windows.exe ]; then
-  echo "Could not find or build is_macos.c, please check what's wrong"
-  exit 1
-fi
-
 # returns 1 if true, 0 if false. output return codes from processes is always stored in $?
 ./is_linux
 IS_LINUX=$?
 ./is_macos
 IS_MACOS=$?
-./is_windows.exe
-IS_WINDOWS=$?
 ARCH=`arch`
 echo IS_LINUX=${IS_LINUX}
 echo IS_MACOS=${IS_MACOS}
-echo IS_WINDOWS=${IS_WINDOWS}
 
 if [ ${ARCH} == "i386" ]; then
     ARCH=x86_64
@@ -74,9 +44,6 @@ if [ ${IS_MACOS} -eq 1 ]; then
   #if [ ${ARCH} == "arm64" ]; then
   #  CC="/opt/homebrew/bin/gcc-11"
   #fi
-fi
-if [ ${IS_WINDOWS} -eq 1 ]; then
-    echo "It's Windows"
 fi
 press_any_key
 
@@ -123,7 +90,7 @@ EXTRA_LDFLAGS="-framework CoreMedia -framework Security -framework VideoToolbox 
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
 CONFIG_LINUX_OPTS=''
 
-if [ ${IS_WINDOWS} -eq 1 ]; then
+if [ ${IS_LINUX} -eq 1 ]; then
   CC="x86_64-w64-mingw32-gcc"
   WINDRES="x86_64-w64-mingw32-windres"
   WARNING_FLAGS='-Wno-error=implicit-function-declaration -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else'

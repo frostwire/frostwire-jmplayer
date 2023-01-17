@@ -136,7 +136,7 @@ configure_ffmpeg() {
   LINUX_FFMPEG_OPTIONS=""
   EXTRA_CFLAGS="-Os"
   EXTRA_LDFLAGS=""
-  if [ ${IS_WINDOWS} -eq 1 ]; then
+  if [ ${IS_LINUX} -eq 1 ]; then
       CC="x86_64-w64-mingw32-gcc"
       TARGET_OS="mingw64"
       LINUX_FFMPEG_OPTIONS="--cc=${CC} --enable-cross-compile"
@@ -186,7 +186,7 @@ strip_and_upx_final_executable() {
   MPLAYER_UPX_EXEC="mplayer-upx"
   FORCE_OPTION=""
 
-  if [ ${IS_WINDOWS} -eq 1 ]; then
+  if [ ${IS_LINUX} -eq 1 ]; then
     #CantPackException: superfluous data between sections (try --force)
     FORCE_OPTION="--force"
     FWPLAYER_EXEC="fwplayer.exe"

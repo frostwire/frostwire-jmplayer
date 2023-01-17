@@ -20,14 +20,10 @@ TARGET="darwin64-${ARCH}-cc"
 ./is_macos
 IS_MACOS=$?
 
-if [ ! -f is_windows.exe ]; then
-  echo "is_windows.exe not found, aborting."
-  exit 1
-fi
-./is_windows.exe
-IS_WINDOWS=$?
+./is_linux
+IS_LINUX=$?
 
-if [ ${IS_WINDOWS} -eq 1 ]; then
+if [ ${IS_LINUX} -eq 1 ]; then
     OPENSSL_PREFIX=${HOME}/src/openssl-win64-x86_64
     TARGET="mingw64"
     export CC=x86_64-w64-mingw32-gcc
@@ -48,7 +44,7 @@ if [ ! -d "${OPENSSL_SRC}" ]; then
     exit 1
 fi
 
-if [ ${IS_WINDOWS} -eq 1 ]; then
+if [ ${IS_LINUX} -eq 1 ]; then
     sed -i 's/if !defined(OPENSSL_SYS_WINCE) && !defined(OPENSSL_SYS_WIN32_CYGWIN)/if 0/g' ${OPENSSL_SRC}/crypto/rand/rand_win.c
     sed -i 's/if defined(_WIN32_WINNT) && _WIN32_WINNT>=0x0333/if 0/g' ${OPENSSL_SRC}/crypto/cryptlib.c
     sed -i 's/MessageBox.*//g' ${OPENSSL_SRC}/crypto/cryptlib.c
