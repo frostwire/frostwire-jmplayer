@@ -25,23 +25,15 @@ prepare_enabled_protocol_flags() {
 # ENABLED_DECODERS_FLAGS
 ################################################################################
 prepare_ffmpeg_flags() {
-  if [ ! -f "prepare-ffmpeg-flags.go" ]; then
-    echo "Error: prepare-ffmpeg-flags.go not found, can't prepare ffmpeg flags"
+  if [ ! -f "prepare-ffmpeg-flags.c" ]; then
+    echo "Error: prepare-ffmpeg-flags.c not found, can't prepare ffmpeg flags"
     echo
     echo exit 1
   fi
 
-  if [ ! -x "$(command -v go)" ]; then
-    if [ ! -f "prepare-ffmpeg-flags" ]; then
-      echo "Error: this script requires the 'go' command"
-      echo
-      exit 1
-    fi
-  fi
-
   if [ ! -f "prepare-ffmpeg-flags" ]; then
     echo "Building prepare-ffmpeg-flags..."
-    go build prepare-ffmpeg-flags.go
+    gcc -std=c11 prepare-ffmpeg-flags.c -o prepare-ffmpeg-flags
     upx -9 -o prepare-ffmpeg-flags.upx prepare-ffmpeg-flags
     rm prepare-ffmpeg-flags
     mv prepare-ffmpeg-flags.upx prepare-ffmpeg-flags
