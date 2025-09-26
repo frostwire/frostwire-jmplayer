@@ -6,7 +6,7 @@
 
 source build-functions.sh
 
-OPENSSL_VERSION='1.1.1s'
+OPENSSL_VERSION='3.5.3'
 OPENSSL_SRC=${HOME}/src/openssl-${OPENSSL_VERSION}
 OPENSSL_PREFIX=${HOME}/src/openssl
 
