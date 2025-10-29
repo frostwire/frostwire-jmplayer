@@ -585,7 +585,14 @@ static int vf_open(vf_instance_t *vf, char *args){
     init_avcodec();
 
     vf->priv->avctx= avcodec_alloc_context3(NULL);
+    /* ff_pixblockdsp_init signature changed to use bits_per_raw_sample instead of AVCodecContext */
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 49, 100)
+    /* Newer FFmpeg version has pixblockdsp_init expecting int */
+    ff_pixblockdsp_init(&vf->priv->pdsp, 8);
+#else
     ff_pixblockdsp_init(&vf->priv->pdsp, vf->priv->avctx);
+#endif
+    /* ff_idctdsp_init and ff_fdctdsp_init still expect AVCodecContext */
     ff_idctdsp_init(&vf->priv->idsp, vf->priv->avctx);
     ff_fdctdsp_init(&vf->priv->fdsp, vf->priv->avctx);
 

@@ -294,6 +294,16 @@ static int openssl_gen_certificate(EVP_PKEY *pkey, X509 **cert, char **fingerpri
     }
 
     expire_day = 365;
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+    if (!X509_gmtime_adj(X509_getm_notBefore(*cert), 0)) {
+        av_log(NULL, AV_LOG_ERROR, "TLS: Failed to set notBefore, %s\n", ERR_error_string(ERR_get_error(), NULL));
+        goto einval_end;
+    }
+    if (!X509_gmtime_adj(X509_getm_notAfter(*cert), 60*60*24*expire_day)) {
+        av_log(NULL, AV_LOG_ERROR, "TLS: Failed to set notAfter, %s\n", ERR_error_string(ERR_get_error(), NULL));
+        goto einval_end;
+    }
+#else
     if (!X509_gmtime_adj(X509_get_notBefore(*cert), 0)) {
         av_log(NULL, AV_LOG_ERROR, "TLS: Failed to set notBefore, %s\n", ERR_error_string(ERR_get_error(), NULL));
         goto einval_end;
@@ -302,6 +312,7 @@ static int openssl_gen_certificate(EVP_PKEY *pkey, X509 **cert, char **fingerpri
         av_log(NULL, AV_LOG_ERROR, "TLS: Failed to set notAfter, %s\n", ERR_error_string(ERR_get_error(), NULL));
         goto einval_end;
     }
+#endif
 
     if (X509_set_version(*cert, 2) != 1) {
         av_log(NULL, AV_LOG_ERROR, "TLS: Failed to set version, %s\n", ERR_error_string(ERR_get_error(), NULL));
@@ -773,12 +784,16 @@ static int dtls_start(URLContext *h, const char *url, int flags, AVDictionary **
          * The profile for FFmpeg's SRTP is SRTP_AES128_CM_HMAC_SHA1_80, see libavformat/srtp.c.
          */
         const char* profiles = "SRTP_AES128_CM_SHA1_80";
+#ifdef OPENSSL_USE_SRTP
         if (SSL_CTX_set_tlsext_use_srtp(c->ctx, profiles)) {
             av_log(c, AV_LOG_ERROR, "Init SSL_CTX_set_tlsext_use_srtp failed, profiles=%s, %s\n",
                 profiles, openssl_get_error(c));
             ret = AVERROR(EINVAL);
             goto fail;
         }
+#else
+        av_log(c, AV_LOG_WARNING, "SSL_CTX_set_tlsext_use_srtp not available (SRTP support not enabled in OpenSSL)\n");
+#endif
     }
 
     /* The ssl should not be created unless the ctx has been initialized. */

@@ -505,8 +505,8 @@ static void uninit(sh_video_t *sh){
             mp_msg(MSGT_DECVIDEO, MSGL_INFO, "QP: %d, count: %d\n", i, ctx->qp_stat[i]);
         }
         mp_msg(MSGT_DECVIDEO, MSGL_INFO, MSGTR_MPCODECS_ArithmeticMeanOfQP,
-            ctx->qp_sum / avctx->frame_number,
-            1.0/(ctx->inv_qp_sum / avctx->frame_number)
+            ctx->qp_sum / avctx->frame_num,
+            1.0/(ctx->inv_qp_sum / avctx->frame_num)
             );
     }
 
@@ -822,7 +822,7 @@ static void release_buffer(struct AVCodecContext *avctx, AVFrame *pic){
 //printf("R%X %X\n", pic->linesize[0], pic->data[0]);
 }
 
-static av_unused void swap_palette(void *pal)
+__attribute__((unused)) static void swap_palette(void *pal)
 {
     int i;
     uint32_t *p = pal;
@@ -1061,8 +1061,14 @@ static mp_image_t *decode(sh_video_t *sh, void *data, int len, int flags){
 //    mpi->qscale = av_frame_get_qp_table(pic, &mpi->qstride, &mpi->qscale_type);
     mpi->pict_type=pic->pict_type;
     mpi->fields = MP_IMGFIELD_ORDERED;
+#if LIBAVUTIL_VERSION_INT < AV_VERSION_INT(57, 9, 100)
     if(pic->interlaced_frame) mpi->fields |= MP_IMGFIELD_INTERLACED;
     if(pic->top_field_first ) mpi->fields |= MP_IMGFIELD_TOP_FIRST;
+#else
+    /* In newer FFmpeg (57.9+), interlacing info is in frame flags */
+    if(pic->flags & AV_FRAME_FLAG_INTERLACED) mpi->fields |= MP_IMGFIELD_INTERLACED;
+    if(pic->flags & AV_FRAME_FLAG_TOP_FIELD_FIRST) mpi->fields |= MP_IMGFIELD_TOP_FIRST;
+#endif
     if(pic->repeat_pict == 1) mpi->fields |= MP_IMGFIELD_REPEAT_FIRST;
 
     return mpi;

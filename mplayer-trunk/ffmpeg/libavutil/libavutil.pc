@@ -9,6 +9,6 @@ Version: 60.16.100
 Requires: 
 Requires.private: 
 Conflicts:
-Libs: -L${libdir}  -lavutil -lm -lssl -lcrypto -latomic -pthread -lX11
+Libs: -L${libdir}  -lavutil -lm -L/home/gubatron/src/openssl/lib -lssl -lcrypto -latomic -pthread -lX11
 Libs.private: 
 Cflags: -I${includedir}

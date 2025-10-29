@@ -873,8 +873,12 @@ extern const FFCodec ff_h264_cuvid_decoder;
 extern const FFCodec ff_h264_d3d12va_encoder;
 extern const FFCodec ff_h264_mf_encoder;
 extern const FFCodec ff_h264_nvenc_encoder;
+#if CONFIG_H264_OH_DECODER
 extern const FFCodec ff_h264_oh_decoder;
+#endif
+#if CONFIG_H264_OH_ENCODER
 extern const FFCodec ff_h264_oh_encoder;
+#endif
 extern const FFCodec ff_h264_omx_encoder;
 extern const FFCodec ff_h264_qsv_encoder;
 extern const FFCodec ff_h264_v4l2m2m_encoder;
@@ -889,8 +893,12 @@ extern const FFCodec ff_hevc_mediacodec_decoder;
 extern const FFCodec ff_hevc_mediacodec_encoder;
 extern const FFCodec ff_hevc_mf_encoder;
 extern const FFCodec ff_hevc_nvenc_encoder;
+#if CONFIG_HEVC_OH_DECODER
 extern const FFCodec ff_hevc_oh_decoder;
+#endif
+#if CONFIG_HEVC_OH_ENCODER
 extern const FFCodec ff_hevc_oh_encoder;
+#endif
 extern const FFCodec ff_hevc_qsv_encoder;
 extern const FFCodec ff_hevc_v4l2m2m_encoder;
 extern const FFCodec ff_hevc_vaapi_encoder;

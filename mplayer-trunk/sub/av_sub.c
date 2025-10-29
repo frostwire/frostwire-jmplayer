@@ -27,14 +27,15 @@
 void reset_avsub(struct sh_sub *sh)
 {
     if (sh->context) {
-        AVCodecContext *ctx = sh->context;
+        AVCodecContext *ctx = (AVCodecContext *)sh->context;
         ctx->extradata = NULL;
         ctx->extradata_size = 0;
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
         avcodec_close(sh->context);
         av_freep(&sh->context);
 #else
-        avcodec_free_context(&sh->context);
+        AVCodecContext **ctxp = (AVCodecContext **)&sh->context;
+        avcodec_free_context(ctxp);
 #endif
     }
 }

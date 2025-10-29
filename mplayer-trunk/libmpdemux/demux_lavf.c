@@ -366,11 +366,17 @@ static void handle_stream(demuxer_t *demuxer, AVFormatContext *avfc, int i) {
             if (demuxer->audio->id != i)
                 st->discard= AVDISCARD_ALL;
             if (priv->audio_streams == 0) {
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(59, 27, 100)
+                /* av_stream_get_side_data is only available in older FFmpeg versions */
                 size_t rg_size;
                 AVReplayGain *rg = (AVReplayGain*)av_stream_get_side_data(st, AV_PKT_DATA_REPLAYGAIN, &rg_size);
                 if (rg && rg_size >= sizeof(*rg)) {
                     priv->r_gain = rg->track_gain / 10000;
                 }
+#else
+                /* ReplayGain side data not available in newer FFmpeg, skip this feature */
+                priv->r_gain = INT32_MIN;
+#endif
             } else
                 priv->r_gain = INT32_MIN;
             stream_id = priv->audio_streams++;
@@ -378,7 +384,13 @@ static void handle_stream(demuxer_t *demuxer, AVFormatContext *avfc, int i) {
         }
         case AVMEDIA_TYPE_VIDEO:{
             AVDictionaryEntry *rot = av_dict_get(st->metadata, "rotate",   NULL, 0);
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(59, 27, 100)
+            /* av_stream_get_side_data is only available in older FFmpeg versions */
             const int32_t *disp_matrix = (const int32_t *)av_stream_get_side_data(st, AV_PKT_DATA_DISPLAYMATRIX, NULL);
+#else
+            /* Display matrix side data not available in newer FFmpeg */
+            const int32_t *disp_matrix = NULL;
+#endif
             sh_video_t* sh_video;
             BITMAPINFOHEADER *bih;
             sh_video=new_sh_video_vid(demuxer, i, priv->video_streams);

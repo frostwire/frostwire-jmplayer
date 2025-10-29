@@ -20,9 +20,11 @@
 
 #include "config_components.h"
 
+#if defined(__OHOS__)
 #include <stdbool.h>
 #include <multimedia/player_framework/native_avcapability.h>
 #include <multimedia/player_framework/native_avcodec_videodecoder.h>
+#endif
 
 #include "libavutil/fifo.h"
 #include "libavutil/hwcontext_oh.h"
@@ -38,6 +40,8 @@
 #include "hwconfig.h"
 #include "ohcodec.h"
 #include "pthread_internal.h"
+
+#if defined(__OHOS__)
 
 typedef struct OHCodecDecContext {
     AVClass *avclass;
@@ -767,3 +771,7 @@ DECLARE_OHCODEC_VDEC(h264, "H.264", AV_CODEC_ID_H264, "h264_mp4toannexb")
 #if CONFIG_HEVC_OH_DECODER
 DECLARE_OHCODEC_VDEC(hevc, "H.265", AV_CODEC_ID_HEVC, "hevc_mp4toannexb")
 #endif
+
+#else /* !defined(__OHOS__) */
+/* Stub implementations for non-OpenHarmony builds */
+#endif /* defined(__OHOS__) */
