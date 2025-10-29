@@ -1,0 +1,119 @@
+--- a/libvo/vo_png.c
++++ b/libvo/vo_png.c
+@@ -213,7 +213,11 @@ query_format(uint32_t format)
+ }
+
+ static void uninit(void){
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 37, 100)
++    avcodec_free_context(&avctx);
++#else
+     avcodec_close(avctx);
+     av_freep(&avctx);
++#endif
+     av_freep(&outbuffer);
+     outbuffer_size = 0;
+     free(png_outdir);
+--- a/libmpcodecs/vd_ffmpeg.c
++++ b/libmpcodecs/vd_ffmpeg.c
+@@ -131,7 +131,11 @@ void uninit_avcodec(sh_video_t *sh){
+     vf_detach_filters(sh->vfilter);
+     if(avctx){
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 37, 100)
++        avcodec_free_context(&avctx);
++#else
+         avcodec_close(avctx);
+         av_freep(&avctx);
++#endif
+     }
+     if(lavc_pic) av_frame_free(&lavc_pic);
+     avctx=NULL;
+--- a/libmpcodecs/ad_ffmpeg.c
++++ b/libmpcodecs/ad_ffmpeg.c
+@@ -92,7 +92,11 @@ int init_audio_codec(sh_audio_t *sh_audio){
+
+ void uninit_audio_codec(sh_audio_t *sh_audio){
+     if(avctx){
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 37, 100)
++        avcodec_free_context(&avctx);
++#else
+         avcodec_close(avctx);
+         av_freep(&avctx);
++#endif
+     }
+     avctx=NULL;
+ }
+--- a/libmpcodecs/ve_lavc.c
++++ b/libmpcodecs/ve_lavc.c
+@@ -325,7 +325,11 @@ int encode_lavc_close(void)
+         if (encode_lavc_ctx->encoder) {
+             if (encode_lavc_ctx->cc) {
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 37, 100)
++                avcodec_free_context(&encode_lavc_ctx->cc);
++#else
+                 avcodec_close(encode_lavc_ctx->cc);
+                 av_freep(&encode_lavc_ctx->cc);
++#endif
+             }
+         }
+     }
+--- a/libmpcodecs/vf_mcdeint.c
++++ b/libmpcodecs/vf_mcdeint.c
+@@ -200,8 +200,12 @@ static int query_format(struct vf_instance *vf, unsigned int fmt){
+ static void uninit(struct vf_instance *vf){
+     if(vf->priv->avctx){
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 37, 100)
++        avcodec_free_context(&vf->priv->avctx);
++#else
+         avcodec_close(vf->priv->avctx);
+         av_freep(&vf->priv->avctx);
++#endif
+     }
+     if(vf->priv->frame) av_frame_free(&vf->priv->frame);
+     free(vf->priv);
+--- a/libmpcodecs/vf_screenshot.c
++++ b/libmpcodecs/vf_screenshot.c
+@@ -45,8 +45,12 @@ static void uninit(struct vf_instance *vf){
+     struct vf_priv_s *priv = vf->priv;
+
+     if (priv->avctx) {
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 37, 100)
++        avcodec_free_context(&priv->avctx);
++#else
+         avcodec_close(priv->avctx);
+         av_freep(&priv->avctx);
++#endif
+     }
+
+     av_frame_free(&priv->frame);
+--- a/libaf/af_lavcac3enc.c
++++ b/libaf/af_lavcac3enc.c
+@@ -202,8 +202,12 @@ static int af_open(af_instance_t* af){
+
+ static void uninit(af_instance_t* af)
+ {
+     af_lavcac3enc_t *s = af->priv;
+     if(s->avctx){
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 37, 100)
++        avcodec_free_context(&s->avctx);
++#else
+         avcodec_close(s->avctx);
+         av_freep(&s->avctx);
++#endif
+     }
+     if(s->frame){
+         av_frame_free(&s->frame);
+--- a/sub/av_sub.c
++++ b/sub/av_sub.c
+@@ -15,7 +15,11 @@ void av_sub_create_from_subtitle(AVSubtitleRect **rects, int *count, AVSubtitle
+
+ void av_sub_clear(void *pctx)
+ {
+     AVCodecContext *ctx = pctx;
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 37, 100)
++    avcodec_free_context(&ctx);
++#else
+     avcodec_close(ctx);
+     av_freep(&ctx);
++#endif
+ }
+

@@ -852,8 +852,10 @@ static void uninit(struct vf_instance *vf){
     av_freep(&lavc_venc_context->intra_matrix);
     av_freep(&lavc_venc_context->inter_matrix);
 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
     if (lavc_venc_context->codec)
         avcodec_close(lavc_venc_context);
+#endif
 
     if(stats_file) fclose(stats_file);
 

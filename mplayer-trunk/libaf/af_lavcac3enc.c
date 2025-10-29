@@ -100,9 +100,10 @@ static int control(struct af_instance_s *af, int cmd, void *arg)
                 s->lavc_actx->sample_rate != af->data->rate ||
                 s->lavc_actx->bit_rate != bit_rate) {
 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
             if (s->lavc_actx->codec)
                 avcodec_close(s->lavc_actx);
-
+#endif
             // Put sample parameters
             s->lavc_actx->ch_layout.nb_channels = af->data->nch;
             s->lavc_actx->sample_rate = af->data->rate;
@@ -157,9 +158,13 @@ static void uninit(struct af_instance_s* af)
         af_ac3enc_t *s = af->setup;
         af->setup = NULL;
         if(s->lavc_actx) {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
             if (s->lavc_actx->codec)
                 avcodec_close(s->lavc_actx);
             free(s->lavc_actx);
+#else
+            avcodec_free_context(&s->lavc_actx);
+#endif
         }
         free(s->pending_data);
         free(s);

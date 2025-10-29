@@ -313,8 +313,12 @@ static void uninit(struct vf_instance *vf){
     }
 #endif
     if (vf->priv->avctx_enc) {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
     avcodec_close(vf->priv->avctx_enc);
     av_freep(&vf->priv->avctx_enc);
+#else
+    avcodec_free_context(&vf->priv->avctx_enc);
+#endif
     }
 
     free(vf->priv->outbuf);

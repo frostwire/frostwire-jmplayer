@@ -279,8 +279,12 @@ static int query_format(struct vf_instance *vf, unsigned int fmt)
 
 static void uninit(vf_instance_t *vf)
 {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
     avcodec_close(vf->priv->avctx);
     av_freep(&vf->priv->avctx);
+#else
+    avcodec_free_context(&vf->priv->avctx);
+#endif
     if(vf->priv->ctx) sws_freeContext(vf->priv->ctx);
     av_freep(&vf->priv->pic->data[0]);
     av_frame_free(&vf->priv->pic);

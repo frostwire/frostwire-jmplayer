@@ -213,8 +213,12 @@ query_format(uint32_t format)
 }
 
 static void uninit(void){
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 37, 100)
+    avcodec_free_context(&avctx);
+#else
     avcodec_close(avctx);
     av_freep(&avctx);
+#endif
     av_freep(&outbuffer);
     outbuffer_size = 0;
     free(png_outdir);

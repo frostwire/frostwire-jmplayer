@@ -511,9 +511,10 @@ static void uninit(sh_video_t *sh){
     }
 
     if (avctx) {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
         if (avctx->codec && avcodec_close(avctx) < 0)
             mp_msg(MSGT_DECVIDEO, MSGL_ERR, MSGTR_CantCloseCodec);
-
+#endif
         av_freep(&avctx->extradata);
         av_freep(&avctx->hwaccel_context);
     }
