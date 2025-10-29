@@ -33,33 +33,20 @@ prepare_enabled_protocol_flags() {
   return 0
 }
 ################################################################################
-# Uses golang written tool to generate the ffmpeg flags to be stored in the
+# Uses bash script to generate the ffmpeg flags to be stored in the
 # following bash variables:
 # DISABLED_DECODERS_FLAGS
 # DISABLED_ENCODERS_FLAGS
 # ENABLED_DECODERS_FLAGS
 ################################################################################
 prepare_ffmpeg_flags() {
-  if [ ! -f "prepare-ffmpeg-flags.c" ]; then
-    echo "Error: prepare-ffmpeg-flags.c not found, can't prepare ffmpeg flags"
-    echo
-    echo exit 1
-  fi
-
-  if [ ! -f "prepare-ffmpeg-flags" ]; then
-    echo "Building prepare-ffmpeg-flags..."
-    gcc -std=c11 prepare-ffmpeg-flags.c -o prepare-ffmpeg-flags
-    upx -9 -o prepare-ffmpeg-flags.upx prepare-ffmpeg-flags
-    rm prepare-ffmpeg-flags
-    mv prepare-ffmpeg-flags.upx prepare-ffmpeg-flags
-  fi
-
-  if [ ! -f "prepare-ffmpeg-flags" ]; then
-    echo "Error: prepare-ffmpeg-flags binary not found, can't prepare ffmpeg flags"
+  if [ ! -f "prepare_ffmpeg_flags.sh" ]; then
+    echo "Error: prepare_ffmpeg_flags.sh not found, can't prepare ffmpeg flags"
     echo
     exit 1
   fi
-  eval `./prepare-ffmpeg-flags`
+
+  eval "$(./prepare_ffmpeg_flags.sh)"
   return 0
 }
 ################################################################################

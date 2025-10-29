@@ -131,11 +131,9 @@ endif
 install-deps:  ## Install system dependencies for building
 ifeq ($(DETECTED_OS),Linux)
 	@echo "$(BLUE)Installing Linux build dependencies...$(RESET)"
-	@./build-os-checkers.sh
 	@if [ -f ./prepare-ubuntu-environment.sh ]; then ./prepare-ubuntu-environment.sh; fi
 else ifeq ($(DETECTED_OS),macOS)
 	@echo "$(BLUE)Installing macOS build dependencies...$(RESET)"
-	@./build-os-checkers.sh
 	@command -v brew >/dev/null || (echo "$(BLUE)Installing Homebrew...$(RESET)" && /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)")
 	@brew install upx yasm 2>/dev/null || true
 	@echo "$(BLUE)✓$(RESET) macOS dependencies installed"

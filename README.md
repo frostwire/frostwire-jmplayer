@@ -6,6 +6,8 @@ FrostWire JMPlayer is a custom, audio-only mplayer build included with FrostWire
 - **macOS**: `fwplayer_osx.x86_64` or `fwplayer_osx.arm64` (native builds)
 - **Linux**: `fwplayer_linux.x86_64` or `fwplayer_linux.arm64` (native builds)
 
+The build system is **pure bash** - no C compilation required. All scripts are portable and work across different environments without needing to compile helper utilities.
+
 # Quick Start
 
 The build system is managed through a simple `Makefile`. Just run:
@@ -198,5 +200,21 @@ See the individual build scripts for advanced options:
 - `build_macos.sh` - macOS native build
 - `build_linux.sh` - Linux native build
 - `build-openssl.sh` - OpenSSL building
+- `prepare_ffmpeg_flags.sh` - FFmpeg codec flag generation
 
 Or check the `Makefile` itself for implementation details.
+
+# Build System Design
+
+The build system uses **pure bash** scripting for maximum portability and no external compilation overhead:
+
+- **No C compilation required** - The previous `prepare-ffmpeg-flags.c` has been ported to `prepare_ffmpeg_flags.sh`
+- **Platform detection** - Uses standard `uname` command for OS and architecture detection
+- **Portable scripts** - All scripts work across Linux, macOS, and Windows (cross-compile)
+- **Zero helper utilities** - Everything is self-contained bash code
+
+This approach ensures:
+- Faster setup (no waiting for compilation)
+- Better portability (works in any environment with bash)
+- Easier maintenance and modification
+- No platform-specific compilation issues
