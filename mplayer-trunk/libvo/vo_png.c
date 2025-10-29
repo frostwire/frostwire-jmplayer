@@ -126,8 +126,7 @@ config(uint32_t width, uint32_t height, uint32_t d_width, uint32_t d_height, uin
 
 
     if (avctx && png_format != format) {
-        avcodec_close(avctx);
-        av_freep(&avctx);
+        avcodec_free_context(&avctx);
     }
 
     if (!avctx) {
