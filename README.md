@@ -1,146 +1,202 @@
 # What is this?
 
-FrostWire JMPlayer is a custom, audio-only mplayer build included with FrostWire for Desktop. This repository contains platform-specific build scripts for creating minimal, audio-focused player binaries:
+FrostWire JMPlayer is a custom, audio-only mplayer build included with FrostWire for Desktop. This repository contains a comprehensive build system for creating minimal, audio-focused player binaries for multiple platforms:
 
 - **Windows**: `fwplayer.exe` (cross-compiled from Linux for x86_64)
 - **macOS**: `fwplayer_osx.x86_64` or `fwplayer_osx.arm64` (native builds)
 - **Linux**: `fwplayer_linux.x86_64` or `fwplayer_linux.arm64` (native builds)
 
-# Build OpenSSL
+# Quick Start
 
-A `build-openssl.sh` script has been included for you to build fresh OpenSSL binaries and libraries for the native platform.
-
-## Default Behavior
-
-The script automatically detects your platform and builds OpenSSL accordingly:
-
-- **On macOS**: Builds OpenSSL for macOS (stores in `${HOME}/src/openssl`)
-- **On Linux**: Builds OpenSSL for Linux (stores in `${HOME}/src/openssl`)
-
-## Cross-Compilation
-
-To build Windows OpenSSL from Linux (for cross-compilation):
+The build system is managed through a simple `Makefile`. Just run:
 
 ```bash
-BUILD_FOR_WINDOWS=1 ./build-openssl.sh
+make help                # Show all available commands
+make                     # Display help (same as make help)
 ```
 
-This will build OpenSSL for Windows x86_64 and store it in `${HOME}/src/openssl-win64-x86_64`.
+# First Time Setup
 
-## Architecture Support
-
-- **macOS**: Automatically detects x86_64 or arm64 (Apple Silicon)
-- **Linux**: Automatically detects x86_64 or arm64 architecture
-- **Windows**: Always builds for x86_64 when cross-compiling from Linux
-
-## Notes
-
-The current OpenSSL versions may occasionally have compilation issues. If you encounter errors during the build, check the error messages carefully. Some versions have had issues with deprecated functions that may need to be commented out.
-
-# Building on Linux
-
-## Windows Build (Cross-Compilation from Linux x86_64)
-
-Cross-compile `fwplayer.exe` for Windows x86_64 from Linux using MinGW toolchain.
-
-### Setup
+To set up your build environment (install dependencies and build OpenSSL):
 
 ```bash
-./build-os-checkers.sh
-./prepare-ubuntu-environment.sh
-BUILD_FOR_WINDOWS=1 ./build-openssl.sh
-export OPENSSL_ROOT=${HOME}/src/openssl-win64-x86_64
+make setup
 ```
 
-### Build
+This single command will:
+1. Check for system dependencies
+2. Install any missing tools (MinGW on Linux, Homebrew packages on macOS)
+3. Build OpenSSL for your platform
+
+# Building the Player
+
+## Build for Current Platform
+
+The simplest way - automatically detects your OS and architecture:
 
 ```bash
-./build_windows.sh
+make build
 ```
 
-You should have `fwplayer.exe` in the current directory when done.
+This will create:
+- On **Linux x86_64**: `fwplayer_linux.x86_64`
+- On **Linux arm64**: `fwplayer_linux.arm64`
+- On **macOS x86_64**: `fwplayer_osx.x86_64`
+- On **macOS arm64**: `fwplayer_osx.arm64`
 
-## Linux Build (Native)
+## Build for Windows (from Linux only)
 
-Build `fwplayer_linux.x86_64` or `fwplayer_linux.arm64` depending on your system architecture.
-
-### Setup
+To cross-compile for Windows x86_64:
 
 ```bash
-./build-os-checkers.sh
-./build-openssl.sh
-export OPENSSL_ROOT=${HOME}/src/openssl
+make build-windows
 ```
 
-### Build
+Creates: `fwplayer.exe`
+
+## Build for Specific Platforms
+
+Explicitly build for a specific platform:
 
 ```bash
-./build_linux.sh
+make build-linux       # Linux native build
+make build-macos       # macOS native build
+make build-windows     # Windows cross-compile (Linux only)
 ```
 
-The binary will be named `fwplayer_linux.x86_64` or `fwplayer_linux.arm64` depending on your host architecture.
+# Building OpenSSL
 
----------------------------
+The `setup` command handles this automatically, but if you need to rebuild OpenSSL:
 
-# Building on macOS
+## Native Build
 
-Build native `fwplayer_osx.x86_64` or `fwplayer_osx.arm64` depending on your Mac architecture.
-
-## Dependencies
+Build OpenSSL for your current platform:
 
 ```bash
-brew install upx
-brew install yasm
+make build-openssl-native
 ```
 
-### Note on UPX for arm64 (Apple Silicon)
+## Windows OpenSSL (from Linux)
 
-UPX does not work with arm64 binaries. If building on Apple Silicon (M1/M2/M3), the binary will be copied without UPX compression. For x86_64 Macs, UPX will be used to reduce binary size.
-
-If you need to build UPX from source for arm64 support, see these notes:
-https://gist.github.com/gubatron/c8ecee2d54033a0b131812324e5a7a33
-
-## Setup
+For Windows cross-compilation:
 
 ```bash
-./build-os-checkers.sh
-./build-openssl.sh
-export OPENSSL_ROOT=${HOME}/src/openssl
+make build-openssl-windows
 ```
 
-## Build
+# Available Commands
 
-```bash
-./build_macos.sh
-```
+Run `make help` to see all available commands, or reference this list:
 
-You should have `fwplayer_osx.x86_64` or `fwplayer_osx.arm64` (depending on your Mac's architecture) in the current directory when done.
+| Command | Description |
+|---------|-------------|
+| `make` or `make help` | Show this help message |
+| `make setup` | First-time setup (install deps + build OpenSSL) |
+| `make build` | Build for current platform |
+| `make build-linux` | Build Linux player (x86_64 or arm64) |
+| `make build-macos` | Build macOS player (x86_64 or arm64) |
+| `make build-windows` | Build Windows player (cross-compile from Linux) |
+| `make build-openssl-native` | Build OpenSSL for current platform |
+| `make build-openssl-windows` | Build Windows OpenSSL (from Linux only) |
+| `make install-deps` | Install system dependencies only |
+| `make show-config` | Show build configuration and status |
+| `make info` | Show detailed build information |
+| `make clean` | Clean all build artifacts |
 
----------------------------
+# Supported Audio Formats
 
-# Audio-Only Player
-
-FrostWire JMPlayer is optimized as an **audio-only** player with zero video support:
-
-## What's Included
-
-- **Video decoders**: None (all removed)
-- **Video output drivers**: Completely disabled
-- **Audio decoders**: Comprehensive support for 17+ audio formats
-
-## Supported Audio Formats
+FrostWire JMPlayer supports comprehensive audio codec support:
 
 - **Streaming**: MP3, AAC, Opus, Vorbis
 - **Lossless**: FLAC, ALAC, WavPack, TTA
 - **Surround Sound**: AC3, EAC3, DTS/DCA, TrueHD
 - **Legacy**: MP2, WMA v1/v2, ADPCM G.726
 
-## Build Configuration
+# Audio-Only Design
 
-All build scripts include:
-- Disabled video decoders (FFmpeg configuration)
-- Disabled video output drivers (MPlayer configuration)
-- Disabled PNG output (to prevent video-related compilation)
-- Enabled audio codecs only
+The player is optimized as an **audio-only** application with zero video support:
 
-This results in significantly smaller binaries and faster compilation times.
+- **Video decoders**: None (all removed)
+- **Video output drivers**: Completely disabled
+- **Video-related tools**: PNG output disabled
+
+This results in:
+- Significantly smaller binaries
+- Faster compilation times
+- Minimal dependencies
+- No video processing overhead
+
+# Troubleshooting
+
+## Check Your Build Environment
+
+Before building, verify everything is configured correctly:
+
+```bash
+make show-config
+```
+
+This displays:
+- Your operating system and architecture
+- OpenSSL installation path
+- MPlayer and FFmpeg source status
+
+## Missing OPENSSL_ROOT
+
+The Makefile automatically checks if `OPENSSL_ROOT` is set. If you get an error, run:
+
+```bash
+make setup
+```
+
+This will build OpenSSL and set up the environment for you.
+
+## Platform-Specific Notes
+
+### macOS (Apple Silicon)
+
+UPX (binary compressor) doesn't work with arm64 binaries. On Apple Silicon (M1/M2/M3), the player will be built without UPX compression. For x86_64 Macs, UPX will automatically reduce binary size.
+
+### Linux
+
+All standard Linux distributions with GCC are supported. The build script automatically handles both x86_64 and arm64 architectures.
+
+### Windows
+
+Windows builds are only possible from Linux using the MinGW cross-compilation toolchain. The setup process handles this automatically.
+
+# Advanced Usage
+
+## Clean Build Artifacts
+
+To remove all compiled files and start fresh:
+
+```bash
+make clean
+```
+
+## View Detailed Configuration
+
+To see detailed information about your build setup:
+
+```bash
+make info
+```
+
+# Architecture Support
+
+The build system automatically detects your host architecture and builds for it:
+
+- **x86_64**: Supported on Linux and macOS
+- **arm64**: Supported on Linux and macOS (Apple Silicon)
+- **Windows**: Always builds for x86_64 when cross-compiling from Linux
+
+# For More Information
+
+See the individual build scripts for advanced options:
+- `build_windows.sh` - Windows cross-compilation
+- `build_macos.sh` - macOS native build
+- `build_linux.sh` - Linux native build
+- `build-openssl.sh` - OpenSSL building
+
+Or check the `Makefile` itself for implementation details.
