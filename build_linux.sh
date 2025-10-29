@@ -123,6 +123,31 @@ ${CONFIG_OPTS} \
 --disable-win32waveout \
 --disable-select \
 --disable-win32dll \
+--disable-vo-fbdev \
+--disable-vo-x11 \
+--disable-vo-opengl \
+--disable-vo-sdl \
+--disable-vo-vesa \
+--disable-vo-dga \
+--disable-vo-vdpau \
+--disable-vo-xv \
+--disable-vo-directfb \
+--disable-vo-matrixview \
+--disable-vo-caca \
+--disable-vo-aa \
+--disable-vo-ggi \
+--disable-vo-winvidix \
+--disable-vo-cvidix \
+--disable-vo-3dfx \
+--disable-vo-xmga \
+--disable-vo-mga \
+--disable-vo-tdfx_vid \
+--disable-vo-s3fb \
+--disable-vo-wii \
+--disable-vo-zr \
+--disable-vo-zr2 \
+--disable-vo-dxr3 \
+--disable-vo-dxr2 \
 --extra-cflags="${EXTRA_CFLAGS}" \
 --extra-ldflags="${EXTRA_LDFLAGS}"
 
