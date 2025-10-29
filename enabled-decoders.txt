@@ -1,1 +1,1 @@
-flv h263 h263i h264 hevc mpeg1video mpeg2video mpeg4 svq1 svq3 vp6 vp8 vp9 wmv1 wmv2 aac ac3 flac mp2 mp3 vorbis wmav1 wmav2 adpcm_g726
+aac ac3 eac3 alac dts dca flac mp2 mp3 vorbis opus wavpack tta wmav1 wmav2 adpcm_g726 truehd
