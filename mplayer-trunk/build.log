@@ -1,0 +1,58 @@
+make -C ffmpeg libavcodec/libavcodec.a
+make[1]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
+CC	libavcodec/h2645_sei.o
+libavcodec/h2645_sei.c: In function 'decode_registered_user_data':
+libavcodec/h2645_sei.c:48:67: error: 'CONFIG_VVC_SEI' undeclared (first use in this function); did you mean 'CONFIG_HEVC_SEI'?
+   48 | #define IS_HEVC(codec_id) (CONFIG_HEVC_SEI && (CONFIG_H264_SEI || CONFIG_VVC_SEI ) ? codec_id == AV_CODEC_ID_HEVC : CONFIG_HEVC_SEI)
+      |                                                                   ^~~~~~~~~~~~~~
+libavcodec/h2645_sei.c:194:14: note: in expansion of macro 'IS_HEVC'
+  194 |         if (!IS_HEVC(codec_id))
+      |              ^~~~~~~
+libavcodec/h2645_sei.c:48:67: note: each undeclared identifier is reported only once for each function it appears in
+   48 | #define IS_HEVC(codec_id) (CONFIG_HEVC_SEI && (CONFIG_H264_SEI || CONFIG_VVC_SEI ) ? codec_id == AV_CODEC_ID_HEVC : CONFIG_HEVC_SEI)
+      |                                                                   ^~~~~~~~~~~~~~
+libavcodec/h2645_sei.c:194:14: note: in expansion of macro 'IS_HEVC'
+  194 |         if (!IS_HEVC(codec_id))
+      |              ^~~~~~~
+libavcodec/h2645_sei.c: In function 'decode_unregistered_user_data':
+libavcodec/h2645_sei.c:47:67: error: 'CONFIG_VVC_SEI' undeclared (first use in this function); did you mean 'CONFIG_HEVC_SEI'?
+   47 | #define IS_H264(codec_id) (CONFIG_H264_SEI && (CONFIG_HEVC_SEI || CONFIG_VVC_SEI ) ? codec_id == AV_CODEC_ID_H264 : CONFIG_H264_SEI)
+      |                                                                   ^~~~~~~~~~~~~~
+libavcodec/h2645_sei.c:277:9: note: in expansion of macro 'IS_H264'
+  277 |     if (IS_H264(codec_id)) {
+      |         ^~~~~~~
+libavcodec/h2645_sei.c: In function 'decode_frame_packing_arrangement':
+libavcodec/h2645_sei.c:47:67: error: 'CONFIG_VVC_SEI' undeclared (first use in this function); did you mean 'CONFIG_HEVC_SEI'?
+   47 | #define IS_H264(codec_id) (CONFIG_H264_SEI && (CONFIG_HEVC_SEI || CONFIG_VVC_SEI ) ? codec_id == AV_CODEC_ID_H264 : CONFIG_H264_SEI)
+      |                                                                   ^~~~~~~~~~~~~~
+libavcodec/h2645_sei.c:329:13: note: in expansion of macro 'IS_H264'
+  329 |         if (IS_H264(codec_id))
+      |             ^~~~~~~
+libavcodec/h2645_sei.c: In function 'decode_film_grain_characteristics':
+libavcodec/h2645_sei.c:47:67: error: 'CONFIG_VVC_SEI' undeclared (first use in this function); did you mean 'CONFIG_HEVC_SEI'?
+   47 | #define IS_H264(codec_id) (CONFIG_H264_SEI && (CONFIG_HEVC_SEI || CONFIG_VVC_SEI ) ? codec_id == AV_CODEC_ID_H264 : CONFIG_H264_SEI)
+      |                                                                   ^~~~~~~~~~~~~~
+libavcodec/h2645_sei.c:413:14: note: in expansion of macro 'IS_H264'
+  413 |         if (!IS_H264(codec_id))
+      |              ^~~~~~~
+libavcodec/h2645_sei.c: In function 'is_frame_packing_type_valid':
+libavcodec/h2645_sei.c:47:67: error: 'CONFIG_VVC_SEI' undeclared (first use in this function); did you mean 'CONFIG_HEVC_SEI'?
+   47 | #define IS_H264(codec_id) (CONFIG_H264_SEI && (CONFIG_HEVC_SEI || CONFIG_VVC_SEI ) ? codec_id == AV_CODEC_ID_H264 : CONFIG_H264_SEI)
+      |                                                                   ^~~~~~~~~~~~~~
+libavcodec/h2645_sei.c:554:9: note: in expansion of macro 'IS_H264'
+  554 |     if (IS_H264(codec_id))
+      |         ^~~~~~~
+libavcodec/h2645_sei.c: In function 'ff_h2645_sei_to_frame':
+libavcodec/h2645_sei.c:49:28: error: 'CONFIG_VVC_SEI' undeclared (first use in this function); did you mean 'CONFIG_HEVC_SEI'?
+   49 | #define IS_VVC(codec_id)  (CONFIG_VVC_SEI  && (CONFIG_H264_SEI || CONFIG_HEVC_SEI) ? codec_id == AV_CODEC_ID_VVC  : CONFIG_VVC_SEI )
+      |                            ^~~~~~~~~~~~~~
+libavcodec/h2645_sei.c:841:13: note: in expansion of macro 'IS_VVC'
+  841 |         if (IS_VVC(codec_id) || fgc->separate_colour_description_present_flag) {
+      |             ^~~~~~
+libavcodec/h2645_sei.c: In function 'is_frame_packing_type_valid':
+libavcodec/h2645_sei.c:560:1: warning: control reaches end of non-void function [-Wreturn-type]
+  560 | }
+      | ^
+make[1]: *** [ffbuild/common.mak:90: libavcodec/h2645_sei.o] Error 1
+make[1]: Leaving directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
+make: *** [Makefile:743: ffmpeg/libavcodec/libavcodec.a] Error 2
