@@ -8,6 +8,6 @@ make[1]: 'libavformat/libavformat.a' is up to date.
 make[1]: Leaving directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
 make -C ffmpeg libavcodec/libavcodec.a
 make[1]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
-CC	libavcodec/h2645_sei.o
 CC	libavcodec/ohcodec.o
+CC	libavcodec/ohdec.o
 make[1]: Leaving directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'

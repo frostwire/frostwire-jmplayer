@@ -42,20 +42,8 @@ if [ -z "${ENABLED_PROTOCOLS_FLAGS}" ]; then
   exit 1
 fi
 
-checkout_mplayer
-if [ ! -d "mplayer-trunk" ]; then
-  echo "Error: mplayer-trunk not checked out, nothing to build"
-  echo ""
-  exit 1
-fi
-
-# Check out ffmpeg inside mplayer folder
-download_ffmpeg
-if [ ! -d "mplayer-trunk/ffmpeg" ]; then
-  echo "Error: can't find 'ffmpeg' folder inside mplayer-trunk/, can't prepare codec flags without it"
-  echo
-  exit 1
-fi
+verify_mplayer_source || exit 1
+verify_ffmpeg_source || exit 1
 
 prepare_ffmpeg_flags
 verify_ffmpeg_flags || exit 1

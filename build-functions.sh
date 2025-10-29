@@ -82,46 +82,28 @@ verify_ffmpeg_flags() {
   return 0
 }
 ################################################################################
-# checkout mplayer from subversion
+# Verify mplayer-trunk source is available
 ################################################################################
-checkout_mplayer() {
+verify_mplayer_source() {
   if [ ! -d "mplayer-trunk" ]; then
-      svn checkout svn://svn.mplayerhq.hu/mplayer/trunk mplayer-trunk
-      if [ ! -d "mplayer-trunk" ]; then
-        echo "checkout_mplayer: check your svn installation or network connection, could not checkout mplayer svn repo"
-        return 1
-      fi
+    echo "Error: mplayer-trunk directory not found"
+    echo "The complete MPlayer source code should be in the repository"
+    echo "Please clone the repository with: git clone <repo-url>"
+    return 1
   fi
   return 0
 }
+
 ################################################################################
-# downloads ffmpeg source code from github repo into mplayer's source folder
+# Verify ffmpeg source is available
 ################################################################################
-download_ffmpeg() {
-  pushd mplayer-trunk
-  if [ -d "ffmpeg" ]; then
-    echo "download_ffmpeg: skipping, already have ffmpeg sources"
-    popd
-    return 0
+verify_ffmpeg_source() {
+  if [ ! -d "mplayer-trunk/ffmpeg" ]; then
+    echo "Error: mplayer-trunk/ffmpeg directory not found"
+    echo "The complete FFmpeg source code should be in the repository"
+    echo "Please clone the repository with: git clone <repo-url>"
+    return 1
   fi
-  if [ ! -d "ffmpeg" ]; then
-      git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
-      #FFMPEG_VERSION="5.0.2"
-      #wget -4 https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz
-      #tar xvfz ffmpeg-${FFMPEG_VERSION}.tar.gz
-      #rm ffmpeg-${FFMPEG_VERSION}.tar.gz
-      #mv ffmpeg-${FFMPEG_VERSION} ffmpeg
-      popd
-      patch mplayer-trunk/ffmpeg/libavformat/tls_openssl.c ffmpeg_tls_openssl.patch
-      pushd mplayer-trunk
-  fi
-  if [ ! -d "ffmpeg" ]; then
-      set +x
-      echo "download_ffmmpeg aborting: Could not git clone ffmpeg"
-      popd
-      return 1
-  fi
-  popd
   return 0
 }
 

@@ -1,0 +1,14 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=/usr/local/lib
+includedir=/usr/local/include
+
+Name: libavformat
+Description: FFmpeg container format library
+Version: 62.6.101
+Requires: libavcodec >= 62.16.100, libswresample >= 6.2.100, libavutil >= 60.16.100
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavformat -lm -latomic -lz -lssl -lcrypto
+Libs.private: 
+Cflags: -I${includedir}

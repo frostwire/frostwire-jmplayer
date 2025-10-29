@@ -1,52 +1,70 @@
-# Compiled Object files
-*.slo
-*.lo
+################################################################################
+# Build Artifacts - Only exclude compiled binaries and generated build files
+################################################################################
+
+# Compiled Object files (.o files from C compilation)
 *.o
+*.lo
+*.slo
+
+# Object file dependencies
 *.d
 
-# Compiled Dynamic libraries
-*.so
-
 # Compiled Static libraries
-*.lai
-*.la
 *.a
+*.la
+*.lai
 
-# Generated files
+# Compiled Dynamic/Shared libraries
+*.so
+*.dylib
+*.dll
+
+# Build logs
+build.log
+mplayer-trunk/build.log
+
+# Generated build configuration files (but not source code)
 **/config.h
 **/config.mak
 **/config.log
-**/config.mak
+**/config.asm
+mplayer-trunk/ffmpeg/config.asm
 
-# vim temp files
+# MPlayer/FFmpeg generated files
+mplayer-trunk/ffmpeg/config.fate
+mplayer-trunk/ffmpeg/libavutil/avconfig.h
+mplayer-trunk/configure.codec_flags
+mplayer-trunk/configure.out
+
+# Compiled executables (but not source)
+mplayer-trunk/mplayer
+mplayer-trunk/mplayer.exe
+mplayer-trunk/ffmpeg/ffmpeg
+mplayer-trunk/ffmpeg/ffprobe
+mplayer-trunk/ffmpeg/ffserver
+*.upx
+*.uncompressed
+
+# IDE and editor temporary files
 *~
+*.swp
+*.swo
+.*.swp
+.cproject
+.project
 
 # Mac OSX files
-*.DS_Store
+.DS_Store
 
 # per-user XCode project data
-JMPlayer/JMPlayer.xcodeproj/xcuserdata/
-JMPlayer/JMPlayer.xcodeproj/project.xcworkspace/xcuserdata/
+FWPlayer/FWPlayer.xcodeproj/xcuserdata/
+FWPlayer/FWPlayer.xcodeproj/project.xcworkspace/xcuserdata/
+FWPlayer2/FWPlayer.xcodeproj/xcuserdata/
+FWPlayer2/FWPlayer.xcodeproj/project.xcworkspace/xcuserdata/
+FWPlayer-Bundle/FWPlayer-Bundle.xcodeproj/xcuserdata/
+FWPlayer-Bundle/FWPlayer-Bundle.xcodeproj/project.xcworkspace/xcuserdata/
 
-JMPlayer2/JMPlayer.xcodeproj/xcuserdata/
-JMPlayer2/JMPlayer.xcodeproj/project.xcworkspace/xcuserdata/
-
-JMPlayer-Bundle/JMPlayer-Bundle.xcodeproj/xuserdata/
-JMPlayer-Bundle/JMPlayer-Bundle.xcodeproj/project.xcworkspace/xcuserdata/
-
-# XCode compile directories
+# XCode build directories
 */build/
 */DerivedData/
-
-
-*/mplayer.upx
-*/mplayer.uncompressed
-*/.cproject
-*/.project
-*/configure.codec_flags
-*/configure.out
-*/ffmpeg/config.asm
-
-is_linux
-is_macos
-is_windows.exe
