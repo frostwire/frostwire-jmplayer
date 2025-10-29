@@ -8,5 +8,5 @@ Description: FFmpeg utility library
 Version: 60.16.100
 Requires: 
 Conflicts:
-Libs: -L${libdir} -Wl,-rpath,${libdir} -lavutil -lm -L/home/gubatron/src/openssl/lib -lssl -lcrypto -latomic -pthread -lX11
+Libs: -L${libdir} -Wl,-rpath,${libdir} -lavutil -lm -lssl -lcrypto -latomic -pthread -lX11
 Cflags: -I${includedir}

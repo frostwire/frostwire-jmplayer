@@ -8,5 +8,5 @@ Description: FFmpeg codec library
 Version: 62.16.100
 Requires:  libswresample >= 6.2.100,  libavutil >= 60.16.100
 Conflicts:
-Libs: -L${libdir} -Wl,-rpath,${libdir} -lavcodec -pthread -lm -latomic
+Libs: -L${libdir} -Wl,-rpath,${libdir} -lavcodec -pthread -lm -latomic -lz
 Cflags: -I${includedir}

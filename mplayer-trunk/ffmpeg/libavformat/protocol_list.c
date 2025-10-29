@@ -1,4 +1,4 @@
-static const URLProtocol *url_protocols[] = {
+static const URLProtocol * const url_protocols[] = {
     &ff_async_protocol,
     &ff_cache_protocol,
     &ff_concat_protocol,
@@ -6,6 +6,7 @@ static const URLProtocol *url_protocols[] = {
     &ff_crypto_protocol,
     &ff_data_protocol,
     &ff_fd_protocol,
+    &ff_ffrtmpcrypt_protocol,
     &ff_ffrtmphttp_protocol,
     &ff_file_protocol,
     &ff_ftp_protocol,
@@ -14,6 +15,7 @@ static const URLProtocol *url_protocols[] = {
     &ff_hls_protocol,
     &ff_http_protocol,
     &ff_httpproxy_protocol,
+    &ff_https_protocol,
     &ff_icecast_protocol,
     &ff_mmsh_protocol,
     &ff_mmst_protocol,
@@ -31,12 +33,11 @@ static const URLProtocol *url_protocols[] = {
     &ff_subfile_protocol,
     &ff_tee_protocol,
     &ff_tcp_protocol,
+    &ff_tls_protocol,
     &ff_dtls_protocol,
     &ff_udp_protocol,
     &ff_udplite_protocol,
     &ff_unix_protocol,
     &ff_ipfs_gateway_protocol,
     &ff_ipns_gateway_protocol,
-    &ff_https_protocol,
-    &ff_tls_protocol,
     NULL };

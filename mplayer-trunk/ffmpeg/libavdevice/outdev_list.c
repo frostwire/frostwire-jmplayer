@@ -1,2 +1,2 @@
-static const FFOutputFormat *outdev_list[] = {
+static const FFOutputFormat * const outdev_list[] = {
     NULL };

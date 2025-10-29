@@ -133,8 +133,13 @@ configure_ffmpeg_windows() {
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
-      --disable-dirac \
-      --disable-snow \
+      --disable-decoder=dirac \
+      --disable-decoder=snow \
+      --disable-demuxer=mcc \
+      --disable-muxer=mcc \
+      --disable-decoder=amrnb \
+      --disable-decoder=amrwb \
+      --disable-decoder=g723_1 \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -169,8 +174,13 @@ configure_ffmpeg_macos() {
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
-      --disable-dirac \
-      --disable-snow \
+      --disable-decoder=dirac \
+      --disable-decoder=snow \
+      --disable-demuxer=mcc \
+      --disable-muxer=mcc \
+      --disable-decoder=amrnb \
+      --disable-decoder=amrwb \
+      --disable-decoder=g723_1 \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -205,8 +215,13 @@ configure_ffmpeg_linux() {
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
-      --disable-dirac \
-      --disable-snow \
+      --disable-decoder=dirac \
+      --disable-decoder=snow \
+      --disable-demuxer=mcc \
+      --disable-muxer=mcc \
+      --disable-decoder=amrnb \
+      --disable-decoder=amrwb \
+      --disable-decoder=g723_1 \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -252,8 +267,13 @@ configure_ffmpeg() {
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
-      --disable-dirac \
-      --disable-snow \
+      --disable-decoder=dirac \
+      --disable-decoder=snow \
+      --disable-demuxer=mcc \
+      --disable-muxer=mcc \
+      --disable-decoder=amrnb \
+      --disable-decoder=amrwb \
+      --disable-decoder=g723_1 \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
