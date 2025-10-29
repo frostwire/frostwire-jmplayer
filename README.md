@@ -1,8 +1,10 @@
 # What is this?
 
-Here we have a `build.sh` script that's meant to build the binaries for `fwplayer.exe` and `fwplayer_osx`, the custom mplayer builds included with FrostWire for Desktop.
+FrostWire JMPlayer is a custom, audio-only mplayer build included with FrostWire for Desktop. This repository contains platform-specific build scripts for creating minimal, audio-focused player binaries:
 
-The `build.sh` script works on macOS to make a native binary and it also works in Ubuntu to cross compile a windows 64-bit binary
+- **Windows**: `fwplayer.exe` (cross-compiled from Linux for x86_64)
+- **macOS**: `fwplayer_osx.x86_64` or `fwplayer_osx.arm64` (native builds)
+- **Linux**: `fwplayer_linux.x86_64` or `fwplayer_linux.arm64` (native builds)
 
 # Build openssl
 
@@ -16,46 +18,110 @@ The resulting binaries will be stored in:
 Note: the current .tar.gz that it downloads from openssl.org has an error in on .c file
 where developers left a "return return value" at the end of a function, just remove the redundant "return" and try to rebuild again. This error should go away with further OpenSSL updates.
 
-# Ubuntu (x86_64)
+# Building on Linux
 
-We use Linux to cross-compile `fwplayer.exe`, the windows executable.
+## Windows Build (Cross-Compilation from Linux x86_64)
 
-Make sure you have all dependencies and tools necessary to cross compile the code
+Cross-compile `fwplayer.exe` for Windows x86_64 from Linux using MinGW toolchain.
+
+### Setup
+
 ```bash
 ./build-os-checkers.sh
 ./prepare-ubuntu-environment.sh
 ./build-openssl.sh
+export OPENSSL_ROOT=${HOME}/src/openssl-win64-x86_64
 ```
 
-Build
-`./build.sh`
+### Build
 
-That's it, you should have a `fwplayer.exe` binary on this folder when the script is done
+```bash
+./build_windows.sh
+```
+
+You should have `fwplayer.exe` in the current directory when done.
+
+## Linux Build (Native)
+
+Build `fwplayer_linux.x86_64` or `fwplayer_linux.arm64` depending on your system architecture.
+
+### Setup
+
+```bash
+./build-os-checkers.sh
+./build-openssl.sh
+export OPENSSL_ROOT=${HOME}/src/openssl
+```
+
+### Build
+
+```bash
+./build_linux.sh
+```
+
+The binary will be named `fwplayer_linux.x86_64` or `fwplayer_linux.arm64` depending on your host architecture.
 
 ---------------------------
-# macOS
+
+# Building on macOS
+
+Build native `fwplayer_osx.x86_64` or `fwplayer_osx.arm64` depending on your Mac architecture.
+
+## Dependencies
 
 ```bash
 brew install upx
 brew install yasm
 ```
 
-# building upx on mac from source
-You will probably need to build ucl, here are some notes of how I managed to build on macOS with m1 (arm64) cpu
+### Note on UPX for arm64 (Apple Silicon)
+
+UPX does not work with arm64 binaries. If building on Apple Silicon (M1/M2/M3), the binary will be copied without UPX compression. For x86_64 Macs, UPX will be used to reduce binary size.
+
+If you need to build UPX from source for arm64 support, see these notes:
 https://gist.github.com/gubatron/c8ecee2d54033a0b131812324e5a7a33
 
-# Build fwplayer
-
-Build mplayer and ffmpeg with minimum dependencies
+## Setup
 
 ```bash
 ./build-os-checkers.sh
 ./build-openssl.sh
+export OPENSSL_ROOT=${HOME}/src/openssl
 ```
 
-Build
-```
-./build.sh
+## Build
+
+```bash
+./build_macos.sh
 ```
 
-That's it, you should have a `fwplayer_osx` binary on this folder when the script is done
+You should have `fwplayer_osx.x86_64` or `fwplayer_osx.arm64` (depending on your Mac's architecture) in the current directory when done.
+
+---------------------------
+
+# Audio-Only Player
+
+FrostWire JMPlayer is optimized as an **audio-only** player with zero video support:
+
+## What's Included
+
+- **Video decoders**: None (all removed)
+- **Video output drivers**: Completely disabled
+- **Audio decoders**: Comprehensive support for 17+ audio formats
+
+## Supported Audio Formats
+
+- **Streaming**: MP3, AAC, Opus, Vorbis
+- **Lossless**: FLAC, ALAC, WavPack, TTA
+- **Surround Sound**: AC3, EAC3, DTS/DCA, TrueHD
+- **Legacy**: MP2, WMA v1/v2, ADPCM G.726
+
+## Build Configuration
+
+All build scripts include:
+- Disabled video decoders (FFmpeg configuration)
+- Disabled video output drivers (MPlayer configuration)
+- Disabled PNG output (to prevent video-related compilation)
+- Enabled audio codecs only
+
+This results in significantly smaller binaries and faster compilation times.
