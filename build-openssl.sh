@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 ################################################################################
 # Author: @gubatron - September 2019 - January 2023
+# Modified: 2025 - Platform-specific OpenSSL builds
 ################################################################################
+# This script builds OpenSSL for the native platform:
+# - On macOS: builds OpenSSL for macOS
+# - On Linux: builds OpenSSL for Linux (native)
+#
+# To build Windows OpenSSL from Linux for cross-compilation:
+#   BUILD_FOR_WINDOWS=1 ./build-openssl.sh
+#
 # set -x
 
 source build-functions.sh
@@ -17,6 +25,15 @@ fi
 ARCH=`arch`
 TARGET="darwin64-${ARCH}-cc"
 
+# Normalize architecture names
+if [ ${ARCH} == "i386" ]; then
+    ARCH=x86_64
+fi
+
+if [ ${ARCH} == "aarch64" ]; then
+    ARCH=arm64
+fi
+
 ./is_macos
 IS_MACOS=$?
 
@@ -24,9 +41,23 @@ IS_MACOS=$?
 IS_LINUX=$?
 
 if [ ${IS_LINUX} -eq 1 ]; then
-    OPENSSL_PREFIX=${HOME}/src/openssl-win64-x86_64
-    TARGET="mingw64"
-    export CC=x86_64-w64-mingw32-gcc
+    # Check if building for Windows (cross-compilation)
+    if [ "${BUILD_FOR_WINDOWS}" = "1" ]; then
+        OPENSSL_PREFIX=${HOME}/src/openssl-win64-x86_64
+        TARGET="mingw64"
+        export CC=x86_64-w64-mingw32-gcc
+    else
+        # Native Linux build
+        OPENSSL_PREFIX=${HOME}/src/openssl
+        # Set appropriate OpenSSL target for Linux architecture
+        if [ ${ARCH} == "arm64" ]; then
+            TARGET="linux-aarch64"
+        else
+            TARGET="linux-x86_64"
+        fi
+        # For Linux native builds, don't set CC to use system compiler
+        unset CC
+    fi
 fi
 
 if [ ! -d "${OPENSSL_SRC}" ]; then
@@ -44,7 +75,8 @@ if [ ! -d "${OPENSSL_SRC}" ]; then
     exit 1
 fi
 
-if [ ${IS_LINUX} -eq 1 ]; then
+# Only apply Windows-specific sed patches when cross-compiling for Windows from Linux
+if [ ${IS_LINUX} -eq 1 ] && [ "${BUILD_FOR_WINDOWS}" = "1" ]; then
     sed -i 's/if !defined(OPENSSL_SYS_WINCE) && !defined(OPENSSL_SYS_WIN32_CYGWIN)/if 0/g' ${OPENSSL_SRC}/crypto/rand/rand_win.c
     sed -i 's/if defined(_WIN32_WINNT) && _WIN32_WINNT>=0x0333/if 0/g' ${OPENSSL_SRC}/crypto/cryptlib.c
     sed -i 's/MessageBox.*//g' ${OPENSSL_SRC}/crypto/cryptlib.c

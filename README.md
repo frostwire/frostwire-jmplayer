@@ -6,17 +6,36 @@ FrostWire JMPlayer is a custom, audio-only mplayer build included with FrostWire
 - **macOS**: `fwplayer_osx.x86_64` or `fwplayer_osx.arm64` (native builds)
 - **Linux**: `fwplayer_linux.x86_64` or `fwplayer_linux.arm64` (native builds)
 
-# Build openssl
+# Build OpenSSL
 
-A `build-openssl.sh` script has been included for you to build fresh OpenSSL binaries and libraries, it's meant to work on both Ubuntu (perhaps on other Linux distros) and macOS
+A `build-openssl.sh` script has been included for you to build fresh OpenSSL binaries and libraries for the native platform.
 
-The resulting binaries will be stored in:
+## Default Behavior
 
-`${HOME}/src/openssl-openssl-win64-x86_64` when building for Windows in macOS
-`${HOME}/src/openssl` for macOS
+The script automatically detects your platform and builds OpenSSL accordingly:
 
-Note: the current .tar.gz that it downloads from openssl.org has an error in on .c file
-where developers left a "return return value" at the end of a function, just remove the redundant "return" and try to rebuild again. This error should go away with further OpenSSL updates.
+- **On macOS**: Builds OpenSSL for macOS (stores in `${HOME}/src/openssl`)
+- **On Linux**: Builds OpenSSL for Linux (stores in `${HOME}/src/openssl`)
+
+## Cross-Compilation
+
+To build Windows OpenSSL from Linux (for cross-compilation):
+
+```bash
+BUILD_FOR_WINDOWS=1 ./build-openssl.sh
+```
+
+This will build OpenSSL for Windows x86_64 and store it in `${HOME}/src/openssl-win64-x86_64`.
+
+## Architecture Support
+
+- **macOS**: Automatically detects x86_64 or arm64 (Apple Silicon)
+- **Linux**: Automatically detects x86_64 or arm64 architecture
+- **Windows**: Always builds for x86_64 when cross-compiling from Linux
+
+## Notes
+
+The current OpenSSL versions may occasionally have compilation issues. If you encounter errors during the build, check the error messages carefully. Some versions have had issues with deprecated functions that may need to be commented out.
 
 # Building on Linux
 
@@ -29,7 +48,7 @@ Cross-compile `fwplayer.exe` for Windows x86_64 from Linux using MinGW toolchain
 ```bash
 ./build-os-checkers.sh
 ./prepare-ubuntu-environment.sh
-./build-openssl.sh
+BUILD_FOR_WINDOWS=1 ./build-openssl.sh
 export OPENSSL_ROOT=${HOME}/src/openssl-win64-x86_64
 ```
 
