@@ -59,14 +59,20 @@ verify_ffmpeg_flags || exit 1
 # First we need to build ffmpeg
 configure_ffmpeg_linux
 make -j 8
+
+# Remove problematic codec object files that cause linking errors
+# These have unresolved dependencies when built for audio-only player
+cleanup_ffmpeg_problematic_objects
+
+# Pop back to mplayer-trunk directory (we were in ffmpeg for cleanup)
 popd
+
 echo "FFMpeg compilation finished"
 press_any_key
 
 ################################################################################
 # Configure MPlayer Build for Linux
 ################################################################################
-pushd mplayer-trunk
 
 WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else'
 

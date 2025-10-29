@@ -1,0 +1,9 @@
+--- mplayer-trunk/Makefile.orig	2024-01-01 00:00:00.000000000 +0000
++++ mplayer-trunk/Makefile	2024-01-01 00:00:00.000000000 +0000
+@@ -1,6 +1,7 @@
+ 
+ # You can change the configure options in the top-level Makefile.
+ 
++FFMPEG_CLEANUP = rm -f ffmpeg/libavcodec/{g723_1,cbrt_data,cbrt_data_fixed,g723_1dec,g723_1_parser,amrnbdec,amrwbdec,diracdec,dirac,dirac_arith,dirac_dwt,dirac_parser,dirac_vlc,diracdsp,diractab,snow,snow_dwt,snowdec,snowenc,mpegvideo_enc,mpegvideoencdsp,acelp_pitch_delay,celp_filters,bsf/eia608_to_smpte436m,bsf/smpte436m_to_eia608}.o ffmpeg/libavformat/{mccdec,mccenc}.o 2>/dev/null; ar d ffmpeg/libavcodec/libavcodec.a libavcodec/{g723_1,cbrt_data,cbrt_data_fixed,g723_1dec,g723_1_parser,amrnbdec,amrwbdec,diracdec,dirac,dirac_arith,dirac_dwt,dirac_parser,dirac_vlc,diracdsp,diractab,snow,snow_dwt,snowdec,snowenc,mpegvideo_enc,mpegvideoencdsp,acelp_pitch_delay,celp_filters,bsf/eia608_to_smpte436m,bsf/smpte436m_to_eia608}.o 2>/dev/null; ar d ffmpeg/libavformat/libavformat.a libavformat/{mccdec,mccenc}.o 2>/dev/null; true
+ 
+ include config.mak

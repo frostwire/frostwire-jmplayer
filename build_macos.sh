@@ -55,7 +55,14 @@ verify_ffmpeg_flags || exit 1
 # First we need to build ffmpeg
 configure_ffmpeg_macos
 make -j 8
+
+# Remove problematic codec object files that cause linking errors
+# These have unresolved dependencies when built for audio-only player
+cleanup_ffmpeg_problematic_objects
+
+# Pop back to mplayer-trunk directory (we were in ffmpeg for cleanup)
 popd
+
 echo "FFMpeg compilation finished"
 press_any_key
 
@@ -74,7 +81,6 @@ CONFIG_OPTS=''
 ################################################################################
 # Configure MPlayer Build for macOS
 ################################################################################
-pushd mplayer-trunk
 
 # macOS clang will not do --static for arm64
 if [ ${ARCH} == "arm64" ]; then

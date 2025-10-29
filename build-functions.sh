@@ -286,6 +286,85 @@ configure_ffmpeg() {
   pushd mplayer-trunk/ffmpeg
 }
 
+################################################################################
+# Clean up problematic FFmpeg object files from archives after build
+# These codecs are not needed for audio-only player and have missing dependencies
+################################################################################
+cleanup_ffmpeg_problematic_objects() {
+  echo "Cleaning up problematic FFmpeg object files from archives..."
+
+  # First, remove the object files from disk so they won't be re-archived
+  rm -f libavcodec/g723_1.o \
+        libavcodec/g723_1dec.o \
+        libavcodec/g723_1_parser.o \
+        libavcodec/amrnbdec.o \
+        libavcodec/amrwbdec.o \
+        libavcodec/cbrt_data.o \
+        libavcodec/cbrt_data_fixed.o \
+        libavcodec/diracdec.o \
+        libavcodec/dirac.o \
+        libavcodec/dirac_arith.o \
+        libavcodec/dirac_dwt.o \
+        libavcodec/dirac_parser.o \
+        libavcodec/dirac_vlc.o \
+        libavcodec/diracdsp.o \
+        libavcodec/diractab.o \
+        libavcodec/snow.o \
+        libavcodec/snow_dwt.o \
+        libavcodec/snowdec.o \
+        libavcodec/snowenc.o \
+        libavcodec/mpegvideo_enc.o \
+        libavcodec/mpegvideoencdsp.o \
+        libavcodec/acelp_pitch_delay.o \
+        libavcodec/celp_filters.o \
+        libavcodec/bsf/eia608_to_smpte436m.o \
+        libavcodec/bsf/smpte436m_to_eia608.o \
+        libavformat/mccdec.o \
+        libavformat/mccenc.o \
+        2>/dev/null || true
+
+  # Then, remove them from the archives themselves
+  if [ -f "libavcodec/libavcodec.a" ]; then
+    ar d libavcodec/libavcodec.a \
+      libavcodec/g723_1.o \
+      libavcodec/g723_1dec.o \
+      libavcodec/g723_1_parser.o \
+      libavcodec/amrnbdec.o \
+      libavcodec/amrwbdec.o \
+      libavcodec/cbrt_data.o \
+      libavcodec/cbrt_data_fixed.o \
+      libavcodec/diracdec.o \
+      libavcodec/dirac.o \
+      libavcodec/dirac_arith.o \
+      libavcodec/dirac_dwt.o \
+      libavcodec/dirac_parser.o \
+      libavcodec/dirac_vlc.o \
+      libavcodec/diracdsp.o \
+      libavcodec/diractab.o \
+      libavcodec/snow.o \
+      libavcodec/snow_dwt.o \
+      libavcodec/snowdec.o \
+      libavcodec/snowenc.o \
+      libavcodec/mpegvideo_enc.o \
+      libavcodec/mpegvideoencdsp.o \
+      libavcodec/acelp_pitch_delay.o \
+      libavcodec/celp_filters.o \
+      libavcodec/bsf/eia608_to_smpte436m.o \
+      libavcodec/bsf/smpte436m_to_eia608.o \
+      2>/dev/null || true
+  fi
+
+  if [ -f "libavformat/libavformat.a" ]; then
+    ar d libavformat/libavformat.a \
+      libavformat/mccdec.o \
+      libavformat/mccenc.o \
+      2>/dev/null || true
+  fi
+
+  echo "Done cleaning FFmpeg archives"
+  return 0
+}
+
 press_any_key() {
   read -s -n 1 -p "[Press any key to continue]" && echo ""
 }
