@@ -18,6 +18,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 ################################################################################
+# Global array to hold enabled decoders
+################################################################################
+declare -a ENABLED_DECODERS=()
+
+################################################################################
 # Load enabled decoders from enabled-decoders.txt
 ################################################################################
 load_enabled_decoders() {
@@ -29,12 +34,15 @@ load_enabled_decoders() {
     fi
 
     # Read file and split on whitespace into array
-    # This preserves the original data without modification
     local content
     content=$(<"$decoders_file")
 
-    # Store in global variable for other functions to use
-    ENABLED_DECODERS=($content)
+    # Clear and populate global array
+    ENABLED_DECODERS=()
+    for decoder in $content; do
+        ENABLED_DECODERS+=("$decoder")
+    done
+
     return 0
 }
 
@@ -43,10 +51,10 @@ load_enabled_decoders() {
 ################################################################################
 decoder_enabled() {
     local decoder="$1"
-    local -n enabled_array=$2
+    local i
 
-    for enabled in "${enabled_array[@]}"; do
-        if [ "$enabled" = "$decoder" ]; then
+    for ((i = 0; i < ${#ENABLED_DECODERS[@]}; i++)); do
+        if [ "${ENABLED_DECODERS[$i]}" = "$decoder" ]; then
             return 0  # Found
         fi
     done
@@ -87,10 +95,11 @@ load_available_codecs() {
 # Generate flags for enabled decoders
 ################################################################################
 prepare_enabled_decoders_flags() {
-    local -n enabled_array=$1
     local flags=""
+    local i
 
-    for decoder in "${enabled_array[@]}"; do
+    for ((i = 0; i < ${#ENABLED_DECODERS[@]}; i++)); do
+        local decoder="${ENABLED_DECODERS[$i]}"
         if [ -n "$decoder" ]; then
             flags+="--enable-decoder=$decoder "
         fi
@@ -107,7 +116,6 @@ prepare_enabled_decoders_flags() {
 ################################################################################
 prepare_disabled_codecs_flags() {
     local is_encoders=$1  # true for encoders, false for decoders
-    local -n enabled_array=$2
     local subject
 
     if [ "$is_encoders" = "true" ]; then
@@ -129,15 +137,17 @@ prepare_disabled_codecs_flags() {
     local -a available_codecs=($available_output)
 
     local flags=""
+    local i
 
-    for codec in "${available_codecs[@]}"; do
+    for ((i = 0; i < ${#available_codecs[@]}; i++)); do
+        local codec="${available_codecs[$i]}"
         if [ -z "$codec" ]; then
             continue
         fi
 
         # For decoders, skip if enabled; for encoders, always disable
         if [ "$is_encoders" = "false" ]; then
-            if decoder_enabled "$codec" enabled_array; then
+            if decoder_enabled "$codec"; then
                 continue
             fi
         fi
@@ -161,19 +171,19 @@ main() {
     fi
 
     # Generate disabled decoders flags
-    DISABLED_DECODERS_FLAGS=$(prepare_disabled_codecs_flags "false" ENABLED_DECODERS) || {
+    DISABLED_DECODERS_FLAGS=$(prepare_disabled_codecs_flags "false") || {
         echo "Error: Failed to generate disabled decoders flags" >&2
         exit 1
     }
 
     # Generate enabled decoders flags
-    ENABLED_DECODERS_FLAGS=$(prepare_enabled_decoders_flags ENABLED_DECODERS) || {
+    ENABLED_DECODERS_FLAGS=$(prepare_enabled_decoders_flags) || {
         echo "Error: Failed to generate enabled decoders flags" >&2
         exit 1
     }
 
     # Generate disabled encoders flags
-    DISABLED_ENCODERS_FLAGS=$(prepare_disabled_codecs_flags "true" ENABLED_DECODERS) || {
+    DISABLED_ENCODERS_FLAGS=$(prepare_disabled_codecs_flags "true") || {
         echo "Error: Failed to generate disabled encoders flags" >&2
         exit 1
     }
