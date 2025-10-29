@@ -26,8 +26,7 @@ export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
 source build-functions.sh
 
 # Verify we're on Linux
-./is_linux
-if [ $? -ne 1 ]; then
+if ! is_linux; then
     echo "Error: Linux builds must be done on Linux"
     exit 1
 fi

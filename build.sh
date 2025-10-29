@@ -23,23 +23,20 @@ fi
 export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
 source build-functions.sh
 
-# returns 1 if true, 0 if false. output return codes from processes is always stored in $?
-./is_linux
-IS_LINUX=$?
-./is_macos
-IS_MACOS=$?
 ARCH=`arch`
-echo IS_LINUX=${IS_LINUX}
-echo IS_MACOS=${IS_MACOS}
 
 if [ ${ARCH} == "i386" ]; then
     ARCH=x86_64
 fi
-    
-if [ ${IS_LINUX} -eq 1 ]; then
+
+if [ ${ARCH} == "aarch64" ]; then
+    ARCH=arm64
+fi
+
+if is_linux; then
   echo "It's Linux (${ARCH})"
 fi
-if [ ${IS_MACOS} -eq 1 ]; then
+if is_macos; then
   echo "It's MacOS (${ARCH})"
   #if [ ${ARCH} == "arm64" ]; then
   #  CC="/opt/homebrew/bin/gcc-11"
@@ -90,11 +87,11 @@ EXTRA_LDFLAGS="-framework CoreMedia -framework Security -framework VideoToolbox 
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
 CONFIG_LINUX_OPTS=''
 
-if [ ${IS_LINUX} -eq 1 ]; then
+if is_linux; then
   CC="x86_64-w64-mingw32-gcc"
   WINDRES="x86_64-w64-mingw32-windres"
   WARNING_FLAGS='-Wno-error=implicit-function-declaration -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else'
-  #--enable-runtime-cpudetection --enable-static 
+  #--enable-runtime-cpudetection --enable-static
   CONFIG_LINUX_OPTS="--enable-static --windres=${WINDRES} --disable-pthreads --target=x86_64-mingw32 --enable-cross-compile --cc=${CC} --enable-winsock2_h"
   # Maybe -L/usr/x86_64-w64-mingw32/lib
   EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto -Lffmpeg/libavutil -lavutil"
@@ -106,7 +103,7 @@ fi
 pushd mplayer-trunk
 
 # MacOS clang will not do --static
-if [ ${IS_MACOS} -eq 1 ] && [ ${ARCH} == "arm64" ]; then
+if is_macos && [ ${ARCH} == "arm64" ]; then
     CONFIG_LINUX_OPTS="--cc=${CC}"
     echo "CONFIG_LINUX_OPTS=${CONFIG_LINUX_OPTS}"
 fi

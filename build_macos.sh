@@ -26,8 +26,7 @@ export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
 source build-functions.sh
 
 # Verify we're on macOS
-./is_macos
-if [ $? -ne 1 ]; then
+if ! is_macos; then
     echo "Error: macOS builds must be done on macOS"
     exit 1
 fi

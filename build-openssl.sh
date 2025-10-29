@@ -34,13 +34,7 @@ if [ ${ARCH} == "aarch64" ]; then
     ARCH=arm64
 fi
 
-./is_macos
-IS_MACOS=$?
-
-./is_linux
-IS_LINUX=$?
-
-if [ ${IS_LINUX} -eq 1 ]; then
+if is_linux; then
     # Check if building for Windows (cross-compilation)
     if [ "${BUILD_FOR_WINDOWS}" = "1" ]; then
         OPENSSL_PREFIX=${HOME}/src/openssl-win64-x86_64
@@ -76,7 +70,7 @@ if [ ! -d "${OPENSSL_SRC}" ]; then
 fi
 
 # Only apply Windows-specific sed patches when cross-compiling for Windows from Linux
-if [ ${IS_LINUX} -eq 1 ] && [ "${BUILD_FOR_WINDOWS}" = "1" ]; then
+if is_linux && [ "${BUILD_FOR_WINDOWS}" = "1" ]; then
     sed -i 's/if !defined(OPENSSL_SYS_WINCE) && !defined(OPENSSL_SYS_WIN32_CYGWIN)/if 0/g' ${OPENSSL_SRC}/crypto/rand/rand_win.c
     sed -i 's/if defined(_WIN32_WINNT) && _WIN32_WINNT>=0x0333/if 0/g' ${OPENSSL_SRC}/crypto/cryptlib.c
     sed -i 's/MessageBox.*//g' ${OPENSSL_SRC}/crypto/cryptlib.c

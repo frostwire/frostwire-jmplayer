@@ -26,8 +26,7 @@ export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
 source build-functions.sh
 
 # Verify we're on Linux for cross-compilation
-./is_linux
-if [ $? -ne 1 ]; then
+if ! is_linux; then
     echo "Error: Windows builds must be done from Linux (cross-compilation)"
     exit 1
 fi

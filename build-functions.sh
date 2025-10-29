@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 ################################################################################
+# OS Detection Functions
+################################################################################
+# Returns 0 if not Linux, 1 if Linux (for compatibility with old scripts)
+is_linux() {
+    [ "$(uname -s)" = "Linux" ]
+    return
+}
+
+# Returns 0 if not macOS, 1 if macOS (for compatibility with old scripts)
+is_macos() {
+    [ "$(uname -s)" = "Darwin" ]
+    return
+}
+
+################################################################################
 # Prepare enabled protocol flags
 ################################################################################
 prepare_enabled_protocol_flags() {
