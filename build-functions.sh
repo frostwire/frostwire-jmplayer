@@ -133,6 +133,8 @@ configure_ffmpeg_windows() {
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
+      --disable-dirac \
+      --disable-snow \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -167,6 +169,8 @@ configure_ffmpeg_macos() {
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
+      --disable-dirac \
+      --disable-snow \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -201,6 +205,8 @@ configure_ffmpeg_linux() {
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
+      --disable-dirac \
+      --disable-snow \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -246,6 +252,8 @@ configure_ffmpeg() {
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
+      --disable-dirac \
+      --disable-snow \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
