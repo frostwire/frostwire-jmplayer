@@ -430,45 +430,48 @@ cleanup_ffmpeg_problematic_objects() {
 
   # Then, remove them from the archives themselves
   if [ -f "libavcodec/libavcodec.a" ]; then
+    echo "Removing from libavcodec.a archive..."
     ar d libavcodec/libavcodec.a \
-      g723_1.o \
-      g723_1dec.o \
-      g723_1_parser.o \
-      amrnbdec.o \
-      amrwbdec.o \
-      cbrt_data.o \
-      cbrt_data_fixed.o \
-      diracdec.o \
-      dirac.o \
-      dirac_arith.o \
-      dirac_dwt.o \
-      dirac_parser.o \
-      dirac_vlc.o \
-      diracdsp.o \
-      diractab.o \
-      snow.o \
-      snow_dwt.o \
-      snowdec.o \
-      snowenc.o \
-      mpegvideo_enc.o \
-      mpegvideoencdsp.o \
-      acelp_pitch_delay.o \
-      celp_filters.o \
+      libavcodec/g723_1.o \
+      libavcodec/g723_1dec.o \
+      libavcodec/g723_1_parser.o \
+      libavcodec/amrnbdec.o \
+      libavcodec/amrwbdec.o \
+      libavcodec/cbrt_data.o \
+      libavcodec/cbrt_data_fixed.o \
+      libavcodec/diracdec.o \
+      libavcodec/dirac.o \
+      libavcodec/dirac_arith.o \
+      libavcodec/dirac_dwt.o \
+      libavcodec/dirac_parser.o \
+      libavcodec/dirac_vlc.o \
+      libavcodec/diracdsp.o \
+      libavcodec/diractab.o \
+      libavcodec/snow.o \
+      libavcodec/snow_dwt.o \
+      libavcodec/snowdec.o \
+      libavcodec/snowenc.o \
+      libavcodec/mpegvideo_enc.o \
+      libavcodec/mpegvideoencdsp.o \
+      libavcodec/acelp_pitch_delay.o \
+      libavcodec/celp_filters.o \
       2>/dev/null || true
   fi
 
   # Remove BSF objects from libavcodec archive
   if [ -f "libavcodec/libavcodec.a" ]; then
+    echo "Removing BSF objects from libavcodec.a archive..."
     ar d libavcodec/libavcodec.a \
-      eia608_to_smpte436m.o \
-      smpte436m_to_eia608.o \
+      libavcodec/bsf/eia608_to_smpte436m.o \
+      libavcodec/bsf/smpte436m_to_eia608.o \
       2>/dev/null || true
   fi
 
   if [ -f "libavformat/libavformat.a" ]; then
+    echo "Removing from libavformat.a archive..."
     ar d libavformat/libavformat.a \
-      mccdec.o \
-      mccenc.o \
+      libavformat/mccdec.o \
+      libavformat/mccenc.o \
       2>/dev/null || true
   fi
 
