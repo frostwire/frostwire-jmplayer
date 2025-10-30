@@ -15,6 +15,93 @@ is_macos() {
 }
 
 ################################################################################
+# Smart directory navigation - ensures we're at target directory
+# Handles being in project root, mplayer-trunk, or mplayer-trunk/ffmpeg
+# Usage: ensure_cd "mplayer-trunk" or ensure_cd "mplayer-trunk/ffmpeg" or ensure_cd "."
+################################################################################
+ensure_cd() {
+    local target_dir="$1"
+    local current_dir
+
+    if [ -z "$target_dir" ]; then
+        echo "Error: ensure_cd requires a target directory argument"
+        return 1
+    fi
+
+    current_dir=$(pwd)
+
+    # Normalize the target path
+    target_dir=$(echo "$target_dir" | sed 's:/*$::')  # Remove trailing slashes
+
+    # If target is ".", we want project root
+    if [ "$target_dir" = "." ]; then
+        target_dir=""
+    fi
+
+    # Check if we're already in the target directory
+    if [ -z "$target_dir" ]; then
+        # Target is project root - check if mplayer-trunk and build-functions.sh exist
+        if [ -d "mplayer-trunk" ] && [ -f "build-functions.sh" ]; then
+            return 0
+        fi
+    else
+        # Check if target exists relative to current directory
+        if [ -d "$target_dir" ]; then
+            cd "$target_dir" || return 1
+            return 0
+        fi
+    fi
+
+    # We're not in the right place, figure out where we are and navigate
+    # Check project structure markers
+    if [ -f "build-functions.sh" ] && [ -d "mplayer-trunk" ]; then
+        # We're at project root
+        if [ -n "$target_dir" ]; then
+            cd "$target_dir" || return 1
+        fi
+        return 0
+    elif [ -f "binary.ver" ] || [ -f "Makefile" ] && [ -d "ffmpeg" ]; then
+        # We're in mplayer-trunk
+        if [ "$target_dir" = "mplayer-trunk" ]; then
+            return 0
+        elif [ "$target_dir" = "mplayer-trunk/ffmpeg" ] || [ "$target_dir" = "ffmpeg" ]; then
+            cd ffmpeg || return 1
+            return 0
+        elif [ -z "$target_dir" ]; then
+            # Need to go to project root
+            cd .. || return 1
+            return 0
+        else
+            cd "$target_dir" || return 1
+            return 0
+        fi
+    elif [ -f "version.h" ] || ([ -d "libavcodec" ] && [ -d "libavformat" ]); then
+        # We're in mplayer-trunk/ffmpeg
+        if [ "$target_dir" = "mplayer-trunk/ffmpeg" ] || [ "$target_dir" = "ffmpeg" ]; then
+            return 0
+        elif [ "$target_dir" = "mplayer-trunk" ]; then
+            cd .. || return 1
+            return 0
+        elif [ -z "$target_dir" ]; then
+            # Need to go to project root
+            cd ../.. || return 1
+            return 0
+        else
+            cd "$target_dir" || return 1
+            return 0
+        fi
+    else
+        # Unknown location - try to find our way back to project root
+        echo "Warning: Cannot determine current location in project structure"
+        echo "Current directory: $current_dir"
+        echo "Attempting to navigate to: $target_dir"
+        cd "$target_dir" 2>/dev/null || return 1
+    fi
+
+    return 0
+}
+
+################################################################################
 # Prepare enabled protocol flags
 ################################################################################
 prepare_enabled_protocol_flags() {
@@ -140,6 +227,10 @@ configure_ffmpeg_windows() {
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
+      --disable-encoder=mpegvideo \
+      --disable-encoder=snow \
+      --disable-encoder=h264_oh \
+      --disable-encoder=hevc_oh \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -181,6 +272,10 @@ configure_ffmpeg_macos() {
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
+      --disable-encoder=mpegvideo \
+      --disable-encoder=snow \
+      --disable-encoder=h264_oh \
+      --disable-encoder=hevc_oh \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -222,6 +317,10 @@ configure_ffmpeg_linux() {
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
+      --disable-encoder=mpegvideo \
+      --disable-encoder=snow \
+      --disable-encoder=h264_oh \
+      --disable-encoder=hevc_oh \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -274,6 +373,10 @@ configure_ffmpeg() {
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
+      --disable-encoder=mpegvideo \
+      --disable-encoder=snow \
+      --disable-encoder=h264_oh \
+      --disable-encoder=hevc_oh \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -292,8 +395,10 @@ configure_ffmpeg() {
 ################################################################################
 cleanup_ffmpeg_problematic_objects() {
   echo "Cleaning up problematic FFmpeg object files from archives..."
+  echo "Current directory: $(pwd)"
 
   # First, remove the object files from disk so they won't be re-archived
+  echo "Removing .o files from disk..."
   rm -f libavcodec/g723_1.o \
         libavcodec/g723_1dec.o \
         libavcodec/g723_1_parser.o \
@@ -326,38 +431,44 @@ cleanup_ffmpeg_problematic_objects() {
   # Then, remove them from the archives themselves
   if [ -f "libavcodec/libavcodec.a" ]; then
     ar d libavcodec/libavcodec.a \
-      libavcodec/g723_1.o \
-      libavcodec/g723_1dec.o \
-      libavcodec/g723_1_parser.o \
-      libavcodec/amrnbdec.o \
-      libavcodec/amrwbdec.o \
-      libavcodec/cbrt_data.o \
-      libavcodec/cbrt_data_fixed.o \
-      libavcodec/diracdec.o \
-      libavcodec/dirac.o \
-      libavcodec/dirac_arith.o \
-      libavcodec/dirac_dwt.o \
-      libavcodec/dirac_parser.o \
-      libavcodec/dirac_vlc.o \
-      libavcodec/diracdsp.o \
-      libavcodec/diractab.o \
-      libavcodec/snow.o \
-      libavcodec/snow_dwt.o \
-      libavcodec/snowdec.o \
-      libavcodec/snowenc.o \
-      libavcodec/mpegvideo_enc.o \
-      libavcodec/mpegvideoencdsp.o \
-      libavcodec/acelp_pitch_delay.o \
-      libavcodec/celp_filters.o \
-      libavcodec/bsf/eia608_to_smpte436m.o \
-      libavcodec/bsf/smpte436m_to_eia608.o \
+      g723_1.o \
+      g723_1dec.o \
+      g723_1_parser.o \
+      amrnbdec.o \
+      amrwbdec.o \
+      cbrt_data.o \
+      cbrt_data_fixed.o \
+      diracdec.o \
+      dirac.o \
+      dirac_arith.o \
+      dirac_dwt.o \
+      dirac_parser.o \
+      dirac_vlc.o \
+      diracdsp.o \
+      diractab.o \
+      snow.o \
+      snow_dwt.o \
+      snowdec.o \
+      snowenc.o \
+      mpegvideo_enc.o \
+      mpegvideoencdsp.o \
+      acelp_pitch_delay.o \
+      celp_filters.o \
+      2>/dev/null || true
+  fi
+
+  # Remove BSF objects from libavcodec archive
+  if [ -f "libavcodec/libavcodec.a" ]; then
+    ar d libavcodec/libavcodec.a \
+      eia608_to_smpte436m.o \
+      smpte436m_to_eia608.o \
       2>/dev/null || true
   fi
 
   if [ -f "libavformat/libavformat.a" ]; then
     ar d libavformat/libavformat.a \
-      libavformat/mccdec.o \
-      libavformat/mccenc.o \
+      mccdec.o \
+      mccenc.o \
       2>/dev/null || true
   fi
 

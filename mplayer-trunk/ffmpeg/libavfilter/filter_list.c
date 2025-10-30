@@ -1,4 +1,4 @@
-static const FFFilter * const filter_list[] = {
+static const FFFilter *filter_list[] = {
     &ff_asrc_abuffer,
     &ff_vsrc_buffer,
     &ff_asink_abuffer,

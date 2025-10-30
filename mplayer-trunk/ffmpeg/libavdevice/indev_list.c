@@ -1,2 +1,2 @@
-static const FFInputFormat * const indev_list[] = {
+static const FFInputFormat *indev_list[] = {
     NULL };

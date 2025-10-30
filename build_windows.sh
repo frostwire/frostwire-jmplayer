@@ -59,6 +59,9 @@ cleanup_ffmpeg_problematic_objects
 # Pop back to mplayer-trunk directory (we were in ffmpeg for cleanup)
 popd
 
+# Ensure we're in mplayer-trunk directory
+ensure_cd "mplayer-trunk" || exit 1
+
 echo "FFMpeg compilation finished"
 press_any_key
 
