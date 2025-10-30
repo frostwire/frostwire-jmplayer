@@ -222,15 +222,13 @@ configure_ffmpeg_windows() {
       --disable-lzma \
       --disable-decoder=dirac \
       --disable-decoder=snow \
-      --disable-demuxer=mcc \
-      --disable-muxer=mcc \
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
-      --disable-encoder=mpegvideo \
-      --disable-encoder=snow \
-      --disable-encoder=h264_oh \
-      --disable-encoder=hevc_oh \
+      --disable-demuxer=mcc \
+      --disable-muxer=mcc \
+      --disable-bsf=eia608_to_smpte436m \
+      --disable-bsf=smpte436m_to_eia608 \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -267,15 +265,13 @@ configure_ffmpeg_macos() {
       --disable-lzma \
       --disable-decoder=dirac \
       --disable-decoder=snow \
-      --disable-demuxer=mcc \
-      --disable-muxer=mcc \
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
-      --disable-encoder=mpegvideo \
-      --disable-encoder=snow \
-      --disable-encoder=h264_oh \
-      --disable-encoder=hevc_oh \
+      --disable-demuxer=mcc \
+      --disable-muxer=mcc \
+      --disable-bsf=eia608_to_smpte436m \
+      --disable-bsf=smpte436m_to_eia608 \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -312,15 +308,13 @@ configure_ffmpeg_linux() {
       --disable-lzma \
       --disable-decoder=dirac \
       --disable-decoder=snow \
-      --disable-demuxer=mcc \
-      --disable-muxer=mcc \
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
-      --disable-encoder=mpegvideo \
-      --disable-encoder=snow \
-      --disable-encoder=h264_oh \
-      --disable-encoder=hevc_oh \
+      --disable-demuxer=mcc \
+      --disable-muxer=mcc \
+      --disable-bsf=eia608_to_smpte436m \
+      --disable-bsf=smpte436m_to_eia608 \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
@@ -368,15 +362,13 @@ configure_ffmpeg() {
       --disable-lzma \
       --disable-decoder=dirac \
       --disable-decoder=snow \
-      --disable-demuxer=mcc \
-      --disable-muxer=mcc \
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
-      --disable-encoder=mpegvideo \
-      --disable-encoder=snow \
-      --disable-encoder=h264_oh \
-      --disable-encoder=hevc_oh \
+      --disable-demuxer=mcc \
+      --disable-muxer=mcc \
+      --disable-bsf=eia608_to_smpte436m \
+      --disable-bsf=smpte436m_to_eia608 \
       ${ENABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_PROTOCOLS_FLAGS} \
       ${DISABLED_DECODERS_FLAGS} \
