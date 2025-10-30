@@ -668,7 +668,7 @@
 @c @set config-thumb no
 @c @set config-valgrind-backtrace no
 @c @set config-xmm-clobber-test no
-@c @set config-bsfs no
+@set config-bsfs yes
 @set config-decoders yes
 @c @set config-encoders no
 @c @set config-hwaccels no
@@ -691,20 +691,20 @@
 @set config-cbs yes
 @set config-cbs-apv yes
 @set config-cbs-av1 yes
-@c @set config-cbs-h264 no
-@c @set config-cbs-h265 no
+@set config-cbs-h264 yes
+@set config-cbs-h265 yes
 @set config-cbs-h266 yes
 @c @set config-cbs-jpeg no
-@c @set config-cbs-mpeg2 no
-@c @set config-cbs-vp8 no
-@c @set config-cbs-vp9 no
+@set config-cbs-mpeg2 yes
+@set config-cbs-vp8 yes
+@set config-cbs-vp9 yes
 @c @set config-celp-math no
 @c @set config-d3d12va-encode no
 @c @set config-deflate-wrapper no
 @c @set config-dirac-parse no
 @c @set config-dnn no
-@c @set config-dovi-rpudec no
-@c @set config-dovi-rpuenc no
+@set config-dovi-rpudec yes
+@set config-dovi-rpuenc yes
 @c @set config-dvprofile no
 @set config-evcparse yes
 @set config-faandct yes
@@ -736,7 +736,7 @@
 @c @set config-iso-media no
 @c @set config-iso-writer no
 @c @set config-ividsp no
-@c @set config-jpegtables no
+@set config-jpegtables yes
 @c @set config-lgplv3 no
 @c @set config-libx262 no
 @c @set config-libx264-hdr10 no
@@ -791,55 +791,55 @@
 @c @set config-vvc-sei no
 @set config-wma-freqs yes
 @c @set config-wmv2dsp no
-@c @set config-aac-adtstoasc-bsf no
+@set config-aac-adtstoasc-bsf yes
 @c @set config-ahx-to-mp2-bsf no
-@c @set config-apv-metadata-bsf no
-@c @set config-av1-frame-merge-bsf no
-@c @set config-av1-frame-split-bsf no
-@c @set config-av1-metadata-bsf no
-@c @set config-chomp-bsf no
-@c @set config-dump-extradata-bsf no
-@c @set config-dca-core-bsf no
-@c @set config-dovi-rpu-bsf no
-@c @set config-dts2pts-bsf no
-@c @set config-dv-error-marker-bsf no
-@c @set config-eac3-core-bsf no
+@set config-apv-metadata-bsf yes
+@set config-av1-frame-merge-bsf yes
+@set config-av1-frame-split-bsf yes
+@set config-av1-metadata-bsf yes
+@set config-chomp-bsf yes
+@set config-dump-extradata-bsf yes
+@set config-dca-core-bsf yes
+@set config-dovi-rpu-bsf yes
+@set config-dts2pts-bsf yes
+@set config-dv-error-marker-bsf yes
+@set config-eac3-core-bsf yes
 @c @set config-eia608-to-smpte436m-bsf no
-@c @set config-evc-frame-merge-bsf no
-@c @set config-extract-extradata-bsf no
-@c @set config-filter-units-bsf no
-@c @set config-h264-metadata-bsf no
-@c @set config-h264-mp4toannexb-bsf no
-@c @set config-h264-redundant-pps-bsf no
-@c @set config-hapqa-extract-bsf no
-@c @set config-hevc-metadata-bsf no
-@c @set config-hevc-mp4toannexb-bsf no
-@c @set config-imx-dump-header-bsf no
-@c @set config-media100-to-mjpegb-bsf no
-@c @set config-mjpeg2jpeg-bsf no
-@c @set config-mjpega-dump-header-bsf no
-@c @set config-mpeg2-metadata-bsf no
-@c @set config-mpeg4-unpack-bframes-bsf no
-@c @set config-mov2textsub-bsf no
-@c @set config-noise-bsf no
-@c @set config-null-bsf no
-@c @set config-opus-metadata-bsf no
-@c @set config-pcm-rechunk-bsf no
-@c @set config-pgs-frame-merge-bsf no
-@c @set config-prores-metadata-bsf no
-@c @set config-remove-extradata-bsf no
-@c @set config-setts-bsf no
-@c @set config-showinfo-bsf no
+@set config-evc-frame-merge-bsf yes
+@set config-extract-extradata-bsf yes
+@set config-filter-units-bsf yes
+@set config-h264-metadata-bsf yes
+@set config-h264-mp4toannexb-bsf yes
+@set config-h264-redundant-pps-bsf yes
+@set config-hapqa-extract-bsf yes
+@set config-hevc-metadata-bsf yes
+@set config-hevc-mp4toannexb-bsf yes
+@set config-imx-dump-header-bsf yes
+@set config-media100-to-mjpegb-bsf yes
+@set config-mjpeg2jpeg-bsf yes
+@set config-mjpega-dump-header-bsf yes
+@set config-mpeg2-metadata-bsf yes
+@set config-mpeg4-unpack-bframes-bsf yes
+@set config-mov2textsub-bsf yes
+@set config-noise-bsf yes
+@set config-null-bsf yes
+@set config-opus-metadata-bsf yes
+@set config-pcm-rechunk-bsf yes
+@set config-pgs-frame-merge-bsf yes
+@set config-prores-metadata-bsf yes
+@set config-remove-extradata-bsf yes
+@set config-setts-bsf yes
+@set config-showinfo-bsf yes
 @c @set config-smpte436m-to-eia608-bsf no
-@c @set config-text2movsub-bsf no
-@c @set config-trace-headers-bsf no
-@c @set config-truehd-core-bsf no
-@c @set config-vp9-metadata-bsf no
-@c @set config-vp9-raw-reorder-bsf no
-@c @set config-vp9-superframe-bsf no
-@c @set config-vp9-superframe-split-bsf no
-@c @set config-vvc-metadata-bsf no
-@c @set config-vvc-mp4toannexb-bsf no
+@set config-text2movsub-bsf yes
+@set config-trace-headers-bsf yes
+@set config-truehd-core-bsf yes
+@set config-vp9-metadata-bsf yes
+@set config-vp9-raw-reorder-bsf yes
+@set config-vp9-superframe-bsf yes
+@set config-vp9-superframe-split-bsf yes
+@set config-vvc-metadata-bsf yes
+@set config-vvc-mp4toannexb-bsf yes
 @c @set config-aasc-decoder no
 @c @set config-aic-decoder no
 @c @set config-alias-pix-decoder no

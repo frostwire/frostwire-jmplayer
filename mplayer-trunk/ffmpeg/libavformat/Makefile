@@ -785,3 +785,23 @@ TOOLS     = aviocat                                                     \
             seek_print                                                  \
             sidxindex                                                   \
             venc_data_dump
+
+# FWPlayer: Disable problematic muxers/demuxers
+OBJS-$(CONFIG_MCC_DEMUXER) :=
+OBJS-$(CONFIG_MCC_MUXER) :=
+
+# FWPlayer: Disable problematic muxers/demuxers
+OBJS-$(CONFIG_MCC_DEMUXER) :=
+OBJS-$(CONFIG_MCC_MUXER) :=
+
+# FWPlayer: Disable problematic muxers/demuxers
+OBJS-$(CONFIG_MCC_DEMUXER) :=
+OBJS-$(CONFIG_MCC_MUXER) :=
+
+# FWPlayer: Disable problematic muxers/demuxers
+OBJS-$(CONFIG_MCC_DEMUXER) :=
+OBJS-$(CONFIG_MCC_MUXER) :=
+
+# Disable problematic muxers/demuxers - patched directly in source
+OBJS-$(CONFIG_MCC_DEMUXER) :=
+OBJS-$(CONFIG_MCC_MUXER) :=

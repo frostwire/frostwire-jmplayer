@@ -52,3 +52,23 @@ OBJS-$(CONFIG_VVC_METADATA_BSF)           += bsf/h266_metadata.o
 OBJS-$(CONFIG_VVC_MP4TOANNEXB_BSF)        += bsf/vvc_mp4toannexb.o
 
 libavcodec/bsf/%.o: CPPFLAGS += -I$(SRC_PATH)/libavcodec/
+
+# FWPlayer: Disable problematic BSFs
+OBJS-$(CONFIG_EIA608_TO_SMPTE436M_BSF) :=
+OBJS-$(CONFIG_SMPTE436M_TO_EIA608_BSF) :=
+
+# FWPlayer: Disable problematic BSFs
+OBJS-$(CONFIG_EIA608_TO_SMPTE436M_BSF) :=
+OBJS-$(CONFIG_SMPTE436M_TO_EIA608_BSF) :=
+
+# FWPlayer: Disable problematic BSFs
+OBJS-$(CONFIG_EIA608_TO_SMPTE436M_BSF) :=
+OBJS-$(CONFIG_SMPTE436M_TO_EIA608_BSF) :=
+
+# FWPlayer: Disable problematic BSFs
+OBJS-$(CONFIG_EIA608_TO_SMPTE436M_BSF) :=
+OBJS-$(CONFIG_SMPTE436M_TO_EIA608_BSF) :=
+
+# Disable problematic BSFs - patched directly in source
+OBJS-$(CONFIG_EIA608_TO_SMPTE436M_BSF) :=
+OBJS-$(CONFIG_SMPTE436M_TO_EIA608_BSF) :=

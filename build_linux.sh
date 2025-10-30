@@ -56,18 +56,20 @@ verify_ffmpeg_source || exit 1
 prepare_ffmpeg_flags
 verify_ffmpeg_flags || exit 1
 
-# First we need to build ffmpeg
+# Build FFmpeg (configure + patch + build)
+# NOTE: configure_ffmpeg_linux does pushd mplayer-trunk/ffmpeg at the end
 configure_ffmpeg_linux
+
+# Patch auto-generated list files that configure created
+patch_ffmpeg_generated_lists
+
+# Build FFmpeg (we're now in mplayer-trunk/ffmpeg from the pushd above)
 make -j 8
 
-# Remove problematic codec object files that cause linking errors
-# These have unresolved dependencies when built for audio-only player
-cleanup_ffmpeg_problematic_objects
-
-# Pop back to mplayer-trunk directory (we were in ffmpeg for cleanup)
+# Pop back to where we were (should be project root based on build script start)
 popd
 
-# Ensure we're in mplayer-trunk directory
+# Ensure we're in mplayer-trunk directory for mplayer configuration
 ensure_cd "mplayer-trunk" || exit 1
 
 echo "FFMpeg compilation finished"

@@ -151,11 +151,7 @@ setup: install-deps build-openssl-native  ## Complete setup: install dependencie
 
 clean-build:  ## Clean MPlayer and FFmpeg build artifacts
 	@echo "$(BLUE)Cleaning build artifacts...$(RESET)"
-	@if [ -d mplayer-trunk ]; then \
-		cd mplayer-trunk && make clean 2>/dev/null || true; \
-		cd ffmpeg && make clean 2>/dev/null || true; \
-		cd ../..; \
-	fi
+	@bash -c 'source build-functions.sh && clean_build_artifacts'
 	@echo "$(BLUE)✓$(RESET) Build artifacts cleaned"
 
 clean: clean-build  ## Clean all build artifacts (alias for clean-build)

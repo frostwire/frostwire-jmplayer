@@ -1434,3 +1434,94 @@ $(SUBDIR)pcm.o: $(SUBDIR)pcm_tables.h
 $(SUBDIR)qdm2.o: $(SUBDIR)qdm2_tables.h
 $(SUBDIR)sinewin.o: $(SUBDIR)sinewin_tables.h
 endif
+
+# FWPlayer: Disable problematic codecs that have unresolved dependencies
+# These codecs are not needed for audio-only player
+OBJS-$(CONFIG_AMRNB_DECODER) :=
+OBJS-$(CONFIG_AMRWB_DECODER) :=
+OBJS-$(CONFIG_G723_1_DECODER) :=
+OBJS-$(CONFIG_G723_1_ENCODER) :=
+OBJS-$(CONFIG_DIRAC_DECODER) :=
+OBJS-$(CONFIG_DIRAC_ENCODER) :=
+OBJS-$(CONFIG_SNOW_DECODER) :=
+OBJS-$(CONFIG_SNOW_ENCODER) :=
+OBJS-$(CONFIG_ACELP_PITCH_DELAY) :=
+OBJS-$(CONFIG_CELP_FILTERS) :=
+OBJS-$(CONFIG_CBRT_DATA) :=
+OBJS-$(CONFIG_MPEGVIDEO_ENC) :=
+OBJS-$(CONFIG_MPEGVIDEOENCDSP) :=
+
+# Disable H264_OH and HEVC_OH decoders that are referenced but not available
+OBJS-$(CONFIG_H264_OH_DECODER) :=
+OBJS-$(CONFIG_HEVC_OH_DECODER) :=
+
+# FWPlayer: Disable problematic codecs that have unresolved dependencies
+# These codecs are not needed for audio-only player
+OBJS-$(CONFIG_AMRNB_DECODER) :=
+OBJS-$(CONFIG_AMRWB_DECODER) :=
+OBJS-$(CONFIG_G723_1_DECODER) :=
+OBJS-$(CONFIG_G723_1_ENCODER) :=
+OBJS-$(CONFIG_DIRAC_DECODER) :=
+OBJS-$(CONFIG_DIRAC_ENCODER) :=
+OBJS-$(CONFIG_SNOW_DECODER) :=
+OBJS-$(CONFIG_SNOW_ENCODER) :=
+OBJS-$(CONFIG_ACELP_PITCH_DELAY) :=
+OBJS-$(CONFIG_CELP_FILTERS) :=
+OBJS-$(CONFIG_CBRT_DATA) :=
+OBJS-$(CONFIG_MPEGVIDEO_ENC) :=
+OBJS-$(CONFIG_MPEGVIDEOENCDSP) :=
+
+# Disable H264_OH and HEVC_OH decoders that are referenced but not available
+OBJS-$(CONFIG_H264_OH_DECODER) :=
+OBJS-$(CONFIG_HEVC_OH_DECODER) :=
+
+# FWPlayer: Disable problematic codecs that have unresolved dependencies
+# These codecs are not needed for audio-only player
+OBJS-$(CONFIG_AMRNB_DECODER) :=
+OBJS-$(CONFIG_AMRWB_DECODER) :=
+OBJS-$(CONFIG_G723_1_DECODER) :=
+OBJS-$(CONFIG_G723_1_ENCODER) :=
+OBJS-$(CONFIG_DIRAC_DECODER) :=
+OBJS-$(CONFIG_DIRAC_ENCODER) :=
+OBJS-$(CONFIG_SNOW_DECODER) :=
+OBJS-$(CONFIG_SNOW_ENCODER) :=
+OBJS-$(CONFIG_ACELP_PITCH_DELAY) :=
+OBJS-$(CONFIG_CELP_FILTERS) :=
+OBJS-$(CONFIG_CBRT_DATA) :=
+OBJS-$(CONFIG_MPEGVIDEO_ENC) :=
+OBJS-$(CONFIG_MPEGVIDEOENCDSP) :=
+
+# Disable H264_OH and HEVC_OH decoders that are referenced but not available
+OBJS-$(CONFIG_H264_OH_DECODER) :=
+OBJS-$(CONFIG_HEVC_OH_DECODER) :=
+
+# FWPlayer: Disable problematic codecs that have unresolved dependencies
+# These codecs are not needed for audio-only player
+OBJS-$(CONFIG_AMRNB_DECODER) :=
+OBJS-$(CONFIG_AMRWB_DECODER) :=
+OBJS-$(CONFIG_G723_1_DECODER) :=
+OBJS-$(CONFIG_G723_1_ENCODER) :=
+OBJS-$(CONFIG_DIRAC_DECODER) :=
+OBJS-$(CONFIG_DIRAC_ENCODER) :=
+OBJS-$(CONFIG_SNOW_DECODER) :=
+OBJS-$(CONFIG_SNOW_ENCODER) :=
+OBJS-$(CONFIG_ACELP_PITCH_DELAY) :=
+OBJS-$(CONFIG_CELP_FILTERS) :=
+OBJS-$(CONFIG_CBRT_DATA) :=
+OBJS-$(CONFIG_MPEGVIDEO_ENC) :=
+OBJS-$(CONFIG_MPEGVIDEOENCDSP) :=
+
+# Disable H264_OH and HEVC_OH decoders that are referenced but not available
+OBJS-$(CONFIG_H264_OH_DECODER) :=
+OBJS-$(CONFIG_HEVC_OH_DECODER) :=
+
+# Disable problematic codecs - patched directly in source
+OBJS-$(CONFIG_AMRNB_DECODER) :=
+OBJS-$(CONFIG_AMRWB_DECODER) :=
+OBJS-$(CONFIG_G723_1_DECODER) :=
+OBJS-$(CONFIG_G723_1_ENCODER) :=
+OBJS-$(CONFIG_DIRAC_DECODER) :=
+OBJS-$(CONFIG_SNOW_DECODER) :=
+OBJS-$(CONFIG_SNOW_ENCODER) :=
+OBJS-$(CONFIG_H264_OH_DECODER) :=
+OBJS-$(CONFIG_HEVC_OH_DECODER) :=
