@@ -50,6 +50,7 @@ cd ffmpeg
   --enable-swresample \
   --disable-programs
 make clean
+make -j 16  # Use parallel build to accelerate compilation
 make install
 ```
 
@@ -70,6 +71,20 @@ Attempted to enable for audio-only use:
 2. Audio-only builds still reference video codec/format symbols through registration arrays
 3. The thin archive format (FFmpeg uses) makes it hard to selectively exclude problematic .o files
 4. MPlayer's conditional compilation for FFmpeg audio decoders needs more aggressive disabling
+
+## Build Performance Tips
+To accelerate testing cycles during development:
+```bash
+# For FFmpeg builds
+make -j 16
+
+# For MPlayer builds
+make -j 16
+
+# Full rebuild from scratch
+make clean
+make -j 16
+```
 
 ## Testing Recommendations
 After implementing a solution:
