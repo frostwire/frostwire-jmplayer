@@ -56,11 +56,12 @@ verify_ffmpeg_source || exit 1
 prepare_ffmpeg_flags
 verify_ffmpeg_flags || exit 1
 
-# Build FFmpeg (configure + patch + build)
+# Build FFmpeg (configure + build)
 # NOTE: configure_ffmpeg_linux does pushd mplayer-trunk/ffmpeg at the end
 configure_ffmpeg_linux
 
-# Patch auto-generated list files that configure created
+# Patch FFmpeg generated lists to remove problematic codec references
+# This must be done after configure and before make
 patch_ffmpeg_generated_lists
 
 # Build FFmpeg (we're now in mplayer-trunk/ffmpeg from the pushd above)
@@ -160,6 +161,12 @@ ${CONFIG_OPTS} \
 --extra-ldflags="${EXTRA_LDFLAGS}"
 
 press_any_key
+
+# Re-patch FFmpeg before MPlayer build (MPlayer's make will rebuild FFmpeg)
+ensure_cd "ffmpeg" || exit 1
+patch_ffmpeg_generated_lists
+popd  # back to mplayer-trunk
+
 make -j 8
 
 strip_and_upx_final_executable "linux" "${ARCH}"

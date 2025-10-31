@@ -194,6 +194,55 @@ verify_ffmpeg_source() {
   return 0
 }
 
+################################################################################
+# Patch FFmpeg generated list files to remove problematic codec references
+# These codecs are disabled via --disable-* flags but FFmpeg's configure
+# still includes them in the generated list files, causing linker errors.
+# Must be called AFTER FFmpeg configure completes.
+# Expects to be run from mplayer-trunk/ffmpeg directory.
+################################################################################
+patch_ffmpeg_generated_lists() {
+  # This patches the generated codec_list files to remove references to disabled codecs
+  # which would cause "undeclared identifier" errors during compilation
+  echo "Patching FFmpeg generated list files to remove problematic codec references..."
+
+  # Check we're in ffmpeg directory
+  if [ ! -f "libavcodec/allcodecs.c" ]; then
+    echo "ERROR: Not in FFmpeg directory. Expected libavcodec/allcodecs.c"
+    return 1
+  fi
+
+  local CODECS_TO_REMOVE="ff_dirac_decoder ff_dirac_encoder ff_snow_decoder ff_snow_encoder ff_amrnb_decoder ff_amrwb_decoder ff_g723_1_decoder ff_g723_1_encoder ff_h264_oh_decoder ff_hevc_oh_decoder"
+  local PARSERS_TO_REMOVE="ff_dirac_parser ff_g723_1_parser"
+  local BSFS_TO_REMOVE="ff_eia608_to_smpte436m_bsf ff_smpte436m_to_eia608_bsf"
+
+  # Patch codec_list.c - remove lines containing problematic codec references
+  if [ -f "libavcodec/codec_list.c" ]; then
+    for codec in $CODECS_TO_REMOVE; do
+      sed -i "/&${codec},/d" libavcodec/codec_list.c
+    done
+  fi
+
+  # Patch parser_list.c
+  if [ -f "libavcodec/parser_list.c" ]; then
+    for parser in $PARSERS_TO_REMOVE; do
+      sed -i "/&${parser},/d" libavcodec/parser_list.c
+    done
+  fi
+
+  # Patch bsf_list.c
+  if [ -f "libavcodec/bsf_list.c" ]; then
+    for bsf in $BSFS_TO_REMOVE; do
+      sed -i "/&${bsf},/d" libavcodec/bsf_list.c
+    done
+  fi
+
+  # Delete object files so they will be recompiled
+  rm -f libavcodec/codec_list.o libavcodec/bitstream_filters.o libavcodec/parsers.o libavcodec/bsf.o libavcodec/allcodecs.o
+
+  echo "FFmpeg generated list files patched successfully"
+}
+
 configure_ffmpeg_windows() {
   TARGET_OS="mingw64"
   CC="x86_64-w64-mingw32-gcc"
@@ -224,8 +273,14 @@ configure_ffmpeg_windows() {
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
+      --disable-decoder=h264_oh \
+      --disable-decoder=hevc_oh \
+      --disable-parser=g723_1 \
+      --disable-parser=dirac \
       --disable-encoder=dirac \
       --disable-encoder=snow \
+      --disable-encoder=h264_oh \
+      --disable-encoder=hevc_oh \
       --disable-demuxer=mcc \
       --disable-muxer=mcc \
       --disable-bsf=eia608_to_smpte436m \
@@ -238,6 +293,7 @@ configure_ffmpeg_windows() {
       --extra-cflags="${EXTRA_CFLAGS}" \
       --extra-ldflags="${EXTRA_LDFLAGS}"
   echo "configure_ffmpeg_windows: Finished ffmpeg configure"
+  patch_ffmpeg_generated_lists
   popd
   pushd mplayer-trunk/ffmpeg
 }
@@ -268,8 +324,14 @@ configure_ffmpeg_macos() {
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
+      --disable-decoder=h264_oh \
+      --disable-decoder=hevc_oh \
+      --disable-parser=g723_1 \
+      --disable-parser=dirac \
       --disable-encoder=dirac \
       --disable-encoder=snow \
+      --disable-encoder=h264_oh \
+      --disable-encoder=hevc_oh \
       --disable-demuxer=mcc \
       --disable-muxer=mcc \
       --disable-bsf=eia608_to_smpte436m \
@@ -282,6 +344,7 @@ configure_ffmpeg_macos() {
       --extra-cflags="${EXTRA_CFLAGS}" \
       --extra-ldflags="${EXTRA_LDFLAGS}"
   echo "configure_ffmpeg_macos: Finished ffmpeg configure"
+  patch_ffmpeg_generated_lists
   popd
   pushd mplayer-trunk/ffmpeg
 }
@@ -297,36 +360,53 @@ configure_ffmpeg_linux() {
       --target-os=${TARGET_OS} \
       --enable-nonfree \
       --enable-openssl \
-      --disable-doc \
-      --disable-programs \
-      --disable-muxers \
-      --disable-demuxers \
-      --disable-devices \
-      --disable-filters \
-      --disable-iconv \
-      --disable-alsa \
-      --disable-openal \
-      --disable-lzma \
-      --disable-decoder=dirac \
-      --disable-decoder=snow \
-      --disable-decoder=amrnb \
-      --disable-decoder=amrwb \
-      --disable-decoder=g723_1 \
-      --disable-encoder=dirac \
-      --disable-encoder=snow \
-      --disable-encoder=snow \
-      --disable-demuxer=mcc \
-      --disable-muxer=mcc \
-      --disable-bsf=eia608_to_smpte436m \
-      --disable-bsf=smpte436m_to_eia608 \
-      ${ENABLED_PROTOCOLS_FLAGS} \
-      ${DISABLED_PROTOCOLS_FLAGS} \
-      ${DISABLED_DECODERS_FLAGS} \
-      ${ENABLED_DECODERS_FLAGS} \
-      ${DISABLED_ENCODERS_FLAGS} \
+      --disable-everything \
+      --enable-protocol=file \
+      --enable-protocol=http \
+      --enable-protocol=https \
+      --enable-protocol=tcp \
+      --enable-protocol=tls \
+      --enable-demuxer=mp3 \
+      --enable-demuxer=aac \
+      --enable-demuxer=flac \
+      --enable-demuxer=ogg \
+      --enable-demuxer=matroska \
+      --enable-demuxer=mov \
+      --enable-demuxer=avi \
+      --enable-demuxer=mpegts \
+      --enable-demuxer=mpegps \
+      --enable-demuxer=wav \
+      --enable-decoder=aac \
+      --enable-decoder=ac3 \
+      --enable-decoder=eac3 \
+      --enable-decoder=alac \
+      --enable-decoder=dts \
+      --enable-decoder=dca \
+      --enable-decoder=flac \
+      --enable-decoder=mp2 \
+      --enable-decoder=mp3 \
+      --enable-decoder=vorbis \
+      --enable-decoder=opus \
+      --enable-decoder=wavpack \
+      --enable-decoder=tta \
+      --enable-decoder=wmav1 \
+      --enable-decoder=wmav2 \
+      --enable-decoder=truehd \
+      --enable-parser=aac \
+      --enable-parser=ac3 \
+      --enable-parser=flac \
+      --enable-parser=mpegaudio \
+      --enable-parser=vorbis \
+      --enable-parser=opus \
       --extra-cflags="${EXTRA_CFLAGS}" \
       --extra-ldflags="${EXTRA_LDFLAGS}"
   echo "configure_ffmpeg_linux: Finished ffmpeg configure"
+
+  # Patch generated codec lists to remove problematic codecs
+  patch_ffmpeg_generated_lists
+
+  # Stay in ffmpeg directory for the patch to work
+  echo "configure_ffmpeg_linux: Patching complete, exiting ffmpeg directory"
   popd
   pushd mplayer-trunk/ffmpeg
 }
@@ -368,8 +448,14 @@ configure_ffmpeg() {
       --disable-decoder=amrnb \
       --disable-decoder=amrwb \
       --disable-decoder=g723_1 \
+      --disable-decoder=h264_oh \
+      --disable-decoder=hevc_oh \
+      --disable-parser=g723_1 \
+      --disable-parser=dirac \
       --disable-encoder=dirac \
       --disable-encoder=snow \
+      --disable-encoder=h264_oh \
+      --disable-encoder=hevc_oh \
       --disable-demuxer=mcc \
       --disable-muxer=mcc \
       --disable-bsf=eia608_to_smpte436m \
@@ -445,206 +531,6 @@ distclean_ffmpeg() {
     return 1
   fi
 
-  return 0
-}
-
-################################################################################
-# Patch FFmpeg registration files to comment out problematic codec/parser/BSF entries
-# This is called AFTER FFmpeg configure but BEFORE make
-# FFmpeg auto-generates these files during configure, and they register all components
-# We need to comment out entries for components we're not compiling
-# Must be called from within the ffmpeg directory
-################################################################################
-patch_ffmpeg_registration_files() {
-  echo "Patching FFmpeg registration files to exclude problematic components..."
-  local current_dir=$(pwd)
-
-  # Verify we're in the ffmpeg directory
-  if [ ! -d "libavcodec" ] || [ ! -d "libavformat" ]; then
-    echo "Error: patch_ffmpeg_registration_files must be called from ffmpeg directory"
-    return 1
-  fi
-
-  # Patch libavcodec/allcodecs.c - comment out problematic codec registrations
-  if [ -f "libavcodec/allcodecs.c" ]; then
-    echo "  Patching libavcodec/allcodecs.c..."
-
-    # Comment out problematic decoder/encoder entries
-    sed -i 's/^extern const FFCodec ff_amrnb_decoder;/\/\/ &/' libavcodec/allcodecs.c
-    sed -i 's/^extern const FFCodec ff_amrwb_decoder;/\/\/ &/' libavcodec/allcodecs.c
-    sed -i 's/^extern const FFCodec ff_g723_1_decoder;/\/\/ &/' libavcodec/allcodecs.c
-    sed -i 's/^extern const FFCodec ff_g723_1_encoder;/\/\/ &/' libavcodec/allcodecs.c
-    sed -i 's/^extern const FFCodec ff_dirac_decoder;/\/\/ &/' libavcodec/allcodecs.c
-    sed -i 's/^extern const FFCodec ff_snow_decoder;/\/\/ &/' libavcodec/allcodecs.c
-    sed -i 's/^extern const FFCodec ff_snow_encoder;/\/\/ &/' libavcodec/allcodecs.c
-    sed -i 's/^extern const FFCodec ff_h264_oh_decoder;/\/\/ &/' libavcodec/allcodecs.c
-    sed -i 's/^extern const FFCodec ff_hevc_oh_decoder;/\/\/ &/' libavcodec/allcodecs.c
-
-    echo "    libavcodec/allcodecs.c patched"
-  fi
-
-  # Patch libavcodec/parsers.c - comment out problematic parser entries
-  if [ -f "libavcodec/parsers.c" ]; then
-    echo "  Patching libavcodec/parsers.c..."
-
-    sed -i 's/^extern const AVCodecParser ff_g723_1_parser;/\/\/ &/' libavcodec/parsers.c
-    sed -i 's/^extern const AVCodecParser ff_dirac_parser;/\/\/ &/' libavcodec/parsers.c
-
-    echo "    libavcodec/parsers.c patched"
-  fi
-
-  # Patch libavcodec/parser_list.c - auto-generated file that also needs patching
-  if [ -f "libavcodec/parser_list.c" ]; then
-    echo "  Patching libavcodec/parser_list.c..."
-
-    sed -i 's/&ff_g723_1_parser,/\/\/ &/' libavcodec/parser_list.c
-    sed -i 's/&ff_dirac_parser,/\/\/ &/' libavcodec/parser_list.c
-
-    echo "    libavcodec/parser_list.c patched"
-  fi
-
-  # Patch libavcodec/bitstream_filters.c - comment out problematic BSF entries
-  if [ -f "libavcodec/bitstream_filters.c" ]; then
-    echo "  Patching libavcodec/bitstream_filters.c..."
-
-    sed -i 's/^extern const FFBitStreamFilter ff_eia608_to_smpte436m_bsf;/\/\/ &/' libavcodec/bitstream_filters.c
-    sed -i 's/^extern const FFBitStreamFilter ff_smpte436m_to_eia608_bsf;/\/\/ &/' libavcodec/bitstream_filters.c
-
-    echo "    libavcodec/bitstream_filters.c patched"
-  fi
-
-  echo "Done patching FFmpeg registration files"
-  return 0
-}
-
-################################################################################
-# Patch FFmpeg Makefiles to prevent compilation of problematic codecs
-# This is called AFTER FFmpeg configure but BEFORE make
-# Must be called from within the ffmpeg directory
-################################################################################
-patch_ffmpeg_makefiles() {
-  echo "Patching FFmpeg Makefiles to exclude problematic codecs..."
-  local current_dir=$(pwd)
-
-  # Verify we're in the ffmpeg directory
-  if [ ! -d "libavcodec" ] || [ ! -d "libavformat" ]; then
-    echo "Error: patch_ffmpeg_makefiles must be called from ffmpeg directory"
-    return 1
-  fi
-
-  # Patch libavcodec/Makefile
-  if [ -f "libavcodec/Makefile" ]; then
-    echo "  Patching libavcodec/Makefile..."
-
-    # Append rules to disable problematic codecs at the end of the Makefile
-    cat >> libavcodec/Makefile << 'EOF'
-
-# FWPlayer: Disable problematic codecs that have unresolved dependencies
-# These codecs are not needed for audio-only player
-OBJS-$(CONFIG_AMRNB_DECODER) :=
-OBJS-$(CONFIG_AMRWB_DECODER) :=
-OBJS-$(CONFIG_G723_1_DECODER) :=
-OBJS-$(CONFIG_G723_1_ENCODER) :=
-OBJS-$(CONFIG_DIRAC_DECODER) :=
-OBJS-$(CONFIG_DIRAC_ENCODER) :=
-OBJS-$(CONFIG_SNOW_DECODER) :=
-OBJS-$(CONFIG_SNOW_ENCODER) :=
-OBJS-$(CONFIG_ACELP_PITCH_DELAY) :=
-OBJS-$(CONFIG_CELP_FILTERS) :=
-OBJS-$(CONFIG_CBRT_DATA) :=
-OBJS-$(CONFIG_MPEGVIDEO_ENC) :=
-OBJS-$(CONFIG_MPEGVIDEOENCDSP) :=
-
-# Disable H264_OH and HEVC_OH decoders that are referenced but not available
-OBJS-$(CONFIG_H264_OH_DECODER) :=
-OBJS-$(CONFIG_HEVC_OH_DECODER) :=
-EOF
-    echo "    libavcodec/Makefile patched"
-  fi
-
-  # Patch libavcodec/bsf/Makefile
-  if [ -f "libavcodec/bsf/Makefile" ]; then
-    echo "  Patching libavcodec/bsf/Makefile..."
-
-    cat >> libavcodec/bsf/Makefile << 'EOF'
-
-# FWPlayer: Disable problematic BSFs
-OBJS-$(CONFIG_EIA608_TO_SMPTE436M_BSF) :=
-OBJS-$(CONFIG_SMPTE436M_TO_EIA608_BSF) :=
-EOF
-    echo "    libavcodec/bsf/Makefile patched"
-  fi
-
-  # Patch libavformat/Makefile
-  if [ -f "libavformat/Makefile" ]; then
-    echo "  Patching libavformat/Makefile..."
-
-    cat >> libavformat/Makefile << 'EOF'
-
-# FWPlayer: Disable problematic muxers/demuxers
-OBJS-$(CONFIG_MCC_DEMUXER) :=
-OBJS-$(CONFIG_MCC_MUXER) :=
-EOF
-    echo "    libavformat/Makefile patched"
-  fi
-
-  echo "Done patching FFmpeg Makefiles"
-  return 0
-}
-
-################################################################################
-# Patch FFmpeg auto-generated list files after configure
-# These files (codec_list.c, parser_list.c, bsf_list.c) are generated by
-# the configure script and need to be patched before make
-# Must be called from within the ffmpeg directory
-################################################################################
-patch_ffmpeg_generated_lists() {
-  echo "Patching FFmpeg auto-generated list files..."
-  local current_dir=$(pwd)
-
-  # Verify we're in the ffmpeg directory
-  if [ ! -d "libavcodec" ] || [ ! -d "libavformat" ]; then
-    echo "Error: patch_ffmpeg_generated_lists must be called from ffmpeg directory"
-    return 1
-  fi
-
-  # Patch libavcodec/codec_list.c - replace problematic codec pointers with NULL
-  if [ -f "libavcodec/codec_list.c" ]; then
-    echo "  Patching libavcodec/codec_list.c..."
-
-    sed -i 's|&ff_amrnb_decoder,|NULL, /* &ff_amrnb_decoder */|' libavcodec/codec_list.c
-    sed -i 's|&ff_amrwb_decoder,|NULL, /* &ff_amrwb_decoder */|' libavcodec/codec_list.c
-    sed -i 's|&ff_g723_1_decoder,|NULL, /* &ff_g723_1_decoder */|' libavcodec/codec_list.c
-    sed -i 's|&ff_dirac_decoder,|NULL, /* &ff_dirac_decoder */|' libavcodec/codec_list.c
-    sed -i 's|&ff_snow_decoder,|NULL, /* &ff_snow_decoder */|' libavcodec/codec_list.c
-    sed -i 's|&ff_snow_encoder,|NULL, /* &ff_snow_encoder */|' libavcodec/codec_list.c
-    sed -i 's|&ff_h264_oh_decoder,|NULL, /* &ff_h264_oh_decoder */|' libavcodec/codec_list.c
-    sed -i 's|&ff_hevc_oh_decoder,|NULL, /* &ff_hevc_oh_decoder */|' libavcodec/codec_list.c
-
-    echo "    libavcodec/codec_list.c patched"
-  fi
-
-  # Patch libavcodec/parser_list.c - replace problematic parser pointers with NULL
-  if [ -f "libavcodec/parser_list.c" ]; then
-    echo "  Patching libavcodec/parser_list.c..."
-
-    sed -i 's|&ff_g723_1_parser,|NULL, /* &ff_g723_1_parser */|' libavcodec/parser_list.c
-    sed -i 's|&ff_dirac_parser,|NULL, /* &ff_dirac_parser */|' libavcodec/parser_list.c
-
-    echo "    libavcodec/parser_list.c patched"
-  fi
-
-  # Patch libavcodec/bsf_list.c - replace problematic BSF pointers with NULL
-  if [ -f "libavcodec/bsf_list.c" ]; then
-    echo "  Patching libavcodec/bsf_list.c..."
-
-    sed -i 's|&ff_eia608_to_smpte436m_bsf,|NULL, /* &ff_eia608_to_smpte436m_bsf */|' libavcodec/bsf_list.c
-    sed -i 's|&ff_smpte436m_to_eia608_bsf,|NULL, /* &ff_smpte436m_to_eia608_bsf */|' libavcodec/bsf_list.c
-
-    echo "    libavcodec/bsf_list.c patched"
-  fi
-
-  echo "Done patching FFmpeg auto-generated list files"
   return 0
 }
 
