@@ -258,7 +258,6 @@ configure_ffmpeg_windows() {
       --enable-nonfree \
       --enable-openssl \
       --disable-everything \
-      --disable-all \
       --disable-programs \
       --disable-doc \
       --disable-filters \
@@ -266,10 +265,12 @@ configure_ffmpeg_windows() {
       --disable-devices \
       --disable-encoders \
       --disable-swscale \
+      --disable-avdevice \
       --disable-iconv \
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
+      --enable-swresample \
       --enable-protocol=file \
       --enable-protocol=http \
       --enable-protocol=https \
@@ -320,7 +321,6 @@ configure_ffmpeg_macos() {
       --enable-nonfree \
       --enable-openssl \
       --disable-everything \
-      --disable-all \
       --disable-programs \
       --disable-doc \
       --disable-filters \
@@ -328,10 +328,12 @@ configure_ffmpeg_macos() {
       --disable-devices \
       --disable-encoders \
       --disable-swscale \
+      --disable-avdevice \
       --disable-iconv \
       --disable-alsa \
       --disable-openal \
       --disable-lzma \
+      --enable-swresample \
       --enable-protocol=file \
       --enable-protocol=http \
       --enable-protocol=https \
@@ -382,7 +384,6 @@ configure_ffmpeg_linux() {
       --enable-nonfree \
       --enable-openssl \
       --disable-everything \
-      --disable-all \
       --disable-programs \
       --disable-doc \
       --disable-filters \
@@ -390,6 +391,8 @@ configure_ffmpeg_linux() {
       --disable-devices \
       --disable-encoders \
       --disable-swscale \
+      --disable-avdevice \
+      --enable-swresample \
       --enable-protocol=file \
       --enable-protocol=http \
       --enable-protocol=https \
