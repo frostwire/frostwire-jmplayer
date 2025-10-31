@@ -1,4 +1,4 @@
-static const FFOutputFormat *muxer_list[] = {
+static const FFOutputFormat * const muxer_list[] = {
     &ff_a64_muxer,
     &ff_ac3_muxer,
     &ff_ac4_muxer,
@@ -140,7 +140,10 @@ static const FFOutputFormat *muxer_list[] = {
     &ff_rm_muxer,
     &ff_roq_muxer,
     &ff_rso_muxer,
+    &ff_rtp_muxer,
     &ff_rtp_mpegts_muxer,
+    &ff_rtsp_muxer,
+    &ff_sap_muxer,
     &ff_sbc_muxer,
     &ff_scc_muxer,
     &ff_segafilm_muxer,
@@ -174,7 +177,6 @@ static const FFOutputFormat *muxer_list[] = {
     &ff_webm_chunk_muxer,
     &ff_webp_muxer,
     &ff_webvtt_muxer,
-    &ff_whip_muxer,
     &ff_wsaud_muxer,
     &ff_wtv_muxer,
     &ff_wv_muxer,

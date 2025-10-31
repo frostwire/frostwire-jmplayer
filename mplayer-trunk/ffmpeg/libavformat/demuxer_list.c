@@ -1,4 +1,4 @@
-static const FFInputFormat *demuxer_list[] = {
+static const FFInputFormat * const demuxer_list[] = {
     &ff_aa_demuxer,
     &ff_aac_demuxer,
     &ff_aax_demuxer,
@@ -64,7 +64,6 @@ static const FFInputFormat *demuxer_list[] = {
     &ff_codec2_demuxer,
     &ff_codec2raw_demuxer,
     &ff_concat_demuxer,
-    &ff_dash_demuxer,
     &ff_data_demuxer,
     &ff_daud_demuxer,
     &ff_dcstr_demuxer,
@@ -130,7 +129,6 @@ static const FFInputFormat *demuxer_list[] = {
     &ff_image2pipe_demuxer,
     &ff_image2_alias_pix_demuxer,
     &ff_image2_brender_pix_demuxer,
-    &ff_imf_demuxer,
     &ff_ingenient_demuxer,
     &ff_ipmovie_demuxer,
     &ff_ipu_demuxer,

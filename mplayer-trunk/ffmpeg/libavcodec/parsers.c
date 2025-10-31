@@ -22,7 +22,6 @@
 
 extern const AVCodecParser ff_aac_parser;
 extern const AVCodecParser ff_aac_latm_parser;
-// extern const AVCodecParser ff_ac3_parser;  // Disabled: AC3 decoder not fully built
 extern const AVCodecParser ff_adx_parser;
 extern const AVCodecParser ff_ahx_parser;
 extern const AVCodecParser ff_amr_parser;
