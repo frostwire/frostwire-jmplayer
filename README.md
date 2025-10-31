@@ -1,6 +1,6 @@
 # What is this?
 
-FrostWire JMPlayer is a custom, audio-only mplayer build included with FrostWire for Desktop. This repository contains a comprehensive build system for creating minimal, audio-focused player binaries for multiple platforms:
+FrostWire FWPlayer is a custom, audio-only mplayer build included with FrostWire for Desktop. This repository contains a comprehensive build system for creating minimal, audio-focused player binaries for multiple platforms:
 
 - **Windows**: `fwplayer.exe` (cross-compiled from Linux for x86_64)
 - **macOS**: `fwplayer_osx.x86_64` or `fwplayer_osx.arm64` (native builds)
@@ -107,7 +107,7 @@ Run `make help` to see all available commands, or reference this list:
 
 # Supported Audio Formats
 
-FrostWire JMPlayer supports comprehensive audio codec support:
+FrostWire FWPlayer supports comprehensive audio codec support:
 
 - **Streaming**: MP3, AAC, Opus, Vorbis
 - **Lossless**: FLAC, ALAC, WavPack, TTA

@@ -1,0 +1,110 @@
+CC	libavdevice/alldevices.o
+CC	libavdevice/avdevice.o
+CC	libavdevice/utils.o
+CC	libavdevice/version.o
+CC	libavcodec/allcodecs.o
+CC	libavcodec/avcodec.o
+CC	libavcodec/avdct.o
+CC	libavcodec/bitstream.o
+In file included from libavcodec/allcodecs.c:31:
+./libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+   27 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |        ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h: In function 'ff_thread_setname':
+./libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+  220 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+  222 | #elif HAVE_PTHREAD_SETNAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+  230 | #elif HAVE_PTHREAD_SET_NAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/allcodecs.c: At top level:
+libavcodec/allcodecs.c:947:5: warning: "CONFIG_OSSFUZZ" is not defined, evaluates to 0 [-Wundef]
+  947 | #if CONFIG_OSSFUZZ
+      |     ^~~~~~~~~~~~~~
+In file included from libavcodec/avcodec.c:37:
+./libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+   27 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |        ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/bitstream_filters.o
+./libavutil/thread.h: In function 'ff_thread_setname':
+./libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+  220 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+  222 | #elif HAVE_PTHREAD_SETNAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+  230 | #elif HAVE_PTHREAD_SET_NAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/bsf.o
+CC	libavcodec/codec_desc.o
+CC	libavcodec/codec_par.o
+CC	libavcodec/d3d11va.o
+CC	libavcodec/decode.o
+In file included from libavcodec/bitstream_filters.c:77:
+./libavcodec/bsf_list.c:13:6: error: 'ff_eia608_to_smpte436m_bsf' undeclared here (not in a function)
+   13 |     &ff_eia608_to_smpte436m_bsf,
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/dirac.o
+./libavcodec/bsf_list.c:32:6: error: 'ff_smpte436m_to_eia608_bsf' undeclared here (not in a function)
+   32 |     &ff_smpte436m_to_eia608_bsf,
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c:27:5: warning: "CONFIG_ICONV" is not defined, evaluates to 0 [-Wundef]
+   27 | #if CONFIG_ICONV
+      |     ^~~~~~~~~~~~
+make: *** [ffbuild/common.mak:90: libavcodec/bitstream_filters.o] Error 1
+make: *** Waiting for unfinished jobs....
+In file included from libavcodec/decode.c:54:
+libavcodec/lcevcdec.h:25:5: warning: "CONFIG_LIBLCEVC_DEC" is not defined, evaluates to 0 [-Wundef]
+   25 | #if CONFIG_LIBLCEVC_DEC
+      |     ^~~~~~~~~~~~~~~~~~~
+In file included from libavcodec/threadprogress.h:38,
+                 from libavcodec/decode.c:59:
+./libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+   27 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |        ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h: In function 'ff_thread_setname':
+./libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+  220 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+  222 | #elif HAVE_PTHREAD_SETNAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+  230 | #elif HAVE_PTHREAD_SET_NAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c: In function 'recode_subtitle':
+libavcodec/decode.c:832:5: warning: "CONFIG_ICONV" is not defined, evaluates to 0 [-Wundef]
+  832 | #if CONFIG_ICONV
+      |     ^~~~~~~~~~~~
+libavcodec/decode.c:844:5: warning: "CONFIG_ICONV" is not defined, evaluates to 0 [-Wundef]
+  844 | #if CONFIG_ICONV
+      |     ^~~~~~~~~~~~
+libavcodec/dirac.c:39:5: warning: "CONFIG_DIRAC_PARSE" is not defined, evaluates to 0 [-Wundef]
+   39 | #if CONFIG_DIRAC_PARSE
+      |     ^~~~~~~~~~~~~~~~~~
+libavcodec/decode.c: In function 'ff_decode_preinit':
+libavcodec/decode.c:2002:5: warning: "CONFIG_ICONV" is not defined, evaluates to 0 [-Wundef]
+ 2002 | #if CONFIG_ICONV
+      |     ^~~~~~~~~~~~

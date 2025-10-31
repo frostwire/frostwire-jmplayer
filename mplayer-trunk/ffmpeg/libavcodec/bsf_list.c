@@ -10,7 +10,6 @@ static const FFBitStreamFilter *bitstream_filters[] = {
     &ff_dts2pts_bsf,
     &ff_dv_error_marker_bsf,
     &ff_eac3_core_bsf,
-    NULL, /*     NULL, /* &ff_eia608_to_smpte436m_bsf,ff_eia608_to_smpte436m_bsf */ff_eia608_to_smpte436m_bsf */
     &ff_evc_frame_merge_bsf,
     &ff_extract_extradata_bsf,
     &ff_h264_mp4toannexb_bsf,
@@ -29,7 +28,6 @@ static const FFBitStreamFilter *bitstream_filters[] = {
     &ff_remove_extradata_bsf,
     &ff_setts_bsf,
     &ff_showinfo_bsf,
-    NULL, /*     NULL, /* &ff_smpte436m_to_eia608_bsf,ff_smpte436m_to_eia608_bsf */ff_smpte436m_to_eia608_bsf */
     &ff_text2movsub_bsf,
     &ff_truehd_core_bsf,
     &ff_vp9_raw_reorder_bsf,

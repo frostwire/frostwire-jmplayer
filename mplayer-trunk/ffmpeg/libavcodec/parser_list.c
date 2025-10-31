@@ -1,7 +1,7 @@
 static const AVCodecParser *parser_list[] = {
     &ff_aac_parser,
     &ff_aac_latm_parser,
-    &ff_ac3_parser,
+    // &ff_ac3_parser,  // Disabled: AC3 decoder not fully built
     &ff_adx_parser,
     &ff_ahx_parser,
     &ff_amr_parser,
@@ -14,7 +14,6 @@ static const AVCodecParser *parser_list[] = {
     &ff_cook_parser,
     &ff_cri_parser,
     &ff_dca_parser,
-    NULL, /*     NULL, /* &ff_dirac_parser,ff_dirac_parser */ff_dirac_parser */
     &ff_dnxhd_parser,
     &ff_dnxuc_parser,
     &ff_dolby_e_parser,
@@ -27,7 +26,6 @@ static const AVCodecParser *parser_list[] = {
     &ff_flac_parser,
     &ff_ftr_parser,
     &ff_ffv1_parser,
-    NULL, /*     NULL, /* &ff_g723_1_parser,ff_g723_1_parser */ff_g723_1_parser */
     &ff_g729_parser,
     &ff_gif_parser,
     &ff_gsm_parser,

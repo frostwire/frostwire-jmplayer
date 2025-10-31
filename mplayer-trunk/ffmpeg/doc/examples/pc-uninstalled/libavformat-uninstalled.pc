@@ -8,5 +8,5 @@ Description: FFmpeg container format library
 Version: 62.6.101
 Requires:  libavcodec >= 62.16.100,  libswresample >= 6.2.100,  libavutil >= 60.16.100
 Conflicts:
-Libs: -L${libdir} -Wl,-rpath,${libdir} -lavformat -lm -latomic -lz -L/home/gubatron/src/openssl/lib -lssl -lcrypto
+Libs: -L${libdir} -Wl,-rpath,${libdir} -lavformat -lm -latomic -lbz2 -lz -L/home/gubatron/src/openssl/lib -lssl -lcrypto
 Cflags: -I${includedir}

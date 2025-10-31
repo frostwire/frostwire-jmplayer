@@ -174,8 +174,8 @@ CC	libavformat/gopher.o
 CC	libavformat/hlsproto.o
 CC	libavformat/http.o
 CC	libavformat/httpauth.o
-CC	libavformat/icecast.o
 CC	libavformat/id3v1.o
+CC	libavformat/icecast.o
 CC	libavformat/id3v2.o
 CC	libavformat/ipfsgateway.o
 CC	libavformat/isom_tags.o
@@ -198,11 +198,11 @@ CC	libavformat/tls_openssl.o
 CC	libavformat/unix.o
 CC	libavformat/url.o
 CC	libavformat/urldecode.o
-CC	libavformat/utils.o
 libavformat/tls_openssl.c: In function ‘dtls_start’:
 libavformat/tls_openssl.c:786:21: warning: unused variable ‘profiles’ [-Wunused-variable]
   786 |         const char* profiles = "SRTP_AES128_CM_SHA1_80";
       |                     ^~~~~~~~
+CC	libavformat/utils.o
 CC	libavformat/version.o
 GEN	libavformat/libavformat.pc
 CC	libavcodec/aac/aacdec.o
@@ -266,6 +266,7 @@ CC	libavcodec/alac.o
 CC	libavcodec/alac_data.o
 CC	libavcodec/alacdsp.o
 CC	libavcodec/allcodecs.o
+CC	libavcodec/amr_parser.o
 libavcodec/allcodecs.c:876:5: warning: "CONFIG_H264_OH_DECODER" is not defined, evaluates to 0 [-Wundef]
   876 | #if CONFIG_H264_OH_DECODER
       |     ^~~~~~~~~~~~~~~~~~~~~~
@@ -278,7 +279,6 @@ libavcodec/allcodecs.c:896:5: warning: "CONFIG_HEVC_OH_DECODER" is not defined, 
 libavcodec/allcodecs.c:899:5: warning: "CONFIG_HEVC_OH_ENCODER" is not defined, evaluates to 0 [-Wundef]
   899 | #if CONFIG_HEVC_OH_ENCODER
       |     ^~~~~~~~~~~~~~~~~~~~~~
-CC	libavcodec/amr_parser.o
 CC	libavcodec/aom_film_grain.o
 CC	libavcodec/apv_parser.o
 CC	libavcodec/atsc_a53.o
@@ -343,8 +343,8 @@ CC	libavcodec/bswapdsp.o
 CC	libavcodec/cavs_parser.o
 CC	libavcodec/cbrt_data.o
 CC	libavcodec/cbrt_tablegen_common.o
-CC	libavcodec/cbs.o
 CC	libavcodec/cbs_apv.o
+CC	libavcodec/cbs.o
 CC	libavcodec/cbs_av1.o
 CC	libavcodec/cbs_bsf.o
 CC	libavcodec/cbs_h2645.o
@@ -521,8 +521,8 @@ CC	libavcodec/pthread_slice.o
 CC	libavcodec/qoi_parser.o
 CC	libavcodec/qsv_api.o
 CC	libavcodec/rangecoder.o
-CC	libavcodec/rl.o
 CC	libavcodec/raw.o
+CC	libavcodec/rl.o
 CC	libavcodec/rv34_parser.o
 CC	libavcodec/sbc_parser.o
 CC	libavcodec/sbrdsp.o
@@ -562,7 +562,6 @@ CC	libavcodec/vp8data.o
 CC	libavcodec/vp9_parser.o
 CC	libavcodec/vvc_parser.o
 CC	libavcodec/wavpack.o
-CC	libavcodec/wavpackdata.o
 In function ‘add_level’,
     inlined from ‘add_level’ at libavcodec/vlc.c:457:17,
     inlined from ‘add_level’ at libavcodec/vlc.c:457:17,
@@ -606,6 +605,7 @@ libavcodec/vlc.h: In function ‘ff_vlc_init_multi_from_lengths’:
 libavcodec/vlc.h:59:18: note: while referencing ‘val16’
    59 |         uint16_t val16[VLC_MULTI_MAX_SYMBOLS / 2];
       |                  ^~~~~
+CC	libavcodec/wavpackdata.o
 CC	libavcodec/webp_parser.o
 CC	libavcodec/wma.o
 CC	libavcodec/wma_common.o
@@ -623,6 +623,7 @@ AS	libswresample/aarch64/resample.o
 CC	libswresample/aarch64/resample_init.o
 CC	libswresample/audioconvert.o
 CC	libswresample/dither.o
+CC	libswresample/options.o
 In function ‘wma_decode_block’,
     inlined from ‘wma_decode_frame’ at libavcodec/wmadec.c:805:15:
 libavcodec/wmadec.c:521:30: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
@@ -633,7 +634,6 @@ libavcodec/wma.h: In function ‘wma_decode_frame’:
 libavcodec/wma.h:112:13: note: at offset 2 into destination object ‘channel_coded’ of size 2
   112 |     uint8_t channel_coded[MAX_CHANNELS];    ///< true if channel is coded
       |             ^~~~~~~~~~~~~
-CC	libswresample/options.o
 CC	libswresample/rematrix.o
 CC	libswresample/resample.o
 CC	libswresample/resample_dsp.o
@@ -764,8 +764,8 @@ CC	libavutil/timecode.o
 CC	libavutil/timecode_internal.o
 CC	libavutil/timestamp.o
 CC	libavutil/tree.o
-CC	libavutil/tx.o
 CC	libavutil/twofish.o
+CC	libavutil/tx.o
 CC	libavutil/tx_double.o
 CC	libavutil/tx_float.o
 CC	libavutil/tx_int32.o
@@ -1119,7 +1119,6 @@ make sure you have passed the necessary compiler/linker flags to configure.
 If you suspect a bug, please read DOCS/HTML/en/bugreports.html.
 
 make[1]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk'
-help/help_create.sh help/help_mp-en.h UTF-8
 make -C ffmpeg libavfilter/libavfilter.a
 make -C ffmpeg libavformat/libavformat.a
 make -C ffmpeg libavcodec/libavcodec.a
@@ -1127,7 +1126,7 @@ make -C ffmpeg libswscale/libswscale.a
 make -C ffmpeg libswresample/libswresample.a
 make -C ffmpeg libavutil/libavutil.a
 cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o command.o command.c
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o m_property.o m_property.c
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o mplayer.o mplayer.c
 In file included from /usr/include/aarch64-linux-gnu/bits/libc-header-start.h:33,
                  from /usr/include/stdlib.h:26,
                  from command.c:21:
@@ -1138,586 +1137,6 @@ command.c: In function 'mp_property_sub':
 command.c:1456:22: warning: variable 'reset_spu' set but not used [-Wunused-but-set-variable]
  1456 |     int source = -1, reset_spu = 0;
       |                      ^~~~~~~~~
-make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
-make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
-make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
-make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
-make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
-make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
-CC	libavutil/aarch64/cpu.o
-libavutil/aarch64/cpu.c:23:5: warning: "HAVE_GETAUXVAL" is not defined, evaluates to 0 [-Wundef]
-   23 | #if HAVE_GETAUXVAL || HAVE_ELF_AUX_INFO
-      |     ^~~~~~~~~~~~~~
-libavutil/aarch64/cpu.c:23:23: warning: "HAVE_ELF_AUX_INFO" is not defined, evaluates to 0 [-Wundef]
-   23 | #if HAVE_GETAUXVAL || HAVE_ELF_AUX_INFO
-      |                       ^~~~~~~~~~~~~~~~~
-CC	libavutil/aarch64/float_dsp_init.o
-In file included from libavutil/aarch64/float_dsp_init.c:27:
-libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-m_property.c: In function 'm_property_time_ro':
-m_property.c:365:49: warning: '__builtin___sprintf_chk' may write a terminating nul past the end of the destination [-Wformat-overflow=]
-  365 |                 sprintf(*(char **) arg, "%d:%02d", m, s);
-      |                                                 ^
-In file included from /usr/include/stdio.h:970,
-                 from m_property.c:25:
-In function 'sprintf',
-    inlined from 'm_property_time_ro' at m_property.c:365:3:
-/usr/include/aarch64-linux-gnu/bits/stdio2.h:30:10: note: '__builtin___sprintf_chk' output between 5 and 21 bytes into a destination of size 20
-   30 |   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   31 |                                   __glibc_objsize (__s), __fmt,
-      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   32 |                                   __va_arg_pack ());
-      |                                   ~~~~~~~~~~~~~~~~~
-AS	libavutil/aarch64/float_dsp_neon.o
-CC	libavutil/aarch64/tx_float_init.o
-In file included from libavutil/aarch64/float_dsp_neon.S:24:
-libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o mixer.o mixer.c
-CC	libavfilter/allfilters.o
-CC	libavcodec/aarch64/aacpsdsp_init_aarch64.o
-In file included from ./libavutil/tx_priv.h:23,
-                 from libavutil/aarch64/tx_float_init.c:20:
-./libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
-   27 | #if HAVE_PRCTL
-      |     ^~~~~~~~~~
-./libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
-   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
-      |        ^~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
-   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavformat/allformats.o
-./libavutil/thread.h: In function 'ff_thread_setname':
-./libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
-  220 | #if HAVE_PRCTL
-      |     ^~~~~~~~~~
-./libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
-  222 | #elif HAVE_PTHREAD_SETNAME_NP
-      |       ^~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
-  230 | #elif HAVE_PTHREAD_SET_NAME_NP
-      |       ^~~~~~~~~~~~~~~~~~~~~~~~
-AS	libswscale/aarch64/hscale.o
-In file included from libavcodec/aarch64/aacpsdsp_init_aarch64.c:22:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-CC	libswresample/aarch64/audio_convert_init.o
-In file included from libswscale/aarch64/hscale.S:23:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from libavutil/aarch64/tx_float_init.c:22:
-./libavutil/aarch64/cpu.h: At top level:
-AS	libswscale/aarch64/input.o
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-AS	libavcodec/aarch64/aacpsdsp_neon.o
-In file included from libswresample/aarch64/audio_convert_init.c:24:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-In file included from libswscale/aarch64/input.S:21:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-libswscale/aarch64/input.S:317:5: warning: "HAVE_DOTPROD" is not defined, evaluates to 0 [-Wundef]
-  317 | #if HAVE_DOTPROD
-      |     ^~~~~~~~~~~~
-In file included from libavcodec/aarch64/aacpsdsp_neon.S:19:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AS	libavutil/aarch64/tx_float_neon.o
-AS	libswscale/aarch64/output.o
-CC	libavcodec/aarch64/ac3dsp_init_aarch64.o
-In file included from libavutil/aarch64/tx_float_neon.S:21:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from libswscale/aarch64/output.S:21:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AS	libswscale/aarch64/range_convert_neon.o
-CC	libavformat/avformat.o
-AS	libswresample/aarch64/audio_convert_neon.o
-CC	libavfilter/audio.o
-AS	libavcodec/aarch64/ac3dsp_neon.o
-In file included from libswscale/aarch64/range_convert_neon.S:21:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libswscale/aarch64/rgb2rgb.o
-In file included from libswresample/aarch64/audio_convert_neon.S:23:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavutil/adler32.o
-AS	libswresample/aarch64/resample.o
-In file included from libavcodec/aarch64/ac3dsp_neon.S:22:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from libswscale/aarch64/rgb2rgb.c:23:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-CC	libavcodec/aarch64/fdctdsp_init_aarch64.o
-CC	libavfilter/avfilter.o
-In file included from libswresample/aarch64/resample.S:21:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from libavcodec/aarch64/fdctdsp_init_aarch64.c:21:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libswresample/aarch64/resample_init.o
-In file included from libswresample/aarch64/resample_init.c:29:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-AS	libavcodec/aarch64/fdctdsp_neon.o
-CC	libavfilter/avfiltergraph.o
-In file included from libavcodec/aarch64/fdctdsp_neon.S:30:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavcodec/aarch64/fmtconvert_init.o
-In file included from libavcodec/aarch64/fmtconvert_init.c:24:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-libavfilter/avfiltergraph.c: In function 'pick_format':
-libavfilter/avfiltergraph.c:830:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-  830 |         const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(swfmt);
-      |         ^~~~~
-AS	libavcodec/aarch64/fmtconvert_neon.o
-In file included from libavcodec/aarch64/fmtconvert_neon.S:24:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libswresample/audioconvert.o
-CC	libavcodec/aarch64/h264chroma_init_aarch64.o
-In file included from libavcodec/aarch64/h264chroma_init_aarch64.c:26:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-AS	libavcodec/aarch64/h264cmc_neon.o
-In file included from libavcodec/aarch64/h264cmc_neon.S:24:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavcodec/aarch64/h264dsp_init_aarch64.o
-In file included from libavcodec/aarch64/h264dsp_init_aarch64.c:25:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-AS	libavcodec/aarch64/h264dsp_neon.o
-In file included from libavcodec/aarch64/h264dsp_neon.S:23:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AS	libavcodec/aarch64/h264idct_neon.o
-In file included from libavcodec/aarch64/h264idct_neon.S:22:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavcodec/aarch64/h264pred_init.o
-CC	libavutil/aes.o
-In file included from libavcodec/aarch64/h264pred_init.c:24:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-AS	libswscale/aarch64/rgb2rgb_neon.o
-In file included from libswscale/aarch64/rgb2rgb_neon.S:22:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libswscale/aarch64/swscale.o
-libavformat/avformat.c: In function 'match_stream_specifier':
-libavformat/avformat.c:562:17: warning: 'ret' may be used uninitialized [-Wmaybe-uninitialized]
-  562 |             int ret;
-      |                 ^~~
-AS	libavcodec/aarch64/h264pred_neon.o
-In file included from libavcodec/aarch64/h264pred_neon.S:21:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavcodec/aarch64/h264qpel_init_aarch64.o
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o mp_fifo.o mp_fifo.c
-In file included from libavcodec/aarch64/h264qpel_init_aarch64.c:27:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-AS	libavcodec/aarch64/h264qpel_neon.o
-CC	libavformat/avio.o
-In file included from libavcodec/aarch64/h264qpel_neon.S:22:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from ./libavutil/version.h:30,
-                 from ./libavutil/log.h:26,
-                 from ./libavutil/avassert.h:35,
-                 from libavfilter/avfiltergraph.c:27:
-In function 'swap_samplerates_on_filter',
-    inlined from 'swap_samplerates' at libavfilter/avfiltergraph.c:1083:9,
-    inlined from 'graph_config_formats' at libavfilter/avfiltergraph.c:1365:5,
-    inlined from 'avfilter_graph_config' at libavfilter/avfiltergraph.c:1422:16:
-libavfilter/avfiltergraph.c:1074:51: warning: 'best_idx' may be used uninitialized [-Wmaybe-uninitialized]
- 1074 |                outlink->incfg.samplerates->formats[best_idx]);
-      |                                                   ^
-./libavutil/macros.h:52:44: note: in definition of macro 'FFSWAP'
-   52 | #define FFSWAP(type,a,b) do{type SWAP_tmp= b; b= a; a= SWAP_tmp;}while(0)
-      |                                            ^
-libavfilter/avfiltergraph.c: In function 'avfilter_graph_config':
-libavfilter/avfiltergraph.c:1057:13: note: 'best_idx' was declared here
- 1057 |         int best_idx, best_diff = INT_MAX;
-      |             ^~~~~~~~
-AS	libavcodec/aarch64/h26x/epel_neon.o
-In file included from libavcodec/aarch64/h26x/epel_neon.S:21:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AS	libavcodec/aarch64/h26x/qpel_neon.o
-CC	libswresample/dither.o
-In file included from libavcodec/aarch64/h26x/qpel_neon.S:23:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libswresample/options.o
-CC	libswresample/rematrix.o
-AS	libavcodec/aarch64/h26x/sao_neon.o
-In file included from libavcodec/aarch64/h26x/sao_neon.S:25:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In function 'url_alloc_for_protocol',
-    inlined from 'ffurl_alloc' at libavformat/avio.c:357:15:
-libavformat/avio.c:179:30: warning: 'key' may be used uninitialized [-Wmaybe-uninitialized]
-  179 |                 if(ret<0 || p!=key){
-      |                             ~^~~~~
-libavformat/avio.c: In function 'ffurl_alloc':
-libavformat/avio.c:165:23: note: 'key' was declared here
-  165 |                 char *key, *val;
-      |                       ^~~
-CC	libswscale/aarch64/swscale_unscaled.o
-AS	libavcodec/aarch64/hevcdsp_deblock_neon.o
-In file included from libavutil/aes.c:33:
-libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
-   27 | #if HAVE_PRCTL
-      |     ^~~~~~~~~~
-libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
-   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
-      |        ^~~~~~~~~~~~~~~~~~~~~~~
-libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
-   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
-In file included from libavcodec/aarch64/hevcdsp_deblock_neon.S:25:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-libavutil/thread.h: In function 'ff_thread_setname':
-libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
-  220 | #if HAVE_PRCTL
-      |     ^~~~~~~~~~
-libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
-  222 | #elif HAVE_PTHREAD_SETNAME_NP
-      |       ^~~~~~~~~~~~~~~~~~~~~~~
-libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
-  230 | #elif HAVE_PTHREAD_SET_NAME_NP
-      |       ^~~~~~~~~~~~~~~~~~~~~~~~
-AS	libavcodec/aarch64/hevcdsp_idct_neon.o
-CC	libavfilter/buffersink.o
-In file included from libavcodec/aarch64/hevcdsp_idct_neon.S:28:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavcodec/aarch64/hevcdsp_init_aarch64.o
-In file included from libswscale/aarch64/swscale.c:23:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-libswscale/aarch64/swscale.c: In function 'ff_sws_init_swscale_aarch64':
-libswscale/aarch64/swscale.c:363:5: warning: "HAVE_DOTPROD" is not defined, evaluates to 0 [-Wundef]
-  363 | #if HAVE_DOTPROD
-      |     ^~~~~~~~~~~~
-libswscale/aarch64/swscale.c:382:5: warning: "HAVE_DOTPROD" is not defined, evaluates to 0 [-Wundef]
-  382 | #if HAVE_DOTPROD
-      |     ^~~~~~~~~~~~
-In file included from libavcodec/aarch64/hevcdsp_init_aarch64.c:26:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-libavfilter/buffersink.c: In function 'common_init':
-libavfilter/buffersink.c:226:17: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-  226 |                 int ret = av_channel_layout_from_string(&buf->channel_layouts[buf->nb_channel_layouts - 1], cur);
-      |                 ^~~
-CC	libavformat/aviobuf.o
-CC	libavutil/aes_ctr.o
-AS	libswscale/aarch64/swscale_unscaled_neon.o
-In file included from libswscale/aarch64/swscale_unscaled_neon.S:21:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavformat/demux.o
-CC	libavformat/demux_utils.o
-CC	libavfilter/buffersrc.o
-In file included from libswscale/aarch64/swscale_unscaled.c:22:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-CC	libswresample/resample.o
-CC	libavfilter/ccfifo.o
-CC	libavutil/ambient_viewing_environment.o
-AS	libswscale/aarch64/yuv2rgb_neon.o
-CC	libavutil/audio_fifo.o
-libavformat/demux.c: In function 'read_frame_internal':
-libavformat/demux.c:1391:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
- 1391 |         int new_extradata = !!av_packet_side_data_get(pkt->side_data, pkt->side_data_elems,
-      |         ^~~
-In file included from libswscale/aarch64/yuv2rgb_neon.S:22:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavfilter/colorspace.o
-CC	libswscale/alphablend.o
-CC	libavutil/avsscanf.o
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o mplayer.o mplayer.c
-CC	libavfilter/drawutils.o
-CC	libswresample/resample_dsp.o
 In file included from cfg-mplayer.h:27,
                  from mplayer.c:332:
 cfg-common.h:301:18: warning: initialization discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
@@ -1759,6 +1178,8 @@ cfg-common.h:547:18: warning: initialization discards 'const' qualifier from poi
 cfg-common.h:548:20: warning: initialization discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
   548 |     {"lavfdopts",  lavfdopts_conf, CONF_TYPE_SUBCONFIG, CONF_GLOBAL, 0, 0, NULL},
       |                    ^~~~~~~~~~~~~~
+make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
+make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
 cfg-mplayer.h:354:16: warning: initialization discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
   354 |     {"tvscan", tvscan_conf, CONF_TYPE_SUBCONFIG, 0, 0, 0, NULL},
       |                ^~~~~~~~~~~
@@ -1774,12 +1195,18 @@ cfg-mplayer.h:363:11: warning: initialization discards 'const' qualifier from po
 cfg-mplayer.h:365:12: warning: initialization discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
   365 |     {"vd", vd_conf, CONF_TYPE_SUBCONFIG, 0, 0, 0, NULL},
       |            ^~~~~~~
-CC	libavcodec/aarch64/hpeldsp_init_aarch64.o
-In file included from libavcodec/aarch64/hpeldsp_init_aarch64.c:29:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-AS	libavcodec/aarch64/hpeldsp_neon.o
+make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
+make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
+make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
+make[2]: Entering directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
+CC	libswresample/aarch64/audio_convert_init.o
+CC	libavutil/aarch64/cpu.o
+libavutil/aarch64/cpu.c:23:5: warning: "HAVE_GETAUXVAL" is not defined, evaluates to 0 [-Wundef]
+   23 | #if HAVE_GETAUXVAL || HAVE_ELF_AUX_INFO
+      |     ^~~~~~~~~~~~~~
+libavutil/aarch64/cpu.c:23:23: warning: "HAVE_ELF_AUX_INFO" is not defined, evaluates to 0 [-Wundef]
+   23 | #if HAVE_GETAUXVAL || HAVE_ELF_AUX_INFO
+      |                       ^~~~~~~~~~~~~~~~~
 mplayer.c: In function 'main':
 mplayer.c:3886:25: warning: ignoring return value of 'system' declared with attribute 'warn_unused_result' [-Wunused-result]
  3886 |                         system(heartbeat_cmd);
@@ -1788,7 +1215,36 @@ mplayer.c: In function 'parse_cfgfiles':
 mplayer.c:876:17: warning: ignoring return value of 'write' declared with attribute 'warn_unused_result' [-Wunused-result]
   876 |                 write(conffile_fd, default_config, strlen(default_config));
       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from libavcodec/aarch64/hpeldsp_neon.S:23:
+In file included from libswresample/aarch64/audio_convert_init.c:24:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libavutil/aarch64/float_dsp_init.o
+In file included from libavutil/aarch64/float_dsp_init.c:27:
+libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+AS	libavutil/aarch64/float_dsp_neon.o
+CC	libavformat/allformats.o
+AS	libswresample/aarch64/audio_convert_neon.o
+CC	libavfilter/allfilters.o
+In file included from libavutil/aarch64/float_dsp_neon.S:24:
+libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+AS	libswscale/aarch64/hscale.o
+CC	libavutil/aarch64/tx_float_init.o
+CC	libavcodec/aarch64/aacpsdsp_init_aarch64.o
+In file included from libswscale/aarch64/hscale.S:23:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1801,13 +1257,11 @@ In file included from libavcodec/aarch64/hpeldsp_neon.S:23:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavcodec/aarch64/idctdsp_init_aarch64.o
-In file included from libavcodec/aarch64/idctdsp_init_aarch64.c:25:
+In file included from libavcodec/aarch64/aacpsdsp_init_aarch64.c:22:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
-AS	libavcodec/aarch64/idctdsp_neon.o
-In file included from libavcodec/aarch64/idctdsp_neon.S:23:
+In file included from libswresample/aarch64/audio_convert_neon.S:23:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1820,18 +1274,10 @@ In file included from libavcodec/aarch64/idctdsp_neon.S:23:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavcodec/aarch64/me_cmp_init_aarch64.o
-In file included from libavcodec/aarch64/me_cmp_init_aarch64.c:23:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
-CC	libswresample/swresample.o
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o parser-mpcmd.o parser-mpcmd.c
-In file included from ./libavcodec/threadprogress.h:38,
-                 from ./libavcodec/mpegpicture.h:29,
-                 from ./libavcodec/mpegvideo.h:37,
-                 from ./libavcodec/mpegvideoenc.h:38,
-                 from libavcodec/aarch64/me_cmp_init_aarch64.c:24:
+AS	libswscale/aarch64/input.o
+AS	libswresample/aarch64/resample.o
+In file included from ./libavutil/tx_priv.h:23,
+                 from libavutil/aarch64/tx_float_init.c:20:
 ./libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
    27 | #if HAVE_PRCTL
       |     ^~~~~~~~~~
@@ -1841,6 +1287,7 @@ In file included from ./libavcodec/threadprogress.h:38,
 ./libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
    29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+AS	libavcodec/aarch64/aacpsdsp_neon.o
 ./libavutil/thread.h: In function 'ff_thread_setname':
 ./libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
   220 | #if HAVE_PRCTL
@@ -1851,10 +1298,125 @@ In file included from ./libavcodec/threadprogress.h:38,
 ./libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
   230 | #elif HAVE_PTHREAD_SET_NAME_NP
       |       ^~~~~~~~~~~~~~~~~~~~~~~~
-libswresample/swresample.c: In function 'swr_init':
-libswresample/swresample.c:190:5: warning: "CONFIG_LIBSOXR" is not defined, evaluates to 0 [-Wundef]
-  190 | #if CONFIG_LIBSOXR
-      |     ^~~~~~~~~~~~~~
+In file included from libswscale/aarch64/input.S:21:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libswscale/aarch64/input.S:317:5: warning: "HAVE_DOTPROD" is not defined, evaluates to 0 [-Wundef]
+  317 | #if HAVE_DOTPROD
+      |     ^~~~~~~~~~~~
+In file included from libswresample/aarch64/resample.S:21:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavcodec/aarch64/aacpsdsp_neon.S:19:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libswresample/aarch64/resample_init.o
+AS	libswscale/aarch64/output.o
+CC	libavcodec/aarch64/ac3dsp_init_aarch64.o
+In file included from libavutil/aarch64/tx_float_init.c:22:
+./libavutil/aarch64/cpu.h: At top level:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libavfilter/audio.o
+AS	libavutil/aarch64/tx_float_neon.o
+In file included from libswscale/aarch64/output.S:21:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libswresample/aarch64/resample_init.c:29:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libavformat/avformat.o
+In file included from libavutil/aarch64/tx_float_neon.S:21:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+AS	libswscale/aarch64/range_convert_neon.o
+AS	libavcodec/aarch64/ac3dsp_neon.o
+In file included from libswscale/aarch64/range_convert_neon.S:21:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libswscale/aarch64/rgb2rgb.o
+In file included from libavcodec/aarch64/ac3dsp_neon.S:22:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavutil/adler32.o
+CC	libavcodec/aarch64/fdctdsp_init_aarch64.o
+In file included from libswscale/aarch64/rgb2rgb.c:23:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libavfilter/avfilter.o
 mplayer.c: In function 'update_osd_msg':
 mplayer.c:1587:49: warning: '%d' directive output may be truncated writing between 1 and 10 bytes into a region of size 7 [-Wformat-truncation=]
  1587 |                 snprintf(percentage_text, 9, " (%d%%)", percentage);
@@ -1886,20 +1448,453 @@ In function 'snprintf',
       |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    70 |                                    __va_arg_pack ());
       |                                    ~~~~~~~~~~~~~~~~~
-CC	libavfilter/formats.o
-CC	libswscale/cms.o
+In file included from libavcodec/aarch64/fdctdsp_init_aarch64.c:21:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libswresample/audioconvert.o
+AS	libavcodec/aarch64/fdctdsp_neon.o
+In file included from libavcodec/aarch64/fdctdsp_neon.S:30:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/aarch64/fmtconvert_init.o
+In file included from libavcodec/aarch64/fmtconvert_init.c:24:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+AS	libavcodec/aarch64/fmtconvert_neon.o
+In file included from libavcodec/aarch64/fmtconvert_neon.S:24:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/aarch64/h264chroma_init_aarch64.o
+In file included from libavcodec/aarch64/h264chroma_init_aarch64.c:26:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+AS	libavcodec/aarch64/h264cmc_neon.o
+In file included from libavcodec/aarch64/h264cmc_neon.S:24:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/aarch64/h264dsp_init_aarch64.o
+In file included from libavcodec/aarch64/h264dsp_init_aarch64.c:25:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+AS	libavcodec/aarch64/h264dsp_neon.o
+In file included from libavcodec/aarch64/h264dsp_neon.S:23:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavutil/aes.o
+AS	libavcodec/aarch64/h264idct_neon.o
+In file included from libavcodec/aarch64/h264idct_neon.S:22:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/aarch64/h264pred_init.o
+AS	libswscale/aarch64/rgb2rgb_neon.o
+In file included from libswscale/aarch64/rgb2rgb_neon.S:22:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavcodec/aarch64/h264pred_init.c:24:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libswscale/aarch64/swscale.o
+libavformat/avformat.c: In function 'match_stream_specifier':
+libavformat/avformat.c:562:17: warning: 'ret' may be used uninitialized [-Wmaybe-uninitialized]
+  562 |             int ret;
+      |                 ^~~
+AS	libavcodec/aarch64/h264pred_neon.o
+In file included from libavcodec/aarch64/h264pred_neon.S:21:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/aarch64/h264qpel_init_aarch64.o
+CC	libavfilter/avfiltergraph.o
+CC	libswresample/dither.o
+In file included from libavcodec/aarch64/h264qpel_init_aarch64.c:27:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+AS	libavcodec/aarch64/h264qpel_neon.o
+libavfilter/avfiltergraph.c: In function 'pick_format':
+libavfilter/avfiltergraph.c:830:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  830 |         const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(swfmt);
+      |         ^~~~~
+In file included from libavcodec/aarch64/h264qpel_neon.S:22:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+AS	libavcodec/aarch64/h26x/epel_neon.o
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o input/input.o input/input.c
+In file included from libavcodec/aarch64/h26x/epel_neon.S:21:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+input/input.c:74:35: warning: missing braces around initializer [-Wmissing-braces]
+   74 | static const mp_cmd_t mp_cmds[] = {
+      |                                   ^
+......
+  216 |   { 0, "", 0, { 0 } }
+      |                 { }
+input/input.c:74:35: warning: missing braces around initializer [-Wmissing-braces]
+   74 | static const mp_cmd_t mp_cmds[] = {
+      |                                   ^
+......
+  216 |   { 0, "", 0, { 0 } }
+      |                 { }
+input/input.c:635:14: warning: initialization discards 'const' qualifier from pointer target type [-Wdiscarded-array-qualifiers]
+  635 |   { "input", &input_conf, CONF_TYPE_SUBCONFIG, 0, 0, 0, NULL},
+      |              ^
+AS	libavcodec/aarch64/h26x/qpel_neon.o
+input/input.c: In function 'mp_input_get_key_name':
+input/input.c:1471:14: warning: return discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+ 1471 |       return key_names[i].name;
+      |              ^~~~~~~~~
+In file included from libavutil/aes.c:33:
+libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+   27 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |        ^~~~~~~~~~~~~~~~~~~~~~~
+libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/avio.o
+libavutil/thread.h: In function 'ff_thread_setname':
+libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+  220 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+  222 | #elif HAVE_PTHREAD_SETNAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+  230 | #elif HAVE_PTHREAD_SET_NAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavcodec/aarch64/h26x/qpel_neon.S:23:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libswresample/options.o
+AS	libavcodec/aarch64/h26x/sao_neon.o
+In file included from libavcodec/aarch64/h26x/sao_neon.S:25:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+AS	libavcodec/aarch64/hevcdsp_deblock_neon.o
+In file included from libavcodec/aarch64/hevcdsp_deblock_neon.S:25:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libswscale/aarch64/swscale.c:23:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libswscale/aarch64/swscale.c: In function 'ff_sws_init_swscale_aarch64':
+libswscale/aarch64/swscale.c:363:5: warning: "HAVE_DOTPROD" is not defined, evaluates to 0 [-Wundef]
+  363 | #if HAVE_DOTPROD
+      |     ^~~~~~~~~~~~
+libswscale/aarch64/swscale.c:382:5: warning: "HAVE_DOTPROD" is not defined, evaluates to 0 [-Wundef]
+  382 | #if HAVE_DOTPROD
+      |     ^~~~~~~~~~~~
+CC	libavutil/aes_ctr.o
+AS	libavcodec/aarch64/hevcdsp_idct_neon.o
+CC	libswresample/rematrix.o
+In file included from libavcodec/aarch64/hevcdsp_idct_neon.S:28:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/aarch64/hevcdsp_init_aarch64.o
+In function 'url_alloc_for_protocol',
+    inlined from 'ffurl_alloc' at libavformat/avio.c:357:15:
+libavformat/avio.c:179:30: warning: 'key' may be used uninitialized [-Wmaybe-uninitialized]
+  179 |                 if(ret<0 || p!=key){
+      |                             ~^~~~~
+libavformat/avio.c: In function 'ffurl_alloc':
+libavformat/avio.c:165:23: note: 'key' was declared here
+  165 |                 char *key, *val;
+      |                       ^~~
+In file included from libavcodec/aarch64/hevcdsp_init_aarch64.c:26:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libswscale/aarch64/swscale_unscaled.o
+CC	libavformat/aviobuf.o
+CC	libavfilter/buffersink.o
+In file included from ./libavutil/version.h:30,
+                 from ./libavutil/log.h:26,
+                 from ./libavutil/avassert.h:35,
+                 from libavfilter/avfiltergraph.c:27:
+In function 'swap_samplerates_on_filter',
+    inlined from 'swap_samplerates' at libavfilter/avfiltergraph.c:1083:9,
+    inlined from 'graph_config_formats' at libavfilter/avfiltergraph.c:1365:5,
+    inlined from 'avfilter_graph_config' at libavfilter/avfiltergraph.c:1422:16:
+libavfilter/avfiltergraph.c:1074:51: warning: 'best_idx' may be used uninitialized [-Wmaybe-uninitialized]
+ 1074 |                outlink->incfg.samplerates->formats[best_idx]);
+      |                                                   ^
+./libavutil/macros.h:52:44: note: in definition of macro 'FFSWAP'
+   52 | #define FFSWAP(type,a,b) do{type SWAP_tmp= b; b= a; a= SWAP_tmp;}while(0)
+      |                                            ^
+libavfilter/avfiltergraph.c: In function 'avfilter_graph_config':
+libavfilter/avfiltergraph.c:1057:13: note: 'best_idx' was declared here
+ 1057 |         int best_idx, best_diff = INT_MAX;
+      |             ^~~~~~~~
+libavfilter/buffersink.c: In function 'common_init':
+libavfilter/buffersink.c:226:17: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  226 |                 int ret = av_channel_layout_from_string(&buf->channel_layouts[buf->nb_channel_layouts - 1], cur);
+      |                 ^~~
+CC	libavformat/demux.o
+CC	libavutil/ambient_viewing_environment.o
+CC	libavcodec/aarch64/hpeldsp_init_aarch64.o
+In file included from libavcodec/aarch64/hpeldsp_init_aarch64.c:29:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libavutil/audio_fifo.o
+CC	libavfilter/buffersrc.o
+CC	libswresample/resample.o
+In file included from libswscale/aarch64/swscale_unscaled.c:22:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libavutil/avsscanf.o
+AS	libswscale/aarch64/swscale_unscaled_neon.o
+In file included from libswscale/aarch64/swscale_unscaled_neon.S:21:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libao2/ao_pcm.o libao2/ao_pcm.c
+CC	libavfilter/ccfifo.o
+CC	libavformat/demux_utils.o
+libavformat/demux.c: In function 'read_frame_internal':
+libavformat/demux.c:1391:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+ 1391 |         int new_extradata = !!av_packet_side_data_get(pkt->side_data, pkt->side_data_elems,
+      |         ^~~
+CC	libswresample/resample_dsp.o
+CC	libavfilter/colorspace.o
+AS	libswscale/aarch64/yuv2rgb_neon.o
+In file included from libswscale/aarch64/yuv2rgb_neon.S:22:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libswscale/alphablend.o
+AS	libavcodec/aarch64/hpeldsp_neon.o
+In file included from libavcodec/aarch64/hpeldsp_neon.S:23:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavfilter/drawutils.o
+CC	libavcodec/aarch64/idctdsp_init_aarch64.o
+In file included from libavcodec/aarch64/idctdsp_init_aarch64.c:25:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+AS	libavcodec/aarch64/idctdsp_neon.o
+In file included from libavcodec/aarch64/idctdsp_neon.S:23:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/aarch64/me_cmp_init_aarch64.o
+In file included from libavcodec/aarch64/me_cmp_init_aarch64.c:23:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libswresample/swresample.o
+In file included from ./libavcodec/threadprogress.h:38,
+                 from ./libavcodec/mpegpicture.h:29,
+                 from ./libavcodec/mpegvideo.h:37,
+                 from ./libavcodec/mpegvideoenc.h:38,
+                 from libavcodec/aarch64/me_cmp_init_aarch64.c:24:
+./libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+   27 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |        ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h: In function 'ff_thread_setname':
+./libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+  220 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+  222 | #elif HAVE_PTHREAD_SETNAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+  230 | #elif HAVE_PTHREAD_SET_NAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+libswresample/swresample.c: In function 'swr_init':
+libswresample/swresample.c:190:5: warning: "CONFIG_LIBSOXR" is not defined, evaluates to 0 [-Wundef]
+  190 | #if CONFIG_LIBSOXR
+      |     ^~~~~~~~~~~~~~
 CC	libavutil/avstring.o
+CC	libavutil/base64.o
 libavutil/avstring.c: In function 'av_get_token':
 libavutil/avstring.c:175:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
   175 |     char *small_ret = av_realloc(ret, out - ret + 2);
       |     ^~~~
-libavformat/demux.c:1502:8: warning: 'ret' may be used uninitialized [-Wmaybe-uninitialized]
- 1502 |     if (ret >= 0) {
-      |        ^
-libavformat/demux.c:1362:9: note: 'ret' was declared here
- 1362 |     int ret, got_packet = 0;
-      |         ^~~
-CC	libavformat/dump.o
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libao2/audio_out.o libao2/audio_out.c
+CC	libavutil/blowfish.o
 CC	libswresample/swresample_frame.o
 libavcodec/aarch64/me_cmp_init_aarch64.c: At top level:
 libavcodec/aarch64/me_cmp_init_aarch64.c:80:5: warning: "HAVE_DOTPROD" is not defined, evaluates to 0 [-Wundef]
@@ -1909,7 +1904,6 @@ libavcodec/aarch64/me_cmp_init_aarch64.c: In function 'ff_me_cmp_init_aarch64':
 libavcodec/aarch64/me_cmp_init_aarch64.c:124:5: warning: "HAVE_DOTPROD" is not defined, evaluates to 0 [-Wundef]
   124 | #if HAVE_DOTPROD
       |     ^~~~~~~~~~~~
-CC	libavutil/base64.o
 AS	libavcodec/aarch64/me_cmp_neon.o
 In file included from libavcodec/aarch64/me_cmp_neon.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
@@ -1928,13 +1922,16 @@ libavcodec/aarch64/me_cmp_neon.S:1563:5: warning: "HAVE_DOTPROD" is not defined,
  1563 | #if HAVE_DOTPROD
       |     ^~~~~~~~~~~~
 CC	libavcodec/aarch64/mpegaudiodsp_init.o
+CC	libavformat/dump.o
 In file included from libavcodec/aarch64/mpegaudiodsp_init.c:23:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
-CC	libswresample/version.o
 AS	libavcodec/aarch64/mpegaudiodsp_neon.o
-CC	libswscale/csputils.o
+CC	libswscale/cms.o
+libavformat/demux.c:1502:8: warning: 'ret' may be used uninitialized [-Wmaybe-uninitialized]
+ 1502 |     if (ret >= 0) {
+      |        ^
 In file included from libavcodec/aarch64/mpegaudiodsp_neon.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -1948,13 +1945,16 @@ In file included from libavcodec/aarch64/mpegaudiodsp_neon.S:21:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libswresample/version.o
+libavformat/demux.c:1362:9: note: 'ret' was declared here
+ 1362 |     int ret, got_packet = 0;
+      |         ^~~
 CC	libavcodec/aarch64/opusdsp_init.o
 In file included from libavcodec/aarch64/opusdsp_init.c:22:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
 AS	libavcodec/aarch64/opusdsp_neon.o
-AR	libswresample/libswresample.a
 In file included from libavcodec/aarch64/opusdsp_neon.S:19:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -1969,13 +1969,16 @@ In file included from libavcodec/aarch64/opusdsp_neon.S:19:
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CC	libavcodec/aarch64/pixblockdsp_init_aarch64.o
-make[2]: Leaving directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
-CC	libswscale/format.o
+AR	libswresample/libswresample.a
 In file included from libavcodec/aarch64/pixblockdsp_init_aarch64.c:23:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
+CC	libavfilter/formats.o
 AS	libavcodec/aarch64/pixblockdsp_neon.o
+make[2]: Leaving directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libvo/geometry.o libvo/geometry.c
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libvo/video_out.o libvo/video_out.c
 In file included from libavcodec/aarch64/pixblockdsp_neon.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -1989,21 +1992,17 @@ In file included from libavcodec/aarch64/pixblockdsp_neon.S:21:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-libswscale/format.c:620:5: warning: "CONFIG_UNSTABLE" is not defined, evaluates to 0 [-Wundef]
-  620 | #if CONFIG_UNSTABLE
-      |     ^~~~~~~~~~~~~~~
 CC	libavcodec/aarch64/rv40dsp_init_aarch64.o
-CC	libavfilter/framepool.o
 In file included from libavcodec/aarch64/rv40dsp_init_aarch64.c:23:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
 CC	libavcodec/aarch64/sbrdsp_init_aarch64.o
-CC	libavformat/dv.o
 In file included from libavcodec/aarch64/sbrdsp_init_aarch64.c:20:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
+CC	libavformat/dv.o
 AS	libavcodec/aarch64/sbrdsp_neon.o
 In file included from libavcodec/aarch64/sbrdsp_neon.S:19:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
@@ -2033,15 +2032,13 @@ In file included from libavcodec/aarch64/simple_idct_neon.S:27:
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CC	libavcodec/aarch64/synth_filter_init.o
-CC	libswscale/gamma.o
-CC	libavutil/blowfish.o
+CC	libavutil/bprint.o
+CC	libswscale/csputils.o
 In file included from libavcodec/aarch64/synth_filter_init.c:23:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
-CC	libavfilter/framequeue.o
 AS	libavcodec/aarch64/synth_filter_neon.o
-CC	libavfilter/graphdump.o
 In file included from libavcodec/aarch64/synth_filter_neon.S:22:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -2060,26 +2057,46 @@ In file included from libavcodec/aarch64/vc1dsp_init_aarch64.c:23:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o pnm_loader.o pnm_loader.c
-CC	libavfilter/graphparser.o
-CC	libswscale/graph.o
-AS	libavcodec/aarch64/vc1dsp_neon.o
-CC	libavutil/bprint.o
-In file included from libavcodec/aarch64/vc1dsp_neon.S:23:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+CC	libavutil/buffer.o
+CC	libavfilter/framepool.o
+CC	libswscale/format.o
+In file included from libavutil/buffer_internal.h:26,
+                 from libavutil/buffer.c:24:
+libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+   27 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |        ^~~~~~~~~~~~~~~~~~~~~~~
+libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+libavutil/thread.h: In function 'ff_thread_setname':
+libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+  220 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+  222 | #elif HAVE_PTHREAD_SETNAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+  230 | #elif HAVE_PTHREAD_SET_NAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+libswscale/format.c:620:5: warning: "CONFIG_UNSTABLE" is not defined, evaluates to 0 [-Wundef]
+  620 | #if CONFIG_UNSTABLE
+      |     ^~~~~~~~~~~~~~~
+CC	libavfilter/framequeue.o
+CC	libavutil/camellia.o
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libvo/vo_mpegpes.o libvo/vo_mpegpes.c
+libvo/vo_mpegpes.c: In function 'my_write':
+libvo/vo_mpegpes.c:199:5: warning: ignoring return value of 'write' declared with attribute 'warn_unused_result' [-Wunused-result]
+  199 |     write(vo_mpegpes_fd,data,len); // write to file
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavfilter/pthread.o
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o input/input.o input/input.c
+CC	libswscale/gamma.o
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libvo/vo_null.o libvo/vo_null.c
+CC	libavformat/format.o
+CC	libavfilter/graphdump.o
+CC	libavutil/cast5.o
+AS	libavcodec/aarch64/vc1dsp_neon.o
 libavformat/dv.c: In function 'avpriv_dv_produce_packet':
 libavformat/dv.c:463:24: warning: 'pts' may be used uninitialized [-Wmaybe-uninitialized]
   463 |         dpkt->pts      = pts;
@@ -2093,7 +2110,23 @@ libavformat/dv.c:464:24: warning: 'duration' may be used uninitialized [-Wmaybe-
 libavformat/dv.c:425:18: note: 'duration' was declared here
   425 |     int64_t pts, duration;
       |                  ^~~~~~~~
-CC	libavutil/buffer.o
+In file included from libavcodec/aarch64/vc1dsp_neon.S:23:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libswscale/graph.o
+CC	libavfilter/graphparser.o
+CC	libswscale/hscale.o
+CC	libavformat/id3v1.o
 AS	libavcodec/aarch64/videodsp.o
 In file included from libavcodec/aarch64/videodsp.S:19:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
@@ -2113,53 +2146,12 @@ In file included from libavcodec/aarch64/videodsp_init.c:21:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
-In file included from libavutil/buffer_internal.h:26,
-                 from libavutil/buffer.c:24:
-libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
-   27 | #if HAVE_PRCTL
-      |     ^~~~~~~~~~
-libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
-   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
-      |        ^~~~~~~~~~~~~~~~~~~~~~~
-libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
-   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
-libavutil/thread.h: In function 'ff_thread_setname':
-input/input.c:74:35: warning: missing braces around initializer [-Wmissing-braces]
-   74 | static const mp_cmd_t mp_cmds[] = {
-      |                                   ^
-......
-  216 |   { 0, "", 0, { 0 } }
-      |                 { }
-input/input.c:74:35: warning: missing braces around initializer [-Wmissing-braces]
-   74 | static const mp_cmd_t mp_cmds[] = {
-      |                                   ^
-......
-  216 |   { 0, "", 0, { 0 } }
-      |                 { }
-input/input.c:635:14: warning: initialization discards 'const' qualifier from pointer target type [-Wdiscarded-array-qualifiers]
-  635 |   { "input", &input_conf, CONF_TYPE_SUBCONFIG, 0, 0, 0, NULL},
-      |              ^
-libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
-  220 | #if HAVE_PRCTL
-      |     ^~~~~~~~~~
-libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
-  222 | #elif HAVE_PTHREAD_SETNAME_NP
-      |       ^~~~~~~~~~~~~~~~~~~~~~~
-libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
-  230 | #elif HAVE_PTHREAD_SET_NAME_NP
-      |       ^~~~~~~~~~~~~~~~~~~~~~~~
 CC	libavcodec/aarch64/vorbisdsp_init.o
-input/input.c: In function 'mp_input_get_key_name':
-input/input.c:1471:14: warning: return discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
- 1471 |       return key_names[i].name;
-      |              ^~~~~~~~~
+CC	libavformat/id3v2.o
 In file included from libavcodec/aarch64/vorbisdsp_init.c:21:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
-CC	libavformat/format.o
-CC	libavutil/camellia.o
 AS	libavcodec/aarch64/vorbisdsp_neon.o
 In file included from libavcodec/aarch64/vorbisdsp_neon.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
@@ -2174,24 +2166,13 @@ In file included from libavcodec/aarch64/vorbisdsp_neon.S:21:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o sub/spuenc.o sub/spuenc.c
 CC	libavcodec/aarch64/vp8dsp_init_aarch64.o
-libswscale/graph.c:466:5: warning: "CONFIG_UNSTABLE" is not defined, evaluates to 0 [-Wundef]
-  466 | #if CONFIG_UNSTABLE
-      |     ^~~~~~~~~~~~~~~
-CC	libavfilter/version.o
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libao2/ao_mpegpes.o libao2/ao_mpegpes.c
 In file included from libavcodec/aarch64/vp8dsp_init_aarch64.c:22:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
-libao2/ao_mpegpes.c: In function 'my_ao_write':
-libao2/ao_mpegpes.c:229:5: warning: ignoring return value of 'write' declared with attribute 'warn_unused_result' [-Wunused-result]
-  229 |     write(ao_mpegpes_fd, data, len); // write to file
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libswscale/hscale.o
-CC	libavfilter/video.o
 AS	libavcodec/aarch64/vp8dsp_neon.o
-CC	libavformat/id3v1.o
 In file included from libavcodec/aarch64/vp8dsp_neon.S:26:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -2205,79 +2186,41 @@ In file included from libavcodec/aarch64/vp8dsp_neon.S:26:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavutil/cast5.o
+libswscale/graph.c:466:5: warning: "CONFIG_UNSTABLE" is not defined, evaluates to 0 [-Wundef]
+  466 | #if CONFIG_UNSTABLE
+      |     ^~~~~~~~~~~~~~~
+CC	libavfilter/pthread.o
 CC	libavcodec/aarch64/vp9dsp_init_10bpp_aarch64.o
-AR	libavfilter/libavfilter.a
 In file included from libavcodec/aarch64/vp9dsp_init_16bpp_aarch64_template.c:26,
                  from libavcodec/aarch64/vp9dsp_init_10bpp_aarch64.c:23:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
-make[2]: Leaving directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
 CC	libswscale/hscale_fast_bilinear.o
-CC	libavformat/id3v2.o
+CC	libavfilter/version.o
+CC	libavformat/isom_tags.o
 CC	libavutil/channel_layout.o
+CC	libavfilter/video.o
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o input/appleir.o input/appleir.c
+libavformat/id3v2.c: In function 'decode_str':
+libavformat/id3v2.c:276:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  276 |         uint16_t bom = avio_rb16(pb);
+      |         ^~~~~~~~
+AR	libavfilter/libavfilter.a
 CC	libavcodec/aarch64/vp9dsp_init_12bpp_aarch64.o
+CC	libavutil/container_fifo.o
+make[2]: Leaving directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
+CC	libavformat/metadata.o
+CC	libavutil/cpu.o
 In file included from libavcodec/aarch64/vp9dsp_init_16bpp_aarch64_template.c:26,
                  from libavcodec/aarch64/vp9dsp_init_12bpp_aarch64.c:23:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
-CC	libavutil/container_fifo.o
-CC	libavcodec/aarch64/vp9dsp_init_aarch64.o
-In file included from libavcodec/aarch64/vp9dsp_init_aarch64.c:26:
-./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
-   33 | #if HAVE_SVE
-      |     ^~~~~~~~
 CC	libswscale/input.o
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libao2/ao_null.o libao2/ao_null.c
-libavformat/id3v2.c: In function 'decode_str':
-libavformat/id3v2.c:276:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-  276 |         uint16_t bom = avio_rb16(pb);
-      |         ^~~~~~~~
-CC	libavformat/isom_tags.o
-AS	libavcodec/aarch64/vp9itxfm_16bpp_neon.o
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libao2/ao_pcm.o libao2/ao_pcm.c
-In file included from libavcodec/aarch64/vp9itxfm_16bpp_neon.S:21:
-./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
-   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavformat/metadata.o
-CC	libavutil/cpu.o
-CC	libavutil/crc.o
-CC	libswscale/lut3d.o
-In file included from libavutil/crc.c:23:
-libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
-   27 | #if HAVE_PRCTL
-      |     ^~~~~~~~~~
-libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
-   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
-      |        ^~~~~~~~~~~~~~~~~~~~~~~
-libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
-   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
-libavutil/thread.h: In function 'ff_thread_setname':
 libavutil/cpu.c:21:5: warning: "HAVE_SCHED_GETAFFINITY" is not defined, evaluates to 0 [-Wundef]
    21 | #if HAVE_SCHED_GETAFFINITY
       |     ^~~~~~~~~~~~~~~~~~~~~~
-libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
-  220 | #if HAVE_PRCTL
-      |     ^~~~~~~~~~
-libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
-  222 | #elif HAVE_PTHREAD_SETNAME_NP
-      |       ^~~~~~~~~~~~~~~~~~~~~~~
-libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
-  230 | #elif HAVE_PTHREAD_SET_NAME_NP
-      |       ^~~~~~~~~~~~~~~~~~~~~~~~
 libavutil/cpu.c:38:5: warning: "HAVE_GETPROCESSAFFINITYMASK" is not defined, evaluates to 0 [-Wundef]
    38 | #if HAVE_GETPROCESSAFFINITYMASK || HAVE_WINRT
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2290,7 +2233,6 @@ libavutil/cpu.c:52:5: warning: "HAVE_GETAUXVAL" is not defined, evaluates to 0 [
 libavutil/cpu.c:52:23: warning: "HAVE_ELF_AUX_INFO" is not defined, evaluates to 0 [-Wundef]
    52 | #if HAVE_GETAUXVAL || HAVE_ELF_AUX_INFO
       |                       ^~~~~~~~~~~~~~~~~
-AS	libavcodec/aarch64/vp9itxfm_neon.o
 libavutil/cpu.c: In function 'av_cpu_count':
 libavutil/cpu.c:230:5: warning: "HAVE_SCHED_GETAFFINITY" is not defined, evaluates to 0 [-Wundef]
   230 | #if HAVE_SCHED_GETAFFINITY && defined(CPU_COUNT)
@@ -2301,7 +2243,6 @@ libavutil/cpu.c:237:7: warning: "HAVE_GETPROCESSAFFINITYMASK" is not defined, ev
 libavutil/cpu.c:241:7: warning: "HAVE_SYSCTL" is not defined, evaluates to 0 [-Wundef]
   241 | #elif HAVE_SYSCTL && defined(HW_NCPUONLINE)
       |       ^~~~~~~~~~~
-AS	libavcodec/aarch64/vp9lpf_16bpp_neon.o
 libavutil/cpu.c:247:7: warning: "HAVE_SYSCTL" is not defined, evaluates to 0 [-Wundef]
   247 | #elif HAVE_SYSCTL && defined(HW_NCPU)
       |       ^~~~~~~~~~~
@@ -2318,8 +2259,47 @@ libavutil/cpu.c:304:5: warning: "HAVE_GETAUXVAL" is not defined, evaluates to 0 
 libavutil/cpu.c:306:7: warning: "HAVE_ELF_AUX_INFO" is not defined, evaluates to 0 [-Wundef]
   306 | #elif HAVE_ELF_AUX_INFO
       |       ^~~~~~~~~~~~~~~~~
+CC	libavutil/crc.o
+In file included from libavutil/crc.c:23:
+libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+   27 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |        ^~~~~~~~~~~~~~~~~~~~~~~
+libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+libavutil/thread.h: In function 'ff_thread_setname':
+libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+  220 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+  222 | #elif HAVE_PTHREAD_SETNAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+  230 | #elif HAVE_PTHREAD_SET_NAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/mux.o
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libvo/vo_png.o libvo/vo_png.c
+CC	libavcodec/aarch64/vp9dsp_init_aarch64.o
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o udp_sync.o udp_sync.c
+In file included from /usr/include/errno.h:25,
+                 from udp_sync.c:27:
+/usr/include/features.h:199:3: warning: #warning "_BSD_SOURCE and _SVID_SOURCE are deprecated, use _DEFAULT_SOURCE" [-Wcpp]
+  199 | # warning "_BSD_SOURCE and _SVID_SOURCE are deprecated, use _DEFAULT_SOURCE"
+      |   ^~~~~~~
+CC	libavformat/mux_utils.o
 CC	libavutil/csp.o
-In file included from libavcodec/aarch64/vp9lpf_16bpp_neon.S:21:
+In file included from libavcodec/aarch64/vp9dsp_init_aarch64.c:26:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o asxparser.o asxparser.c
+CC	libavformat/options.o
+AS	libavcodec/aarch64/vp9itxfm_16bpp_neon.o
+CC	libavutil/des.o
+In file included from libavcodec/aarch64/vp9itxfm_16bpp_neon.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2332,6 +2312,18 @@ In file included from libavcodec/aarch64/vp9lpf_16bpp_neon.S:21:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavutil/detection_bbox.o
+In function 'init_muxer',
+    inlined from 'avformat_init_output' at libavformat/mux.c:451:16:
+libavformat/mux.c:288:75: warning: 'nb' may be used uninitialized [-Wmaybe-uninitialized]
+  288 |                        (of->flags_internal & FF_OFMT_FLAG_MAX_ONE_OF_EACH && nb > 1)) {
+      |                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+libavformat/mux.c: In function 'avformat_init_output':
+libavformat/mux.c:275:22: note: 'nb' was declared here
+  275 |             unsigned nb;
+      |                      ^~
+AS	libavcodec/aarch64/vp9itxfm_neon.o
+CC	libavformat/os_support.o
 In file included from libavcodec/aarch64/vp9itxfm_neon.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -2345,10 +2337,25 @@ In file included from libavcodec/aarch64/vp9itxfm_neon.S:21:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libswscale/options.o
-CC	libavutil/des.o
-CC	libavformat/mux.o
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o bstr.o bstr.c
+AS	libavcodec/aarch64/vp9lpf_16bpp_neon.o
+cc -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O3 -DCODECS2HTML -o codec-cfg codec-cfg.c
+In file included from libavcodec/aarch64/vp9lpf_16bpp_neon.S:21:
+./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:51:5: warning: "HAVE_AS_ARCHEXT_I8MM_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   51 | #if HAVE_AS_ARCHEXT_I8MM_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:59:5: warning: "HAVE_AS_ARCHEXT_SVE_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   59 | #if HAVE_AS_ARCHEXT_SVE_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
+   67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 AS	libavcodec/aarch64/vp9lpf_neon.o
+CC	libavformat/protocols.o
+CC	libavutil/dict.o
 In file included from libavcodec/aarch64/vp9lpf_neon.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -2362,6 +2369,18 @@ In file included from libavcodec/aarch64/vp9lpf_neon.S:21:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavformat/riff.o
+codec-cfg.c: In function 'main':
+codec-cfg.c:1158:33: warning: format '%lx' expects argument of type 'long unsigned int', but argument 2 has type 'unsigned int' [-Wformat=]
+ 1158 |                 printf("{ 0x%08lx, %hu, %hu,",
+      |                             ~~~~^
+      |                                 |
+      |                                 long unsigned int
+      |                             %08x
+ 1159 |                        cod[i][j].guid.f1,
+      |                        ~~~~~~~~~~~~~~~~~
+      |                                      |
+      |                                      unsigned int
 AS	libavcodec/aarch64/vp9mc_16bpp_neon.o
 In file included from libavcodec/aarch64/vp9mc_16bpp_neon.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
@@ -2376,8 +2395,10 @@ In file included from libavcodec/aarch64/vp9mc_16bpp_neon.S:21:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libao2/audio_out.o libao2/audio_out.c
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o cpudetect.o cpudetect.c
+CC	libavutil/display.o
 AS	libavcodec/aarch64/vp9mc_aarch64.o
+CC	libavformat/sdp.o
 In file included from libavcodec/aarch64/vp9mc_aarch64.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -2392,6 +2413,7 @@ In file included from libavcodec/aarch64/vp9mc_aarch64.S:21:
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 AS	libavcodec/aarch64/vp9mc_neon.o
+AS	libavcodec/aarch64/vvc/alf.o
 In file included from libavcodec/aarch64/vp9mc_neon.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -2405,8 +2427,6 @@ In file included from libavcodec/aarch64/vp9mc_neon.S:21:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavutil/detection_bbox.o
-AS	libavcodec/aarch64/vvc/alf.o
 In file included from libavcodec/aarch64/vvc/alf.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -2420,8 +2440,9 @@ In file included from libavcodec/aarch64/vvc/alf.S:21:
 ./libavutil/aarch64/asm.S:67:5: warning: "HAVE_AS_ARCHEXT_SVE2_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CC	libswscale/lut3d.o
 AS	libavcodec/aarch64/vvc/inter.o
-CC	libswscale/output.o
+CC	libavformat/seek.o
 In file included from libavcodec/aarch64/vvc/inter.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -2436,7 +2457,7 @@ In file included from libavcodec/aarch64/vvc/inter.S:21:
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 AS	libavcodec/aarch64/vvc/sad.o
-CC	libswscale/rgb2rgb.o
+CC	libswscale/options.o
 In file included from libavcodec/aarch64/vvc/sad.S:21:
 ./libavutil/aarch64/asm.S:43:5: warning: "HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE" is not defined, evaluates to 0 [-Wundef]
    43 | #if HAVE_AS_ARCHEXT_DOTPROD_DIRECTIVE
@@ -2451,20 +2472,23 @@ In file included from libavcodec/aarch64/vvc/sad.S:21:
    67 | #if HAVE_AS_ARCHEXT_SVE2_DIRECTIVE
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CC	libavcodec/ac3_parser.o
-CC	libavformat/mux_utils.o
-In function 'init_muxer',
-    inlined from 'avformat_init_output' at libavformat/mux.c:451:16:
-libavformat/mux.c:288:75: warning: 'nb' may be used uninitialized [-Wmaybe-uninitialized]
-  288 |                        (of->flags_internal & FF_OFMT_FLAG_MAX_ONE_OF_EACH && nb > 1)) {
-      |                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
-libavformat/mux.c: In function 'avformat_init_output':
-libavformat/mux.c:275:22: note: 'nb' was declared here
-  275 |             unsigned nb;
-      |                      ^~
-cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o libvo/aspect.o libvo/aspect.c
-CC	libswscale/slice.o
-CC	libswscale/swscale.o
-CC	libavformat/options.o
+CC	libavutil/dovi_meta.o
+CC	libavutil/downmix_info.o
+CC	libswscale/output.o
+CC	libavutil/encryption_info.o
+cc -MMD -MP -Wundef -Wall -Wno-switch -Wno-parentheses -Wpointer-arith -Wredundant-decls -Werror=format-security -Wstrict-prototypes -Wmissing-prototypes -Wdisabled-optimization -Wno-pointer-sign -Wdeclaration-after-statement -std=c11 -Werror-implicit-function-declaration -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ISOC99_SOURCE -I. -Iffmpeg -O4 -march=native -mcpu=native -pipe -fomit-frame-pointer -fno-tree-vectorize -fno-asynchronous-unwind-tables -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -Os -fPIC -I/home/gubatron/src/openssl/include -DPIC -D_REENTRANT -I/home/gubatron/src/openssl/include -DZLIB_CONST -I/usr/include/libxml2 -c -o edl.o edl.c
+CC	libavformat/url.o
+libavcodec/ac3_parser.c: In function 'ff_ac3_parse_header':
+libavcodec/ac3_parser.c:348:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  348 |         int ret = ac3_parse_header(gbc, hdr);
+      |         ^~~
+libavcodec/ac3_parser.c:384:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  384 |         int ret = eac3_parse_header(gbc, hdr);
+      |         ^~~
+CC	libavcodec/adts_parser.o
+CC	libswscale/rgb2rgb.o
+CC	libavutil/error.o
+CC	libavformat/urldecode.o
 libswscale/output.c: In function 'yuv2mono_2_c_template':
 libswscale/output.c:746:16: warning: suggest explicit braces to avoid ambiguous 'else' [-Wdangling-else]
   746 |             if ((i & 7) == 6)
@@ -2473,21 +2497,8 @@ libswscale/output.c: In function 'yuv2mono_1_c_template':
 libswscale/output.c:804:16: warning: suggest explicit braces to avoid ambiguous 'else' [-Wdangling-else]
   804 |             if ((i & 7) == 6)
       |                ^
-CC	libavutil/dict.o
-libavcodec/ac3_parser.c: In function 'ff_ac3_parse_header':
-libavcodec/ac3_parser.c:348:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-  348 |         int ret = ac3_parse_header(gbc, hdr);
-      |         ^~~
-libavcodec/ac3_parser.c:384:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-  384 |         int ret = eac3_parse_header(gbc, hdr);
-      |         ^~~
-CC	libavformat/os_support.o
-CC	libavutil/display.o
-CC	libavformat/protocols.o
-CC	libavutil/dovi_meta.o
-CC	libavformat/riff.o
-CC	libavcodec/adts_parser.o
-CC	libavutil/downmix_info.o
+CC	libswscale/slice.o
+CC	libavformat/utils.o
 CC	libavcodec/allcodecs.o
 In file included from libavcodec/allcodecs.c:31:
 ./libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
@@ -2499,7 +2510,6 @@ In file included from libavcodec/allcodecs.c:31:
 ./libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
    29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavformat/sdp.o
 ./libavutil/thread.h: In function 'ff_thread_setname':
 ./libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
   220 | #if HAVE_PRCTL
@@ -2510,7 +2520,7 @@ CC	libavformat/sdp.o
 ./libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
   230 | #elif HAVE_PTHREAD_SET_NAME_NP
       |       ^~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavutil/encryption_info.o
+CC	libavutil/eval.o
 libavcodec/allcodecs.c: At top level:
 libavcodec/allcodecs.c:947:5: warning: "CONFIG_OSSFUZZ" is not defined, evaluates to 0 [-Wundef]
   947 | #if CONFIG_OSSFUZZ
@@ -2528,6 +2538,7 @@ In file included from libavcodec/allcodecs.c:954:
   281 |     &ff_amrnb_decoder,
       |      ^~~~~~~~~~~~~~~~
       |      ff_avrn_decoder
+CC	libavutil/executor.o
 ./libavcodec/codec_list.c:282:6: error: 'ff_amrwb_decoder' undeclared here (not in a function); did you mean 'ff_frwu_decoder'?
   282 |     &ff_amrwb_decoder,
       |      ^~~~~~~~~~~~~~~~
@@ -2550,18 +2561,6 @@ In file included from libavcodec/allcodecs.c:954:
       |      ff_srt_encoder
 make[2]: *** [ffbuild/common.mak:90: libavcodec/allcodecs.o] Error 1
 make[2]: Leaving directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
-make[1]: *** [Makefile:743: ffmpeg/libavcodec/libavcodec.a] Error 2
-make[1]: *** Waiting for unfinished jobs....
-CC	libswscale/swscale_unscaled.o
-CC	libavformat/seek.o
-CC	libavutil/error.o
-CC	libavformat/url.o
-CC	libswscale/utils.o
-CC	libavformat/urldecode.o
-CC	libavformat/utils.o
-CC	libavutil/eval.o
-CC	libswscale/version.o
-CC	libavutil/executor.o
 In file included from libavutil/executor.c:26:
 libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
    27 | #if HAVE_PRCTL
@@ -2572,6 +2571,8 @@ libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, eval
 libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
    29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+make[1]: *** [Makefile:743: ffmpeg/libavcodec/libavcodec.a] Error 2
+CC	libavutil/fifo.o
 libavutil/thread.h: In function 'ff_thread_setname':
 libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
   220 | #if HAVE_PRCTL
@@ -2582,11 +2583,25 @@ libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, eva
 libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
   230 | #elif HAVE_PTHREAD_SET_NAME_NP
       |       ^~~~~~~~~~~~~~~~~~~~~~~~
+make[1]: *** Waiting for unfinished jobs....
+CC	libavutil/file.o
+CC	libavutil/file_open.o
+CC	libswscale/swscale.o
 CC	libavformat/version.o
-CC	libavutil/fifo.o
-CC	libswscale/vscale.o
-CC	libswscale/yuv2rgb.o
 AR	libavformat/libavformat.a
+libavutil/file_open.c: In function 'avpriv_open':
+libavutil/file_open.c:86:5: warning: "HAVE_FCNTL" is not defined, evaluates to 0 [-Wundef]
+   86 | #if HAVE_FCNTL
+      |     ^~~~~~~~~~
+make[2]: Leaving directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
+CC	libswscale/swscale_unscaled.o
+CC	libavutil/film_grain_params.o
+CC	libswscale/utils.o
+CC	libavutil/fixed_dsp.o
+CC	libswscale/version.o
+CC	libavutil/float_dsp.o
+CC	libswscale/vscale.o
+CC	libavutil/frame.o
 In file included from libswscale/utils.c:54:
 ./libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
    27 | #if HAVE_PRCTL
@@ -2612,26 +2627,18 @@ In file included from libswscale/utils.c:55:
 ./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
    33 | #if HAVE_SVE
       |     ^~~~~~~~
-make[2]: Leaving directory '/home/gubatron/workspace/frostwire-fwplayer/mplayer-trunk/ffmpeg'
-CC	libavutil/file.o
 libswscale/utils.c: In function 'fill_xyztables':
 libswscale/utils.c:753:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
   753 |     static AVOnce xyz_init_static_once = AV_ONCE_INIT;
       |     ^~~~~~
-CC	libavutil/file_open.o
-CC	libavutil/film_grain_params.o
-libavutil/file_open.c: In function 'avpriv_open':
-libavutil/file_open.c:86:5: warning: "HAVE_FCNTL" is not defined, evaluates to 0 [-Wundef]
-   86 | #if HAVE_FCNTL
-      |     ^~~~~~~~~~
-CC	libavutil/fixed_dsp.o
-CC	libavutil/float_dsp.o
-CC	libavutil/frame.o
 CC	libavutil/hash.o
+CC	libswscale/yuv2rgb.o
 CC	libavutil/hdr_dynamic_metadata.o
 CC	libavutil/hdr_dynamic_vivid_metadata.o
 CC	libavutil/hmac.o
 CC	libavutil/hwcontext.o
+CC	libavutil/iamf.o
+CC	libavutil/imgutils.o
 libavutil/hwcontext.c:39:5: warning: "CONFIG_D3D12VA" is not defined, evaluates to 0 [-Wundef]
    39 | #if CONFIG_D3D12VA
       |     ^~~~~~~~~~~~~~
@@ -2641,14 +2648,11 @@ libavutil/hwcontext.c:69:5: warning: "CONFIG_AMF" is not defined, evaluates to 0
 libavutil/hwcontext.c:72:5: warning: "CONFIG_OHCODEC" is not defined, evaluates to 0 [-Wundef]
    72 | #if CONFIG_OHCODEC
       |     ^~~~~~~~~~~~~~
-CC	libavutil/iamf.o
-CC	libavutil/imgutils.o
 CC	libavutil/integer.o
 CC	libavutil/intmath.o
 CC	libavutil/lfg.o
 CC	libavutil/lls.o
 CC	libavutil/log.o
-CC	libavutil/lzo.o
 In file included from libavutil/log.c:44:
 libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
    27 | #if HAVE_PRCTL
@@ -2669,6 +2673,7 @@ libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, eva
 libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
   230 | #elif HAVE_PTHREAD_SET_NAME_NP
       |       ^~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavutil/lzo.o
 CC	libavutil/mastering_display_metadata.o
 CC	libavutil/mathematics.o
 CC	libavutil/md5.o
@@ -2685,6 +2690,7 @@ libavutil/parseutils.c:595:13: note: 't' was declared here
       |             ^
 CC	libavutil/pixdesc.o
 CC	libavutil/pixelutils.o
+CC	libavutil/random_seed.o
 libavutil/pixelutils.c:24:5: warning: "CONFIG_PIXELUTILS" is not defined, evaluates to 0 [-Wundef]
    24 | #if CONFIG_PIXELUTILS
       |     ^~~~~~~~~~~~~~~~~
@@ -2692,17 +2698,15 @@ libavutil/pixelutils.c: In function 'av_pixelutils_get_sad_fn':
 libavutil/pixelutils.c:74:6: warning: "CONFIG_PIXELUTILS" is not defined, evaluates to 0 [-Wundef]
    74 | #if !CONFIG_PIXELUTILS
       |      ^~~~~~~~~~~~~~~~~
-CC	libavutil/random_seed.o
-CC	libavutil/rational.o
 libavutil/random_seed.c:29:5: warning: "HAVE_BCRYPT" is not defined, evaluates to 0 [-Wundef]
    29 | #if HAVE_BCRYPT
       |     ^~~~~~~~~~~
 libavutil/random_seed.c:33:5: warning: "CONFIG_GCRYPT" is not defined, evaluates to 0 [-Wundef]
    33 | #if CONFIG_GCRYPT
       |     ^~~~~~~~~~~~~
+CC	libavutil/rational.o
 CC	libavutil/rc4.o
 CC	libavutil/refstruct.o
-CC	libavutil/ripemd.o
 In file included from libavutil/refstruct.c:30:
 libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
    27 | #if HAVE_PRCTL
@@ -2723,6 +2727,7 @@ libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, eva
 libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
   230 | #elif HAVE_PTHREAD_SET_NAME_NP
       |       ^~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavutil/ripemd.o
 CC	libavutil/samplefmt.o
 CC	libavutil/sha.o
 libavutil/random_seed.c: In function 'av_random_bytes':
@@ -2789,6 +2794,7 @@ CC	libavutil/timestamp.o
 CC	libavutil/tree.o
 CC	libavutil/twofish.o
 CC	libavutil/tx.o
+CC	libavutil/tx_double.o
 In file included from libavutil/tx_priv.h:23,
                  from libavutil/tx.c:26:
 libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
@@ -2810,7 +2816,6 @@ libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, eva
 libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
   230 | #elif HAVE_PTHREAD_SET_NAME_NP
       |       ^~~~~~~~~~~~~~~~~~~~~~~~
-CC	libavutil/tx_double.o
 In file included from libavutil/tx_priv.h:23,
                  from libavutil/tx_double.c:20:
 libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]

@@ -55,22 +55,15 @@ SRCS_COMMON-$(FFMPEG)                += av_helpers.c                    \
                                         libaf/af_lavcac3enc.c           \
                                         libaf/af_lavcresample.c         \
                                         libmpcodecs/ad_ffmpeg.c         \
-                                        libmpcodecs/ad_spdif.c          \
-                                        libmpcodecs/vd_ffmpeg.c         \
-                                        libmpcodecs/vf_geq.c            \
-                                        libmpcodecs/vf_lavc.c           \
-                                        libmpcodecs/vf_lavcdeint.c      \
-                                        libmpcodecs/vf_screenshot.c     \
-                                        libmpdemux/demux_lavf.c         \
-                                        stream/stream_ffmpeg.c          \
-                                        sub/av_sub.c                    \
+                                        libmpcodecs/ad_spdif.c                    \
 
 SRCS_COMMON-$(CONFIG_VF_LAVFI)      +=  libmpcodecs/vf_lavfi.c
 
 # These filters use private headers and do not work with shared FFmpeg.
-SRCS_COMMON-$(FFMPEG_A)              += libmpcodecs/vf_fspp.c           \
-                                        libmpcodecs/vf_qp.c             \
-                                        libmpcodecs/vf_spp.c            \
+# Disabled for audio-only build with minimal FFmpeg
+# SRCS_COMMON-$(FFMPEG_A)              += libmpcodecs/vf_fspp.c           \
+#                                        libmpcodecs/vf_qp.c             \
+#                                        libmpcodecs/vf_spp.c            \
 
 # needs update for missing coded_frame
 #libmpcodecs/vf_uspp.c           \
@@ -646,7 +639,9 @@ SRCS_MENCODER = mencoder.c                      \
                 $(SRCS_MENCODER-yes)
 
 # (linking) order matters for these libraries
-FFMPEGPARTS_ALL = libpostproc libavfilter libavformat libavcodec libswscale libswresample libavutil
+# Disabled libavformat as it has undefined muxer/demuxer/protocol symbols
+# FFMPEGPARTS_ALL = libpostproc libavfilter libavformat libavcodec libswscale libswresample libavutil
+FFMPEGPARTS_ALL = libavcodec libswscale libswresample libavutil
 FFMPEGPARTS = $(foreach part, $(FFMPEGPARTS_ALL), $(if $(wildcard ffmpeg/$(part)), $(part)))
 FFMPEGLIBS  = $(foreach part, $(FFMPEGPARTS), ffmpeg/$(part)/$(part).a)
 FFMPEGFILES = $(foreach part, $(FFMPEGPARTS), $(wildcard $(addprefix ffmpeg/$(part)/,*.[chS] /*/*.[chS] /*/*.asm)))

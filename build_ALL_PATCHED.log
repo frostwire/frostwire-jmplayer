@@ -1,0 +1,117 @@
+AR	libavdevice/libavdevice.a
+CC	libavcodec/bitstream_filters.o
+CC	libavcodec/dv_profile.o
+CC	libavcodec/encode.o
+CC	libavcodec/exif.o
+CC	libavcodec/get_buffer.o
+CC	libavcodec/imgconvert.o
+CC	libavcodec/jni.o
+libavcodec/jni.c:30:5: warning: "CONFIG_JNI" is not defined, evaluates to 0 [-Wundef]
+   30 | #if CONFIG_JNI
+      |     ^~~~~~~~~~
+CC	libavcodec/lcevcdec.o
+CC	libavcodec/mathtables.o
+CC	libavcodec/mediacodec.o
+In file included from libavcodec/lcevcdec.c:29:
+libavcodec/lcevcdec.h:25:5: warning: "CONFIG_LIBLCEVC_DEC" is not defined, evaluates to 0 [-Wundef]
+   25 | #if CONFIG_LIBLCEVC_DEC
+      |     ^~~~~~~~~~~~~~~~~~~
+libavcodec/lcevcdec.c:31:5: warning: "CONFIG_LIBLCEVC_DEC" is not defined, evaluates to 0 [-Wundef]
+   31 | #if CONFIG_LIBLCEVC_DEC
+      |     ^~~~~~~~~~~~~~~~~~~
+libavcodec/lcevcdec.c: In function 'lcevc_init':
+libavcodec/lcevcdec.c:256:5: warning: "CONFIG_LIBLCEVC_DEC" is not defined, evaluates to 0 [-Wundef]
+  256 | #if CONFIG_LIBLCEVC_DEC
+      |     ^~~~~~~~~~~~~~~~~~~
+libavcodec/lcevcdec.c: In function 'ff_lcevc_process':
+libavcodec/lcevcdec.c:294:5: warning: "CONFIG_LIBLCEVC_DEC" is not defined, evaluates to 0 [-Wundef]
+  294 | #if CONFIG_LIBLCEVC_DEC
+      |     ^~~~~~~~~~~~~~~~~~~
+libavcodec/lcevcdec.c: In function 'ff_lcevc_alloc':
+libavcodec/lcevcdec.c:315:5: warning: "CONFIG_LIBLCEVC_DEC" is not defined, evaluates to 0 [-Wundef]
+  315 | #if CONFIG_LIBLCEVC_DEC
+      |     ^~~~~~~~~~~~~~~~~~~
+CC	libavcodec/neon/mpegvideo.o
+CC	libavcodec/options.o
+CC	libavcodec/packet.o
+CC	libavcodec/parser.o
+CC	libavcodec/parsers.o
+CC	libavcodec/profiles.o
+CC	libavcodec/qsv_api.o
+CC	libavcodec/raw.o
+CC	libavcodec/threadprogress.o
+CC	libavcodec/tiff_common.o
+CC	libavcodec/utils.o
+In function 'find_pix_fmt',
+    inlined from 'avpriv_pix_fmt_find' at libavcodec/raw.c:94:12:
+libavcodec/raw.c:70:16: warning: 'tags' may be used uninitialized [-Wmaybe-uninitialized]
+   70 |     while (tags->pix_fmt != AV_PIX_FMT_NONE) {
+      |            ~~~~^~~~~~~~~
+libavcodec/raw.c: In function 'avpriv_pix_fmt_find':
+libavcodec/raw.c:78:20: note: 'tags' was declared here
+   78 | enum AVPixelFormat avpriv_pix_fmt_find(enum PixelFormatTagLists list,
+      |                    ^~~~~~~~~~~~~~~~~~~
+In file included from libavcodec/threadprogress.h:38,
+                 from libavcodec/threadprogress.c:25:
+./libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+   27 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |        ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h: In function 'ff_thread_setname':
+./libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+  220 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+  222 | #elif HAVE_PTHREAD_SETNAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+  230 | #elif HAVE_PTHREAD_SET_NAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/version.o
+CC	libavcodec/vlc.o
+libavcodec/exif.c: In function 'av_exif_parse_buffer':
+libavcodec/exif.c:774:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  774 |     size_t off = 0;
+      |     ^~~~~~
+CC	libavcodec/vorbis_parser.o
+libavcodec/exif.c: In function 'av_exif_matrix_to_orientation':
+libavcodec/exif.c:1192:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+ 1192 |     int rot = (int)(rotation + 0.5);
+      |     ^~~
+In file included from libavcodec/neon/mpegvideo.c:29:
+./libavutil/aarch64/cpu.h:33:5: warning: "HAVE_SVE" is not defined, evaluates to 0 [-Wundef]
+   33 | #if HAVE_SVE
+      |     ^~~~~~~~
+CC	libavcodec/xiph.o
+In file included from ./libavcodec/threadprogress.h:38,
+                 from ./libavcodec/mpegpicture.h:29,
+                 from ./libavcodec/mpegvideo.h:37,
+                 from libavcodec/neon/mpegvideo.c:34:
+./libavutil/thread.h:27:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+   27 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:29:8: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |        ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:29:35: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+   29 | #elif (HAVE_PTHREAD_SETNAME_NP || HAVE_PTHREAD_SET_NAME_NP) && HAVE_PTHREAD_NP_H
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h: In function 'ff_thread_setname':
+./libavutil/thread.h:220:5: warning: "HAVE_PRCTL" is not defined, evaluates to 0 [-Wundef]
+  220 | #if HAVE_PRCTL
+      |     ^~~~~~~~~~
+./libavutil/thread.h:222:7: warning: "HAVE_PTHREAD_SETNAME_NP" is not defined, evaluates to 0 [-Wundef]
+  222 | #elif HAVE_PTHREAD_SETNAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/thread.h:230:7: warning: "HAVE_PTHREAD_SET_NAME_NP" is not defined, evaluates to 0 [-Wundef]
+  230 | #elif HAVE_PTHREAD_SET_NAME_NP
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+CC	libavcodec/ac3_channel_layout_tab.o
+CC	libavcodec/jpegxl_parse.o
+CC	libavcodec/to_upper4.o
+AR	libavcodec/libavcodec.a

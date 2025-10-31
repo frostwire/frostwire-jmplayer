@@ -30,7 +30,7 @@ default: help
 # ============================================================================
 
 help tasks:  ## Display this help message
-	@echo "$(BLUE)FrostWire JMPlayer Build System$(RESET)"
+	@echo "$(BLUE)FrostWire FWPlayer Build System$(RESET)"
 	@echo ""
 	@echo "$(BLUE)Detected Environment:$(RESET) $(DETECTED_OS) ($(DETECTED_ARCH))"
 	@echo ""

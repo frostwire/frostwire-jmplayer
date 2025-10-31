@@ -42,7 +42,6 @@ static const FFCodec *codec_list[] = {
     &ff_cyuv_decoder,
     &ff_dds_decoder,
     &ff_dfa_decoder,
-    NULL, /*     NULL, /* &ff_dirac_decoder,ff_dirac_decoder */ff_dirac_decoder */
     &ff_dnxhd_decoder,
     &ff_dpx_decoder,
     &ff_dsicinvideo_decoder,
@@ -195,7 +194,6 @@ static const FFCodec *codec_list[] = {
     &ff_smacker_decoder,
     &ff_smc_decoder,
     &ff_smvjpeg_decoder,
-    NULL, /*     NULL, /* &ff_snow_decoder,ff_snow_decoder */ff_snow_decoder */
     &ff_sp5x_decoder,
     &ff_speedhq_decoder,
     &ff_speex_decoder,
@@ -278,8 +276,6 @@ static const FFCodec *codec_list[] = {
     &ff_ahx_decoder,
     &ff_alac_decoder,
     &ff_als_decoder,
-    NULL, /*     NULL, /* &ff_amrnb_decoder,ff_amrnb_decoder */ff_amrnb_decoder */
-    NULL, /*     NULL, /* &ff_amrwb_decoder,ff_amrwb_decoder */ff_amrwb_decoder */
     &ff_apac_decoder,
     &ff_ape_decoder,
     &ff_aptx_decoder,
@@ -311,7 +307,6 @@ static const FFCodec *codec_list[] = {
     &ff_ffwavesynth_decoder,
     &ff_flac_decoder,
     &ff_ftr_decoder,
-    NULL, /*     NULL, /* &ff_g723_1_decoder,ff_g723_1_decoder */ff_g723_1_decoder */
     &ff_g728_decoder,
     &ff_g729_decoder,
     &ff_gsm_decoder,
@@ -508,11 +503,8 @@ static const FFCodec *codec_list[] = {
     &ff_xbin_decoder,
     &ff_idf_decoder,
     &ff_av1_decoder,
-    NULL, /*     NULL, /* &ff_h264_oh_decoder,ff_h264_oh_decoder */ff_h264_oh_decoder */
-    NULL, /*     NULL, /* &ff_hevc_oh_decoder,ff_hevc_oh_decoder */ff_hevc_oh_decoder */
     &ff_vnull_decoder,
     &ff_anull_decoder,
     &ff_png_encoder,
     &ff_mpeg1video_encoder,
-    NULL, /*     NULL, /* &ff_snow_encoder,ff_snow_encoder */ff_snow_encoder */
     NULL };
