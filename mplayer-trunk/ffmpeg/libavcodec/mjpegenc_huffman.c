@@ -26,24 +26,6 @@
 #include "mjpegenc_huffman.h"
 
 /**
- * Used to assign a occurrence count or "probability" to an input value
- */
-typedef struct PTable {
-    int value;  ///< input value
-    int prob;   ///< number of occurrences of this value in input
-} PTable;
-
-/**
- * Used to store intermediate lists in the package merge algorithm
- */
-typedef struct PackageMergerList {
-    int nitems;             ///< number of items in the list and probability      ex. 4
-    int item_idx[515];      ///< index range for each item in items                   0, 2, 5, 9, 13
-    int probability[514];   ///< probability of each item                             3, 8, 18, 46
-    int items[257 * 16];    ///< chain of all individual values that make up items    A, B, A, B, C, A, B, C, D, C, D, D, E
-} PackageMergerList;
-
-/**
  * Comparison function for two PTables by prob
  *
  * @param a First PTable to compare
@@ -55,6 +37,20 @@ static int compare_by_prob(const void *a, const void *b)
     PTable a_val = *(PTable *) a;
     PTable b_val = *(PTable *) b;
     return a_val.prob - b_val.prob;
+}
+
+/**
+ * Comparison function for two HuffTables by length
+ *
+ * @param a First HuffTable to compare
+ * @param b Second HuffTable to compare
+ * @return < 0 for less than, 0 for equals, > 0 for greater than
+ */
+static int compare_by_length(const void *a, const void *b)
+{
+    HuffTable a_val = *(HuffTable *) a;
+    HuffTable b_val = *(HuffTable *) b;
+    return a_val.length - b_val.length;
 }
 
 /**
@@ -70,17 +66,15 @@ static int compare_by_prob(const void *a, const void *b)
  * 8. the length of the huffman code for symbol s will be equal to the number of times the symbol occurs in the select elements
  * Go to guru.multimedia.cx/small-tasks-for-ffmpeg/ for more details
  *
- * All probabilities should be nonnegative integers.
+ * All probabilities should be positive integers. The output is sorted by code,
+ * not by length.
  *
- * @param prob_table[in,out] array of a PTable for each distinct input value,
- *                           will be sorted according to ascending probability
- * @param counts[out]        the number of values of a given length
- * @param size               number of elements of the prob_table array
- * @param max_length         max length of a code
+ * @param prob_table input array of a PTable for each distinct input value
+ * @param distincts  output array of a HuffTable that will be populated by this function
+ * @param size       size of the prob_table array
+ * @param max_length max length of an encoding
  */
-static void mjpegenc_huffman_compute_bits(PTable *prob_table,
-                                          uint8_t counts[/* max_length + 1 */],
-                                          int size, int max_length)
+void ff_mjpegenc_huffman_compute_bits(PTable *prob_table, HuffTable *distincts, int size, int max_length)
 {
     PackageMergerList list_a, list_b, *to = &list_a, *from = &list_b, *temp;
 
@@ -138,9 +132,14 @@ static void mjpegenc_huffman_compute_bits(PTable *prob_table,
     }
     // we don't want to return the 256 bit count (it was just in here to prevent
     // all 1s encoding)
-    memset(counts, 0, sizeof(counts[0]) * (max_length + 1));
-    for (int i = 0; i < 256; ++i)
-        counts[nbits[i]]++;
+    j = 0;
+    for (i = 0; i < 256; i++) {
+        if (nbits[i] > 0) {
+            distincts[j].code = i;
+            distincts[j].length = nbits[i];
+            j++;
+        }
+    }
 }
 
 void ff_mjpeg_encode_huffman_init(MJpegEncHuffmanContext *s)
@@ -159,28 +158,32 @@ void ff_mjpeg_encode_huffman_init(MJpegEncHuffmanContext *s)
 void ff_mjpeg_encode_huffman_close(MJpegEncHuffmanContext *s, uint8_t bits[17],
                                    uint8_t val[], int max_nval)
 {
-    PTable val_counts[257];
-
-    av_assert1(max_nval <= FF_ARRAY_ELEMS(val_counts) - 1);
-
+    int i, j;
     int nval = 0;
-    for (int i = 0; i < 256; i++) {
+    PTable val_counts[257];
+    HuffTable distincts[256];
+
+    for (i = 0; i < 256; i++) {
+        if (s->val_count[i]) nval++;
+    }
+    av_assert0 (nval <= max_nval);
+
+    j = 0;
+    for (i = 0; i < 256; i++) {
         if (s->val_count[i]) {
-            val_counts[nval].value = i;
-            val_counts[nval].prob  = s->val_count[i];
-            nval++;
-            av_assert2(nval <= max_nval);
+            val_counts[j].value = i;
+            val_counts[j].prob = s->val_count[i];
+            j++;
         }
     }
-    val_counts[nval].value = 256;
-    val_counts[nval].prob  = 0;
+    val_counts[j].value = 256;
+    val_counts[j].prob = 0;
+    ff_mjpegenc_huffman_compute_bits(val_counts, distincts, nval + 1, 16);
+    AV_QSORT(distincts, nval, HuffTable, compare_by_length);
 
-    mjpegenc_huffman_compute_bits(val_counts, bits, nval + 1, 16);
-
-    // val_counts[0] is the fake element we added earlier.
-    av_assert1(val_counts[0].prob == 0 && val_counts[0].value == 256);
-    // The following loop puts the values with higher occurrence first,
-    // ensuring that they get the shorter codes.
-    for (int i = 0; i < nval; ++i)
-        val[i] = val_counts[nval - i].value;
+    memset(bits, 0, sizeof(bits[0]) * 17);
+    for (i = 0; i < nval; i++) {
+        val[i] = distincts[i].code;
+        bits[distincts[i].length]++;
+    }
 }

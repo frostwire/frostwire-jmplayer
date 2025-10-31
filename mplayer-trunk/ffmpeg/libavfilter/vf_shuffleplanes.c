@@ -41,12 +41,10 @@ typedef struct ShufflePlanesContext {
     int copy;
 } ShufflePlanesContext;
 
-static int query_formats(const AVFilterContext *ctx,
-                         AVFilterFormatsConfig **cfg_in,
-                         AVFilterFormatsConfig **cfg_out)
+static int query_formats(AVFilterContext *ctx)
 {
     AVFilterFormats *formats = NULL;
-    const ShufflePlanesContext *s = ctx->priv;
+    ShufflePlanesContext *s = ctx->priv;
     int fmt, ret, i;
 
     for (fmt = 0; av_pix_fmt_desc_get(fmt); fmt++) {
@@ -72,7 +70,7 @@ static int query_formats(const AVFilterContext *ctx,
         }
     }
 
-    return ff_set_common_formats2(ctx, cfg_in, cfg_out, formats);
+    return ff_set_common_formats(ctx, formats);
 }
 
 static av_cold int shuffleplanes_config_input(AVFilterLink *inlink)
@@ -156,13 +154,13 @@ static const AVFilterPad shuffleplanes_inputs[] = {
     },
 };
 
-const FFFilter ff_vf_shuffleplanes = {
-    .p.name        = "shuffleplanes",
-    .p.description = NULL_IF_CONFIG_SMALL("Shuffle video planes."),
-    .p.priv_class  = &shuffleplanes_class,
-    .p.flags       = AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC,
+const AVFilter ff_vf_shuffleplanes = {
+    .name         = "shuffleplanes",
+    .description  = NULL_IF_CONFIG_SMALL("Shuffle video planes."),
     .priv_size    = sizeof(ShufflePlanesContext),
+    .priv_class   = &shuffleplanes_class,
     FILTER_INPUTS(shuffleplanes_inputs),
     FILTER_OUTPUTS(ff_video_default_filterpad),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
+    .flags        = AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC,
 };

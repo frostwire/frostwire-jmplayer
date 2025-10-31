@@ -27,7 +27,6 @@
 
 #define BITSTREAM_READER_LE
 
-#include "libavutil/attributes_internal.h"
 #include "libavutil/intfloat.h"
 #include "libavutil/display.h"
 #include "avcodec.h"
@@ -52,6 +51,7 @@ typedef struct CRIContext {
 static av_cold int cri_decode_init(AVCodecContext *avctx)
 {
     CRIContext *s = avctx->priv_data;
+    const AVCodec *codec;
     int ret;
 
     s->jpgframe = av_frame_alloc();
@@ -62,14 +62,16 @@ static av_cold int cri_decode_init(AVCodecContext *avctx)
     if (!s->jpkt)
         return AVERROR(ENOMEM);
 
-    EXTERN const FFCodec ff_mjpeg_decoder;
-    s->jpeg_avctx = avcodec_alloc_context3(&ff_mjpeg_decoder.p);
+    codec = avcodec_find_decoder(AV_CODEC_ID_MJPEG);
+    if (!codec)
+        return AVERROR_BUG;
+    s->jpeg_avctx = avcodec_alloc_context3(codec);
     if (!s->jpeg_avctx)
         return AVERROR(ENOMEM);
     s->jpeg_avctx->flags = avctx->flags;
     s->jpeg_avctx->flags2 = avctx->flags2;
     s->jpeg_avctx->idct_algo = avctx->idct_algo;
-    ret = avcodec_open2(s->jpeg_avctx, NULL, NULL);
+    ret = avcodec_open2(s->jpeg_avctx, codec, NULL);
     if (ret < 0)
         return ret;
 

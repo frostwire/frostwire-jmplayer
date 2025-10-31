@@ -93,18 +93,14 @@ static const AVOption spectrumsynth_options[] = {
 
 AVFILTER_DEFINE_CLASS(spectrumsynth);
 
-enum {
-    MAGNITUDE = 0,
-    PHASE     = 1,
-};
-
-static int query_formats(const AVFilterContext *ctx,
-                         AVFilterFormatsConfig **cfg_in,
-                         AVFilterFormatsConfig **cfg_out)
+static int query_formats(AVFilterContext *ctx)
 {
-    const SpectrumSynthContext *s = ctx->priv;
+    SpectrumSynthContext *s = ctx->priv;
     AVFilterFormats *formats = NULL;
     AVFilterChannelLayouts *layout = NULL;
+    AVFilterLink *magnitude = ctx->inputs[0];
+    AVFilterLink *phase = ctx->inputs[1];
+    AVFilterLink *outlink = ctx->outputs[0];
     static const enum AVSampleFormat sample_fmts[] = { AV_SAMPLE_FMT_FLTP, AV_SAMPLE_FMT_NONE };
     static const enum AVPixelFormat pix_fmts[] = { AV_PIX_FMT_GRAY8, AV_PIX_FMT_GRAY16,
                                                    AV_PIX_FMT_YUV444P, AV_PIX_FMT_YUVJ444P,
@@ -112,28 +108,28 @@ static int query_formats(const AVFilterContext *ctx,
     int ret, sample_rates[] = { 48000, -1 };
 
     formats = ff_make_format_list(sample_fmts);
-    if ((ret = ff_formats_ref         (formats, &cfg_out[0]->formats         )) < 0 ||
+    if ((ret = ff_formats_ref         (formats, &outlink->incfg.formats        )) < 0 ||
         (ret = ff_add_channel_layout  (&layout, &FF_COUNT2LAYOUT(s->channels))) < 0 ||
-        (ret = ff_channel_layouts_ref (layout , &cfg_out[0]->channel_layouts)) < 0)
+        (ret = ff_channel_layouts_ref (layout , &outlink->incfg.channel_layouts)) < 0)
         return ret;
 
     sample_rates[0] = s->sample_rate;
     formats = ff_make_format_list(sample_rates);
     if (!formats)
         return AVERROR(ENOMEM);
-    if ((ret = ff_formats_ref(formats, &cfg_out[0]->samplerates)) < 0)
+    if ((ret = ff_formats_ref(formats, &outlink->incfg.samplerates)) < 0)
         return ret;
 
     formats = ff_make_format_list(pix_fmts);
     if (!formats)
         return AVERROR(ENOMEM);
-    if ((ret = ff_formats_ref(formats, &cfg_in[MAGNITUDE]->formats)) < 0)
+    if ((ret = ff_formats_ref(formats, &magnitude->outcfg.formats)) < 0)
         return ret;
 
     formats = ff_make_format_list(pix_fmts);
     if (!formats)
         return AVERROR(ENOMEM);
-    if ((ret = ff_formats_ref(formats, &cfg_in[PHASE]->formats)) < 0)
+    if ((ret = ff_formats_ref(formats, &phase->outcfg.formats)) < 0)
         return ret;
 
     return 0;
@@ -539,14 +535,14 @@ static const AVFilterPad spectrumsynth_outputs[] = {
     },
 };
 
-const FFFilter ff_vaf_spectrumsynth = {
-    .p.name        = "spectrumsynth",
-    .p.description = NULL_IF_CONFIG_SMALL("Convert input spectrum videos to audio output."),
-    .p.priv_class  = &spectrumsynth_class,
+const AVFilter ff_vaf_spectrumsynth = {
+    .name          = "spectrumsynth",
+    .description   = NULL_IF_CONFIG_SMALL("Convert input spectrum videos to audio output."),
     .uninit        = uninit,
     .activate      = activate,
     .priv_size     = sizeof(SpectrumSynthContext),
     FILTER_INPUTS(spectrumsynth_inputs),
     FILTER_OUTPUTS(spectrumsynth_outputs),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
+    .priv_class    = &spectrumsynth_class,
 };

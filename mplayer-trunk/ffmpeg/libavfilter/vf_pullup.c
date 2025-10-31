@@ -19,6 +19,7 @@
  */
 
 #include "libavutil/avassert.h"
+#include "libavutil/emms.h"
 #include "libavutil/imgutils.h"
 #include "libavutil/mem.h"
 #include "libavutil/opt.h"
@@ -596,6 +597,7 @@ static void pullup_submit_field(PullupContext *s, PullupBuffer *b, int parity)
     compute_metric(s, f->diffs, f, parity, f->prev->prev, parity, s->diff);
     compute_metric(s, f->combs, parity ? f->prev : f, 0, parity ? f : f->prev, 1, s->comb);
     compute_metric(s, f->vars, f, parity, f, -1, s->var);
+    emms_c();
 
     /* Advance the circular list */
     if (!s->first)
@@ -748,11 +750,11 @@ static const AVFilterPad pullup_inputs[] = {
     },
 };
 
-const FFFilter ff_vf_pullup = {
-    .p.name        = "pullup",
-    .p.description = NULL_IF_CONFIG_SMALL("Pullup from field sequence to frames."),
-    .p.priv_class  = &pullup_class,
+const AVFilter ff_vf_pullup = {
+    .name          = "pullup",
+    .description   = NULL_IF_CONFIG_SMALL("Pullup from field sequence to frames."),
     .priv_size     = sizeof(PullupContext),
+    .priv_class    = &pullup_class,
     .uninit        = uninit,
     FILTER_INPUTS(pullup_inputs),
     FILTER_OUTPUTS(ff_video_default_filterpad),

@@ -445,7 +445,7 @@ static void put_no_rnd_pixels_l2(uint8_t *dst, const uint8_t *src1,
     }
 }
 
-av_cold void ff_vp3dsp_init(VP3DSPContext *c)
+av_cold void ff_vp3dsp_init(VP3DSPContext *c, int flags)
 {
     c->put_no_rnd_pixels_l2 = put_no_rnd_pixels_l2;
 
@@ -456,13 +456,13 @@ av_cold void ff_vp3dsp_init(VP3DSPContext *c)
     c->h_loop_filter = c->h_loop_filter_unaligned = vp3_h_loop_filter_8_c;
 
 #if ARCH_ARM
-    ff_vp3dsp_init_arm(c);
+    ff_vp3dsp_init_arm(c, flags);
 #elif ARCH_PPC
-    ff_vp3dsp_init_ppc(c);
+    ff_vp3dsp_init_ppc(c, flags);
 #elif ARCH_X86
-    ff_vp3dsp_init_x86(c);
+    ff_vp3dsp_init_x86(c, flags);
 #elif ARCH_MIPS
-    ff_vp3dsp_init_mips(c);
+    ff_vp3dsp_init_mips(c, flags);
 #endif
 }
 
@@ -494,10 +494,5 @@ void ff_vp3dsp_set_bounding_values(int * bounding_values_array, int filter_limit
     }
     if (value)
         bounding_values[128] = value;
-#if ARCH_X86
-    bounding_values[129] = bounding_values[130] =
-    bounding_values[131] = bounding_values[132] = filter_limit * 0x00020002U;
-#else
     bounding_values[129] = bounding_values[130] = filter_limit * 0x02020202U;
-#endif
 }

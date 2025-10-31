@@ -552,7 +552,7 @@ static int parse_dB(AVExpr **e, Parser *p, int *sign)
        for example, -3dB is not the same as -(3dB) */
     if (*p->s == '-') {
         char *next;
-        av_unused double ignored = strtod(p->s, &next);
+        double av_unused ignored = strtod(p->s, &next);
         if (next != p->s && next[0] == 'd' && next[1] == 'B') {
             *sign = 0;
             return parse_primary(e, p);
@@ -791,14 +791,12 @@ int av_expr_count_func(AVExpr *e, unsigned *counter, int size, int arg)
 
 double av_expr_eval(AVExpr *e, const double *const_values, void *opaque)
 {
-    Parser p = {
-        .class        = &eval_class,
-        .const_values = const_values,
-        .opaque       = opaque,
-        .var          = e->var,
-        .prng_state   = e->prng_state,
-    };
+    Parser p = { 0 };
+    p.var= e->var;
+    p.prng_state= e->prng_state;
 
+    p.const_values = const_values;
+    p.opaque     = opaque;
     return eval_expr(&p, e);
 }
 

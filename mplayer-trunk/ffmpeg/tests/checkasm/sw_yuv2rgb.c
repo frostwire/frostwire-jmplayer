@@ -107,9 +107,9 @@ static void check_yuv2rgb(int src_pix_fmt)
     static const int input_sizes[] = {8, 128, 1080, MAX_LINE_SIZE};
 
     declare_func_emms(AV_CPU_FLAG_MMX | AV_CPU_FLAG_MMXEXT,
-                      int, SwsInternal *c, const uint8_t *const src[],
-                           const int srcStride[], int srcSliceY, int srcSliceH,
-                           uint8_t *const dst[], const int dstStride[]);
+                      int, SwsContext *c, const uint8_t *src[],
+                           int srcStride[], int srcSliceY, int srcSliceH,
+                           uint8_t *dst[], int dstStride[]);
 
     LOCAL_ALIGNED_8(uint8_t, src_y, [MAX_LINE_SIZE * 2]);
     LOCAL_ALIGNED_8(uint8_t, src_u, [MAX_LINE_SIZE]);
@@ -147,8 +147,7 @@ static void check_yuv2rgb(int src_pix_fmt)
         const AVPixFmtDescriptor *dst_desc = av_pix_fmt_desc_get(dst_pix_fmt);
         int sample_size = av_get_padded_bits_per_pixel(dst_desc) >> 3;
         for (int isi = 0; isi < FF_ARRAY_ELEMS(input_sizes); isi++) {
-            SwsContext *sws;
-            SwsInternal *c;
+            struct SwsContext *ctx;
             int log_level;
             int width = input_sizes[isi];
             int srcSliceY = 0;
@@ -169,15 +168,14 @@ static void check_yuv2rgb(int src_pix_fmt)
             // "No accelerated colorspace conversion found from %s to %s"
             log_level = av_log_get_level();
             av_log_set_level(AV_LOG_ERROR);
-            sws = sws_getContext(width, srcSliceH, src_pix_fmt,
+            ctx = sws_getContext(width, srcSliceH, src_pix_fmt,
                                  width, srcSliceH, dst_pix_fmt,
                                  0, NULL, NULL, NULL);
             av_log_set_level(log_level);
-            if (!sws)
+            if (!ctx)
                 fail();
 
-            c = sws_internal(sws);
-            if (check_func(c->convert_unscaled, "%s_%s_%d", src_desc->name, dst_desc->name, width)) {
+            if (check_func(ctx->convert_unscaled, "%s_%s_%d", src_desc->name, dst_desc->name, width)) {
                 memset(dst0_0, 0xFF, 2 * MAX_LINE_SIZE * 6);
                 memset(dst1_0, 0xFF, 2 * MAX_LINE_SIZE * 6);
                 if (dst_pix_fmt == AV_PIX_FMT_GBRP) {
@@ -187,9 +185,9 @@ static void check_yuv2rgb(int src_pix_fmt)
                     memset(dst1_2, 0xFF, MAX_LINE_SIZE);
                 }
 
-                call_ref(c, src, srcStride, srcSliceY,
+                call_ref(ctx, src, srcStride, srcSliceY,
                          srcSliceH, dst0, dstStride);
-                call_new(c, src, srcStride, srcSliceY,
+                call_new(ctx, src, srcStride, srcSliceY,
                          srcSliceH, dst1, dstStride);
 
                 if (dst_pix_fmt == AV_PIX_FMT_ARGB  ||
@@ -220,10 +218,10 @@ static void check_yuv2rgb(int src_pix_fmt)
                     fail();
                 }
 
-                bench_new(c, src, srcStride, srcSliceY,
+                bench_new(ctx, src, srcStride, srcSliceY,
                           srcSliceH, dst0, dstStride);
             }
-            sws_freeContext(sws);
+            sws_freeContext(ctx);
         }
     }
 }

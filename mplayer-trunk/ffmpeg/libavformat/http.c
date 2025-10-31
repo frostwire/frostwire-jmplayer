@@ -19,12 +19,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include <stdbool.h>
-
 #include "config.h"
 #include "config_components.h"
 
-#include <string.h>
 #include <time.h>
 #if CONFIG_ZLIB
 #include <zlib.h>
@@ -215,7 +212,7 @@ static int http_open_cnx_internal(URLContext *h, AVDictionary **options)
     const char *path, *proxy_path, *lower_proto = "tcp", *local_path;
     char *env_http_proxy, *env_no_proxy;
     char *hashmark;
-    char hostname[1024], hoststr[1024], proto[10], tmp_host[1024];
+    char hostname[1024], hoststr[1024], proto[10];
     char auth[1024], proxyauth[1024] = "";
     char path1[MAX_URL_SIZE], sanitized_path[MAX_URL_SIZE + 1];
     char buf[1024], urlbuf[MAX_URL_SIZE];
@@ -225,14 +222,7 @@ static int http_open_cnx_internal(URLContext *h, AVDictionary **options)
     av_url_split(proto, sizeof(proto), auth, sizeof(auth),
                  hostname, sizeof(hostname), &port,
                  path1, sizeof(path1), s->location);
-
-    av_strlcpy(tmp_host, hostname, sizeof(tmp_host));
-    // In case of an IPv6 address, we need to strip the Zone ID,
-    // if any. We do it at the first % sign, as percent encoding
-    // can be used in the Zone ID itself.
-    if (strchr(tmp_host, ':'))
-        tmp_host[strcspn(tmp_host, "%")] = '\0';
-    ff_url_join(hoststr, sizeof(hoststr), NULL, NULL, tmp_host, port, NULL);
+    ff_url_join(hoststr, sizeof(hoststr), NULL, NULL, hostname, port, NULL);
 
     env_http_proxy = getenv_utf8("http_proxy");
     proxy_path = s->http_proxy ? s->http_proxy : env_http_proxy;
@@ -506,13 +496,8 @@ int ff_http_do_new_request2(URLContext *h, const char *uri, AVDictionary **opts)
     av_url_split(proto2, sizeof(proto2), NULL, 0,
                  hostname2, sizeof(hostname2), &port2,
                  NULL, 0, uri);
-    if (strcmp(proto1, proto2) != 0) {
-        av_log(h, AV_LOG_INFO, "Cannot reuse HTTP connection for different protocol %s vs %s\n",
-               proto1, proto2);
-        return AVERROR(EINVAL);
-    }
     if (port1 != port2 || strncmp(hostname1, hostname2, sizeof(hostname2)) != 0) {
-        av_log(h, AV_LOG_INFO, "Cannot reuse HTTP connection for different host: %s:%d != %s:%d\n",
+        av_log(h, AV_LOG_ERROR, "Cannot reuse HTTP connection for different host: %s:%d != %s:%d\n",
             hostname1, port1,
             hostname2, port2
         );
@@ -568,12 +553,6 @@ int ff_http_averror(int status_code, int default_averror)
         return AVERROR_HTTP_SERVER_ERROR;
     else
         return default_averror;
-}
-
-const char* ff_http_get_new_location(URLContext *h)
-{
-    HTTPContext *s = h->priv_data;
-    return s->new_location;
 }
 
 static int http_write_reply(URLContext* h, int status_code)
@@ -1346,7 +1325,7 @@ static int get_cookies(HTTPContext *s, char **cookies, const char *path,
             }
         }
 
-        // if no domain in the cookie assume it applied to this request
+        // if no domain in the cookie assume it appied to this request
         if ((e = av_dict_get(cookie_params, "domain", NULL, 0)) && e->value) {
             // find the offset comparison is on the min domain (b.com, not a.b.com)
             int domain_offset = strlen(domain) - strlen(e->value);
@@ -1768,7 +1747,6 @@ static int http_read_stream(URLContext *h, uint8_t *buf, int size)
     read_ret = http_buf_read(h, buf, size);
     while (read_ret < 0) {
         uint64_t target = h->is_streamed ? 0 : s->off;
-        bool is_premature = s->filesize > 0 && s->off < s->filesize;
 
         if (read_ret == AVERROR_EXIT)
             break;
@@ -1776,13 +1754,9 @@ static int http_read_stream(URLContext *h, uint8_t *buf, int size)
         if (h->is_streamed && !s->reconnect_streamed)
             break;
 
-        if (!(s->reconnect && is_premature) &&
-            !(s->reconnect_at_eof && read_ret == AVERROR_EOF)) {
-            if (is_premature)
-                return AVERROR(EIO);
-            else
-                break;
-        }
+        if (!(s->reconnect && s->filesize > 0 && s->off < s->filesize) &&
+            !(s->reconnect_at_eof && read_ret == AVERROR_EOF))
+            break;
 
         if (reconnect_delay > s->reconnect_delay_max || (s->reconnect_max_retries >= 0 && conn_attempts > s->reconnect_max_retries) ||
             reconnect_delay_total > s->reconnect_delay_total_max)

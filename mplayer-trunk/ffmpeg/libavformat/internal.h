@@ -68,6 +68,12 @@ typedef struct FFFormatContext {
     AVFormatContext pub;
 
     /**
+     * Number of streams relevant for interleaving.
+     * Muxing only.
+     */
+    int nb_interleaved_streams;
+
+    /**
      * Whether the timestamp shift offset has already been determined.
      * -1: disabled, 0: not yet determined, 1: determined.
      */
@@ -79,6 +85,12 @@ typedef struct FFFormatContext {
 #define AVOID_NEGATIVE_TS_ENABLED(status) ((status) >= 0)
 
     /**
+     * The interleavement function in use. Always set for muxers.
+     */
+    int (*interleave_packet)(struct AVFormatContext *s, AVPacket *pkt,
+                             int flush, int has_packet);
+
+    /**
      * This buffer is only needed when packets were already buffered but
      * not decoded, for example to get the codec parameters in MPEG
      * streams.
@@ -88,6 +100,17 @@ typedef struct FFFormatContext {
     /* av_seek_frame() support */
     int64_t data_offset; /**< offset of the first packet */
 
+    /**
+     * Raw packets from the demuxer, prior to parsing and decoding.
+     * This buffer is used for buffering packets until the codec can
+     * be identified, as parsing cannot be done without knowing the
+     * codec.
+     */
+    PacketList raw_packet_buffer;
+    /**
+     * Packets split by the parser get queued here.
+     */
+    PacketList parse_queue;
     /**
      * The generic code uses this as a temporary packet
      * to parse packets or for muxing, especially flushing.
@@ -109,15 +132,57 @@ typedef struct FFFormatContext {
      * permanent ones).
      */
     AVPacket *pkt;
+    /**
+     * Sum of the size of packets in raw_packet_buffer, in bytes.
+     */
+    int raw_packet_buffer_size;
+
+#if FF_API_COMPUTE_PKT_FIELDS2
+    int missing_ts_warning;
+#endif
+
+#if FF_API_AVSTREAM_SIDE_DATA
+    int inject_global_side_data;
+#endif
 
     int avoid_negative_ts_use_pts;
+
+#if FF_API_LAVF_SHORTEST
+    /**
+     * Timestamp of the end of the shortest stream.
+     */
+    int64_t shortest_end;
+#endif
+
+    /**
+     * Whether or not avformat_init_output has already been called
+     */
+    int initialized;
+
+    /**
+     * Whether or not avformat_init_output fully initialized streams
+     */
+    int streams_initialized;
 
     /**
      * ID3v2 tag useful for MP3 demuxing
      */
     AVDictionary *id3v2_meta;
 
-    int missing_streams;
+    /*
+     * Prefer the codec framerate for avg_frame_rate computation.
+     */
+    int prefer_codec_framerate;
+
+    /**
+     * Set if chapter ids are strictly monotonic.
+     */
+    int chapter_ids_monotonic;
+
+    /**
+     * Contexts and child contexts do not contain a metadata option
+     */
+    int metafree;
 } FFFormatContext;
 
 static av_always_inline FFFormatContext *ffformatcontext(AVFormatContext *s)
@@ -288,6 +353,13 @@ typedef struct FFStream {
     uint8_t dts_ordered;
     uint8_t dts_misordered;
 
+#if FF_API_AVSTREAM_SIDE_DATA
+    /**
+     * Internal data to inject global side data
+     */
+    int inject_global_side_data;
+#endif
+
     /**
      * display aspect ratio (0 if unknown)
      * - encoding: unused
@@ -354,7 +426,27 @@ static av_always_inline const FFStream *cffstream(const AVStream *st)
     return (const FFStream*)st;
 }
 
-#if defined (__GNUC__) || defined (__clang__)
+typedef struct FFStreamGroup {
+    /**
+     * The public context.
+     */
+    AVStreamGroup pub;
+
+    AVFormatContext *fmtctx;
+} FFStreamGroup;
+
+
+static av_always_inline FFStreamGroup *ffstreamgroup(AVStreamGroup *stg)
+{
+    return (FFStreamGroup*)stg;
+}
+
+static av_always_inline const FFStreamGroup *cffstreamgroup(const AVStreamGroup *stg)
+{
+    return (const FFStreamGroup*)stg;
+}
+
+#ifdef __GNUC__
 #define dynarray_add(tab, nb_ptr, elem)\
 do {\
     __typeof__(tab) _tab = (tab);\
@@ -368,6 +460,9 @@ do {\
     av_dynarray_add((tab), nb_ptr, (elem));\
 } while(0)
 #endif
+
+
+void ff_flush_packet_queue(AVFormatContext *s);
 
 /**
  * Automatically create sub-directories
@@ -496,6 +591,9 @@ void ff_parse_key_value(const char *str, ff_parse_key_val_cb callback_get_buf,
 
 enum AVCodecID ff_guess_image2_codec(const char *filename);
 
+const struct AVCodec *ff_find_decoder(AVFormatContext *s, const AVStream *st,
+                                      enum AVCodecID codec_id);
+
 /**
  * Set the time base and wrapping info for a given stream. This will be used
  * to interpret the stream's timestamps. If the new time base is invalid
@@ -518,11 +616,23 @@ void avpriv_set_pts_info(AVStream *st, int pts_wrap_bits,
 int ff_framehash_write_header(AVFormatContext *s);
 
 /**
+ * Frees a stream without modifying the corresponding AVFormatContext.
+ * Must only be called if the latter doesn't matter or if the stream
+ * is not yet attached to an AVFormatContext.
+ */
+void ff_free_stream(AVStream **st);
+/**
  * Remove a stream from its AVFormatContext and free it.
  * The stream must be the last stream of the AVFormatContext.
  */
 void ff_remove_stream(AVFormatContext *s, AVStream *st);
 
+/**
+ * Frees a stream group without modifying the corresponding AVFormatContext.
+ * Must only be called if the latter doesn't matter or if the stream
+ * is not yet attached to an AVFormatContext.
+ */
+void ff_free_stream_group(AVStreamGroup **pstg);
 /**
  * Remove a stream group from its AVFormatContext and free it.
  * The stream group must be the last stream group of the AVFormatContext.
@@ -532,6 +642,8 @@ void ff_remove_stream_group(AVFormatContext *s, AVStreamGroup *stg);
 unsigned int ff_codec_get_tag(const AVCodecTag *tags, enum AVCodecID id);
 
 enum AVCodecID ff_codec_get_id(const AVCodecTag *tags, unsigned int tag);
+
+int ff_is_intra_only(enum AVCodecID id);
 
 /**
  * Select a PCM codec based on the given parameters.
@@ -547,6 +659,15 @@ enum AVCodecID ff_codec_get_id(const AVCodecTag *tags, unsigned int tag);
  * @return        a PCM codec id or AV_CODEC_ID_NONE
  */
 enum AVCodecID ff_get_pcm_codec_id(int bps, int flt, int be, int sflags);
+
+/**
+ * Copy side data from source to destination stream
+ *
+ * @param dst pointer to destination AVStream
+ * @param src pointer to source AVStream
+ * @return >=0 on success, AVERROR code on error
+ */
+int ff_stream_side_data_copy(AVStream *dst, const AVStream *src);
 
 /**
  * Create a new stream and copy to it all parameters from a source stream, with
@@ -631,34 +752,18 @@ int ff_match_url_ext(const char *url, const char *extensions);
  * of digits and '%%'.
  *
  * @param buf destination buffer
+ * @param buf_size destination buffer size
  * @param path path with substitution template
  * @param number the number to substitute
  * @param flags AV_FRAME_FILENAME_FLAGS_*
- * @return 0 if OK, <0 on error.
+ * @return 0 if OK, -1 on format error
  */
-int ff_bprint_get_frame_filename(struct AVBPrint *buf, const char *path, int64_t number, int flags);
+int ff_get_frame_filename(char *buf, int buf_size, const char *path,
+                          int64_t number, int flags);
 
-/**
- * Set a dictionary value to an ISO-8601 compliant timestamp string.
- *
- * @param dict pointer to a pointer to a dictionary struct. If *dict is NULL
- *             a dictionary struct is allocated and put in *dict.
- * @param key metadata key
- * @param timestamp unix timestamp in microseconds
- * @return <0 on error
- */
-int ff_dict_set_timestamp(AVDictionary **dict, const char *key, int64_t timestamp);
-
-/**
- * Set a list of query string options on an object. Only the objects own
- * options will be set.
- *
- * @param obj the object to set options on
- * @param str the query string
- * @param allow_unknown ignore unknown query string options. This can be OK if
- *                      nested protocols are used.
- * @return <0 on error
- */
-int ff_parse_opts_from_query_string(void *obj, const char *str, int allow_unkown);
+struct FFOutputFormat;
+struct FFInputFormat;
+void avpriv_register_devices(const struct FFOutputFormat * const o[],
+                             const struct FFInputFormat * const i[]);
 
 #endif /* AVFORMAT_INTERNAL_H */

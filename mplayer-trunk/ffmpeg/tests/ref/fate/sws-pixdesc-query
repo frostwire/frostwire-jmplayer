@@ -7,16 +7,10 @@ is16BPS:
   bgra64le
   gbrap16be
   gbrap16le
-  gbrapf16be
-  gbrapf16le
   gbrp16be
   gbrp16le
-  gbrpf16be
-  gbrpf16le
   gray16be
   gray16le
-  grayf16be
-  grayf16le
   p016be
   p016le
   p216be
@@ -29,16 +23,8 @@ is16BPS:
   rgba64le
   rgbaf16be
   rgbaf16le
-  rgbf16be
-  rgbf16le
-  xv48be
-  xv48le
-  y216be
-  y216le
   ya16be
   ya16le
-  yaf16be
-  yaf16le
   yuv420p16be
   yuv420p16le
   yuv422p16be
@@ -61,24 +47,16 @@ isNBPS:
   gbrap14le
   gbrp10be
   gbrp10le
-  gbrp10msbbe
-  gbrp10msble
   gbrp12be
   gbrp12le
-  gbrp12msbbe
-  gbrp12msble
   gbrp14be
   gbrp14le
   gbrp9be
   gbrp9le
   gray10be
   gray10le
-  gray10msbbe
-  gray10msble
   gray12be
   gray12le
-  gray12msbbe
-  gray12msble
   gray14be
   gray14le
   gray9be
@@ -97,8 +75,6 @@ isNBPS:
   p410le
   p412be
   p412le
-  v30xbe
-  v30xle
   x2bgr10be
   x2bgr10le
   x2rgb10be
@@ -115,24 +91,16 @@ isNBPS:
   y212le
   yuv420p10be
   yuv420p10le
-  yuv420p10msbbe
-  yuv420p10msble
   yuv420p12be
   yuv420p12le
-  yuv420p12msbbe
-  yuv420p12msble
   yuv420p14be
   yuv420p14le
   yuv420p9be
   yuv420p9le
   yuv422p10be
   yuv422p10le
-  yuv422p10msbbe
-  yuv422p10msble
   yuv422p12be
   yuv422p12le
-  yuv422p12msbbe
-  yuv422p12msble
   yuv422p14be
   yuv422p14le
   yuv422p9be
@@ -143,12 +111,8 @@ isNBPS:
   yuv440p12le
   yuv444p10be
   yuv444p10le
-  yuv444p10msbbe
-  yuv444p10msble
   yuv444p12be
   yuv444p12le
-  yuv444p12msbbe
-  yuv444p12msble
   yuv444p14be
   yuv444p14le
   yuv444p9be
@@ -185,27 +149,18 @@ isBE:
   gbrap12be
   gbrap14be
   gbrap16be
-  gbrap32be
-  gbrapf16be
   gbrapf32be
   gbrp10be
-  gbrp10msbbe
   gbrp12be
-  gbrp12msbbe
   gbrp14be
   gbrp16be
   gbrp9be
-  gbrpf16be
   gbrpf32be
   gray10be
-  gray10msbbe
   gray12be
-  gray12msbbe
   gray14be
   gray16be
-  gray32be
   gray9be
-  grayf16be
   grayf32be
   nv20be
   p010be
@@ -221,46 +176,32 @@ isBE:
   rgb48be
   rgb555be
   rgb565be
-  rgb96be
-  rgba128be
   rgba64be
   rgbaf16be
   rgbaf32be
-  rgbf16be
   rgbf32be
-  v30xbe
   x2bgr10be
   x2rgb10be
   xv30be
   xv36be
-  xv48be
   xyz12be
   y210be
   y212be
-  y216be
   ya16be
-  yaf16be
-  yaf32be
   yuv420p10be
-  yuv420p10msbbe
   yuv420p12be
-  yuv420p12msbbe
   yuv420p14be
   yuv420p16be
   yuv420p9be
   yuv422p10be
-  yuv422p10msbbe
   yuv422p12be
-  yuv422p12msbbe
   yuv422p14be
   yuv422p16be
   yuv422p9be
   yuv440p10be
   yuv440p12be
   yuv444p10be
-  yuv444p10msbbe
   yuv444p12be
-  yuv444p12msbbe
   yuv444p14be
   yuv444p16be
   yuv444p9be
@@ -277,7 +218,6 @@ isBE:
   yuva444p9be
 
 isYUV:
-  ayuv
   ayuv64be
   ayuv64le
   nv12
@@ -305,46 +245,30 @@ isYUV:
   p412le
   p416be
   p416le
-  uyva
   uyvy422
   uyyvyy411
-  v30xbe
-  v30xle
   vuya
   vuyx
-  vyu444
   xv30be
   xv30le
   xv36be
   xv36le
-  xv48be
-  xv48le
   xyz12be
   xyz12le
   y210be
   y210le
   y212be
   y212le
-  y216be
-  y216le
   ya16be
   ya16le
   ya8
-  yaf16be
-  yaf16le
-  yaf32be
-  yaf32le
   yuv410p
   yuv411p
   yuv420p
   yuv420p10be
   yuv420p10le
-  yuv420p10msbbe
-  yuv420p10msble
   yuv420p12be
   yuv420p12le
-  yuv420p12msbbe
-  yuv420p12msble
   yuv420p14be
   yuv420p14le
   yuv420p16be
@@ -354,12 +278,8 @@ isYUV:
   yuv422p
   yuv422p10be
   yuv422p10le
-  yuv422p10msbbe
-  yuv422p10msble
   yuv422p12be
   yuv422p12le
-  yuv422p12msbbe
-  yuv422p12msble
   yuv422p14be
   yuv422p14le
   yuv422p16be
@@ -374,12 +294,8 @@ isYUV:
   yuv444p
   yuv444p10be
   yuv444p10le
-  yuv444p10msbbe
-  yuv444p10msble
   yuv444p12be
   yuv444p12le
-  yuv444p12msbbe
-  yuv444p12msble
   yuv444p14be
   yuv444p14le
   yuv444p16be
@@ -450,12 +366,8 @@ isPlanarYUV:
   yuv420p
   yuv420p10be
   yuv420p10le
-  yuv420p10msbbe
-  yuv420p10msble
   yuv420p12be
   yuv420p12le
-  yuv420p12msbbe
-  yuv420p12msble
   yuv420p14be
   yuv420p14le
   yuv420p16be
@@ -465,12 +377,8 @@ isPlanarYUV:
   yuv422p
   yuv422p10be
   yuv422p10le
-  yuv422p10msbbe
-  yuv422p10msble
   yuv422p12be
   yuv422p12le
-  yuv422p12msbbe
-  yuv422p12msble
   yuv422p14be
   yuv422p14le
   yuv422p16be
@@ -485,12 +393,8 @@ isPlanarYUV:
   yuv444p
   yuv444p10be
   yuv444p10le
-  yuv444p10msbbe
-  yuv444p10msble
   yuv444p12be
   yuv444p12le
-  yuv444p12msbbe
-  yuv444p12msble
   yuv444p14be
   yuv444p14le
   yuv444p16be
@@ -596,29 +500,19 @@ isRGB:
   gbrap14le
   gbrap16be
   gbrap16le
-  gbrap32be
-  gbrap32le
-  gbrapf16be
-  gbrapf16le
   gbrapf32be
   gbrapf32le
   gbrp
   gbrp10be
   gbrp10le
-  gbrp10msbbe
-  gbrp10msble
   gbrp12be
   gbrp12le
-  gbrp12msbbe
-  gbrp12msble
   gbrp14be
   gbrp14le
   gbrp16be
   gbrp16le
   gbrp9be
   gbrp9le
-  gbrpf16be
-  gbrpf16le
   gbrpf32be
   gbrpf32le
   rgb0
@@ -636,18 +530,12 @@ isRGB:
   rgb565be
   rgb565le
   rgb8
-  rgb96be
-  rgb96le
-  rgba128be
-  rgba128le
   rgba64be
   rgba64le
   rgbaf16be
   rgbaf16le
   rgbaf32be
   rgbaf32le
-  rgbf16be
-  rgbf16le
   rgbf32be
   rgbf32le
   x2bgr10be
@@ -659,31 +547,19 @@ Gray:
   gray
   gray10be
   gray10le
-  gray10msbbe
-  gray10msble
   gray12be
   gray12le
-  gray12msbbe
-  gray12msble
   gray14be
   gray14le
   gray16be
   gray16le
-  gray32be
-  gray32le
   gray9be
   gray9le
-  grayf16be
-  grayf16le
   grayf32be
   grayf32le
   ya16be
   ya16le
   ya8
-  yaf16be
-  yaf16le
-  yaf32be
-  yaf32le
 
 RGBinInt:
   monob
@@ -780,29 +656,19 @@ AnyRGB:
   gbrap14le
   gbrap16be
   gbrap16le
-  gbrap32be
-  gbrap32le
-  gbrapf16be
-  gbrapf16le
   gbrapf32be
   gbrapf32le
   gbrp
   gbrp10be
   gbrp10le
-  gbrp10msbbe
-  gbrp10msble
   gbrp12be
   gbrp12le
-  gbrp12msbbe
-  gbrp12msble
   gbrp14be
   gbrp14le
   gbrp16be
   gbrp16le
   gbrp9be
   gbrp9le
-  gbrpf16be
-  gbrpf16le
   gbrpf32be
   gbrpf32le
   monob
@@ -822,18 +688,12 @@ AnyRGB:
   rgb565be
   rgb565le
   rgb8
-  rgb96be
-  rgb96le
-  rgba128be
-  rgba128le
   rgba64be
   rgba64le
   rgbaf16be
   rgbaf16le
   rgbaf32be
   rgbaf32le
-  rgbf16be
-  rgbf16le
   rgbf32be
   rgbf32le
   x2bgr10be
@@ -842,7 +702,6 @@ AnyRGB:
   x2rgb10le
 
 ALPHA:
-  ayuv
   ayuv64be
   ayuv64le
   bgr32
@@ -858,32 +717,21 @@ ALPHA:
   gbrap14le
   gbrap16be
   gbrap16le
-  gbrap32be
-  gbrap32le
-  gbrapf16be
-  gbrapf16le
   gbrapf32be
   gbrapf32le
   pal8
   rgb32
   rgb32_1
-  rgba128be
-  rgba128le
   rgba64be
   rgba64le
   rgbaf16be
   rgbaf16le
   rgbaf32be
   rgbaf32le
-  uyva
   vuya
   ya16be
   ya16le
   ya8
-  yaf16be
-  yaf16le
-  yaf32be
-  yaf32le
   yuva420p
   yuva420p10be
   yuva420p10le
@@ -913,7 +761,6 @@ ALPHA:
 Packed:
   0bgr
   0rgb
-  ayuv
   ayuv64be
   ayuv64le
   bayer_bggr16be
@@ -963,28 +810,18 @@ Packed:
   rgb565be
   rgb565le
   rgb8
-  rgb96be
-  rgb96le
-  rgba128be
-  rgba128le
   rgba64be
   rgba64le
   rgbaf16be
   rgbaf16le
   rgbaf32be
   rgbaf32le
-  rgbf16be
-  rgbf16le
   rgbf32be
   rgbf32le
-  uyva
   uyvy422
   uyyvyy411
-  v30xbe
-  v30xle
   vuya
   vuyx
-  vyu444
   x2bgr10be
   x2bgr10le
   x2rgb10be
@@ -993,23 +830,15 @@ Packed:
   xv30le
   xv36be
   xv36le
-  xv48be
-  xv48le
   xyz12be
   xyz12le
   y210be
   y210le
   y212be
   y212le
-  y216be
-  y216le
   ya16be
   ya16le
   ya8
-  yaf16be
-  yaf16le
-  yaf32be
-  yaf32le
   yuyv422
   yvyu422
 
@@ -1023,29 +852,19 @@ Planar:
   gbrap14le
   gbrap16be
   gbrap16le
-  gbrap32be
-  gbrap32le
-  gbrapf16be
-  gbrapf16le
   gbrapf32be
   gbrapf32le
   gbrp
   gbrp10be
   gbrp10le
-  gbrp10msbbe
-  gbrp10msble
   gbrp12be
   gbrp12le
-  gbrp12msbbe
-  gbrp12msble
   gbrp14be
   gbrp14le
   gbrp16be
   gbrp16le
   gbrp9be
   gbrp9le
-  gbrpf16be
-  gbrpf16le
   gbrpf32be
   gbrpf32le
   nv12
@@ -1078,12 +897,8 @@ Planar:
   yuv420p
   yuv420p10be
   yuv420p10le
-  yuv420p10msbbe
-  yuv420p10msble
   yuv420p12be
   yuv420p12le
-  yuv420p12msbbe
-  yuv420p12msble
   yuv420p14be
   yuv420p14le
   yuv420p16be
@@ -1093,12 +908,8 @@ Planar:
   yuv422p
   yuv422p10be
   yuv422p10le
-  yuv422p10msbbe
-  yuv422p10msble
   yuv422p12be
   yuv422p12le
-  yuv422p12msbbe
-  yuv422p12msble
   yuv422p14be
   yuv422p14le
   yuv422p16be
@@ -1113,12 +924,8 @@ Planar:
   yuv444p
   yuv444p10be
   yuv444p10le
-  yuv444p10msbbe
-  yuv444p10msble
   yuv444p12be
   yuv444p12le
-  yuv444p12msbbe
-  yuv444p12msble
   yuv444p14be
   yuv444p14le
   yuv444p16be
@@ -1203,18 +1010,12 @@ PackedRGB:
   rgb565be
   rgb565le
   rgb8
-  rgb96be
-  rgb96le
-  rgba128be
-  rgba128le
   rgba64be
   rgba64le
   rgbaf16be
   rgbaf16le
   rgbaf32be
   rgbaf32le
-  rgbf16be
-  rgbf16le
   rgbf32be
   rgbf32le
   x2bgr10be
@@ -1232,29 +1033,19 @@ PlanarRGB:
   gbrap14le
   gbrap16be
   gbrap16le
-  gbrap32be
-  gbrap32le
-  gbrapf16be
-  gbrapf16le
   gbrapf32be
   gbrapf32le
   gbrp
   gbrp10be
   gbrp10le
-  gbrp10msbbe
-  gbrp10msble
   gbrp12be
   gbrp12le
-  gbrp12msbbe
-  gbrp12msble
   gbrp14be
   gbrp14le
   gbrp16be
   gbrp16le
   gbrp9be
   gbrp9le
-  gbrpf16be
-  gbrpf16le
   gbrpf32be
   gbrpf32le
 
@@ -1267,14 +1058,6 @@ usePal:
   rgb8
 
 DataInHighBits:
-  gbrp10msbbe
-  gbrp10msble
-  gbrp12msbbe
-  gbrp12msble
-  gray10msbbe
-  gray10msble
-  gray12msbbe
-  gray12msble
   p010be
   p010le
   p012be
@@ -1295,24 +1078,11 @@ DataInHighBits:
   y210le
   y212be
   y212le
-  yuv420p10msbbe
-  yuv420p10msble
-  yuv420p12msbbe
-  yuv420p12msble
-  yuv422p10msbbe
-  yuv422p10msble
-  yuv422p12msbbe
-  yuv422p12msble
-  yuv444p10msbbe
-  yuv444p10msble
-  yuv444p12msbbe
-  yuv444p12msble
 
 SwappedChroma:
   nv21
   nv42
   vuya
   vuyx
-  vyu444
   yvyu422
 

@@ -23,7 +23,6 @@
 
 #include <inttypes.h>
 
-#include "libavutil/attributes.h"
 #include "libavutil/avassert.h"
 #include "libavutil/mem.h"
 #include "libavutil/thread.h"
@@ -1316,7 +1315,7 @@ static int mobiclip_decode(AVCodecContext *avctx, AVFrame *rframe,
     return 0;
 }
 
-static av_cold void mobiclip_flush(AVCodecContext *avctx)
+static void mobiclip_flush(AVCodecContext *avctx)
 {
     MobiClipContext *s = avctx->priv_data;
 

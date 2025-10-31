@@ -38,7 +38,6 @@
 #include "libavutil/pixdesc.h"
 #include "libavutil/spherical.h"
 #include "libavutil/stereo3d.h"
-#include "libavutil/tdrdi.h"
 #include "libavutil/timestamp.h"
 #include "libavutil/timecode.h"
 #include "libavutil/mastering_display_metadata.h"
@@ -151,14 +150,6 @@ static void dump_roi(AVFilterContext *ctx, const AVFrameSideData *sd)
         av_log(ctx, AV_LOG_INFO, "index: %d, region: (%d, %d) -> (%d, %d), qp offset: %d/%d.\n",
                i, roi->left, roi->top, roi->right, roi->bottom, roi->qoffset.num, roi->qoffset.den);
     }
-}
-
-static void dump_tdrdi(AVFilterContext *ctx, const AVFrameSideData *sd)
-{
-    const AV3DReferenceDisplaysInfo *tdrdi = (const AV3DReferenceDisplaysInfo *)sd->data;
-
-
-    av_log(ctx, AV_LOG_INFO, "number of reference displays: %u", tdrdi->num_ref_displays);
 }
 
 static void dump_detection_bbox(AVFilterContext *ctx, const AVFrameSideData *sd)
@@ -869,9 +860,6 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
         case AV_FRAME_DATA_VIEW_ID:
             av_log(ctx, AV_LOG_INFO, "view id: %d\n", *(int*)sd->data);
             break;
-        case AV_FRAME_DATA_3D_REFERENCE_DISPLAYS:
-            dump_tdrdi(ctx, sd);
-            break;
         default:
             if (name)
                 av_log(ctx, AV_LOG_INFO,
@@ -886,14 +874,6 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
     }
 
     dump_color_property(ctx, frame);
-
-    if (desc->flags & AV_PIX_FMT_FLAG_ALPHA) {
-        const char *alpha_mode_str = av_alpha_mode_name(frame->alpha_mode);
-        if (!alpha_mode_str || frame->alpha_mode == AVALPHA_MODE_UNSPECIFIED)
-            av_log(ctx, AV_LOG_INFO, "alpha_mode:unspecified\n");
-        else
-            av_log(ctx, AV_LOG_INFO, "alpha_mode:%s\n", alpha_mode_str);
-    }
 
     return ff_filter_frame(inlink->dst->outputs[0], frame);
 }
@@ -939,12 +919,12 @@ static const AVFilterPad avfilter_vf_showinfo_outputs[] = {
     },
 };
 
-const FFFilter ff_vf_showinfo = {
-    .p.name        = "showinfo",
-    .p.description = NULL_IF_CONFIG_SMALL("Show textual information for each video frame."),
-    .p.priv_class  = &showinfo_class,
-    .p.flags       = AVFILTER_FLAG_METADATA_ONLY,
+const AVFilter ff_vf_showinfo = {
+    .name        = "showinfo",
+    .description = NULL_IF_CONFIG_SMALL("Show textual information for each video frame."),
     FILTER_INPUTS(avfilter_vf_showinfo_inputs),
     FILTER_OUTPUTS(avfilter_vf_showinfo_outputs),
     .priv_size   = sizeof(ShowInfoContext),
+    .priv_class  = &showinfo_class,
+    .flags       = AVFILTER_FLAG_METADATA_ONLY,
 };

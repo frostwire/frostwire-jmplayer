@@ -72,8 +72,6 @@ static void error(const char *err)
 }
 
 static const FFCodec *c = NULL;
-
-#ifndef FFMPEG_DECODER
 static const FFCodec *AVCodecInitialize(enum AVCodecID codec_id)
 {
     const AVCodec *res;
@@ -83,14 +81,12 @@ static const FFCodec *AVCodecInitialize(enum AVCodecID codec_id)
         error("Failed to find decoder");
     return ffcodec(res);
 }
-#endif
 
 static int subtitle_handler(AVCodecContext *avctx, AVFrame *unused,
                             int *got_sub_ptr, const AVPacket *avpkt)
 {
     AVSubtitle sub;
     int ret = avcodec_decode_subtitle2(avctx, &sub, got_sub_ptr, avpkt);
-    av_assert0(ret != AVERROR_BUG);
     if (ret >= 0 && *got_sub_ptr)
         avsubtitle_free(&sub);
     return ret;
@@ -100,7 +96,6 @@ static int audio_video_handler(AVCodecContext *avctx, AVFrame *frame,
                                int *got_frame, const AVPacket *dummy)
 {
     int ret = avcodec_receive_frame(avctx, frame);
-    av_assert0(ret != AVERROR_BUG);
     *got_frame = ret >= 0;
     return ret;
 }
@@ -198,6 +193,11 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         extern FFCodec DECODER_SYMBOL(FFMPEG_DECODER);
         codec_list[0] = &DECODER_SYMBOL(FFMPEG_DECODER);
 
+#if FFMPEG_DECODER == tiff || FFMPEG_DECODER == tdsc
+        extern FFCodec DECODER_SYMBOL(mjpeg);
+        codec_list[1] = &DECODER_SYMBOL(mjpeg);
+#endif
+
         c = &DECODER_SYMBOL(FFMPEG_DECODER);
 #else
         c = AVCodecInitialize(FFMPEG_CODEC);  // Done once.
@@ -225,12 +225,10 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     case AV_CODEC_ID_BETHSOFTVID: maxpixels  /= 8192;  break;
     case AV_CODEC_ID_BINKVIDEO:   maxpixels  /= 32;    break;
     case AV_CODEC_ID_BONK:        maxsamples /= 1<<20; break;
-    case AV_CODEC_ID_CAVS:        maxpixels  /= 1024;  break;
     case AV_CODEC_ID_CDTOONS:     maxpixels  /= 1024;  break;
     case AV_CODEC_ID_CFHD:        maxpixels  /= 16384; break;
     case AV_CODEC_ID_CINEPAK:     maxpixels  /= 128;   break;
     case AV_CODEC_ID_COOK:        maxsamples /= 1<<20; break;
-    case AV_CODEC_ID_CRI:         maxpixels  /= 1024;  break;
     case AV_CODEC_ID_CSCD:        maxpixels  /= 1024;  break;
     case AV_CODEC_ID_DFA:         maxpixels  /= 1024;  break;
     case AV_CODEC_ID_DIRAC:       maxpixels  /= 8192;  break;
@@ -260,7 +258,6 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     case AV_CODEC_ID_INDEO4:      maxpixels  /= 128;   break;
     case AV_CODEC_ID_INDEO5:      maxpixels  /= 1024;  break;
     case AV_CODEC_ID_INTERPLAY_ACM: maxsamples /= 16384;  break;
-    case AV_CODEC_ID_INTERPLAY_VIDEO: maxpixels /= 256;  break;
     case AV_CODEC_ID_JPEG2000:    maxpixels  /= 16384; break;
     case AV_CODEC_ID_LAGARITH:    maxpixels  /= 1024;  break;
     case AV_CODEC_ID_LOCO:        maxpixels  /= 1024;  break;
@@ -268,11 +265,8 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     case AV_CODEC_ID_LSCR:        maxpixels  /= 16;    break;
     case AV_CODEC_ID_MMVIDEO:     maxpixels  /= 256;   break;
     case AV_CODEC_ID_MOTIONPIXELS:maxpixels  /= 256;   break;
-    case AV_CODEC_ID_MP4ALS:      maxsamples /= 65536;
-                                  av_dict_set_int(&opts, "max_order", 15, 0);
-                                  break;
+    case AV_CODEC_ID_MP4ALS:      maxsamples /= 65536; break;
     case AV_CODEC_ID_MSA1:        maxpixels  /= 16384; break;
-    case AV_CODEC_ID_MSCC:        maxpixels  /= 4096;  break;
     case AV_CODEC_ID_MSRLE:       maxpixels  /= 16;    break;
     case AV_CODEC_ID_MSS2:        maxpixels  /= 16384; break;
     case AV_CODEC_ID_MSZH:        maxpixels  /= 128;   break;
@@ -286,24 +280,20 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     case AV_CODEC_ID_MXPEG:       maxpixels  /= 128;   break;
     case AV_CODEC_ID_NUV:         maxpixels  /= 128;   break;
     case AV_CODEC_ID_OPUS:        maxsamples /= 16384; break;
-    case AV_CODEC_ID_PIXLET:      maxpixels  /= 1024;  break;
     case AV_CODEC_ID_PNG:         maxpixels  /= 128;   break;
     case AV_CODEC_ID_APNG:        maxpixels  /= 128;   break;
     case AV_CODEC_ID_QTRLE:       maxpixels  /= 16;    break;
     case AV_CODEC_ID_PAF_VIDEO:   maxpixels  /= 16;    break;
     case AV_CODEC_ID_PRORES:      maxpixels  /= 256;   break;
-    case AV_CODEC_ID_QDRAW:       maxpixels  /= 256;   break;
     case AV_CODEC_ID_QPEG:        maxpixels  /= 256;   break;
     case AV_CODEC_ID_RKA:         maxsamples /= 1<<20; break;
     case AV_CODEC_ID_RSCC:        maxpixels  /= 256;   break;
     case AV_CODEC_ID_RASC:        maxpixels  /= 256;   break;
     case AV_CODEC_ID_RTV1:        maxpixels  /= 16;    break;
     case AV_CODEC_ID_RV30:        maxpixels  /= 256;   break;
-    case AV_CODEC_ID_RV60:        maxpixels  /= 256;   break;
     case AV_CODEC_ID_SANM:        maxpixels  /= 16;    break;
     case AV_CODEC_ID_SCPR:        maxpixels  /= 32;    break;
     case AV_CODEC_ID_SCREENPRESSO:maxpixels  /= 64;    break;
-    case AV_CODEC_ID_SGA_VIDEO:   maxpixels  /= 256;   break;
     case AV_CODEC_ID_SIMBIOSIS_IMX:maxpixels /= 16384; break;
     case AV_CODEC_ID_SPEEX:       maxsamples /= 128;   break;
     case AV_CODEC_ID_SMACKAUDIO:  maxsamples /= 4096;  break;
@@ -312,7 +302,6 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     case AV_CODEC_ID_SRGC:        maxpixels  /= 128;   break;
     case AV_CODEC_ID_TARGA:       maxpixels  /= 128;   break;
     case AV_CODEC_ID_TAK:         maxsamples /= 1024;  break;
-    case AV_CODEC_ID_TDSC:        maxpixels  /= 128;   break;
     case AV_CODEC_ID_TGV:         maxpixels  /= 32;    break;
     case AV_CODEC_ID_THEORA:      maxpixels  /= 16384; break;
     case AV_CODEC_ID_TQI:         maxpixels  /= 1024;  break;
@@ -328,15 +317,12 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     case AV_CODEC_ID_VP3:         maxpixels  /= 4096;  break;
     case AV_CODEC_ID_VP4:         maxpixels  /= 4096;  break;
     case AV_CODEC_ID_VP5:         maxpixels  /= 256;   break;
-    case AV_CODEC_ID_VP6:         maxpixels  /= 4096;  break;
     case AV_CODEC_ID_VP6F:        maxpixels  /= 4096;  break;
     case AV_CODEC_ID_VP6A:        maxpixels  /= 4096;  break;
     case AV_CODEC_ID_VP7:         maxpixels  /= 256;   break;
-    case AV_CODEC_ID_VP8:         maxpixels  /= 256;   break;
     case AV_CODEC_ID_VP9:         maxpixels  /= 4096;  break;
     case AV_CODEC_ID_WAVPACK:     maxsamples /= 1024;  break;
     case AV_CODEC_ID_WCMV:        maxpixels  /= 1024;  break;
-    case AV_CODEC_ID_WEBP:        maxpixels  /= 1024;  break;
     case AV_CODEC_ID_WMV3IMAGE:   maxpixels  /= 8192;  break;
     case AV_CODEC_ID_WMV2:        maxpixels  /= 1024;  break;
     case AV_CODEC_ID_WMV3:        maxpixels  /= 1024;  break;
@@ -484,7 +470,6 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
 
     int res = avcodec_open2(ctx, &c->p, &opts);
     if (res < 0) {
-        av_assert0(res != AVERROR_BUG);
         avcodec_free_context(&ctx);
         av_free(parser_avctx);
         av_parser_close(parser);
@@ -558,7 +543,6 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
 
           if (ctx->codec_type != AVMEDIA_TYPE_SUBTITLE) {
               int ret = avcodec_send_packet(ctx, avpkt);
-              av_assert0(ret != AVERROR_BUG);
               decode_more = ret >= 0;
               if(!decode_more) {
                     ec_pixels += (ctx->width + 32LL) * (ctx->height + 32LL);
@@ -612,10 +596,8 @@ maximums_reached:
 
     av_packet_unref(avpkt);
 
-    if (ctx->codec_type != AVMEDIA_TYPE_SUBTITLE) {
-        int ret = avcodec_send_packet(ctx, NULL);
-        av_assert0(ret != AVERROR_BUG);
-    }
+    if (ctx->codec_type != AVMEDIA_TYPE_SUBTITLE)
+        avcodec_send_packet(ctx, NULL);
 
     do {
         got_frame = 0;
@@ -627,7 +609,7 @@ maximums_reached:
             break;
     } while (got_frame == 1 && it++ < maxiteration);
 
-    // fprintf(stderr, "pixels decoded: %"PRId64", samples decoded: %"PRId64", iterations: %d\n", ec_pixels, nb_samples, it);
+    fprintf(stderr, "pixels decoded: %"PRId64", samples decoded: %"PRId64", iterations: %d\n", ec_pixels, nb_samples, it);
 
     av_frame_free(&frame);
     avcodec_free_context(&ctx);

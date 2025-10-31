@@ -45,7 +45,7 @@
 #include "frame_thread_encoder.h"
 #include "hwconfig.h"
 #include "internal.h"
-#include "libavutil/refstruct.h"
+#include "refstruct.h"
 #include "thread.h"
 
 /**
@@ -65,8 +65,6 @@ const SideDataMap ff_sd_global_map[] = {
     { AV_PKT_DATA_CONTENT_LIGHT_LEVEL,        AV_FRAME_DATA_CONTENT_LIGHT_LEVEL },
     { AV_PKT_DATA_ICC_PROFILE,                AV_FRAME_DATA_ICC_PROFILE },
     { AV_PKT_DATA_AMBIENT_VIEWING_ENVIRONMENT,AV_FRAME_DATA_AMBIENT_VIEWING_ENVIRONMENT },
-    { AV_PKT_DATA_3D_REFERENCE_DISPLAYS,      AV_FRAME_DATA_3D_REFERENCE_DISPLAYS },
-    { AV_PKT_DATA_EXIF,                       AV_FRAME_DATA_EXIF },
     { AV_PKT_DATA_NB },
 };
 
@@ -192,7 +190,7 @@ int attribute_align_arg avcodec_open2(AVCodecContext *avctx, const AVCodec *code
         return AVERROR(EINVAL);
     }
 
-    avci = ff_codec_is_decoder(codec) ?
+    avci = av_codec_is_decoder(codec) ?
         ff_decode_internal_alloc()    :
         ff_encode_internal_alloc();
     if (!avci) {
@@ -256,11 +254,7 @@ int attribute_align_arg avcodec_open2(AVCodecContext *avctx, const AVCodec *code
         }
     }
 
-    /* AV_CODEC_CAP_CHANNEL_CONF is a decoder-only flag; so the code below
-     * in particular checks that sample_rate is set for all audio encoders. */
-    if (avctx->sample_rate < 0 ||
-        avctx->sample_rate == 0 && avctx->codec_type == AVMEDIA_TYPE_AUDIO &&
-        !(codec->capabilities & AV_CODEC_CAP_CHANNEL_CONF)) {
+    if (avctx->sample_rate < 0) {
         av_log(avctx, AV_LOG_ERROR, "Invalid sample rate: %d\n", avctx->sample_rate);
         ret = AVERROR(EINVAL);
         goto free_and_end;
@@ -276,7 +270,7 @@ int attribute_align_arg avcodec_open2(AVCodecContext *avctx, const AVCodec *code
     if (avctx->codec_type == AVMEDIA_TYPE_AUDIO && !avctx->ch_layout.nb_channels
         && !(codec->capabilities & AV_CODEC_CAP_CHANNEL_CONF)) {
         av_log(avctx, AV_LOG_ERROR, "%s requires channel layout to be set\n",
-               ff_codec_is_decoder(codec) ? "Decoder" : "Encoder");
+               av_codec_is_decoder(codec) ? "Decoder" : "Encoder");
         ret = AVERROR(EINVAL);
         goto free_and_end;
     }
@@ -296,13 +290,13 @@ int attribute_align_arg avcodec_open2(AVCodecContext *avctx, const AVCodec *code
 
     if ((avctx->codec->capabilities & AV_CODEC_CAP_EXPERIMENTAL) &&
         avctx->strict_std_compliance > FF_COMPLIANCE_EXPERIMENTAL) {
-        const char *codec_string = ff_codec_is_encoder(codec) ? "encoder" : "decoder";
+        const char *codec_string = av_codec_is_encoder(codec) ? "encoder" : "decoder";
         const AVCodec *codec2;
         av_log(avctx, AV_LOG_ERROR,
                "The %s '%s' is experimental but experimental codecs are not enabled, "
                "add '-strict %d' if you want to use it.\n",
                codec_string, codec->name, FF_COMPLIANCE_EXPERIMENTAL);
-        codec2 = ff_codec_is_encoder(codec) ? avcodec_find_encoder(codec->id) : avcodec_find_decoder(codec->id);
+        codec2 = av_codec_is_encoder(codec) ? avcodec_find_encoder(codec->id) : avcodec_find_decoder(codec->id);
         if (!(codec2->capabilities & AV_CODEC_CAP_EXPERIMENTAL))
             av_log(avctx, AV_LOG_ERROR, "Alternatively use the non experimental %s '%s'.\n",
                 codec_string, codec2->name);
@@ -316,7 +310,7 @@ int attribute_align_arg avcodec_open2(AVCodecContext *avctx, const AVCodec *code
         avctx->time_base.den = avctx->sample_rate;
     }
 
-    if (ff_codec_is_encoder(avctx->codec))
+    if (av_codec_is_encoder(avctx->codec))
         ret = ff_encode_preinit(avctx);
     else
         ret = ff_decode_preinit(avctx);
@@ -351,7 +345,7 @@ int attribute_align_arg avcodec_open2(AVCodecContext *avctx, const AVCodec *code
 
     ret=0;
 
-    if (ff_codec_is_decoder(avctx->codec)) {
+    if (av_codec_is_decoder(avctx->codec)) {
         if (!avctx->bit_rate)
             avctx->bit_rate = get_bit_rate(avctx);
 
@@ -435,6 +429,9 @@ av_cold void ff_codec_close(AVCodecContext *avctx)
 {
     int i;
 
+    if (!avctx)
+        return;
+
     if (avcodec_is_open(avctx)) {
         AVCodecInternal *avci = avctx->internal;
 
@@ -456,14 +453,18 @@ av_cold void ff_codec_close(AVCodecContext *avctx)
         av_frame_free(&avci->in_frame);
         av_frame_free(&avci->recon_frame);
 
-        av_refstruct_unref(&avci->pool);
-        av_refstruct_pool_uninit(&avci->progress_frame_pool);
+        ff_refstruct_unref(&avci->pool);
+        ff_refstruct_pool_uninit(&avci->progress_frame_pool);
         if (av_codec_is_decoder(avctx->codec))
             ff_decode_internal_uninit(avctx);
 
         ff_hwaccel_uninit(avctx);
 
         av_bsf_free(&avci->bsf);
+
+#if FF_API_DROPCHANGED
+        av_channel_layout_uninit(&avci->initial_ch_layout);
+#endif
 
 #if CONFIG_LCMS2
         ff_icc_context_uninit(&avci->icc);
@@ -495,6 +496,14 @@ av_cold void ff_codec_close(AVCodecContext *avctx)
     avctx->codec = NULL;
     avctx->active_thread_type = 0;
 }
+
+#if FF_API_AVCODEC_CLOSE
+int avcodec_close(AVCodecContext *avctx)
+{
+    ff_codec_close(avctx);
+    return 0;
+}
+#endif
 
 static const char *unknown_if_null(const char *str)
 {
@@ -638,16 +647,12 @@ void avcodec_string(char *buf, int buf_size, AVCodecContext *enc, int encode)
         if (encode) {
             av_bprintf(&bprint, ", q=%d-%d", enc->qmin, enc->qmax);
         } else {
-#if FF_API_CODEC_PROPS
-FF_DISABLE_DEPRECATION_WARNINGS
             if (enc->properties & FF_CODEC_PROPERTY_CLOSED_CAPTIONS)
                 av_bprintf(&bprint, ", Closed Captions");
             if (enc->properties & FF_CODEC_PROPERTY_FILM_GRAIN)
                 av_bprintf(&bprint, ", Film Grain");
             if (enc->properties & FF_CODEC_PROPERTY_LOSSLESS)
                 av_bprintf(&bprint, ", lossless");
-FF_ENABLE_DEPRECATION_WARNINGS
-#endif
         }
         break;
     case AVMEDIA_TYPE_AUDIO:
@@ -709,10 +714,7 @@ int attribute_align_arg avcodec_receive_frame(AVCodecContext *avctx, AVFrame *fr
 {
     av_frame_unref(frame);
 
-    if (!avcodec_is_open(avctx) || !avctx->codec)
-        return AVERROR(EINVAL);
-
-    if (ff_codec_is_decoder(avctx->codec))
+    if (av_codec_is_decoder(avctx->codec))
         return ff_decode_receive_frame(avctx, frame);
     return ff_encode_receive_frame(avctx, frame);
 }
@@ -759,8 +761,6 @@ int ff_default_get_supported_config(const AVCodecContext *avctx,
                                     const void **out_configs,
                                     int *out_num_configs)
 {
-    const FFCodec *codec2 = ffcodec(codec);
-
     switch (config) {
 FF_DISABLE_DEPRECATION_WARNINGS
     case AV_CODEC_CONFIG_PIX_FORMAT:
@@ -788,10 +788,6 @@ FF_ENABLE_DEPRECATION_WARNINGS
         if (out_num_configs)
             *out_num_configs = 0;
         return 0;
-
-    case AV_CODEC_CONFIG_ALPHA_MODE:
-        WRAP_CONFIG(AVMEDIA_TYPE_VIDEO, codec2->alpha_modes, enum AVAlphaMode, AVALPHA_MODE_UNSPECIFIED);
-
     default:
         return AVERROR(EINVAL);
     }

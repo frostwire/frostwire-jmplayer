@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "libavutil/intfloat.h"
 #include "libavutil/intreadwrite.h"
 #include "libavcodec/internal.h"
 #include "avformat.h"
@@ -39,7 +38,7 @@ static int ircam_probe(const AVProbeData *p)
     return 0;
 }
 
-static const struct endianness {
+static const struct endianess {
     uint32_t magic;
     int      is_le;
 } table[] = {

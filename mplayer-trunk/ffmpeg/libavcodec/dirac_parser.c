@@ -29,11 +29,10 @@
 
 #include <string.h>
 
-#include "libavutil/attributes.h"
 #include "libavutil/intreadwrite.h"
 #include "libavutil/mem.h"
 
-#include "avcodec.h"
+#include "parser.h"
 
 #define DIRAC_PARSE_INFO_PREFIX 0x42424344
 
@@ -266,7 +265,7 @@ static int dirac_parse(AVCodecParserContext *s, AVCodecContext *avctx,
     return next;
 }
 
-static av_cold void dirac_parse_close(AVCodecParserContext *s)
+static void dirac_parse_close(AVCodecParserContext *s)
 {
     DiracParseContext *pc = s->priv_data;
 

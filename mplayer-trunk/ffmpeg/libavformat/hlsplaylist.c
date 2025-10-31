@@ -57,18 +57,13 @@ void ff_hls_write_audio_rendition(AVIOContext *out, const char *agroup,
 
 void ff_hls_write_subtitle_rendition(AVIOContext *out, const char *sgroup,
                                      const char *filename, const char *language,
-                                     const char *sname, int name_id, int is_default)
+                                     int name_id, int is_default)
 {
     if (!out || !filename)
         return;
 
     avio_printf(out, "#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID=\"%s\"", sgroup);
-    if (sname) {
-        avio_printf(out, ",NAME=\"%s\",", sname);
-    } else {
-        avio_printf(out, ",NAME=\"subtitle_%d\",", name_id);
-    }
-    avio_printf(out, "DEFAULT=%s,", is_default ? "YES" : "NO");
+    avio_printf(out, ",NAME=\"subtitle_%d\",DEFAULT=%s,", name_id, is_default ? "YES" : "NO");
     if (language) {
         avio_printf(out, "LANGUAGE=\"%s\",", language);
     }
@@ -204,3 +199,4 @@ void ff_hls_write_end_list(AVIOContext *out)
         return;
     avio_printf(out, "#EXT-X-ENDLIST\n");
 }
+

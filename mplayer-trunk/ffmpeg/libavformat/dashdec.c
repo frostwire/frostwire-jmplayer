@@ -578,9 +578,9 @@ static enum AVMediaType get_content_type(xmlNodePtr node)
     return type;
 }
 
-static struct fragment *get_fragment(char *range)
+static struct fragment * get_Fragment(char *range)
 {
-    struct fragment *seg = av_mallocz(sizeof(struct fragment));
+    struct fragment * seg =  av_mallocz(sizeof(struct fragment));
 
     if (!seg)
         return NULL;
@@ -614,7 +614,7 @@ static int parse_manifest_segmenturlnode(AVFormatContext *s, struct representati
         range_val = xmlGetProp(fragmenturl_node, "range");
         if (initialization_val || range_val) {
             free_fragment(&rep->init_section);
-            rep->init_section = get_fragment(range_val);
+            rep->init_section = get_Fragment(range_val);
             xmlFree(range_val);
             if (!rep->init_section) {
                 xmlFree(initialization_val);
@@ -635,7 +635,7 @@ static int parse_manifest_segmenturlnode(AVFormatContext *s, struct representati
         media_val = xmlGetProp(fragmenturl_node, "media");
         range_val = xmlGetProp(fragmenturl_node, "mediaRange");
         if (media_val || range_val) {
-            struct fragment *seg = get_fragment(range_val);
+            struct fragment *seg = get_Fragment(range_val);
             xmlFree(range_val);
             if (!seg) {
                 xmlFree(media_val);
@@ -871,7 +871,7 @@ static int parse_manifest_representation(AVFormatContext *s, const char *url,
         type = get_content_type(adaptionset_node);
     if (type != AVMEDIA_TYPE_VIDEO && type != AVMEDIA_TYPE_AUDIO &&
         type != AVMEDIA_TYPE_SUBTITLE) {
-        av_log(s, AV_LOG_VERBOSE, "Parsing '%s' - skip not supported representation type\n", url);
+        av_log(s, AV_LOG_VERBOSE, "Parsing '%s' - skipp not supported representation type\n", url);
         return 0;
     }
 

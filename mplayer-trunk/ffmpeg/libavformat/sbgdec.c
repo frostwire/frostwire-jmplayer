@@ -1434,10 +1434,8 @@ static av_cold int sbg_read_header(AVFormatContext *avf)
     }
 
     st = avformat_new_stream(avf, NULL);
-    if (!st) {
-        r = AVERROR(ENOMEM);
-        goto fail;
-    }
+    if (!st)
+        return AVERROR(ENOMEM);
     sti = ffstream(st);
     st->codecpar->codec_type     = AVMEDIA_TYPE_AUDIO;
     st->codecpar->codec_id       = AV_CODEC_ID_FFWAVESYNTH;

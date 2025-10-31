@@ -221,3 +221,4 @@ double ff_perlin_get(FFPerlin *perlin, double x, double y, double z)
 
     return total / max_value;
 }
+

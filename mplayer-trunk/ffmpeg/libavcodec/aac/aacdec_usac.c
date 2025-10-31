@@ -29,7 +29,7 @@
 #include "libavcodec/unary.h"
 
 #include "libavutil/mem.h"
-#include "libavutil/refstruct.h"
+#include "libavcodec/refstruct.h"
 
 /* Number of scalefactor bands per complex prediction band, equal to 2. */
 #define SFB_PER_PRED_BAND 2
@@ -1480,11 +1480,11 @@ static int decode_usac_core_coder(AACDecContext *ac, AACUSACConfig *usac,
         ret = ff_aac_sbr_decode_usac_data(ac, che, ec, gb, sbr_ch, indep_flag);
         if (ret < 0)
             return ret;
-    }
 
-    if (ec->stereo_config_index) {
-        avpriv_report_missing_feature(ac->avctx, "AAC USAC Mps212");
-        return AVERROR_PATCHWELCOME;
+        if (ec->stereo_config_index) {
+            avpriv_report_missing_feature(ac->avctx, "AAC USAC Mps212");
+            return AVERROR_PATCHWELCOME;
+        }
     }
 
     spectrum_decode(ac, usac, che, core_nb_channels);
@@ -1605,8 +1605,8 @@ static int parse_ext_ele(AACDecContext *ac, AACUsacElemConfig *e,
      * Otherwise, we have to copy it to a buffer and accumulate it. */
     if (!(pl_frag_start && pl_frag_end)) {
         /* Reallocate the data */
-        uint8_t *tmp_buf = av_refstruct_alloc_ext(e->ext.pl_data_offset + len,
-                                                  AV_REFSTRUCT_FLAG_NO_ZEROING,
+        uint8_t *tmp_buf = ff_refstruct_alloc_ext(e->ext.pl_data_offset + len,
+                                                  FF_REFSTRUCT_FLAG_NO_ZEROING,
                                                   NULL, NULL);
         if (!tmp_buf)
             return AVERROR(ENOMEM);
@@ -1615,7 +1615,7 @@ static int parse_ext_ele(AACDecContext *ac, AACUsacElemConfig *e,
         if (e->ext.pl_buf)
             memcpy(tmp_buf, e->ext.pl_buf, e->ext.pl_data_offset);
 
-        av_refstruct_unref(&e->ext.pl_buf);
+        ff_refstruct_unref(&e->ext.pl_buf);
         e->ext.pl_buf = tmp_buf;
 
         /* Readout data to a buffer */
@@ -1650,7 +1650,7 @@ static int parse_ext_ele(AACDecContext *ac, AACUsacElemConfig *e,
             /* This should never happen */
             av_assert0(0);
         }
-        av_refstruct_unref(&e->ext.pl_buf);
+        ff_refstruct_unref(&e->ext.pl_buf);
         if (ret < 0)
             return ret;
 

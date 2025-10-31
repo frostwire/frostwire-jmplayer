@@ -32,7 +32,6 @@
  *   http://www.pcisys.net/~melanson/codecs/
  */
 
-#include "libavutil/attributes.h"
 #include "libavutil/crc.h"
 #include "libavutil/mem.h"
 #include "libavutil/thread.h"
@@ -847,7 +846,7 @@ static av_cold int svq1_decode_end(AVCodecContext *avctx)
     return 0;
 }
 
-static av_cold void svq1_flush(AVCodecContext *avctx)
+static void svq1_flush(AVCodecContext *avctx)
 {
     SVQ1Context *s = avctx->priv_data;
 

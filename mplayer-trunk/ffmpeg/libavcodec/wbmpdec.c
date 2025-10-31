@@ -72,8 +72,7 @@ static int wbmp_decode_frame(AVCodecContext *avctx, AVFrame *p,
     if (p->linesize[0] == (width + 7) / 8)
         bytestream2_get_buffer(&gb, p->data[0], height * ((width + 7) / 8));
     else
-        readbits(p->data[0], width, height, p->linesize[0],
-                 gb.buffer, bytestream2_get_bytes_left(&gb));
+        readbits(p->data[0], width, height, p->linesize[0], gb.buffer, gb.buffer_end - gb.buffer);
 
     *got_frame   = 1;
 

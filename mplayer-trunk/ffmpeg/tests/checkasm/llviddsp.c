@@ -195,12 +195,8 @@ static void check_add_gradient_pred(LLVidDSPContext *c, int w) {
 void checkasm_check_llviddsp(void)
 {
     LLVidDSPContext c;
-    static int saved_width = 0;
-    int width = saved_width;
+    int width = 16 * av_clip(rnd(), 16, 128);
     int accRnd = rnd() & 0xFF;
-
-    if (!width)
-        saved_width = width = 16 * av_clip(rnd(), 16, 128);
 
     ff_llviddsp_init(&c);
 

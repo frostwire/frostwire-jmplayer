@@ -90,8 +90,10 @@ static int trim_filter_frame(AVFilterLink *inlink, AVFrame *frame)
     int drop;
 
     /* drop everything if EOF has already been returned */
-    if (s->eof)
+    if (s->eof) {
+        av_frame_free(&frame);
         return 0;
+    }
 
     if (s->start_frame >= 0 || s->start_pts != AV_NOPTS_VALUE) {
         drop = 1;
@@ -129,10 +131,13 @@ static int trim_filter_frame(AVFilterLink *inlink, AVFrame *frame)
 
     s->nb_frames++;
 
-    return 1;
+    return ff_filter_frame(ctx->outputs[0], frame);
 
 drop:
+    if (!s->eof)
+        ff_filter_set_ready(ctx, 100);
     s->nb_frames++;
+    av_frame_free(&frame);
     return 0;
 }
 #endif // CONFIG_TRIM_FILTER
@@ -147,8 +152,10 @@ static int atrim_filter_frame(AVFilterLink *inlink, AVFrame *frame)
     int drop;
 
     /* drop everything if EOF has already been returned */
-    if (s->eof)
+    if (s->eof) {
+        av_frame_free(&frame);
         return 0;
+    }
 
     if (frame->pts != AV_NOPTS_VALUE)
         pts = av_rescale_q(frame->pts, inlink->time_base,
@@ -223,8 +230,10 @@ static int atrim_filter_frame(AVFilterLink *inlink, AVFrame *frame)
 
     if (start_sample) {
         AVFrame *out = ff_get_audio_buffer(ctx->outputs[0], end_sample - start_sample);
-        if (!out)
+        if (!out) {
+            av_frame_free(&frame);
             return AVERROR(ENOMEM);
+        }
 
         av_frame_copy_props(out, frame);
         av_samples_copy(out->extended_data, frame->extended_data, 0, start_sample,
@@ -234,16 +243,18 @@ static int atrim_filter_frame(AVFilterLink *inlink, AVFrame *frame)
             out->pts += av_rescale_q(start_sample, (AVRational){ 1, out->sample_rate },
                                      inlink->time_base);
 
-        av_frame_unref(frame);
-        av_frame_move_ref(frame, out);
-        av_frame_free(&out);
+        av_frame_free(&frame);
+        frame = out;
     } else
         frame->nb_samples = end_sample;
 
-    return 1;
+    return ff_filter_frame(ctx->outputs[0], frame);
 
 drop:
+    if (!s->eof)
+        ff_filter_set_ready(ctx, 100);
     s->nb_samples += frame->nb_samples;
+    av_frame_free(&frame);
     return 0;
 }
 #endif // CONFIG_ATRIM_FILTER
@@ -284,21 +295,18 @@ static int activate(AVFilterContext *ctx)
     TrimContext *s = ctx->priv;
     AVFilterLink *inlink = ctx->inputs[0];
     AVFilterLink *outlink = ctx->outputs[0];
-    AVFrame *frame = NULL;
-    int ret;
 
     FF_FILTER_FORWARD_STATUS_BACK(outlink, inlink);
 
-    while ((ret = ff_inlink_consume_frame(inlink, &frame))) {
-        if (ret < 0)
-            return ret;
+    if (!s->eof && ff_inlink_queued_frames(inlink)) {
+        AVFrame *frame = NULL;
+        int ret;
 
-        ret = s->filter_frame(inlink, frame);
-        if (ret > 0)
-            return ff_filter_frame(outlink, frame);
-        av_frame_free(&frame);
+        ret = ff_inlink_consume_frame(inlink, &frame);
         if (ret < 0)
             return ret;
+        if (ret > 0)
+            return s->filter_frame(inlink, frame);
     }
 
     FF_FILTER_FORWARD_STATUS(inlink, outlink);
@@ -348,14 +356,14 @@ static const AVFilterPad trim_inputs[] = {
     },
 };
 
-const FFFilter ff_vf_trim = {
-    .p.name        = "trim",
-    .p.description = NULL_IF_CONFIG_SMALL("Pick one continuous section from the input, drop the rest."),
-    .p.priv_class  = &trim_class,
-    .p.flags       = AVFILTER_FLAG_METADATA_ONLY,
+const AVFilter ff_vf_trim = {
+    .name        = "trim",
+    .description = NULL_IF_CONFIG_SMALL("Pick one continuous section from the input, drop the rest."),
     .init        = init,
     .activate    = activate,
     .priv_size   = sizeof(TrimContext),
+    .priv_class  = &trim_class,
+    .flags       = AVFILTER_FLAG_METADATA_ONLY,
     FILTER_INPUTS(trim_inputs),
     FILTER_OUTPUTS(ff_video_default_filterpad),
 };
@@ -384,14 +392,14 @@ static const AVFilterPad atrim_inputs[] = {
     },
 };
 
-const FFFilter ff_af_atrim = {
-    .p.name        = "atrim",
-    .p.description = NULL_IF_CONFIG_SMALL("Pick one continuous section from the input, drop the rest."),
-    .p.priv_class  = &atrim_class,
-    .p.flags       = AVFILTER_FLAG_METADATA_ONLY,
+const AVFilter ff_af_atrim = {
+    .name        = "atrim",
+    .description = NULL_IF_CONFIG_SMALL("Pick one continuous section from the input, drop the rest."),
     .init        = init,
     .activate    = activate,
     .priv_size   = sizeof(TrimContext),
+    .priv_class  = &atrim_class,
+    .flags       = AVFILTER_FLAG_METADATA_ONLY,
     FILTER_INPUTS(atrim_inputs),
     FILTER_OUTPUTS(ff_audio_default_filterpad),
 };

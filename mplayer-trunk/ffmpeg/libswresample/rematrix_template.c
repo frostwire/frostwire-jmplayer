@@ -49,12 +49,9 @@
 #    define RENAME(x) x ## _s32
 #endif
 
-static void RENAME(sum2)(void *out_, const void *in1_, const void *in2_,
-                         const void *coeffp_, integer index1, integer index2, integer len)
-{
-    const SAMPLE *in1 = in1_, *in2 = in2_;
-    const COEFF *coeffp = coeffp_;
-    SAMPLE *out = out_;
+typedef void (RENAME(mix_any_func_type))(SAMPLE **out, const SAMPLE **in1, COEFF *coeffp, integer len);
+
+static void RENAME(sum2)(SAMPLE *out, const SAMPLE *in1, const SAMPLE *in2, COEFF *coeffp, integer index1, integer index2, integer len){
     int i;
     INTER coeff1 = coeffp[index1];
     INTER coeff2 = coeffp[index2];
@@ -63,24 +60,14 @@ static void RENAME(sum2)(void *out_, const void *in1_, const void *in2_,
         out[i] = R(coeff1*in1[i] + coeff2*in2[i]);
 }
 
-static void RENAME(copy)(void *out_, const void *in_, const void *coeffp_,
-                         integer index, integer len)
-{
-    const COEFF *coeffp = coeffp_;
-    const SAMPLE *in = in_;
-    SAMPLE *out = out_;
+static void RENAME(copy)(SAMPLE *out, const SAMPLE *in, COEFF *coeffp, integer index, integer len){
     int i;
     INTER coeff = coeffp[index];
     for(i=0; i<len; i++)
         out[i] = R(coeff*in[i]);
 }
 
-static void RENAME(mix6to2)(uint8_t *const *out_, const uint8_t *const *in_,
-                            const void *coeffp_, integer len)
-{
-    const SAMPLE *const *const in = (const SAMPLE *const *)in_;
-    SAMPLE *const *const out = (SAMPLE *const*)out_;
-    const COEFF *coeffp = coeffp_;
+static void RENAME(mix6to2)(SAMPLE **out, const SAMPLE **in, COEFF *coeffp, integer len){
     int i;
 
     for(i=0; i<len; i++) {
@@ -90,12 +77,7 @@ static void RENAME(mix6to2)(uint8_t *const *out_, const uint8_t *const *in_,
     }
 }
 
-static void RENAME(mix8to2)(uint8_t *const *out_, const uint8_t *const *in_,
-                            const void *coeffp_, integer len)
-{
-    const SAMPLE *const *const in = (const SAMPLE *const *)in_;
-    SAMPLE *const *const out = (SAMPLE *const*)out_;
-    const COEFF *coeffp = coeffp_;
+static void RENAME(mix8to2)(SAMPLE **out, const SAMPLE **in, COEFF *coeffp, integer len){
     int i;
 
     for(i=0; i<len; i++) {
@@ -105,8 +87,7 @@ static void RENAME(mix8to2)(uint8_t *const *out_, const uint8_t *const *in_,
     }
 }
 
-static mix_any_func_type *RENAME(get_mix_any_func)(const SwrContext *s)
-{
+static RENAME(mix_any_func_type) *RENAME(get_mix_any_func)(SwrContext *s){
     if (  !av_channel_layout_compare(&s->out_ch_layout, &(AVChannelLayout)AV_CHANNEL_LAYOUT_STEREO)
        && (   !av_channel_layout_compare(&s->in_ch_layout, &(AVChannelLayout)AV_CHANNEL_LAYOUT_5POINT1)
            || !av_channel_layout_compare(&s->in_ch_layout, &(AVChannelLayout)AV_CHANNEL_LAYOUT_5POINT1_BACK))

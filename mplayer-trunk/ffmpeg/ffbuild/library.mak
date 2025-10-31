@@ -26,7 +26,7 @@ ifdef CONFIG_SHARED
 # for purely shared builds.
 # Test programs are always statically linked against their library
 # to be able to access their library's internals, even with shared builds.
-# Yet linking against dependent libraries still uses dynamic linking.
+# Yet linking against dependend libraries still uses dynamic linking.
 # This means that we are in the scenario described above.
 # In case only static libs are used, the linker will only use
 # one of these copies; this depends on the duplicated object files
@@ -35,14 +35,8 @@ OBJS += $(SHLIBOBJS)
 endif
 $(SUBDIR)$(LIBNAME): $(OBJS) $(STLIBOBJS)
 	$(RM) $@
-ifeq ($(RESPONSE_FILES),yes)
-	$(Q)echo $^ > $@.objs
-	$(AR) $(ARFLAGS) $(AR_O) @$@.objs
-else
 	$(AR) $(ARFLAGS) $(AR_O) $^
-endif
 	$(RANLIB) $@
-	-$(RM) $@.objs
 
 install-headers: install-lib$(NAME)-headers install-lib$(NAME)-pkgconfig
 
@@ -55,12 +49,8 @@ $(TESTPROGS): THISLIB = $(SUBDIR)$(LIBNAME)
 
 $(LIBOBJS): CPPFLAGS += -DBUILDING_$(NAME)
 
-$(NAME)LINK_EXE_ARGS = $(LDFLAGS) $(LDEXEFLAGS)
-$(NAME)LINK_SO_ARGS = $(SHFLAGS) $(LDFLAGS) $(LDSOFLAGS)
-$(NAME)LINK_EXTRA = $(FFEXTRALIBS)
-
 $(TESTPROGS) $(TOOLS): %$(EXESUF): %.o
-	$$(call LINK,$$(call $(NAME)LINK_EXE_ARGS) $$(LD_O) $$(filter %.o,$$^) $$(THISLIB) $$(call $(NAME)LINK_EXTRA) $$(EXTRALIBS-$$(*F)) $$(ELIBS))
+	$$(LD) $(LDFLAGS) $(LDEXEFLAGS) $$(LD_O) $$(filter %.o,$$^) $$(THISLIB) $(FFEXTRALIBS) $$(EXTRALIBS-$$(*F)) $$(ELIBS)
 
 $(SUBDIR)lib$(NAME).version: $(SUBDIR)version.h $(SUBDIR)version_major.h | $(SUBDIR)
 	$$(M) $$(SRC_PATH)/ffbuild/libversion.sh $(NAME) $$^ > $$@
@@ -74,16 +64,10 @@ $(SUBDIR)lib$(NAME).ver: $(SUBDIR)lib$(NAME).v $(OBJS)
 $(SUBDIR)$(SLIBNAME): $(SUBDIR)$(SLIBNAME_WITH_MAJOR)
 	$(Q)cd ./$(SUBDIR) && $(LN_S) $(SLIBNAME_WITH_MAJOR) $(SLIBNAME)
 
-$(SUBDIR)$(SLIBNAME_WITH_MAJOR): $(OBJS) $(SHLIBOBJS) $(SUBDIR)lib$(NAME).ver
+$(SUBDIR)$(SLIBNAME_WITH_MAJOR): $(OBJS) $(SHLIBOBJS) $(SLIBOBJS) $(SUBDIR)lib$(NAME).ver
 	$(SLIB_CREATE_DEF_CMD)
-ifeq ($(RESPONSE_FILES),yes)
-	$(Q)echo $$(filter %.o,$$^) > $$@.objs
-	$$(call LINK,$$(call $(NAME)LINK_SO_ARGS) $$(LD_O) @$$@.objs $$(call $(NAME)LINK_EXTRA))
-else
-	$$(call LINK,$$(call $(NAME)LINK_SO_ARGS) $$(LD_O) $$(filter %.o,$$^) $$(call $(NAME)LINK_EXTRA))
-endif
+	$$(LD) $(SHFLAGS) $(LDFLAGS) $(LDSOFLAGS) $$(LD_O) $$(filter %.o,$$^) $(FFEXTRALIBS)
 	$(SLIB_EXTRA_CMD)
-	-$(RM) $$@.objs
 
 ifdef SUBDIR
 $(SUBDIR)$(SLIBNAME_WITH_MAJOR): $(DEP_LIBS)

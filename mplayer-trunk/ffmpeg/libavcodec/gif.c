@@ -30,7 +30,6 @@
  * @see http://www.w3.org/Graphics/GIF/spec-gif89a.txt
  */
 
-#include "libavutil/attributes.h"
 #include "libavutil/imgutils_internal.h"
 #include "libavutil/mem.h"
 #include "libavutil/opt.h"
@@ -519,7 +518,7 @@ static int gif_encode_frame(AVCodecContext *avctx, AVPacket *pkt,
     return 0;
 }
 
-static av_cold int gif_encode_close(AVCodecContext *avctx)
+static int gif_encode_close(AVCodecContext *avctx)
 {
     GIFContext *s = avctx->priv_data;
 
@@ -560,8 +559,10 @@ const FFCodec ff_gif_encoder = {
     .init           = gif_encode_init,
     FF_CODEC_ENCODE_CB(gif_encode_frame),
     .close          = gif_encode_close,
-    CODEC_PIXFMTS(AV_PIX_FMT_RGB8, AV_PIX_FMT_BGR8, AV_PIX_FMT_RGB4_BYTE,
-                  AV_PIX_FMT_BGR4_BYTE, AV_PIX_FMT_GRAY8, AV_PIX_FMT_PAL8),
+    .p.pix_fmts     = (const enum AVPixelFormat[]){
+        AV_PIX_FMT_RGB8, AV_PIX_FMT_BGR8, AV_PIX_FMT_RGB4_BYTE, AV_PIX_FMT_BGR4_BYTE,
+        AV_PIX_FMT_GRAY8, AV_PIX_FMT_PAL8, AV_PIX_FMT_NONE
+    },
     .p.priv_class   = &gif_class,
     .caps_internal  = FF_CODEC_CAP_INIT_CLEANUP,
 };

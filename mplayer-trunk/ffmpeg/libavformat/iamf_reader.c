@@ -31,10 +31,10 @@
 #include "iamf_parse.h"
 #include "iamf_reader.h"
 
-static AVStream *find_stream_by_id(AVFormatContext *s, int id, int stream_id_offset)
+static AVStream *find_stream_by_id(AVFormatContext *s, int id)
 {
     for (int i = 0; i < s->nb_streams; i++)
-        if (s->streams[i]->id == id + stream_id_offset)
+        if (s->streams[i]->id == id)
             return s->streams[i];
 
     av_log(s, AV_LOG_ERROR, "Invalid stream id %d\n", id);
@@ -45,7 +45,7 @@ static int audio_frame_obu(AVFormatContext *s, const IAMFDemuxContext *c,
                            AVIOContext *pb, AVPacket *pkt,
                            int len, enum IAMF_OBU_Type type,
                            unsigned skip_samples, unsigned discard_padding,
-                           int stream_id_offset, int id_in_bitstream)
+                           int id_in_bitstream)
 {
     AVStream *st;
     int ret, audio_substream_id;
@@ -59,7 +59,7 @@ static int audio_frame_obu(AVFormatContext *s, const IAMFDemuxContext *c,
     } else
         audio_substream_id = type - IAMF_OBU_IA_AUDIO_FRAME_ID0;
 
-    st = find_stream_by_id(s, audio_substream_id, stream_id_offset);
+    st = find_stream_by_id(s, audio_substream_id);
     if (!st)
         return AVERROR_INVALIDDATA;
 
@@ -132,7 +132,7 @@ static int parameter_block_obu(AVFormatContext *s, IAMFDemuxContext *c,
     parameter_id = ffio_read_leb(pb);
     param_definition = ff_iamf_get_param_definition(&c->iamf, parameter_id);
     if (!param_definition) {
-        av_log(s, AV_LOG_VERBOSE, "Non existent parameter_id %d referenced in a parameter block. Ignoring\n",
+        av_log(s, AV_LOG_VERBOSE, "Non existant parameter_id %d referenced in a parameter block. Ignoring\n",
                parameter_id);
         ret = 0;
         goto fail;
@@ -277,7 +277,7 @@ fail:
 }
 
 int ff_iamf_read_packet(AVFormatContext *s, IAMFDemuxContext *c,
-                        AVIOContext *pb, int max_size, int stream_id_offset, AVPacket *pkt)
+                        AVIOContext *pb, int max_size, AVPacket *pkt)
 {
     int read = 0;
 
@@ -308,7 +308,7 @@ int ff_iamf_read_packet(AVFormatContext *s, IAMFDemuxContext *c,
         read += len;
         if (type >= IAMF_OBU_IA_AUDIO_FRAME && type <= IAMF_OBU_IA_AUDIO_FRAME_ID17) {
             ret = audio_frame_obu(s, c, pb, pkt, obu_size, type,
-                                   skip_samples, discard_padding, stream_id_offset,
+                                   skip_samples, discard_padding,
                                    type == IAMF_OBU_IA_AUDIO_FRAME);
             if (ret < 0)
                 return ret;

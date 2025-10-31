@@ -28,7 +28,6 @@
 #include "libswscale/swscale_internal.h"
 #include "libavutil/attributes.h"
 #include "libavutil/cpu.h"
-#include "libavutil/intfloat.h"
 #include "yuv2rgb_altivec.h"
 #include "libavutil/ppc/util_altivec.h"
 
@@ -230,10 +229,10 @@ yuv2plane1_float(yuv2plane1_float_bswap_altivec, uint32_t, BE)
 
 #endif /* HAVE_ALTIVEC */
 
-av_cold void ff_sws_init_swscale_ppc(SwsInternal *c)
+av_cold void ff_sws_init_swscale_ppc(SwsContext *c)
 {
 #if HAVE_ALTIVEC
-    enum AVPixelFormat dstFormat = c->opts.dst_format;
+    enum AVPixelFormat dstFormat = c->dstFormat;
 
     if (!(av_get_cpu_flags() & AV_CPU_FLAG_ALTIVEC))
         return;
@@ -242,7 +241,7 @@ av_cold void ff_sws_init_swscale_ppc(SwsInternal *c)
     if (c->srcBpc == 8 && c->dstBpc <= 14) {
         c->hyScale = c->hcScale = hScale_real_altivec;
     }
-    if (!is16BPS(dstFormat) && !isNBPS(dstFormat) && !isSemiPlanarYUV(dstFormat) && !isDataInHighBits(dstFormat) &&
+    if (!is16BPS(dstFormat) && !isNBPS(dstFormat) && !isSemiPlanarYUV(dstFormat) &&
         dstFormat != AV_PIX_FMT_GRAYF32BE && dstFormat != AV_PIX_FMT_GRAYF32LE &&
         !c->needAlpha) {
         c->yuv2planeX = yuv2planeX_altivec;
@@ -257,8 +256,8 @@ av_cold void ff_sws_init_swscale_ppc(SwsInternal *c)
 
     /* The following list of supported dstFormat values should
      * match what's found in the body of ff_yuv2packedX_altivec() */
-    if (!(c->opts.flags & (SWS_BITEXACT | SWS_FULL_CHR_H_INT)) && !c->needAlpha) {
-        switch (c->opts.dst_format) {
+    if (!(c->flags & (SWS_BITEXACT | SWS_FULL_CHR_H_INT)) && !c->needAlpha) {
+        switch (c->dstFormat) {
         case AV_PIX_FMT_ABGR:
             c->yuv2packedX = ff_yuv2abgr_X_altivec;
             break;

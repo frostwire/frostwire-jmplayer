@@ -40,29 +40,17 @@ typedef struct FFFrameBucket {
  *
  * This structure is intended to allow implementing global control of the
  * frame queues, including memory consumption caps.
+ *
+ * It is currently empty.
  */
 typedef struct FFFrameQueueGlobal {
-
-    /**
-     * Maximum number of allowed frames in the queues combined.
-     */
-    size_t max_queued;
-
-    /**
-     * Total number of queued frames in the queues combined.
-     */
-    size_t queued;
+    char dummy; /* C does not allow empty structs */
 } FFFrameQueueGlobal;
 
 /**
  * Queue of AVFrame pointers.
  */
 typedef struct FFFrameQueue {
-
-    /**
-     * Pointer to the global frame queue struct holding statistics and limits
-     */
-    FFFrameQueueGlobal *global;
 
     /**
      * Array of allocated buckets, used as a circular buffer.

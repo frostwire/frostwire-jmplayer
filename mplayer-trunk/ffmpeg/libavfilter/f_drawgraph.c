@@ -127,10 +127,9 @@ static av_cold int init(AVFilterContext *ctx)
     return 0;
 }
 
-static int query_formats(const AVFilterContext *ctx,
-                         AVFilterFormatsConfig **cfg_in,
-                         AVFilterFormatsConfig **cfg_out)
+static int query_formats(AVFilterContext *ctx)
 {
+    AVFilterLink *outlink = ctx->outputs[0];
     static const enum AVPixelFormat pix_fmts[] = {
         AV_PIX_FMT_RGBA,
         AV_PIX_FMT_NONE
@@ -138,7 +137,7 @@ static int query_formats(const AVFilterContext *ctx,
     int ret;
 
     AVFilterFormats *fmts_list = ff_make_format_list(pix_fmts);
-    if ((ret = ff_formats_ref(fmts_list, &cfg_out[0]->formats)) < 0)
+    if ((ret = ff_formats_ref(fmts_list, &outlink->incfg.formats)) < 0)
         return ret;
 
     return 0;
@@ -474,16 +473,16 @@ static const AVFilterPad drawgraph_inputs[] = {
     },
 };
 
-const FFFilter ff_vf_drawgraph = {
-    .p.name        = "drawgraph",
-    .p.description = NULL_IF_CONFIG_SMALL("Draw a graph using input video metadata."),
-    .p.priv_class  = &drawgraph_class,
+const AVFilter ff_vf_drawgraph = {
+    .name          = "drawgraph",
+    .description   = NULL_IF_CONFIG_SMALL("Draw a graph using input video metadata."),
     .priv_size     = sizeof(DrawGraphContext),
+    .priv_class    = &drawgraph_class,
     .init          = init,
     .uninit        = uninit,
     FILTER_INPUTS(drawgraph_inputs),
     FILTER_OUTPUTS(drawgraph_outputs),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
 };
 
 #endif // CONFIG_DRAWGRAPH_FILTER
@@ -498,15 +497,15 @@ static const AVFilterPad adrawgraph_inputs[] = {
     },
 };
 
-const FFFilter ff_avf_adrawgraph = {
-    .p.name        = "adrawgraph",
-    .p.description = NULL_IF_CONFIG_SMALL("Draw a graph using input audio metadata."),
-    .p.priv_class  = &drawgraph_class,
+const AVFilter ff_avf_adrawgraph = {
+    .name          = "adrawgraph",
+    .description   = NULL_IF_CONFIG_SMALL("Draw a graph using input audio metadata."),
+    .priv_class    = &drawgraph_class,
     .priv_size     = sizeof(DrawGraphContext),
     .init          = init,
     .uninit        = uninit,
     FILTER_INPUTS(adrawgraph_inputs),
     FILTER_OUTPUTS(drawgraph_outputs),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
 };
 #endif // CONFIG_ADRAWGRAPH_FILTER

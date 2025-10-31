@@ -30,7 +30,6 @@
 #include "libavutil/mem_internal.h"
 
 #include "avcodec.h"
-#include "get_bits.h"
 #include "mpegvideo.h"
 
 #include "h264pred.h"
@@ -86,7 +85,6 @@ typedef struct SliceInfo{
 /** decoder context */
 typedef struct RV34DecContext{
     MpegEncContext s;
-    GetBitContext gb;
     RV34DSPContext rdsp;
     int8_t *intra_types_hist;///< old block types, used for prediction
     int8_t *intra_types;     ///< block types
@@ -97,9 +95,6 @@ typedef struct RV34DecContext{
     const RV34VLC *cur_vlcs; ///< VLC set used for current frame decoding
     H264PredContext h;       ///< functions for 4x4 and 16x16 intra block prediction
     SliceInfo si;            ///< current slice information
-
-    int mb_num_left;         ///< number of MBs left in this video packet
-    int mb_skip_run;
 
     int *mb_type;            ///< internal macroblock types
     int block_type;          ///< current block type
@@ -122,7 +117,6 @@ typedef struct RV34DecContext{
     uint8_t  *cbp_chroma;    ///< CBP values for chroma subblocks
     uint16_t *deblock_coefs; ///< deblock coefficients for each macroblock
 
-    DECLARE_ALIGNED_16(int16_t, block)[16];
     /** 8x8 block available flags (for MV prediction) */
     DECLARE_ALIGNED(8, uint32_t, avail_cache)[3*4];
 

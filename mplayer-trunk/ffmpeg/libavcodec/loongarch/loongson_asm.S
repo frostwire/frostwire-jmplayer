@@ -332,7 +332,7 @@ ASM_PREF\name: ;
 
 /*
  * Description : Store elements of vector
- * vd : Data vector to be stored
+ * vd : Data vector to be stroed
  * rk : Address of data storage
  * ra : Offset of address
  * si : Index of data in vd

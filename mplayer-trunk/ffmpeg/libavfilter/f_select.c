@@ -82,6 +82,9 @@ static const char *const var_names[] = {
     "prev_selected_n",   ///< number of the last selected frame
 
     "key",               ///< tell if the frame is a key frame
+#if FF_API_FRAME_PKT
+    "pos",               ///< original position in the file of the frame
+#endif
 
     "scene",
 
@@ -138,6 +141,9 @@ enum var_name {
     VAR_PREV_SELECTED_N,
 
     VAR_KEY,
+#if FF_API_FRAME_PKT
+    VAR_POS,
+#endif
 
     VAR_SCENE,
 
@@ -179,6 +185,8 @@ static const AVOption filt_name##_options[] = {                     \
     { NULL }                                                            \
 }
 
+static int request_frame(AVFilterLink *outlink);
+
 static av_cold int init(AVFilterContext *ctx)
 {
     SelectContext *select = ctx->priv;
@@ -199,6 +207,7 @@ static av_cold int init(AVFilterContext *ctx)
         if (!pad.name)
             return AVERROR(ENOMEM);
         pad.type = ctx->filter->inputs[0].type;
+        pad.request_frame = request_frame;
         if ((ret = ff_append_outpad_free_name(ctx, &pad)) < 0)
             return ret;
     }
@@ -272,7 +281,7 @@ static int config_input(AVFilterLink *inlink)
         inlink->type == AVMEDIA_TYPE_AUDIO ? inlink->sample_rate : NAN;
 
     if (CONFIG_SELECT_FILTER && select->do_scene_detect) {
-        select->sad = ff_scene_sad_get_fn(select->bitdepth);
+        select->sad = ff_scene_sad_get_fn(select->bitdepth == 8 ? 8 : 16);
         if (!select->sad)
             return AVERROR(EINVAL);
     }
@@ -346,9 +355,14 @@ static void select_frame(AVFilterContext *ctx, AVFrame *frame)
     if (isnan(select->var_values[VAR_START_T]))
         select->var_values[VAR_START_T] = TS2D(frame->pts) * av_q2d(inlink->time_base);
 
-    select->var_values[VAR_N  ] = inl->frame_count_out - 1;
+    select->var_values[VAR_N  ] = inl->frame_count_out;
     select->var_values[VAR_PTS] = TS2D(frame->pts);
     select->var_values[VAR_T  ] = TS2D(frame->pts) * av_q2d(inlink->time_base);
+#if FF_API_FRAME_PKT
+FF_DISABLE_DEPRECATION_WARNINGS
+    select->var_values[VAR_POS] = frame->pkt_pos == -1 ? NAN : frame->pkt_pos;
+FF_ENABLE_DEPRECATION_WARNINGS
+#endif
     select->var_values[VAR_KEY] = !!(frame->flags & AV_FRAME_FLAG_KEY);
     select->var_values[VAR_CONCATDEC_SELECT] = get_concatdec_select(frame, av_rescale_q(frame->pts, inlink->time_base, AV_TIME_BASE_Q));
 
@@ -425,35 +439,24 @@ static void select_frame(AVFilterContext *ctx, AVFrame *frame)
     select->var_values[VAR_PREV_T]   = select->var_values[VAR_T];
 }
 
-static int activate(AVFilterContext *ctx)
+static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
 {
+    AVFilterContext *ctx = inlink->dst;
     SelectContext *select = ctx->priv;
-    AVFilterLink *inlink = ctx->inputs[0];
-    AVFrame *in;
-    int nb_eofs = 0;
-    int ret;
 
-    for (int i = 0; i < ctx->nb_outputs; i++)
-        nb_eofs += ff_outlink_get_status(ctx->outputs[i]) == AVERROR_EOF;
+    select_frame(ctx, frame);
+    if (select->select)
+        return ff_filter_frame(ctx->outputs[select->select_out], frame);
 
-    if (nb_eofs == ctx->nb_outputs) {
-        ff_inlink_set_status(inlink, AVERROR_EOF);
-        return 0;
-    }
+    av_frame_free(&frame);
+    return 0;
+}
 
-    while ((ret = ff_inlink_consume_frame(inlink, &in))) {
-        if (ret < 0)
-            return ret;
-        select_frame(ctx, in);
-        if (select->select && !ff_outlink_get_status(ctx->outputs[select->select_out]))
-            return ff_filter_frame(ctx->outputs[select->select_out], in);
-        av_frame_free(&in);
-    };
-
-    FF_FILTER_FORWARD_STATUS_ALL(inlink, ctx);
-    FF_FILTER_FORWARD_WANTED_ANY(ctx, inlink);
-
-    return FFERROR_NOT_READY;
+static int request_frame(AVFilterLink *outlink)
+{
+    AVFilterLink *inlink = outlink->src->inputs[0];
+    int ret = ff_request_frame(inlink);
+    return ret;
 }
 
 static av_cold void uninit(AVFilterContext *ctx)
@@ -494,30 +497,31 @@ static const AVFilterPad avfilter_af_aselect_inputs[] = {
         .name         = "default",
         .type         = AVMEDIA_TYPE_AUDIO,
         .config_props = config_input,
+        .filter_frame = filter_frame,
     },
 };
 
-const FFFilter ff_af_aselect = {
-    .p.name        = "aselect",
-    .p.description = NULL_IF_CONFIG_SMALL("Select audio frames to pass in output."),
-    .p.priv_class  = &aselect_class,
-    .p.flags       = AVFILTER_FLAG_DYNAMIC_OUTPUTS,
+const AVFilter ff_af_aselect = {
+    .name        = "aselect",
+    .description = NULL_IF_CONFIG_SMALL("Select audio frames to pass in output."),
     .init        = aselect_init,
     .uninit      = uninit,
     .priv_size   = sizeof(SelectContext),
     FILTER_INPUTS(avfilter_af_aselect_inputs),
+    .priv_class  = &aselect_class,
+    .flags       = AVFILTER_FLAG_DYNAMIC_OUTPUTS,
 };
 #endif /* CONFIG_ASELECT_FILTER */
 
 #if CONFIG_SELECT_FILTER
 
-static int query_formats(const AVFilterContext *ctx,
-                         AVFilterFormatsConfig **cfg_in,
-                         AVFilterFormatsConfig **cfg_out)
+static int query_formats(AVFilterContext *ctx)
 {
-    const SelectContext *select = ctx->priv;
+    SelectContext *select = ctx->priv;
 
-    if (select->do_scene_detect) {
+    if (!select->do_scene_detect) {
+        return ff_default_query_formats(ctx);
+    } else {
         static const enum AVPixelFormat pix_fmts[] = {
             AV_PIX_FMT_RGB24, AV_PIX_FMT_BGR24, AV_PIX_FMT_RGBA,
             AV_PIX_FMT_ABGR, AV_PIX_FMT_BGRA, AV_PIX_FMT_GRAY8,
@@ -526,9 +530,8 @@ static int query_formats(const AVFilterContext *ctx,
             AV_PIX_FMT_YUV420P10,
             AV_PIX_FMT_NONE
         };
-        return ff_set_common_formats_from_list2(ctx, cfg_in, cfg_out, pix_fmts);
+        return ff_set_common_formats_from_list(ctx, pix_fmts);
     }
-    return 0;
 }
 
 DEFINE_OPTIONS(select, AV_OPT_FLAG_VIDEO_PARAM|AV_OPT_FLAG_FILTERING_PARAM);
@@ -549,19 +552,19 @@ static const AVFilterPad avfilter_vf_select_inputs[] = {
         .name         = "default",
         .type         = AVMEDIA_TYPE_VIDEO,
         .config_props = config_input,
+        .filter_frame = filter_frame,
     },
 };
 
-const FFFilter ff_vf_select = {
-    .p.name        = "select",
-    .p.description = NULL_IF_CONFIG_SMALL("Select video frames to pass in output."),
-    .p.priv_class  = &select_class,
-    .p.flags       = AVFILTER_FLAG_DYNAMIC_OUTPUTS | AVFILTER_FLAG_METADATA_ONLY,
+const AVFilter ff_vf_select = {
+    .name          = "select",
+    .description   = NULL_IF_CONFIG_SMALL("Select video frames to pass in output."),
     .init          = select_init,
     .uninit        = uninit,
-    .activate      = activate,
     .priv_size     = sizeof(SelectContext),
+    .priv_class    = &select_class,
     FILTER_INPUTS(avfilter_vf_select_inputs),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
+    .flags         = AVFILTER_FLAG_DYNAMIC_OUTPUTS | AVFILTER_FLAG_METADATA_ONLY,
 };
 #endif /* CONFIG_SELECT_FILTER */

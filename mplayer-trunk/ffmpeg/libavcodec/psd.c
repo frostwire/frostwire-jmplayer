@@ -173,10 +173,10 @@ static int decode_header(PSDContext * s)
     }
     bytestream2_skip(&s->gb, len_section);
 
-    /* image resources */
+    /* image ressources */
     len_section = bytestream2_get_be32(&s->gb);
     if (len_section < 0) {
-        av_log(s->avctx, AV_LOG_ERROR, "Negative size for image resources section.\n");
+        av_log(s->avctx, AV_LOG_ERROR, "Negative size for image ressources section.\n");
         return AVERROR_INVALIDDATA;
     }
 
@@ -533,6 +533,11 @@ static int decode_frame(AVCodecContext *avctx, AVFrame *picture,
     }
 
     if (s->color_mode == PSD_INDEXED) {
+#if FF_API_PALETTE_HAS_CHANGED
+FF_DISABLE_DEPRECATION_WARNINGS
+        picture->palette_has_changed = 1;
+FF_ENABLE_DEPRECATION_WARNINGS
+#endif
         memcpy(picture->data[1], s->palette, AVPALETTE_SIZE);
     }
 

@@ -101,9 +101,7 @@ static av_cold int init(AVFilterContext *ctx)
     return 0;
 }
 
-static int query_formats(const AVFilterContext *ctx,
-                         AVFilterFormatsConfig **cfg_in,
-                         AVFilterFormatsConfig **cfg_out)
+static int query_formats(AVFilterContext *ctx)
 {
     const FadeContext *s = ctx->priv;
     static const enum AVPixelFormat pix_fmts[] = {
@@ -151,37 +149,20 @@ static int query_formats(const AVFilterContext *ctx,
         AV_PIX_FMT_GBRAP,
         AV_PIX_FMT_NONE
     };
-    const static int straight_alpha[] = {
-        AVALPHA_MODE_UNSPECIFIED,
-        AVALPHA_MODE_STRAIGHT,
-        -1,
-    };
     const enum AVPixelFormat *pixel_fmts;
-    int need_straight = 0;
-    int ret;
 
     if (s->alpha) {
         if (s->black_fade)
             pixel_fmts = pix_fmts_alpha;
         else
             pixel_fmts = pix_fmts_rgba;
-        need_straight = 1;
     } else {
         if (s->black_fade)
             pixel_fmts = pix_fmts;
-        else {
+        else
             pixel_fmts = pix_fmts_rgb;
-            need_straight = 1;
-        }
     }
-
-    if (need_straight) {
-        ret = ff_set_common_alpha_modes_from_list2(ctx, cfg_in, cfg_out, straight_alpha);
-        if (ret < 0)
-            return ret;
-    }
-
-    return ff_set_common_formats_from_list2(ctx, cfg_in, cfg_out, pixel_fmts);
+    return ff_set_common_formats_from_list(ctx, pixel_fmts);
 }
 
 const static enum AVPixelFormat studio_level_pix_fmts[] = {
@@ -577,15 +558,15 @@ static const AVFilterPad avfilter_vf_fade_inputs[] = {
     },
 };
 
-const FFFilter ff_vf_fade = {
-    .p.name        = "fade",
-    .p.description = NULL_IF_CONFIG_SMALL("Fade in/out input video."),
-    .p.priv_class  = &fade_class,
-    .p.flags       = AVFILTER_FLAG_SLICE_THREADS |
-                     AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC,
+const AVFilter ff_vf_fade = {
+    .name          = "fade",
+    .description   = NULL_IF_CONFIG_SMALL("Fade in/out input video."),
     .init          = init,
     .priv_size     = sizeof(FadeContext),
+    .priv_class    = &fade_class,
     FILTER_INPUTS(avfilter_vf_fade_inputs),
     FILTER_OUTPUTS(ff_video_default_filterpad),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
+    .flags         = AVFILTER_FLAG_SLICE_THREADS |
+                     AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC,
 };

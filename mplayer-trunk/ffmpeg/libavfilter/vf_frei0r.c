@@ -330,11 +330,9 @@ static int config_input_props(AVFilterLink *inlink)
     return set_params(ctx, s->params);
 }
 
-static int query_formats(const AVFilterContext *ctx,
-                         AVFilterFormatsConfig **cfg_in,
-                         AVFilterFormatsConfig **cfg_out)
+static int query_formats(AVFilterContext *ctx)
 {
-    const Frei0rContext *s = ctx->priv;
+    Frei0rContext *s = ctx->priv;
     AVFilterFormats *formats = NULL;
     int ret;
 
@@ -354,7 +352,7 @@ static int query_formats(const AVFilterContext *ctx,
     if (!formats)
         return AVERROR(ENOMEM);
 
-    return ff_set_common_formats2(ctx, cfg_in, cfg_out, formats);
+    return ff_set_common_formats(ctx, formats);
 }
 
 static int filter_frame(AVFilterLink *inlink, AVFrame *in)
@@ -425,18 +423,18 @@ static const AVFilterPad avfilter_vf_frei0r_inputs[] = {
     },
 };
 
-const FFFilter ff_vf_frei0r = {
-    .p.name        = "frei0r",
-    .p.description = NULL_IF_CONFIG_SMALL("Apply a frei0r effect."),
-    .p.priv_class  = &frei0r_class,
-    .p.flags       = AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC,
+const AVFilter ff_vf_frei0r = {
+    .name          = "frei0r",
+    .description   = NULL_IF_CONFIG_SMALL("Apply a frei0r effect."),
     .init          = filter_init,
     .uninit        = uninit,
     .priv_size     = sizeof(Frei0rContext),
+    .priv_class    = &frei0r_class,
     FILTER_INPUTS(avfilter_vf_frei0r_inputs),
     FILTER_OUTPUTS(ff_video_default_filterpad),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
     .process_command = process_command,
+    .flags         = AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC,
 };
 
 static av_cold int source_init(AVFilterContext *ctx)
@@ -514,14 +512,14 @@ static const AVFilterPad avfilter_vsrc_frei0r_src_outputs[] = {
     },
 };
 
-const FFFilter ff_vsrc_frei0r_src = {
-    .p.name        = "frei0r_src",
-    .p.description = NULL_IF_CONFIG_SMALL("Generate a frei0r source."),
-    .p.priv_class  = &frei0r_src_class,
-    .p.inputs      = NULL,
+const AVFilter ff_vsrc_frei0r_src = {
+    .name          = "frei0r_src",
+    .description   = NULL_IF_CONFIG_SMALL("Generate a frei0r source."),
     .priv_size     = sizeof(Frei0rContext),
+    .priv_class    = &frei0r_src_class,
     .init          = source_init,
     .uninit        = uninit,
+    .inputs        = NULL,
     FILTER_OUTPUTS(avfilter_vsrc_frei0r_src_outputs),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
 };

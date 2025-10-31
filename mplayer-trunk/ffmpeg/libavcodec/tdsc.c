@@ -36,7 +36,6 @@
 #include <stdint.h>
 #include <zlib.h>
 
-#include "libavutil/attributes_internal.h"
 #include "libavutil/imgutils.h"
 #include "libavutil/mem.h"
 
@@ -96,6 +95,7 @@ static av_cold int tdsc_close(AVCodecContext *avctx)
 static av_cold int tdsc_init(AVCodecContext *avctx)
 {
     TDSCContext *ctx = avctx->priv_data;
+    const AVCodec *codec;
     int ret;
 
     avctx->pix_fmt = AV_PIX_FMT_BGR24;
@@ -120,14 +120,16 @@ static av_cold int tdsc_init(AVCodecContext *avctx)
         return AVERROR(ENOMEM);
 
     /* Prepare everything needed for JPEG decoding */
-    EXTERN const FFCodec ff_mjpeg_decoder;
-    ctx->jpeg_avctx = avcodec_alloc_context3(&ff_mjpeg_decoder.p);
+    codec = avcodec_find_decoder(AV_CODEC_ID_MJPEG);
+    if (!codec)
+        return AVERROR_BUG;
+    ctx->jpeg_avctx = avcodec_alloc_context3(codec);
     if (!ctx->jpeg_avctx)
         return AVERROR(ENOMEM);
     ctx->jpeg_avctx->flags = avctx->flags;
     ctx->jpeg_avctx->flags2 = avctx->flags2;
     ctx->jpeg_avctx->idct_algo = avctx->idct_algo;
-    ret = avcodec_open2(ctx->jpeg_avctx, NULL, NULL);
+    ret = avcodec_open2(ctx->jpeg_avctx, codec, NULL);
     if (ret < 0)
         return ret;
 

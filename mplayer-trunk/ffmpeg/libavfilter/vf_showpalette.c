@@ -41,19 +41,17 @@ static const AVOption showpalette_options[] = {
 
 AVFILTER_DEFINE_CLASS(showpalette);
 
-static int query_formats(const AVFilterContext *ctx,
-                         AVFilterFormatsConfig **cfg_in,
-                         AVFilterFormatsConfig **cfg_out)
+static int query_formats(AVFilterContext *ctx)
 {
     static const enum AVPixelFormat in_fmts[]  = {AV_PIX_FMT_PAL8,  AV_PIX_FMT_NONE};
     static const enum AVPixelFormat out_fmts[] = {AV_PIX_FMT_RGB32, AV_PIX_FMT_NONE};
     int ret = ff_formats_ref(ff_make_format_list(in_fmts),
-                             &cfg_in[0]->formats);
+                             &ctx->inputs[0]->outcfg.formats);
     if (ret < 0)
         return ret;
 
     return ff_formats_ref(ff_make_format_list(out_fmts),
-                          &cfg_out[0]->formats);
+                          &ctx->outputs[0]->incfg.formats);
 }
 
 static int config_output(AVFilterLink *outlink)
@@ -112,12 +110,12 @@ static const AVFilterPad showpalette_outputs[] = {
     },
 };
 
-const FFFilter ff_vf_showpalette = {
-    .p.name        = "showpalette",
-    .p.description = NULL_IF_CONFIG_SMALL("Display frame palette."),
-    .p.priv_class  = &showpalette_class,
+const AVFilter ff_vf_showpalette = {
+    .name          = "showpalette",
+    .description   = NULL_IF_CONFIG_SMALL("Display frame palette."),
     .priv_size     = sizeof(ShowPaletteContext),
     FILTER_INPUTS(showpalette_inputs),
     FILTER_OUTPUTS(showpalette_outputs),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
+    .priv_class    = &showpalette_class,
 };

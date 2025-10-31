@@ -22,7 +22,6 @@
 #include "config_components.h"
 
 #include "avformat.h"
-#include "avio_internal.h"
 #include "demux.h"
 #include "internal.h"
 #include "mux.h"
@@ -61,11 +60,9 @@ static int ilbc_read_header(AVFormatContext *s)
     AVIOContext *pb = s->pb;
     AVStream *st;
     uint8_t header[9];
-    int ret;
 
-    ret = ffio_read_size(pb, header, 9);
-    if (ret < 0)
-        return ret;
+    if (avio_read(pb, header, 9) != 9)
+        return AVERROR_INVALIDDATA;
 
     st = avformat_new_stream(s, NULL);
     if (!st)

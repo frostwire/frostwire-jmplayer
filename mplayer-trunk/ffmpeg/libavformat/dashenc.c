@@ -277,8 +277,10 @@ static const char *get_extension_str(SegmentType type, int single_file)
 
 static int handle_io_open_error(AVFormatContext *s, int err, char *url) {
     DASHContext *c = s->priv_data;
+    char errbuf[AV_ERROR_MAX_STRING_SIZE];
+    av_strerror(err, errbuf, sizeof(errbuf));
     av_log(s, c->ignore_io_errors ? AV_LOG_WARNING : AV_LOG_ERROR,
-           "Unable to open %s for writing: %s\n", url, av_err2str(err));
+           "Unable to open %s for writing: %s\n", url, errbuf);
     return c->ignore_io_errors ? 0 : err;
 }
 
@@ -1863,8 +1865,9 @@ static void dashenc_delete_file(AVFormatContext *s, char *filename) {
     } else {
         int res = ffurl_delete(filename);
         if (res < 0) {
-            av_log(s, (res == AVERROR(ENOENT) ? AV_LOG_WARNING : AV_LOG_ERROR),
-                "failed to delete %s: %s\n", filename, av_err2str(res));
+            char errbuf[AV_ERROR_MAX_STRING_SIZE];
+            av_strerror(res, errbuf, sizeof(errbuf));
+            av_log(s, (res == AVERROR(ENOENT) ? AV_LOG_WARNING : AV_LOG_ERROR), "failed to delete %s: %s\n", filename, errbuf);
         }
     }
 }

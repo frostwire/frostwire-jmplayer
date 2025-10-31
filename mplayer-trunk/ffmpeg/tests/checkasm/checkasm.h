@@ -66,10 +66,6 @@ typedef struct { CONTEXT c; int status; } checkasm_context;
 #define checkasm_save_context() 0
 #define checkasm_load_context() do {} while (0)
 #endif
-#elif defined(_WASI_EMULATED_SIGNAL)
-#define checkasm_context void*
-#define checkasm_save_context() 0
-#define checkasm_load_context() do {} while (0)
 #else
 #include <setjmp.h>
 typedef sigjmp_buf checkasm_context;
@@ -80,21 +76,14 @@ typedef sigjmp_buf checkasm_context;
 void checkasm_check_aacencdsp(void);
 void checkasm_check_aacpsdsp(void);
 void checkasm_check_ac3dsp(void);
-void checkasm_check_aes(void);
 void checkasm_check_afir(void);
 void checkasm_check_alacdsp(void);
-void checkasm_check_apv_dsp(void);
 void checkasm_check_audiodsp(void);
 void checkasm_check_av_tx(void);
-void checkasm_check_blackdetect(void);
 void checkasm_check_blend(void);
 void checkasm_check_blockdsp(void);
 void checkasm_check_bswapdsp(void);
-void checkasm_check_cavsdsp(void);
-void checkasm_check_colordetect(void);
 void checkasm_check_colorspace(void);
-void checkasm_check_dcadsp(void);
-void checkasm_check_diracdsp(void);
 void checkasm_check_exrdsp(void);
 void checkasm_check_fdctdsp(void);
 void checkasm_check_fixed_dsp(void);
@@ -112,10 +101,8 @@ void checkasm_check_hevc_deblock(void);
 void checkasm_check_hevc_idct(void);
 void checkasm_check_hevc_pel(void);
 void checkasm_check_hevc_sao(void);
-void checkasm_check_hpeldsp(void);
 void checkasm_check_huffyuvdsp(void);
 void checkasm_check_idctdsp(void);
-void checkasm_check_idet(void);
 void checkasm_check_jpeg2000dsp(void);
 void checkasm_check_llauddsp(void);
 void checkasm_check_lls(void);
@@ -127,11 +114,9 @@ void checkasm_check_mpegvideoencdsp(void);
 void checkasm_check_nlmeans(void);
 void checkasm_check_opusdsp(void);
 void checkasm_check_pixblockdsp(void);
-void checkasm_check_qpeldsp(void);
 void checkasm_check_sbrdsp(void);
 void checkasm_check_rv34dsp(void);
 void checkasm_check_rv40dsp(void);
-void checkasm_check_scene_sad(void);
 void checkasm_check_svq1enc(void);
 void checkasm_check_synth_filter(void);
 void checkasm_check_sw_gbrp(void);
@@ -140,7 +125,6 @@ void checkasm_check_sw_rgb(void);
 void checkasm_check_sw_scale(void);
 void checkasm_check_sw_yuv2rgb(void);
 void checkasm_check_sw_yuv2yuv(void);
-void checkasm_check_sw_ops(void);
 void checkasm_check_takdsp(void);
 void checkasm_check_utvideodsp(void);
 void checkasm_check_v210dec(void);
@@ -152,20 +136,18 @@ void checkasm_check_vf_gblur(void);
 void checkasm_check_vf_hflip(void);
 void checkasm_check_vf_threshold(void);
 void checkasm_check_vf_sobel(void);
-void checkasm_check_vp3dsp(void);
 void checkasm_check_vp8dsp(void);
 void checkasm_check_vp9dsp(void);
 void checkasm_check_videodsp(void);
 void checkasm_check_vorbisdsp(void);
 void checkasm_check_vvc_alf(void);
 void checkasm_check_vvc_mc(void);
-void checkasm_check_vvc_sao(void);
 
 struct CheckasmPerf;
 
 void *checkasm_check_func(void *func, const char *name, ...) av_printf_format(2, 3);
 int checkasm_bench_func(void);
-int checkasm_fail_func(const char *msg, ...) av_printf_format(1, 2);
+void checkasm_fail_func(const char *msg, ...) av_printf_format(1, 2);
 struct CheckasmPerf *checkasm_get_perf_context(void);
 void checkasm_report(const char *name, ...) av_printf_format(1, 2);
 void checkasm_set_signal_handler_state(int enabled);
@@ -189,7 +171,7 @@ int double_near_abs_eps_array(const double *a, const double *b, double eps,
 extern AVLFG checkasm_lfg;
 #define rnd() av_lfg_get(&checkasm_lfg)
 
-av_unused static void *func_ref, *func_new;
+static av_unused void *func_ref, *func_new;
 
 extern uint64_t bench_runs;
 
@@ -352,22 +334,6 @@ typedef struct CheckasmPerf {
 #define PERF_STOP(t)  t = AV_READ_TIME() - t
 #endif
 
-#define CALL4(...)\
-    do {\
-        tfunc(__VA_ARGS__); \
-        tfunc(__VA_ARGS__); \
-        tfunc(__VA_ARGS__); \
-        tfunc(__VA_ARGS__); \
-    } while (0)
-
-#define CALL16(...)\
-    do {\
-        CALL4(__VA_ARGS__); \
-        CALL4(__VA_ARGS__); \
-        CALL4(__VA_ARGS__); \
-        CALL4(__VA_ARGS__); \
-    } while (0)
-
 /* Benchmark the function */
 #define bench_new(...)\
     do {\
@@ -378,12 +344,14 @@ typedef struct CheckasmPerf {
             uint64_t tsum = 0;\
             uint64_t ti, tcount = 0;\
             uint64_t t = 0; \
-            const uint64_t truns = FFMAX(bench_runs >> 3, 1);\
+            const uint64_t truns = bench_runs;\
             checkasm_set_signal_handler_state(1);\
             for (ti = 0; ti < truns; ti++) {\
                 PERF_START(t);\
-                CALL16(__VA_ARGS__);\
-                CALL16(__VA_ARGS__);\
+                tfunc(__VA_ARGS__);\
+                tfunc(__VA_ARGS__);\
+                tfunc(__VA_ARGS__);\
+                tfunc(__VA_ARGS__);\
                 PERF_STOP(t);\
                 if (t*tcount <= tsum*4 && ti > 0) {\
                     tsum += t;\
@@ -391,8 +359,8 @@ typedef struct CheckasmPerf {
                 }\
             }\
             emms_c();\
-            perf->cycles += tsum;\
-            perf->iterations += tcount;\
+            perf->cycles += t;\
+            perf->iterations++;\
             checkasm_set_signal_handler_state(0);\
         }\
     } while (0)
@@ -402,30 +370,11 @@ typedef struct CheckasmPerf {
 #define PERF_STOP(t)   while(0)
 #endif
 
-#define BUF_RECT(type, name, w, h) \
-    LOCAL_ALIGNED_32(type, name##_buf, [((h)+32)*(FFALIGN(w,64)+64) + 64]); \
-    av_unused ptrdiff_t name##_stride = sizeof(type)*(FFALIGN(w,64)+64); \
-    av_unused int name##_buf_h = (h)+32; \
-    type *name = name##_buf + (FFALIGN(w,64)+64)*16 + 64
-
-#define PIXEL_RECT(name, w, h) \
-    LOCAL_ALIGNED_32(uint8_t, name##_buf, [sizeof(uint16_t) * (((h)+32)*(FFALIGN(w,64)+64) + 64)],); \
-    av_unused ptrdiff_t name##_stride = sizeof(uint16_t) * (FFALIGN(w,64)+64); \
-    av_unused int name##_buf_h = (h)+32; \
-    uint8_t *name = name##_buf + (FFALIGN(w,64)+64)*16 + 64
-
-#define CLEAR_BUF_RECT(name) \
-    memset(name##_buf, 0x99, name##_stride * name##_buf_h + 64)
-#define CLEAR_PIXEL_RECT(name) \
-    CLEAR_BUF_RECT(name)
-
 #define DECL_CHECKASM_CHECK_FUNC(type) \
 int checkasm_check_##type(const char *file, int line, \
                           const type *buf1, ptrdiff_t stride1, \
                           const type *buf2, ptrdiff_t stride2, \
-                          int w, int h, const char *name, \
-                          int align_w, int align_h, \
-                          int padding)
+                          int w, int h, const char *name)
 
 DECL_CHECKASM_CHECK_FUNC(uint8_t);
 DECL_CHECKASM_CHECK_FUNC(uint16_t);
@@ -433,59 +382,9 @@ DECL_CHECKASM_CHECK_FUNC(uint32_t);
 DECL_CHECKASM_CHECK_FUNC(int16_t);
 DECL_CHECKASM_CHECK_FUNC(int32_t);
 
-int checkasm_check_float_ulp(const char *file, int line,
-                             const float *buf1, ptrdiff_t stride1,
-                             const float *buf2, ptrdiff_t stride2,
-                             int w, int h, const char *name,
-                             unsigned max_ulp, int align_w, int align_h,
-                             int padding);
-
 #define PASTE(a,b) a ## b
 #define CONCAT(a,b) PASTE(a,b)
 
-#define checkasm_check2(prefix, ...) CONCAT(checkasm_check_, prefix)(__FILE__, __LINE__, __VA_ARGS__)
-#define checkasm_check(prefix, ...) checkasm_check2(prefix, __VA_ARGS__, 0, 0, 0)
-/* Check a pointer from BUF_RECT, checking whether there have been
- * writes outside of the designated area. */
-#define checkasm_check_padded(...) \
-    checkasm_check2(__VA_ARGS__, 1, 1, 8)
-/* Check a pointer from BUF_RECT, checking whether there have been
- * writes outside of the designated area. Allow writing slightly past the
- * end of the buffer, by aligning w/h to align_w/align_h, and checking
- * for overwrites outside of that. */
-#define checkasm_check_padded_align(...) \
-    checkasm_check2(__VA_ARGS__, 8)
-
-/* This assumes that there is a local variable named "bit_depth".
- * For tests that don't have that and only operate on a single
- * bitdepth, just call checkasm_check(uint8_t, ...) directly. */
-#define checkasm_check_pixel2(buf1, stride1, buf2, stride2, ...) \
-    ((bit_depth > 8) ?                                          \
-     checkasm_check2(uint16_t, (const uint16_t*)buf1, stride1,   \
-                               (const uint16_t*)buf2, stride2,   \
-                               __VA_ARGS__) :                    \
-     checkasm_check2(uint8_t,  (const uint8_t*) buf1, stride1,   \
-                               (const uint8_t*) buf2, stride2,   \
-                               __VA_ARGS__))
-#define checkasm_check_pixel(...) \
-    checkasm_check_pixel2(__VA_ARGS__, 0, 0, 0)
-#define checkasm_check_pixel_padded(...) \
-    checkasm_check_pixel2(__VA_ARGS__, 1, 1, 8)
-#define checkasm_check_pixel_padded_align(...) \
-    checkasm_check_pixel2(__VA_ARGS__, 8)
-
-/* This assumes that there is a local variable named "bit_depth"
- * and that the type-specific buffers obey the name ## _BITDEPTH
- * convention.
- * For tests that don't have that and only operate on a single
- * bitdepth, just call checkasm_check(uint8_t, ...) directly. */
-#define checkasm_check_dctcoef(buf1, stride1, buf2, stride2, ...) \
-    ((bit_depth > 8) ?                                        \
-     checkasm_check(int32_t, buf1 ## _32, stride1,            \
-                             buf2 ## _32, stride2,            \
-                             __VA_ARGS__) :                   \
-     checkasm_check(int16_t, buf1 ## _16, stride1,            \
-                             buf2 ## _16, stride2,            \
-                             __VA_ARGS__))
+#define checkasm_check(prefix, ...) CONCAT(checkasm_check_, prefix)(__FILE__, __LINE__, __VA_ARGS__)
 
 #endif /* TESTS_CHECKASM_CHECKASM_H */

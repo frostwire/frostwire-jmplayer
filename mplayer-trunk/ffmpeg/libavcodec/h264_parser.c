@@ -29,7 +29,6 @@
 
 #include <stdint.h>
 
-#include "libavutil/attributes.h"
 #include "libavutil/avutil.h"
 #include "libavutil/error.h"
 #include "libavutil/log.h"
@@ -48,7 +47,7 @@
 #include "h264data.h"
 #include "mpegutils.h"
 #include "parser.h"
-#include "libavutil/refstruct.h"
+#include "refstruct.h"
 #include "startcode.h"
 
 typedef struct H264ParseContext {
@@ -375,7 +374,7 @@ static inline int parse_nal_units(AVCodecParserContext *s,
                 goto fail;
             }
 
-            av_refstruct_replace(&p->ps.pps, p->ps.pps_list[pps_id]);
+            ff_refstruct_replace(&p->ps.pps, p->ps.pps_list[pps_id]);
             p->ps.sps = p->ps.pps->sps;
             sps       = p->ps.sps;
 
@@ -661,7 +660,7 @@ static int h264_parse(AVCodecParserContext *s,
     return next;
 }
 
-static av_cold void h264_close(AVCodecParserContext *s)
+static void h264_close(AVCodecParserContext *s)
 {
     H264ParseContext *p = s->priv_data;
     ParseContext *pc = &p->pc;

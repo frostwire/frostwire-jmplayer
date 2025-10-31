@@ -185,6 +185,7 @@ static int sctp_open(URLContext *h, const char *uri, int flags)
     int fd         = -1;
     SCTPContext *s = h->priv_data;
     const char *p;
+    char buf[256];
     int ret;
     char hostname[1024], proto[1024], path[1024];
     char portstr[10];
@@ -200,9 +201,10 @@ static int sctp_open(URLContext *h, const char *uri, int flags)
 
     p = strchr(uri, '?');
     if (p) {
-        ret = ff_parse_opts_from_query_string(s, p, 0);
-        if (ret < 0)
-            return ret;
+        if (av_find_info_tag(buf, sizeof(buf), "listen", p))
+            s->listen = 1;
+        if (av_find_info_tag(buf, sizeof(buf), "max_streams", p))
+            s->max_streams = strtol(buf, NULL, 10);
     }
 
     hints.ai_family   = AF_UNSPEC;

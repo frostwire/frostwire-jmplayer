@@ -319,7 +319,7 @@ typedef struct Option {
 } Option;
 
 typedef struct OptionGroupDef {
-    /** group name */
+    /**< group name */
     const char *name;
     /**
      * Option to be used as group separator. Can be NULL for groups which
@@ -535,7 +535,7 @@ void *allocate_array_elem(void *array, size_t elem_size, int *nb_elems);
 double get_rotation(const int32_t *displaymatrix);
 
 /* read file contents into a string */
-char *read_file_to_string(const char *filename);
+char *file_read(const char *filename);
 
 /* Remove keys in dictionary b from dictionary a */
 void remove_avoptions(AVDictionary **a, AVDictionary *b);

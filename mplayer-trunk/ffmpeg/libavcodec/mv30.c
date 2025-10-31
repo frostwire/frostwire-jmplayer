@@ -23,7 +23,6 @@
 #include <stddef.h>
 #include <string.h>
 
-#include "libavutil/attributes.h"
 #include "libavutil/mem.h"
 #include "libavutil/thread.h"
 
@@ -683,7 +682,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
     return 0;
 }
 
-static av_cold void decode_flush(AVCodecContext *avctx)
+static void decode_flush(AVCodecContext *avctx)
 {
     MV30Context *s = avctx->priv_data;
 

@@ -46,9 +46,9 @@ static void check_semiplanar(int dst_pix_fmt)
     static const int input_sizes[] = {8, 128, 1080, MAX_LINE_SIZE};
 
     declare_func_emms(AV_CPU_FLAG_MMX | AV_CPU_FLAG_MMXEXT,
-                      int, SwsInternal *c, const uint8_t *const src[],
-                           const int srcStride[], int srcSliceY, int srcSliceH,
-                           uint8_t *const dstParam[], const int dstStride[]);
+                      int, SwsContext *c, const uint8_t *src[],
+                           int srcStride[], int srcSliceY, int srcSliceH,
+                           uint8_t *dst[], int dstStride[]);
 
     LOCAL_ALIGNED_8(uint8_t, src_y,  [MAX_LINE_SIZE * NUM_LINES]);
     LOCAL_ALIGNED_8(uint8_t, src_uv, [MAX_LINE_SIZE * NUM_LINES * 2]);
@@ -71,8 +71,7 @@ static void check_semiplanar(int dst_pix_fmt)
         int src_pix_fmt = src_fmts[sfi];
         const AVPixFmtDescriptor *src_desc = av_pix_fmt_desc_get(src_pix_fmt);
         for (int isi = 0; isi < FF_ARRAY_ELEMS(input_sizes); isi++) {
-            SwsContext *sws;
-            SwsInternal *c;
+            struct SwsContext *ctx;
             int log_level;
             int width = input_sizes[isi];
             int srcSliceY = 0;
@@ -91,15 +90,14 @@ static void check_semiplanar(int dst_pix_fmt)
             // "No accelerated colorspace conversion found from %s to %s"
             log_level = av_log_get_level();
             av_log_set_level(AV_LOG_ERROR);
-            sws = sws_getContext(width, srcSliceH, src_pix_fmt,
+            ctx = sws_getContext(width, srcSliceH, src_pix_fmt,
                                  width, srcSliceH, dst_pix_fmt,
                                  0, NULL, NULL, NULL);
             av_log_set_level(log_level);
-            if (!sws)
+            if (!ctx)
                 fail();
 
-            c = sws_internal(sws);
-            if (check_func(c->convert_unscaled, "%s_%s_%d", src_desc->name, dst_desc->name, width)) {
+            if (check_func(ctx->convert_unscaled, "%s_%s_%d", src_desc->name, dst_desc->name, width)) {
                 memset(dst0_y, 0xFF, MAX_LINE_SIZE * NUM_LINES);
                 memset(dst0_u, 0xFF, MAX_LINE_SIZE * NUM_LINES / 2);
                 memset(dst0_v, 0xFF, MAX_LINE_SIZE * NUM_LINES / 2);
@@ -107,9 +105,9 @@ static void check_semiplanar(int dst_pix_fmt)
                 memset(dst1_u, 0xFF, MAX_LINE_SIZE * NUM_LINES / 2);
                 memset(dst1_v, 0xFF, MAX_LINE_SIZE * NUM_LINES / 2);
 
-                call_ref(c, src, srcStride, srcSliceY,
+                call_ref(ctx, src, srcStride, srcSliceY,
                          srcSliceH, dst0, dstStride);
-                call_new(c, src, srcStride, srcSliceY,
+                call_new(ctx, src, srcStride, srcSliceY,
                          srcSliceH, dst1, dstStride);
 
                 if (memcmp(dst0_y, dst1_y, MAX_LINE_SIZE * NUM_LINES) ||
@@ -117,10 +115,10 @@ static void check_semiplanar(int dst_pix_fmt)
                     memcmp(dst0_v, dst1_v, MAX_LINE_SIZE * NUM_LINES / 2))
                     fail();
 
-                bench_new(c, src, srcStride, srcSliceY,
+                bench_new(ctx, src, srcStride, srcSliceY,
                           srcSliceH, dst0, dstStride);
             }
-            sws_freeContext(sws);
+            sws_freeContext(ctx);
         }
     }
 }

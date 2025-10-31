@@ -1153,7 +1153,6 @@ static const FFCodecDefault vaapi_encode_h264_defaults[] = {
     { "b_qoffset",      "0"   },
     { "qmin",           "-1"  },
     { "qmax",           "-1"  },
-    { "refs",           "0"   },
     { NULL },
 };
 
@@ -1179,7 +1178,10 @@ const FFCodec ff_h264_vaapi_encoder = {
     .caps_internal  = FF_CODEC_CAP_NOT_INIT_THREADSAFE |
                       FF_CODEC_CAP_INIT_CLEANUP,
     .defaults       = vaapi_encode_h264_defaults,
-    CODEC_PIXFMTS(AV_PIX_FMT_VAAPI),
+    .p.pix_fmts = (const enum AVPixelFormat[]) {
+        AV_PIX_FMT_VAAPI,
+        AV_PIX_FMT_NONE,
+    },
     .color_ranges   = AVCOL_RANGE_MPEG | AVCOL_RANGE_JPEG,
     .hw_configs     = ff_vaapi_encode_hw_configs,
     .p.wrapper_name = "vaapi",

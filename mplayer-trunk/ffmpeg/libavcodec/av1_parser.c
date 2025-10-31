@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "libavutil/attributes.h"
 #include "libavutil/avassert.h"
 
 #include "av1_parse.h"
@@ -83,7 +82,7 @@ static int av1_parser_parse(AVCodecParserContext *ctx,
         ff_cbs_fragment_reset(td);
     }
 
-    ret = ff_cbs_read(s->cbc, td, NULL, data, size);
+    ret = ff_cbs_read(s->cbc, td, data, size);
     if (ret < 0) {
         av_log(avctx, AV_LOG_ERROR, "Failed to parse temporal unit.\n");
         goto end;
@@ -201,7 +200,7 @@ static av_cold int av1_parser_init(AVCodecParserContext *ctx)
     return 0;
 }
 
-static av_cold void av1_parser_close(AVCodecParserContext *ctx)
+static void av1_parser_close(AVCodecParserContext *ctx)
 {
     AV1ParseContext *s = ctx->priv_data;
 

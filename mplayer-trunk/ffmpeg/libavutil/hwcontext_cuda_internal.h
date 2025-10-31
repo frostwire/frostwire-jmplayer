@@ -36,3 +36,4 @@ struct AVCUDADeviceContextInternal {
 };
 
 #endif /* AVUTIL_HWCONTEXT_CUDA_INTERNAL_H */
+

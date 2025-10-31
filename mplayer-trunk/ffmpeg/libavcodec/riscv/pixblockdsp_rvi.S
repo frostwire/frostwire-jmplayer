@@ -20,7 +20,6 @@
 
 #include "libavutil/riscv/asm.S"
 
-#if __riscv_xlen >= 64
 func ff_get_pixels_8_rvi
         lpad    0
 .irp row, 0, 1, 2, 3, 4, 5, 6, 7
@@ -59,4 +58,3 @@ func ff_get_pixels_16_rvi
 .endr
         ret
 endfunc
-#endif

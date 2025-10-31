@@ -151,7 +151,6 @@ struct vp56_context {
     VP56Macroblock *macroblocks;
     DECLARE_ALIGNED(16, int16_t, block_coeff)[6][64];
     int idct_selector[6];
-    const uint8_t *def_coeff_reorder;/* used in vp6 only */
 
     /* motion vectors */
     VP56mv mv[6];  /* vectors for each block in MB */
@@ -171,11 +170,6 @@ struct vp56_context {
     uint8_t coeff_ctx_last[4];             /* used in vp5 only */
 
     int has_alpha;
-
-    /* interlacing params */
-    int interlaced;
-    int il_prob;
-    int il_block;
 
     /* upside-down flipping hints */
     int flip;  /* are we flipping ? */
@@ -203,7 +197,7 @@ struct vp56_context {
     GetBitContext gb;
     VLC dccv_vlc[2];
     VLC runv_vlc[2];
-    VLC ract_vlc[2][3][4];
+    VLC ract_vlc[2][3][6];
     unsigned int nb_null[2][2];       /* number of consecutive NULL DC/AC */
 
     int have_undamaged_frame;
@@ -239,7 +233,7 @@ static int vp56_rac_gets(VPXRangeCoder *c, int bits)
 }
 
 // P(7)
-av_unused static int vp56_rac_gets_nn(VPXRangeCoder *c, int bits)
+static av_unused int vp56_rac_gets_nn(VPXRangeCoder *c, int bits)
 {
     int v = vp56_rac_gets(c, 7) << 1;
     return v + !v;

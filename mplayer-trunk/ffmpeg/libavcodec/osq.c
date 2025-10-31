@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "libavutil/attributes.h"
 #include "libavutil/internal.h"
 #include "libavutil/intreadwrite.h"
 #include "libavutil/mem.h"
@@ -63,7 +62,7 @@ typedef struct OSQContext {
     int pkt_offset;
 } OSQContext;
 
-static av_cold void osq_flush(AVCodecContext *avctx)
+static void osq_flush(AVCodecContext *avctx)
 {
     OSQContext *s = avctx->priv_data;
 
@@ -495,6 +494,9 @@ const FFCodec ff_osq_decoder = {
     .p.capabilities   = AV_CODEC_CAP_CHANNEL_CONF |
                         AV_CODEC_CAP_DR1,
     .caps_internal    = FF_CODEC_CAP_INIT_CLEANUP,
-    CODEC_SAMPLEFMTS(AV_SAMPLE_FMT_U8P, AV_SAMPLE_FMT_S16P, AV_SAMPLE_FMT_S32P),
+    .p.sample_fmts    = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_U8P,
+                                                        AV_SAMPLE_FMT_S16P,
+                                                        AV_SAMPLE_FMT_S32P,
+                                                        AV_SAMPLE_FMT_NONE },
     .flush            = osq_flush,
 };

@@ -119,18 +119,20 @@ static int handle_file(struct Tracks *tracks, const char *file)
 {
     AVFormatContext *ctx = NULL;
     int err = 0, i, orig_tracks = tracks->nb_tracks;
-    char *ptr;
+    char errbuf[50], *ptr;
     struct Track *track;
 
     err = avformat_open_input(&ctx, file, NULL, NULL);
     if (err < 0) {
-        fprintf(stderr, "Unable to open %s: %s\n", file, av_err2str(err));
+        av_strerror(err, errbuf, sizeof(errbuf));
+        fprintf(stderr, "Unable to open %s: %s\n", file, errbuf);
         return 1;
     }
 
     err = avformat_find_stream_info(ctx, NULL);
     if (err < 0) {
-        fprintf(stderr, "Unable to identify %s: %s\n", file, av_err2str(err));
+        av_strerror(err, errbuf, sizeof(errbuf));
+        fprintf(stderr, "Unable to identify %s: %s\n", file, errbuf);
         goto fail;
     }
 

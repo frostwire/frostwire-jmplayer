@@ -23,6 +23,7 @@
 
 %include "libavutil/x86/x86util.asm"
 
+SECTION_RODATA
 cextern pb_1
 cextern pw_3
 cextern pw_15
@@ -32,10 +33,11 @@ cextern pw_20
 
 SECTION .text
 
-; void ff_put_no_rnd_pixels8_l2(uint8_t *dst, uint8_t *src1, uint8_t *src2,
-;                               ptrdiff_t dstStride, ptrdiff_t src1Stride, int h)
+; void ff_put_no_rnd_pixels8_l2(uint8_t *dst, uint8_t *src1, uint8_t *src2, int dstStride, int src1Stride, int h)
 %macro PUT_NO_RND_PIXELS8_L2 0
 cglobal put_no_rnd_pixels8_l2, 6,6
+    movsxdifnidn r4, r4d
+    movsxdifnidn r3, r3d
     pcmpeqb      m6, m6
     test        r5d, 1
     je .loop
@@ -97,10 +99,11 @@ INIT_MMX mmxext
 PUT_NO_RND_PIXELS8_L2
 
 
-; void ff_put_no_rnd_pixels16_l2(uint8_t *dst, uint8_t *src1, uint8_t *src2,
-;                                ptrdiff_t dstStride, ptrdiff_t src1Stride, int h)
+; void ff_put_no_rnd_pixels16_l2(uint8_t *dst, uint8_t *src1, uint8_t *src2, int dstStride, int src1Stride, int h)
 %macro PUT_NO_RND_PIXELS16_l2 0
 cglobal put_no_rnd_pixels16_l2, 6,6
+    movsxdifnidn r3, r3d
+    movsxdifnidn r4, r4d
     pcmpeqb      m6, m6
     test        r5d, 1
     je .loop
@@ -166,6 +169,8 @@ PUT_NO_RND_PIXELS16_l2
 
 %macro MPEG4_QPEL16_H_LOWPASS 1
 cglobal %1_mpeg4_qpel16_h_lowpass, 5, 5, 0, 16
+    movsxdifnidn r2, r2d
+    movsxdifnidn r3, r3d
     pxor         m7, m7
 .loop:
     mova         m0, [r1]
@@ -297,6 +302,8 @@ MPEG4_QPEL16_H_LOWPASS put_no_rnd
 
 %macro MPEG4_QPEL8_H_LOWPASS 1
 cglobal %1_mpeg4_qpel8_h_lowpass, 5, 5, 0, 8
+    movsxdifnidn r2, r2d
+    movsxdifnidn r3, r3d
     pxor         m7, m7
 .loop:
     mova         m0, [r1]
@@ -391,6 +398,9 @@ MPEG4_QPEL8_H_LOWPASS put_no_rnd
 
 %macro MPEG4_QPEL16_V_LOWPASS 1
 cglobal %1_mpeg4_qpel16_v_lowpass, 4, 6, 0, 544
+    movsxdifnidn r2, r2d
+    movsxdifnidn r3, r3d
+
     mov         r4d, 17
     mov          r5, rsp
     pxor         m7, m7
@@ -484,6 +494,9 @@ MPEG4_QPEL16_V_LOWPASS put_no_rnd
 
 %macro MPEG4_QPEL8_V_LOWPASS 1
 cglobal %1_mpeg4_qpel8_v_lowpass, 4, 6, 0, 288
+    movsxdifnidn r2, r2d
+    movsxdifnidn r3, r3d
+
     mov         r4d, 9
     mov          r5, rsp
     pxor         m7, m7

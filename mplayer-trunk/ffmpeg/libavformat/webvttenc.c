@@ -21,7 +21,7 @@
 /**
  * @file
  * WebVTT subtitle muxer
- * @see https://www.w3.org/TR/webvtt1/
+ * @see http://dev.w3.org/html5/webvtt/
  */
 
 #include "avformat.h"

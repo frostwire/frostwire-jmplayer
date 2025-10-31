@@ -418,7 +418,7 @@ static void open_video(AVFormatContext *oc, const AVCodec *codec,
         exit(1);
     }
 
-    /* allocate and init a reusable frame */
+    /* allocate and init a re-usable frame */
     ost->frame = alloc_frame(c->pix_fmt, c->width, c->height);
     if (!ost->frame) {
         fprintf(stderr, "Could not allocate video frame\n");

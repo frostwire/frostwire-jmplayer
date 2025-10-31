@@ -263,7 +263,7 @@ static int write_option(void *optctx, const OptionDef *po, const char *opt,
             return AVERROR(EINVAL);
         }
 
-        arg_allocated = read_file_to_string(arg);
+        arg_allocated = file_read(arg);
         if (!arg_allocated) {
             av_log(NULL, AV_LOG_FATAL,
                    "Error reading the value for option '%s' from file: %s\n",
@@ -353,11 +353,9 @@ static int write_option(void *optctx, const OptionDef *po, const char *opt,
 
         ret = po->u.func_arg(optctx, opt, arg);
         if (ret < 0) {
-            if ((strcmp(opt, "init_hw_device") != 0) || (strcmp(arg, "list") != 0)) {
-                av_log(NULL, AV_LOG_ERROR,
-                       "Failed to set value '%s' for option '%s': %s\n",
-                       arg, opt, av_err2str(ret));
-            }
+            av_log(NULL, AV_LOG_ERROR,
+                   "Failed to set value '%s' for option '%s': %s\n",
+                   arg, opt, av_err2str(ret));
             goto finish;
         }
     }
@@ -495,9 +493,8 @@ int locate_option(int argc, char **argv, const OptionDef *options,
     for (i = 1; i < argc; i++) {
         const char *cur_opt = argv[i];
 
-        if (!(cur_opt[0] == '-' && cur_opt[1]))
+        if (*cur_opt++ != '-')
             continue;
-        cur_opt++;
 
         po = find_option(options, cur_opt);
         if (!po->name && cur_opt[0] == 'n' && cur_opt[1] == 'o')
@@ -555,12 +552,11 @@ static void check_options(const OptionDef *po)
 
 void parse_loglevel(int argc, char **argv, const OptionDef *options)
 {
-    int idx;
+    int idx = locate_option(argc, argv, options, "loglevel");
     char *env;
 
     check_options(options);
 
-    idx = locate_option(argc, argv, options, "loglevel");
     if (!idx)
         idx = locate_option(argc, argv, options, "v");
     if (idx && argv[idx + 1])
@@ -1471,12 +1467,9 @@ void *allocate_array_elem(void *ptr, size_t elem_size, int *nb_elems)
 {
     void *new_elem;
 
-    new_elem = av_mallocz(elem_size);
-    if (!new_elem)
+    if (!(new_elem = av_mallocz(elem_size)) ||
+        av_dynarray_add_nofree(ptr, nb_elems, new_elem) < 0)
         return NULL;
-    if (av_dynarray_add_nofree(ptr, nb_elems, new_elem) < 0)
-        av_freep(&new_elem);
-
     return new_elem;
 }
 
@@ -1498,7 +1491,7 @@ double get_rotation(const int32_t *displaymatrix)
 }
 
 /* read file contents into a string */
-char *read_file_to_string(const char *filename)
+char *file_read(const char *filename)
 {
     AVIOContext *pb      = NULL;
     int ret = avio_open(&pb, filename, AVIO_FLAG_READ);

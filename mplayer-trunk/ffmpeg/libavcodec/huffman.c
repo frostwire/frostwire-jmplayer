@@ -39,10 +39,7 @@
 #define HNODE -1
 
 typedef struct HeapElem {
-    union {
-        uint64_t val;
-        uint16_t dummy; // exists solely to ensure alignof(HeapElem) >= alignof(uint16_t)
-    };
+    uint64_t val;
     int name;
 } HeapElem;
 
@@ -62,22 +59,18 @@ static void heap_sift(HeapElem *h, int root, int size)
 
 int ff_huff_gen_len_table(uint8_t *dst, const uint64_t *stats, int stats_size, int skip0)
 {
-    int *up;
-    uint16_t *map;
-    uint8_t *len;
-    HeapElem *h = av_malloc_array(stats_size,
-                                  sizeof(*h) + 2 * sizeof(up) + 2 * sizeof(len) + sizeof(map));
-    if (!h)
-        return AVERROR(ENOMEM);
-    up  = (int*)(h + stats_size);
-    // map is suitably aligned because up uses an even number of elements
-    // and alignof(uint16_t) is either 1 or 2.
-    map = (uint16_t*)(up + 2 * stats_size);
-    len = (uint8_t*)(map + stats_size);
-
+    HeapElem *h  = av_malloc_array(sizeof(*h), stats_size);
+    int *up      = av_malloc_array(sizeof(*up) * 2, stats_size);
+    uint8_t *len = av_malloc_array(sizeof(*len) * 2, stats_size);
+    uint16_t *map= av_malloc_array(sizeof(*map), stats_size);
     int offset, i, next;
     int size = 0;
     int ret = 0;
+
+    if (!h || !up || !len || !map) {
+        ret = AVERROR(ENOMEM);
+        goto end;
+    }
 
     for (i = 0; i<stats_size; i++) {
         dst[i] = 255;
@@ -114,40 +107,48 @@ int ff_huff_gen_len_table(uint8_t *dst, const uint64_t *stats, int stats_size, i
         }
         if (i==size) break;
     }
+end:
     av_free(h);
+    av_free(up);
+    av_free(len);
+    av_free(map);
     return ret;
 }
 
-static void get_tree_codes(int8_t *lens, uint8_t *xlat,
-                           Node *nodes, int node, int pl, int *pos, int no_zero_count)
+static void get_tree_codes(uint32_t *bits, int16_t *lens, uint8_t *xlat,
+                           Node *nodes, int node,
+                           uint32_t pfx, int pl, int *pos, int no_zero_count)
 {
     int s;
 
     s = nodes[node].sym;
     if (s != HNODE || (no_zero_count && !nodes[node].count)) {
+        bits[*pos] = pfx;
         lens[*pos] = pl;
         xlat[*pos] = s;
         (*pos)++;
     } else {
+        pfx <<= 1;
         pl++;
-        get_tree_codes(lens, xlat, nodes, nodes[node].n0, pl,
+        get_tree_codes(bits, lens, xlat, nodes, nodes[node].n0, pfx, pl,
                        pos, no_zero_count);
-        get_tree_codes(lens, xlat, nodes, nodes[node].n0 + 1, pl,
+        pfx |= 1;
+        get_tree_codes(bits, lens, xlat, nodes, nodes[node].n0 + 1, pfx, pl,
                        pos, no_zero_count);
     }
 }
 
-static int build_huff_tree(VLC *vlc, Node *nodes, int head, int flags, int nb_bits, void *logctx)
+static int build_huff_tree(VLC *vlc, Node *nodes, int head, int flags, int nb_bits)
 {
     int no_zero_count = !(flags & FF_HUFFMAN_FLAG_ZERO_COUNT);
-    int8_t lens[256];
+    uint32_t bits[256];
+    int16_t lens[256];
     uint8_t xlat[256];
     int pos = 0;
 
-    get_tree_codes(lens, xlat, nodes, head, 0,
+    get_tree_codes(bits, lens, xlat, nodes, head, 0, 0,
                    &pos, no_zero_count);
-    return ff_vlc_init_from_lengths(vlc, nb_bits, pos, lens, 1,
-                                    xlat, 1, 1, 0, 0, logctx);
+    return ff_vlc_init_sparse(vlc, nb_bits, pos, lens, 2, 2, bits, 4, 4, xlat, 1, 1, 0);
 }
 
 
@@ -193,7 +194,7 @@ int ff_huff_build_tree(void *logctx, VLC *vlc, int nb_codes, int nb_bits,
         nodes[j].n0 = i;
         cur_node++;
     }
-    if (build_huff_tree(vlc, nodes, nb_codes * 2 - 2, flags, nb_bits, logctx) < 0) {
+    if (build_huff_tree(vlc, nodes, nb_codes * 2 - 2, flags, nb_bits) < 0) {
         av_log(logctx, AV_LOG_ERROR, "Error building tree\n");
         return -1;
     }

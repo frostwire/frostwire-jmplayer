@@ -1031,7 +1031,7 @@ retry:
         break;
     }
 
-    /* If nothing was successful, error out */
+    /* If nothing was sucessful, error out */
     if (ret < 0)
         return ret;
 

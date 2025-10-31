@@ -44,6 +44,9 @@
 static const char *const var_names[] = {
     "N",     /* frame number */
     "T",     /* frame time in seconds */
+#if FF_API_FRAME_PKT
+    "POS",   /* original position in the file of the frame */
+#endif
     "PTS",   /* frame pts */
     "TS",    /* interval start time in seconds */
     "TE",    /* interval end time in seconds */
@@ -56,6 +59,9 @@ static const char *const var_names[] = {
 enum var_name {
     VAR_N,
     VAR_T,
+#if FF_API_FRAME_PKT
+    VAR_POS,
+#endif
     VAR_PTS,
     VAR_TS,
     VAR_TE,
@@ -138,18 +144,6 @@ static void skip_comments(const char **buf)
 
 #define COMMAND_DELIMS " \f\t\n\r,;"
 
-/**
- * Clears fields and frees the buffers used by @p cmd
- */
-static void clear_command(Command *cmd)
-{
-    cmd->flags = 0;
-    cmd->index = 0;
-    av_freep(&cmd->target);
-    av_freep(&cmd->command);
-    av_freep(&cmd->arg);
-}
-
 static int parse_command(Command *cmd, int cmd_count, int interval_count,
                          const char **buf, void *log_ctx)
 {
@@ -229,7 +223,9 @@ static int parse_command(Command *cmd, int cmd_count, int interval_count,
     return 1;
 
 fail:
-    clear_command(cmd);
+    av_freep(&cmd->target);
+    av_freep(&cmd->command);
+    av_freep(&cmd->arg);
     return ret;
 }
 
@@ -257,7 +253,6 @@ static int parse_commands(Command **cmds, int *nb_cmds, int interval_count,
             if (!*cmds) {
                 av_log(log_ctx, AV_LOG_ERROR,
                        "Could not (re)allocate command array\n");
-                clear_command(&cmd);
                 return AVERROR(ENOMEM);
             }
         }
@@ -482,7 +477,9 @@ static av_cold void uninit(AVFilterContext *ctx)
         Interval *interval = &s->intervals[i];
         for (j = 0; j < interval->nb_commands; j++) {
             Command *cmd = &interval->commands[j];
-            clear_command(cmd);
+            av_freep(&cmd->target);
+            av_freep(&cmd->command);
+            av_freep(&cmd->arg);
         }
         av_freep(&interval->commands);
     }
@@ -540,6 +537,11 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *ref)
                         double current = TS2T(ref->pts, inlink->time_base);
 
                         var_values[VAR_N]   = inl->frame_count_in;
+#if FF_API_FRAME_PKT
+FF_DISABLE_DEPRECATION_WARNINGS
+                        var_values[VAR_POS] = ref->pkt_pos == -1 ? NAN : ref->pkt_pos;
+FF_ENABLE_DEPRECATION_WARNINGS
+#endif
                         var_values[VAR_PTS] = TS2D(ref->pts);
                         var_values[VAR_T]   = current;
                         var_values[VAR_TS]  = start;
@@ -600,16 +602,16 @@ static const AVFilterPad sendcmd_inputs[] = {
     },
 };
 
-const FFFilter ff_vf_sendcmd = {
-    .p.name        = "sendcmd",
-    .p.description = NULL_IF_CONFIG_SMALL("Send commands to filters."),
-    .p.flags       = AVFILTER_FLAG_METADATA_ONLY,
-    .p.priv_class  = &sendcmd_class,
+const AVFilter ff_vf_sendcmd = {
+    .name        = "sendcmd",
+    .description = NULL_IF_CONFIG_SMALL("Send commands to filters."),
     .init        = init,
     .uninit      = uninit,
     .priv_size   = sizeof(SendCmdContext),
+    .flags       = AVFILTER_FLAG_METADATA_ONLY,
     FILTER_INPUTS(sendcmd_inputs),
     FILTER_OUTPUTS(ff_video_default_filterpad),
+    .priv_class  = &sendcmd_class,
 };
 
 #endif
@@ -624,14 +626,14 @@ static const AVFilterPad asendcmd_inputs[] = {
     },
 };
 
-const FFFilter ff_af_asendcmd = {
-    .p.name        = "asendcmd",
-    .p.description = NULL_IF_CONFIG_SMALL("Send commands to filters."),
-    .p.priv_class  = &sendcmd_class,
-    .p.flags       = AVFILTER_FLAG_METADATA_ONLY,
+const AVFilter ff_af_asendcmd = {
+    .name        = "asendcmd",
+    .description = NULL_IF_CONFIG_SMALL("Send commands to filters."),
+    .priv_class  = &sendcmd_class,
     .init        = init,
     .uninit      = uninit,
     .priv_size   = sizeof(SendCmdContext),
+    .flags       = AVFILTER_FLAG_METADATA_ONLY,
     FILTER_INPUTS(asendcmd_inputs),
     FILTER_OUTPUTS(ff_audio_default_filterpad),
 };

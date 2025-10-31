@@ -28,7 +28,6 @@
 #include "avcodec.h"
 #include "ass.h"
 #include "codec_internal.h"
-#include "libavutil/attributes.h"
 #include "libavutil/bprint.h"
 #include "libavutil/opt.h"
 
@@ -66,7 +65,7 @@ static int text_decode_frame(AVCodecContext *avctx, AVSubtitle *sub,
     return avpkt->size;
 }
 
-static av_cold void text_flush(AVCodecContext *avctx)
+static void text_flush(AVCodecContext *avctx)
 {
     TextContext *text = avctx->priv_data;
     if (!(avctx->flags2 & AV_CODEC_FLAG2_RO_FLUSH_NOOP))
@@ -96,7 +95,7 @@ const FFCodec ff_text_decoder = {
 
 #if CONFIG_VPLAYER_DECODER || CONFIG_PJS_DECODER || CONFIG_SUBVIEWER1_DECODER || CONFIG_STL_DECODER
 
-static av_cold int linebreak_init(AVCodecContext *avctx)
+static int linebreak_init(AVCodecContext *avctx)
 {
     TextContext *text = avctx->priv_data;
     text->linebreaks = "|";

@@ -26,11 +26,9 @@
 
 #include "libavcodec/videodsp.h"
 #include "libavcodec/vvc.h"
-#include "libavcodec/h274.h"
 
 #include "ps.h"
 #include "dsp.h"
-#include "sei.h"
 
 #define LUMA                    0
 #define CHROMA                  1
@@ -72,15 +70,12 @@ typedef struct VVCWindow {
 
 typedef struct VVCFrame {
     struct AVFrame *frame;
-    struct AVFrame *frame_grain;
+
     const VVCSPS *sps;                          ///< RefStruct reference
     const VVCPPS *pps;                          ///< RefStruct reference
     struct MvField *tab_dmvr_mvf;               ///< RefStruct reference
     RefPicListTab **rpl_tab;                    ///< RefStruct reference
     RefPicListTab  *rpl;                        ///< RefStruct reference
-
-    int needs_fg;                               ///< 1 if grain needs to be applied by the decoder
-
     int nb_rpl_elems;
 
     int ctb_count;
@@ -106,8 +101,6 @@ typedef struct VVCFrame {
      * A combination of VVC_FRAME_FLAG_*
      */
     uint8_t flags;
-
-    void *hwaccel_picture_private; ///< hardware accelerator private data
 } VVCFrame;
 
 typedef struct SliceContext {
@@ -129,7 +122,6 @@ typedef struct VVCFrameContext {
     struct AVFrame *output_frame;
 
     VVCFrameParamSets ps;
-    VVCSEI sei;
 
     SliceContext  **slices;
     int nb_slices;
@@ -144,11 +136,11 @@ typedef struct VVCFrameContext {
 
     uint64_t decode_order;
 
-    struct AVRefStructPool *tab_dmvr_mvf_pool;
-    struct AVRefStructPool *rpl_tab_pool;
+    struct FFRefStructPool *tab_dmvr_mvf_pool;
+    struct FFRefStructPool *rpl_tab_pool;
 
-    struct AVRefStructPool *cu_pool;
-    struct AVRefStructPool *tu_pool;
+    struct FFRefStructPool *cu_pool;
+    struct FFRefStructPool *tu_pool;
 
     struct {
         int16_t *slice_idx;
@@ -167,7 +159,9 @@ typedef struct VVCFrameContext {
         uint8_t *skip;                                  ///< CuSkipFlag[][]
         uint8_t *ispmf;                                 ///< intra_sub_partitions_mode_flag
         uint8_t *msm[2];                                ///< MttSplitMode[][][] in 32 pixels
-        uint8_t *imf;                                   ///< IntraMipFlag[][], intra_mip_transposed_flag[][], intra_mip_mode[][]
+        uint8_t *imf;                                   ///< IntraMipFlag[][]
+        uint8_t *imtf;                                  ///< intra_mip_transposed_flag[][]
+        uint8_t *imm;                                   ///< intra_mip_mode[][]
         uint8_t *ipm;                                   ///< IntraPredModeY[][]
         uint8_t *cpm[2];                                ///< CuPredMode[][][]
         uint8_t *msf;                                   ///< MergeSubblockFlag[][]
@@ -178,6 +172,8 @@ typedef struct VVCFrameContext {
 
         uint8_t *tu_coded_flag[VVC_MAX_SAMPLE_ARRAYS];  ///< tu_y_coded_flag[][],  tu_cb_coded_flag[][],  tu_cr_coded_flag[][]
         uint8_t *tu_joint_cbcr_residual_flag;           ///< tu_joint_cbcr_residual_flag[][]
+        int     *tb_pos_x0[2];
+        int     *tb_pos_y0[2];
         uint8_t *tb_width[2];
         uint8_t *tb_height[2];
         uint8_t *pcmf[2];
@@ -232,7 +228,6 @@ typedef struct VVCContext {
     enum VVCNALUnitType vcl_unit_type;
     int no_output_before_recovery_flag; ///< NoOutputBeforeRecoveryFlag
     int gdr_recovery_point_poc;         ///< recoveryPointPocVal
-    int film_grain_warning_shown;
 
     /**
      * Sequence counters for decoded and output frames, so that old
@@ -241,15 +236,13 @@ typedef struct VVCContext {
     uint16_t seq_decode;
     uint16_t seq_output;
 
-    struct FFExecutor *executor;
+    struct AVExecutor *executor;
 
     VVCFrameContext *fcs;
     int nb_fcs;
 
     uint64_t nb_frames;     ///< processed frames
     int nb_delayed;         ///< delayed frames
-
-    H274HashContext *hash_ctx;
 }  VVCContext ;
 
 #endif /* AVCODEC_VVC_DEC_H */

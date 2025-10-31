@@ -387,7 +387,7 @@ static int config_input(AVFilterLink *inlink)
     }
 
     if (mi_ctx->scd_method == SCD_METHOD_FDIFF) {
-        mi_ctx->sad = ff_scene_sad_get_fn(mi_ctx->bitdepth);
+        mi_ctx->sad = ff_scene_sad_get_fn(mi_ctx->bitdepth == 8 ? 8 : 16);
         if (!mi_ctx->sad)
             return AVERROR(EINVAL);
     }
@@ -918,9 +918,9 @@ static void set_frame_data(MIContext *mi_ctx, int alpha, AVFrame *avf_out)
                 int x_mv, y_mv;
                 int weight_sum = 0;
                 int i, val = 0;
-                PixelMVS *pixel_mvs = &mi_ctx->pixel_mvs[x + y * width];
-                PixelWeights *pixel_weights = &mi_ctx->pixel_weights[x + y * width];
-                PixelRefs *pixel_refs = &mi_ctx->pixel_refs[x + y * width];
+                PixelMVS *pixel_mvs = &mi_ctx->pixel_mvs[x + y * avf_out->width];
+                PixelWeights *pixel_weights = &mi_ctx->pixel_weights[x + y * avf_out->width];
+                PixelRefs *pixel_refs = &mi_ctx->pixel_refs[x + y * avf_out->width];
 
                 for (i = 0; i < pixel_refs->nb; i++)
                     weight_sum += pixel_weights->weights[i];
@@ -939,20 +939,17 @@ static void set_frame_data(MIContext *mi_ctx, int alpha, AVFrame *avf_out)
                     weight_sum = ALPHA_MAX;
                 }
 
-                if (chroma) {
-                    for (i = 0; i < pixel_refs->nb; i++) {
-                        Frame *frame = &mi_ctx->frames[pixel_refs->refs[i]];
+                for (i = 0; i < pixel_refs->nb; i++) {
+                    Frame *frame = &mi_ctx->frames[pixel_refs->refs[i]];
+                    if (chroma) {
                         x_mv = (x >> mi_ctx->log2_chroma_w) + pixel_mvs->mvs[i][0] / (1 << mi_ctx->log2_chroma_w);
                         y_mv = (y >> mi_ctx->log2_chroma_h) + pixel_mvs->mvs[i][1] / (1 << mi_ctx->log2_chroma_h);
-                        val += pixel_weights->weights[i] * frame->avf->data[plane][x_mv + y_mv * frame->avf->linesize[plane]];
-                    }
-                } else {
-                    for (i = 0; i < pixel_refs->nb; i++) {
-                        Frame *frame = &mi_ctx->frames[pixel_refs->refs[i]];
+                    } else {
                         x_mv = x + pixel_mvs->mvs[i][0];
                         y_mv = y + pixel_mvs->mvs[i][1];
-                        val += pixel_weights->weights[i] * frame->avf->data[plane][x_mv + y_mv * frame->avf->linesize[plane]];
                     }
+
+                    val += pixel_weights->weights[i] * frame->avf->data[plane][x_mv + y_mv * frame->avf->linesize[plane]];
                 }
 
                 val = ROUNDED_DIV(val, weight_sum);
@@ -1255,11 +1252,11 @@ static const AVFilterPad minterpolate_outputs[] = {
     },
 };
 
-const FFFilter ff_vf_minterpolate = {
-    .p.name        = "minterpolate",
-    .p.description = NULL_IF_CONFIG_SMALL("Frame rate conversion using Motion Interpolation."),
-    .p.priv_class  = &minterpolate_class,
+const AVFilter ff_vf_minterpolate = {
+    .name          = "minterpolate",
+    .description   = NULL_IF_CONFIG_SMALL("Frame rate conversion using Motion Interpolation."),
     .priv_size     = sizeof(MIContext),
+    .priv_class    = &minterpolate_class,
     .uninit        = uninit,
     FILTER_INPUTS(minterpolate_inputs),
     FILTER_OUTPUTS(minterpolate_outputs),

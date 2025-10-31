@@ -227,7 +227,6 @@ static int open_stream(AVFilterContext *ctx, MovieStream *st, int dec_threads)
     ret = avcodec_parameters_to_context(st->codec_ctx, st->st->codecpar);
     if (ret < 0)
         return ret;
-    st->codec_ctx->pkt_timebase = st->st->time_base;
 
     if (!dec_threads)
         dec_threads = ff_filter_get_nb_threads(ctx);
@@ -412,42 +411,34 @@ static av_cold void movie_uninit(AVFilterContext *ctx)
         avformat_close_input(&movie->format_ctx);
 }
 
-static int movie_query_formats(const AVFilterContext *ctx,
-                               AVFilterFormatsConfig **cfg_in,
-                               AVFilterFormatsConfig **cfg_out)
+static int movie_query_formats(AVFilterContext *ctx)
 {
-    const MovieContext *movie = ctx->priv;
+    MovieContext *movie = ctx->priv;
     int list[] = { 0, -1 };
     AVChannelLayout list64[] = { { 0 }, { 0 } };
     int i, ret;
 
     for (i = 0; i < ctx->nb_outputs; i++) {
-        const MovieStream *st = &movie->st[i];
-        const AVCodecParameters *c = st->st->codecpar;
-        AVFilterFormatsConfig *cfg = cfg_out[i];
+        MovieStream *st = &movie->st[i];
+        AVCodecParameters *c = st->st->codecpar;
+        AVFilterLink *outlink = ctx->outputs[i];
 
         switch (c->codec_type) {
         case AVMEDIA_TYPE_VIDEO:
             list[0] = c->format;
-            if ((ret = ff_formats_ref(ff_make_format_list(list), &cfg->formats)) < 0)
-                return ret;
-            list[0] = c->color_space;
-            if ((ret = ff_formats_ref(ff_make_format_list(list), &cfg->color_spaces)) < 0)
-                return ret;
-            list[0] = c->color_range;
-            if ((ret = ff_formats_ref(ff_make_format_list(list), &cfg->color_ranges)) < 0)
+            if ((ret = ff_formats_ref(ff_make_format_list(list), &outlink->incfg.formats)) < 0)
                 return ret;
             break;
         case AVMEDIA_TYPE_AUDIO:
             list[0] = c->format;
-            if ((ret = ff_formats_ref(ff_make_format_list(list), &cfg->formats)) < 0)
+            if ((ret = ff_formats_ref(ff_make_format_list(list), &outlink->incfg.formats)) < 0)
                 return ret;
             list[0] = c->sample_rate;
-            if ((ret = ff_formats_ref(ff_make_format_list(list), &cfg->samplerates)) < 0)
+            if ((ret = ff_formats_ref(ff_make_format_list(list), &outlink->incfg.samplerates)) < 0)
                 return ret;
             list64[0] = c->ch_layout;
             if ((ret = ff_channel_layouts_ref(ff_make_channel_layout_list(list64),
-                                   &cfg->channel_layouts)) < 0)
+                                   &outlink->incfg.channel_layouts)) < 0)
                 return ret;
             break;
         }
@@ -682,17 +673,19 @@ AVFILTER_DEFINE_CLASS_EXT(movie, "(a)movie", movie_options);
 
 #if CONFIG_MOVIE_FILTER
 
-const FFFilter ff_avsrc_movie = {
-    .p.name        = "movie",
-    .p.description = NULL_IF_CONFIG_SMALL("Read from a movie source."),
-    .p.priv_class  = &movie_class,
-    .p.flags       = AVFILTER_FLAG_DYNAMIC_OUTPUTS,
+const AVFilter ff_avsrc_movie = {
+    .name          = "movie",
+    .description   = NULL_IF_CONFIG_SMALL("Read from a movie source."),
     .priv_size     = sizeof(MovieContext),
+    .priv_class    = &movie_class,
     .init          = movie_common_init,
     .activate      = activate,
     .uninit        = movie_uninit,
-    FILTER_QUERY_FUNC2(movie_query_formats),
+    FILTER_QUERY_FUNC(movie_query_formats),
 
+    .inputs    = NULL,
+    .outputs   = NULL,
+    .flags     = AVFILTER_FLAG_DYNAMIC_OUTPUTS,
     .process_command = process_command
 };
 
@@ -700,17 +693,19 @@ const FFFilter ff_avsrc_movie = {
 
 #if CONFIG_AMOVIE_FILTER
 
-const FFFilter ff_avsrc_amovie = {
-    .p.name        = "amovie",
-    .p.description = NULL_IF_CONFIG_SMALL("Read audio from a movie source."),
-    .p.priv_class  = &movie_class,
-    .p.flags       = AVFILTER_FLAG_DYNAMIC_OUTPUTS,
+const AVFilter ff_avsrc_amovie = {
+    .name          = "amovie",
+    .description   = NULL_IF_CONFIG_SMALL("Read audio from a movie source."),
+    .priv_class    = &movie_class,
     .priv_size     = sizeof(MovieContext),
     .init          = movie_common_init,
     .activate      = activate,
     .uninit        = movie_uninit,
-    FILTER_QUERY_FUNC2(movie_query_formats),
+    FILTER_QUERY_FUNC(movie_query_formats),
 
+    .inputs     = NULL,
+    .outputs    = NULL,
+    .flags      = AVFILTER_FLAG_DYNAMIC_OUTPUTS,
     .process_command = process_command,
 };
 

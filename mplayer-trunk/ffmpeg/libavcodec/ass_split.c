@@ -1,5 +1,5 @@
 /*
- * SSA/ASS splitting functions
+ * SSA/ASS spliting functions
  * Copyright (c) 2010  Aurelien Jacobs <aurel@gnuage.org>
  *
  * This file is part of FFmpeg.
@@ -379,7 +379,7 @@ static int ass_split(ASSSplitContext *ctx, const char *buf)
     return buf ? 0 : AVERROR_INVALIDDATA;
 }
 
-av_cold ASSSplitContext *ff_ass_split(const char *buf)
+ASSSplitContext *ff_ass_split(const char *buf)
 {
     ASSSplitContext *ctx = av_mallocz(sizeof(*ctx));
     if (!ctx)
@@ -467,7 +467,7 @@ ASSDialog *ff_ass_split_dialog(ASSSplitContext *ctx, const char *buf)
     return dialog;
 }
 
-av_cold void ff_ass_split_free(ASSSplitContext *ctx)
+void ff_ass_split_free(ASSSplitContext *ctx)
 {
     if (ctx) {
         int i;

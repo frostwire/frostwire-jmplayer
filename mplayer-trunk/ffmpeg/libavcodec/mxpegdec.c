@@ -28,7 +28,6 @@
 #include "libavutil/mem.h"
 #include "codec_internal.h"
 #include "decode.h"
-#include "hpeldsp.h"
 #include "mjpeg.h"
 #include "mjpegdec.h"
 
@@ -48,8 +47,10 @@ typedef struct MXpegDecodeContext {
 static av_cold int mxpeg_decode_end(AVCodecContext *avctx)
 {
     MXpegDecodeContext *s = avctx->priv_data;
+    MJpegDecodeContext *jpg = &s->jpg;
     int i;
 
+    jpg->picture_ptr = NULL;
     ff_mjpeg_decode_end(avctx);
 
     for (i = 0; i < 2; ++i)
@@ -65,10 +66,6 @@ static av_cold int mxpeg_decode_end(AVCodecContext *avctx)
 static av_cold int mxpeg_decode_init(AVCodecContext *avctx)
 {
     MXpegDecodeContext *s = avctx->priv_data;
-    HpelDSPContext hdsp;
-
-    ff_hpeldsp_init(&hdsp, avctx->flags);
-    s->jpg.copy_block = hdsp.put_pixels_tab[1][0];
 
     s->picture[0] = av_frame_alloc();
     s->picture[1] = av_frame_alloc();
@@ -178,12 +175,6 @@ static int mxpeg_check_dimensions(MXpegDecodeContext *s, MJpegDecodeContext *jpg
                        "Dimensions of current and reference picture mismatch\n");
                 return AVERROR(EINVAL);
             }
-        }
-        if (reference_ptr->width  != jpg->picture_ptr->width  ||
-            reference_ptr->height != jpg->picture_ptr->height ||
-            reference_ptr->format != jpg->picture_ptr->format) {
-            av_log(jpg->avctx, AV_LOG_ERROR, "Reference mismatching\n");
-            return AVERROR_INVALIDDATA;
         }
     }
 

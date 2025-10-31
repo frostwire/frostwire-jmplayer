@@ -45,11 +45,8 @@ static const AVDictionaryEntry *dict_iterate(const AVDictionary *m,
 static void print_dict(const AVDictionary *m)
 {
     const AVDictionaryEntry *t = NULL;
-    const char *sep = "";
-    while ((t = dict_iterate(m, t))) {
-        printf("%s%s %s", sep, t->key, t->value);
-        sep = "   ";
-    }
+    while ((t = dict_iterate(m, t)))
+        printf("%s %s   ", t->key, t->value);
     printf("\n");
 }
 

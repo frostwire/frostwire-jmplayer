@@ -125,11 +125,6 @@ AVIOContext *avio_alloc_context(
 
 void avio_context_free(AVIOContext **ps)
 {
-    AVIOContext *s = *ps;
-    if (s) {
-        av_freep(&s->protocol_whitelist);
-        av_freep(&s->protocol_blacklist);
-    }
     av_freep(ps);
 }
 
@@ -238,9 +233,10 @@ int64_t avio_seek(AVIOContext *s, int64_t offset, int whence)
     FFIOContext *const ctx = ffiocontext(s);
     int64_t offset1;
     int64_t pos;
+    int force = whence & AVSEEK_FORCE;
     int buffer_size;
     int short_seek;
-    whence &= ~AVSEEK_FORCE; // force flag does nothing
+    whence &= ~AVSEEK_FORCE;
 
     if(!s)
         return AVERROR(EINVAL);
@@ -281,7 +277,8 @@ int64_t avio_seek(AVIOContext *s, int64_t offset, int whence)
     } else if ((!(s->seekable & AVIO_SEEKABLE_NORMAL) ||
                offset1 <= buffer_size + short_seek) &&
                !s->write_flag && offset1 >= 0 &&
-               (!s->direct || !s->seek)) {
+               (!s->direct || !s->seek) &&
+              (whence != SEEK_END || force)) {
         while(s->pos < offset && !s->eof_reached)
             fill_buffer(s);
         if (s->eof_reached)
@@ -298,7 +295,7 @@ int64_t avio_seek(AVIOContext *s, int64_t offset, int whence)
         s->pos = pos;
         s->eof_reached = 0;
         fill_buffer(s);
-        return avio_seek(s, offset, SEEK_SET);
+        return avio_seek(s, offset, SEEK_SET | force);
     } else {
         int64_t res;
         if (s->write_flag) {
@@ -311,7 +308,7 @@ int64_t avio_seek(AVIOContext *s, int64_t offset, int whence)
         ctx->seek_count++;
         if (!s->write_flag)
             s->buf_end = s->buffer;
-        s->checksum_ptr = s->buf_ptr = s->buf_ptr_max = s->buffer;
+        s->buf_ptr = s->buf_ptr_max = s->buffer;
         s->pos = offset;
     }
     s->eof_reached = 0;

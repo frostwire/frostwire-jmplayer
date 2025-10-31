@@ -21,7 +21,6 @@
  */
 
 #include "avformat.h"
-#include "avio_internal.h"
 #include "demux.h"
 #include "internal.h"
 #include "libavutil/intreadwrite.h"
@@ -140,9 +139,11 @@ static int read_extradata(AVFormatContext *s, const ArgoBRPStreamHeader *hdr,
 
     av_assert0(bufsz >= size);
 
-    ret = ffio_read_size(s->pb, buf, size);
-    if (ret < 0)
+    if ((ret = avio_read(s->pb, buf, size)) < 0)
         return ret;
+
+    if (ret != size)
+        return AVERROR(EIO);
 
     return 0;
 }
@@ -154,9 +155,10 @@ static int argo_brp_read_header(AVFormatContext *s)
     ArgoBRPDemuxContext *brp = s->priv_data;
     uint8_t buf[FFMAX(BRP_MIN_BUFFER_SIZE, ASF_MIN_BUFFER_SIZE)];
 
-    ret = ffio_read_size(pb, buf, BRP_FILE_HEADER_SIZE);
-    if (ret < 0)
+    if ((ret = avio_read(pb, buf, BRP_FILE_HEADER_SIZE)) < 0)
         return ret;
+    else if (ret != BRP_FILE_HEADER_SIZE)
+        return AVERROR(EIO);
 
     brp->fhdr.magic       = AV_RL32(buf + 0);
     brp->fhdr.num_streams = AV_RL32(buf + 4);
@@ -179,9 +181,10 @@ static int argo_brp_read_header(AVFormatContext *s)
         if (!(st = avformat_new_stream(s, NULL)))
             return AVERROR(ENOMEM);
 
-        ret = ffio_read_size(pb, buf, BRP_STREAM_HEADER_SIZE);
-        if (ret < 0)
+        if ((ret = avio_read(pb, buf, BRP_STREAM_HEADER_SIZE)) < 0)
             return ret;
+        else if (ret != BRP_STREAM_HEADER_SIZE)
+            return AVERROR(EIO);
 
         hdr->codec_id       = AV_RL32(buf + 0);
         hdr->id             = AV_RL32(buf + 4);
@@ -283,9 +286,10 @@ static int argo_brp_read_header(AVFormatContext *s)
         av_log(s, AV_LOG_TRACE, "Searching %d blocks for BASF...", BRP_BASF_LOOKAHEAD);
 
         for (i = 0; i < BRP_BASF_LOOKAHEAD; i++) {
-            ret = ffio_read_size(pb, buf, BRP_BLOCK_HEADER_SIZE);
-            if (ret < 0)
+            if ((ret = avio_read(pb, buf, BRP_BLOCK_HEADER_SIZE)) < 0)
                 return ret;
+            else if (ret != BRP_BLOCK_HEADER_SIZE)
+                return AVERROR(EIO);
 
             blk.stream_id = AV_RL32(buf + 0);
             blk.start_ms  = AV_RL32(buf + 4);
@@ -309,9 +313,10 @@ static int argo_brp_read_header(AVFormatContext *s)
         if (blk.size < ASF_CHUNK_HEADER_SIZE)
             return AVERROR_INVALIDDATA;
 
-        ret = ffio_read_size(pb, buf, BRP_BLOCK_HEADER_SIZE);
-        if (ret < 0)
+        if ((ret = avio_read(pb, buf, ASF_CHUNK_HEADER_SIZE)) < 0)
             return ret;
+        else if (ret != ASF_CHUNK_HEADER_SIZE)
+            return AVERROR(EIO);
 
         ff_argo_asf_parse_chunk_header(&brp->basf.ckhdr, buf);
 
@@ -353,9 +358,10 @@ static int argo_brp_read_packet(AVFormatContext *s, AVPacket *pkt)
     ArgoASFChunkHeader ckhdr;
     int ret;
 
-    ret = ffio_read_size(s->pb, buf, BRP_BLOCK_HEADER_SIZE);
-    if (ret < 0)
+    if ((ret = avio_read(s->pb, buf, BRP_BLOCK_HEADER_SIZE)) < 0)
         return ret;
+    else if (ret != BRP_BLOCK_HEADER_SIZE)
+        return AVERROR(EIO);
 
     blk.stream_id = AV_RL32(buf + 0);
     blk.start_ms  = AV_RL32(buf + 4);
@@ -374,9 +380,8 @@ static int argo_brp_read_packet(AVFormatContext *s, AVPacket *pkt)
         if (blk.size < ASF_CHUNK_HEADER_SIZE)
             return AVERROR_INVALIDDATA;
 
-        ret = ffio_read_size(s->pb, buf, ASF_CHUNK_HEADER_SIZE);
-        if (ret < 0)
-            return ret;
+        if (avio_read(s->pb, buf, ASF_CHUNK_HEADER_SIZE) != ASF_CHUNK_HEADER_SIZE)
+            return AVERROR_INVALIDDATA;
 
         ff_argo_asf_parse_chunk_header(&ckhdr, buf);
 

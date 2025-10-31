@@ -61,16 +61,13 @@ static av_cold int init(AVFilterContext *ctx)
     return 0;
 }
 
-static int query_formats(const AVFilterContext *ctx,
-                         AVFilterFormatsConfig **cfg_in,
-                         AVFilterFormatsConfig **cfg_out)
+static int query_formats(AVFilterContext *ctx)
 {
     int reject_flags = AV_PIX_FMT_FLAG_HWACCEL   |
                        AV_PIX_FMT_FLAG_BITSTREAM |
                        FF_PIX_FMT_FLAG_SW_FLAT_SUB;
 
-    return ff_set_common_formats2(ctx, cfg_in, cfg_out,
-                                  ff_formats_pixdesc_filter(0, reject_flags));
+    return ff_set_common_formats(ctx, ff_formats_pixdesc_filter(0, reject_flags));
 }
 
 static int config_output(AVFilterLink *outlink)
@@ -176,15 +173,15 @@ static const AVFilterPad untile_outputs[] = {
     },
 };
 
-const FFFilter ff_vf_untile = {
-    .p.name        = "untile",
-    .p.description = NULL_IF_CONFIG_SMALL("Untile a frame into a sequence of frames."),
-    .p.priv_class  = &untile_class,
+const AVFilter ff_vf_untile = {
+    .name          = "untile",
+    .description   = NULL_IF_CONFIG_SMALL("Untile a frame into a sequence of frames."),
     .init          = init,
     .uninit        = uninit,
     .activate      = activate,
     .priv_size     = sizeof(UntileContext),
     FILTER_INPUTS(ff_video_default_filterpad),
     FILTER_OUTPUTS(untile_outputs),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
+    .priv_class    = &untile_class,
 };

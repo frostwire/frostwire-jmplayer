@@ -416,11 +416,11 @@ static const AVFilterPad pan_inputs[] = {
     },
 };
 
-const FFFilter ff_af_pan = {
-    .p.name        = "pan",
-    .p.description = NULL_IF_CONFIG_SMALL("Remix channels with coefficients (panning)."),
-    .p.priv_class  = &pan_class,
+const AVFilter ff_af_pan = {
+    .name          = "pan",
+    .description   = NULL_IF_CONFIG_SMALL("Remix channels with coefficients (panning)."),
     .priv_size     = sizeof(PanContext),
+    .priv_class    = &pan_class,
     .init          = init,
     .uninit        = uninit,
     FILTER_INPUTS(pan_inputs),

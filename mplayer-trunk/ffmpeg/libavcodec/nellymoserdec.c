@@ -28,7 +28,7 @@
 /**
  * @file
  * The 3 alphanumeric copyright notices are md5summed they are from the original
- * implementers. The original code is available from http://code.google.com/p/nelly2pcm/
+ * implementors. The original code is available from http://code.google.com/p/nelly2pcm/
  */
 
 #include "libavutil/channel_layout.h"
@@ -202,5 +202,6 @@ const FFCodec ff_nellymoser_decoder = {
     .close          = decode_end,
     FF_CODEC_DECODE_CB(decode_tag),
     .p.capabilities = AV_CODEC_CAP_DR1 | AV_CODEC_CAP_PARAM_CHANGE | AV_CODEC_CAP_CHANNEL_CONF,
-    CODEC_SAMPLEFMTS(AV_SAMPLE_FMT_FLT),
+    .p.sample_fmts  = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_FLT,
+                                                      AV_SAMPLE_FMT_NONE },
 };

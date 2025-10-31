@@ -29,7 +29,6 @@
 #include "libavutil/csp.h"
 #include "libavutil/imgutils.h"
 #include "libavutil/internal.h"
-#include "libavutil/intfloat.h"
 #include "libavutil/intreadwrite.h"
 #include "libavutil/opt.h"
 #include "libavutil/pixdesc.h"
@@ -227,26 +226,26 @@ static int filter_frame(AVFilterLink *link, AVFrame *in)
 
     /* input and output transfer will be linear */
     if (in->color_trc == AVCOL_TRC_UNSPECIFIED) {
-        av_log(ctx, AV_LOG_WARNING, "Untagged transfer, assuming linear light\n");
+        av_log(s, AV_LOG_WARNING, "Untagged transfer, assuming linear light\n");
         out->color_trc = AVCOL_TRC_LINEAR;
     } else if (in->color_trc != AVCOL_TRC_LINEAR)
-        av_log(ctx, AV_LOG_WARNING, "Tonemapping works on linear light only\n");
+        av_log(s, AV_LOG_WARNING, "Tonemapping works on linear light only\n");
 
     /* read peak from side data if not passed in */
     if (!peak) {
         peak = ff_determine_signal_peak(in);
-        av_log(ctx, AV_LOG_DEBUG, "Computed signal peak: %f\n", peak);
+        av_log(s, AV_LOG_DEBUG, "Computed signal peak: %f\n", peak);
     }
 
     /* load original color space even if pixel format is RGB to compute overbrights */
     s->coeffs = av_csp_luma_coeffs_from_avcsp(in->colorspace);
     if (s->desat > 0 && (in->colorspace == AVCOL_SPC_UNSPECIFIED || !s->coeffs)) {
         if (in->colorspace == AVCOL_SPC_UNSPECIFIED)
-            av_log(ctx, AV_LOG_WARNING, "Missing color space information, ");
+            av_log(s, AV_LOG_WARNING, "Missing color space information, ");
         else if (!s->coeffs)
-            av_log(ctx, AV_LOG_WARNING, "Unsupported color space '%s', ",
+            av_log(s, AV_LOG_WARNING, "Unsupported color space '%s', ",
                    av_color_space_name(in->colorspace));
-        av_log(ctx, AV_LOG_WARNING, "desaturation is disabled\n");
+        av_log(s, AV_LOG_WARNING, "desaturation is disabled\n");
         s->desat = 0;
     }
 
@@ -306,14 +305,14 @@ static const AVFilterPad tonemap_inputs[] = {
     },
 };
 
-const FFFilter ff_vf_tonemap = {
-    .p.name          = "tonemap",
-    .p.description   = NULL_IF_CONFIG_SMALL("Conversion to/from different dynamic ranges."),
-    .p.priv_class    = &tonemap_class,
-    .p.flags         = AVFILTER_FLAG_SLICE_THREADS,
+const AVFilter ff_vf_tonemap = {
+    .name            = "tonemap",
+    .description     = NULL_IF_CONFIG_SMALL("Conversion to/from different dynamic ranges."),
     .init            = init,
     .priv_size       = sizeof(TonemapContext),
+    .priv_class      = &tonemap_class,
     FILTER_INPUTS(tonemap_inputs),
     FILTER_OUTPUTS(ff_video_default_filterpad),
     FILTER_PIXFMTS(AV_PIX_FMT_GBRPF32, AV_PIX_FMT_GBRAPF32),
+    .flags           = AVFILTER_FLAG_SLICE_THREADS,
 };

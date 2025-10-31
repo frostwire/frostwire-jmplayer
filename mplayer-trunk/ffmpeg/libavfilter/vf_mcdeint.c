@@ -51,7 +51,6 @@
 
 #include "libavutil/opt.h"
 #include "libavcodec/avcodec.h"
-#include "libavutil/pixdesc.h"
 #include "avfilter.h"
 #include "filters.h"
 #include "video.h"
@@ -129,7 +128,7 @@ static int config_props(AVFilterLink *inlink)
     enc_ctx->time_base = (AVRational){1,25};  // meaningless
     enc_ctx->gop_size = INT_MAX;
     enc_ctx->max_b_frames = 0;
-    enc_ctx->pix_fmt = inlink->format;
+    enc_ctx->pix_fmt = AV_PIX_FMT_YUV420P;
     enc_ctx->flags = AV_CODEC_FLAG_QSCALE | AV_CODEC_FLAG_LOW_DELAY | AV_CODEC_FLAG_RECON_FRAME;
     enc_ctx->strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
     enc_ctx->global_quality = 1;
@@ -173,7 +172,6 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *inpic)
     AVFilterLink *outlink = inlink->dst->outputs[0];
     AVFrame *outpic, *frame_dec = mcdeint->frame_dec;
     AVPacket *pkt = mcdeint->pkt;
-    const AVPixFmtDescriptor *pix_fmt_desc = av_pix_fmt_desc_get(inlink->format);
     int x, y, i, ret;
 
     outpic = ff_get_video_buffer(outlink, outlink->w, outlink->h);
@@ -203,14 +201,8 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *inpic)
 
     for (i = 0; i < 3; i++) {
         int is_chroma = !!i;
-        int w, h;
-        if (is_chroma) {
-            w = AV_CEIL_RSHIFT(inlink->w, pix_fmt_desc->log2_chroma_w);
-            h = AV_CEIL_RSHIFT(inlink->h, pix_fmt_desc->log2_chroma_h);
-        } else {
-            w = inlink->w;
-            h = inlink->h;
-        }
+        int w = AV_CEIL_RSHIFT(inlink->w, is_chroma);
+        int h = AV_CEIL_RSHIFT(inlink->h, is_chroma);
         int fils = frame_dec->linesize[i];
         int srcs = inpic    ->linesize[i];
         int dsts = outpic   ->linesize[i];
@@ -307,13 +299,13 @@ static const AVFilterPad mcdeint_inputs[] = {
     },
 };
 
-const FFFilter ff_vf_mcdeint = {
-    .p.name        = "mcdeint",
-    .p.description = NULL_IF_CONFIG_SMALL("Apply motion compensating deinterlacing."),
-    .p.priv_class  = &mcdeint_class,
+const AVFilter ff_vf_mcdeint = {
+    .name          = "mcdeint",
+    .description   = NULL_IF_CONFIG_SMALL("Apply motion compensating deinterlacing."),
     .priv_size     = sizeof(MCDeintContext),
     .uninit        = uninit,
     FILTER_INPUTS(mcdeint_inputs),
     FILTER_OUTPUTS(ff_video_default_filterpad),
-    FILTER_PIXFMTS(AV_PIX_FMT_YUV420P, AV_PIX_FMT_YUV444P),
+    FILTER_SINGLE_PIXFMT(AV_PIX_FMT_YUV420P),
+    .priv_class    = &mcdeint_class,
 };

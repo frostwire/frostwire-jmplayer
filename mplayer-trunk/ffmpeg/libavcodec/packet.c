@@ -23,7 +23,6 @@
 
 #include "libavutil/avassert.h"
 #include "libavutil/avutil.h"
-#include "libavutil/container_fifo.h"
 #include "libavutil/intreadwrite.h"
 #include "libavutil/mathematics.h"
 #include "libavutil/mem.h"
@@ -308,9 +307,6 @@ const char *av_packet_side_data_name(enum AVPacketSideDataType type)
     case AV_PKT_DATA_IAMF_RECON_GAIN_INFO_PARAM: return "IAMF Recon Gain Info Parameter Data";
     case AV_PKT_DATA_FRAME_CROPPING:             return "Frame Cropping";
     case AV_PKT_DATA_LCEVC:                      return "LCEVC NAL data";
-    case AV_PKT_DATA_3D_REFERENCE_DISPLAYS:      return "3D Reference Displays Info";
-    case AV_PKT_DATA_RTCP_SR:                    return "RTCP Sender Report";
-    case AV_PKT_DATA_EXIF:                       return "EXIF metadata";
     }
     return NULL;
 }
@@ -550,7 +546,6 @@ int avpriv_packet_list_put(PacketList *packet_buffer,
                            int flags)
 {
     PacketListEntry *pktl = av_malloc(sizeof(*pktl));
-    unsigned int update_end_point = 1;
     int ret;
 
     if (!pktl)
@@ -574,22 +569,13 @@ int avpriv_packet_list_put(PacketList *packet_buffer,
 
     pktl->next = NULL;
 
-    if (packet_buffer->head) {
-        if (flags & FF_PACKETLIST_FLAG_PREPEND) {
-            pktl->next = packet_buffer->head;
-            packet_buffer->head = pktl;
-            update_end_point = 0;
-        } else {
-            packet_buffer->tail->next = pktl;
-        }
-    } else
+    if (packet_buffer->head)
+        packet_buffer->tail->next = pktl;
+    else
         packet_buffer->head = pktl;
 
-    if (update_end_point) {
-        /* Add the packet in the buffered packet list. */
-        packet_buffer->tail = pktl;
-    }
-
+    /* Add the packet in the buffered packet list. */
+    packet_buffer->tail = pktl;
     return 0;
 }
 
@@ -765,36 +751,4 @@ void av_packet_side_data_free(AVPacketSideData **psd, int *pnb_sd)
 
     av_freep(psd);
     *pnb_sd = 0;
-}
-
-static void *container_packet_alloc(void *opaque)
-{
-    return av_packet_alloc();
-}
-
-static void container_packet_reset(void *opaque, void *obj)
-{
-    av_packet_unref(obj);
-}
-
-static void container_packet_free(void *opaque, void *obj)
-{
-    AVPacket *pkt = obj;
-    av_packet_free(&pkt);
-}
-
-static int container_packet_transfer(void *opaque, void *dst, void *src, unsigned flags)
-{
-    if (flags & AV_CONTAINER_FIFO_FLAG_REF)
-        return av_packet_ref(dst, src);
-
-    av_packet_move_ref(dst, src);
-    return 0;
-}
-
-AVContainerFifo *av_container_fifo_alloc_avpacket(unsigned flags)
-{
-    return av_container_fifo_alloc(NULL, container_packet_alloc,
-                                   container_packet_reset, container_packet_free,
-                                   container_packet_transfer, 0);
 }

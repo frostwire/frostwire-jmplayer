@@ -328,7 +328,7 @@ static int update_extradata(AVCodecParameters *codecpar)
             return ret;
 
         put_bits32(&pb, get_bits_long(&gb, 32)); // min/max blocksize
-        put_bits63(&pb, 48, get_bits64(&gb, 48)); // min/max framesize
+        put_bits64(&pb, 48, get_bits64(&gb, 48)); // min/max framesize
         put_bits(&pb, 20, get_bits(&gb, 20)); // samplerate
         skip_bits(&gb, 3);
         put_bits(&pb, 3, codecpar->ch_layout.nb_channels - 1);
@@ -364,12 +364,10 @@ static int scalable_channel_layout_config(void *s, AVIOContext *pb,
         return AVERROR(ENOMEM);
 
     audio_element->nb_layers = nb_layers;
-    for (int i = 0, n = 0; i < nb_layers; i++) {
-        AVChannelLayout ch_layout = { 0 };
+    for (int i = 0; i < nb_layers; i++) {
         AVIAMFLayer *layer;
         int loudspeaker_layout, output_gain_is_present_flag;
         int substream_count, coupled_substream_count;
-        int expanded_loudspeaker_layout = -1;
         int ret, byte = avio_r8(pb);
 
         layer = av_iamf_audio_element_add_layer(audio_element->element);
@@ -393,16 +391,10 @@ static int scalable_channel_layout_config(void *s, AVIOContext *pb,
             layer->output_gain = av_make_q(sign_extend(avio_rb16(pb), 16), 1 << 8);
         }
 
-        if (!i && loudspeaker_layout == 15)
-            expanded_loudspeaker_layout = avio_r8(pb);
-        if (expanded_loudspeaker_layout > 0 && expanded_loudspeaker_layout < 13) {
-            av_channel_layout_copy(&ch_layout, &ff_iamf_expanded_scalable_ch_layouts[expanded_loudspeaker_layout]);
-        } else if (loudspeaker_layout < 10) {
-            av_channel_layout_copy(&ch_layout, &ff_iamf_scalable_ch_layouts[loudspeaker_layout]);
-            if (i)
-                ch_layout.u.mask &= ~av_channel_layout_subset(&audio_element->element->layers[i-1]->ch_layout, UINT64_MAX);
-        } else
-            ch_layout = (AVChannelLayout){ .order = AV_CHANNEL_ORDER_UNSPEC,
+        if (loudspeaker_layout < 10)
+            av_channel_layout_copy(&layer->ch_layout, &ff_iamf_scalable_ch_layouts[loudspeaker_layout]);
+        else
+            layer->ch_layout = (AVChannelLayout){ .order = AV_CHANNEL_ORDER_UNSPEC,
                                                           .nb_channels = substream_count +
                                                                          coupled_substream_count };
 
@@ -417,64 +409,6 @@ static int scalable_channel_layout_config(void *s, AVIOContext *pb,
                 return ret;
         }
 
-        if (ch_layout.order == AV_CHANNEL_ORDER_NATIVE) {
-            ret = av_channel_layout_custom_init(&layer->ch_layout, ch_layout.nb_channels);
-            if (ret < 0)
-                return ret;
-
-            for (int j = 0; j < n; j++)
-                layer->ch_layout.u.map[j].id = av_channel_layout_channel_from_index(&audio_element->element->layers[i-1]->ch_layout, j);
-
-            coupled_substream_count = audio_element->layers[i].coupled_substream_count;
-            while (coupled_substream_count--) {
-                if (ch_layout.u.mask & AV_CH_LAYOUT_STEREO) {
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_FRONT_LEFT;
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_FRONT_RIGHT;
-                    ch_layout.u.mask &= ~AV_CH_LAYOUT_STEREO;
-                } else if (ch_layout.u.mask & (AV_CH_FRONT_LEFT_OF_CENTER|AV_CH_FRONT_RIGHT_OF_CENTER)) {
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_FRONT_LEFT_OF_CENTER;
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_FRONT_RIGHT_OF_CENTER;
-                    ch_layout.u.mask &= ~(AV_CH_FRONT_LEFT_OF_CENTER|AV_CH_FRONT_RIGHT_OF_CENTER);
-                } else if (ch_layout.u.mask & (AV_CH_SIDE_LEFT|AV_CH_SIDE_RIGHT)) {
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_SIDE_LEFT;
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_SIDE_RIGHT;
-                    ch_layout.u.mask &= ~(AV_CH_SIDE_LEFT|AV_CH_SIDE_RIGHT);
-                } else if (ch_layout.u.mask & (AV_CH_BACK_LEFT|AV_CH_BACK_RIGHT)) {
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_BACK_LEFT;
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_BACK_RIGHT;
-                    ch_layout.u.mask &= ~(AV_CH_BACK_LEFT|AV_CH_BACK_RIGHT);
-                } else if (ch_layout.u.mask & (AV_CH_TOP_FRONT_LEFT|AV_CH_TOP_FRONT_RIGHT)) {
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_TOP_FRONT_LEFT;
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_TOP_FRONT_RIGHT;
-                    ch_layout.u.mask &= ~(AV_CH_TOP_FRONT_LEFT|AV_CH_TOP_FRONT_RIGHT);
-                } else if (ch_layout.u.mask & (AV_CH_TOP_SIDE_LEFT|AV_CH_TOP_SIDE_RIGHT)) {
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_TOP_SIDE_LEFT;
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_TOP_SIDE_RIGHT;
-                    ch_layout.u.mask &= ~(AV_CH_TOP_SIDE_LEFT|AV_CH_TOP_SIDE_RIGHT);
-                } else if (ch_layout.u.mask & (AV_CH_TOP_BACK_LEFT|AV_CH_TOP_BACK_RIGHT)) {
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_TOP_BACK_LEFT;
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_TOP_BACK_RIGHT;
-                    ch_layout.u.mask &= ~(AV_CH_TOP_BACK_LEFT|AV_CH_TOP_BACK_RIGHT);
-                }
-            }
-
-            substream_count -= audio_element->layers[i].coupled_substream_count;
-            while (substream_count--) {
-                if (ch_layout.u.mask & AV_CH_FRONT_CENTER) {
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_FRONT_CENTER;
-                    ch_layout.u.mask &= ~AV_CH_FRONT_CENTER;
-                }
-                if (ch_layout.u.mask & AV_CH_LOW_FREQUENCY) {
-                    layer->ch_layout.u.map[n++].id = AV_CHAN_LOW_FREQUENCY;
-                    ch_layout.u.mask &= ~AV_CH_LOW_FREQUENCY;
-                }
-            }
-
-            ret = av_channel_layout_retype(&layer->ch_layout, AV_CHANNEL_ORDER_NATIVE, 0);
-            if (ret < 0 && ret != AVERROR(ENOSYS))
-                return ret;
-        } else // AV_CHANNEL_ORDER_UNSPEC
-            av_channel_layout_copy(&layer->ch_layout, &ch_layout);
     }
 
     return 0;
@@ -526,16 +460,14 @@ static int ambisonics_config(void *s, AVIOContext *pb,
                 return ret;
         }
 
-        ret = av_channel_layout_custom_init(&layer->ch_layout, output_channel_count);
-        if (ret < 0)
-            return ret;
+        layer->ch_layout.order = AV_CHANNEL_ORDER_CUSTOM;
+        layer->ch_layout.nb_channels = output_channel_count;
+        layer->ch_layout.u.map = av_calloc(output_channel_count, sizeof(*layer->ch_layout.u.map));
+        if (!layer->ch_layout.u.map)
+            return AVERROR(ENOMEM);
 
         for (int i = 0; i < output_channel_count; i++)
             layer->ch_layout.u.map[i].id = avio_r8(pb) + AV_CHAN_AMBISONIC_BASE;
-
-        ret = av_channel_layout_retype(&layer->ch_layout, AV_CHANNEL_ORDER_AMBISONIC, 0);
-        if (ret < 0 && ret != AVERROR(ENOSYS))
-            return ret;
     } else {
         int coupled_substream_count = avio_r8(pb);  // M
         int nb_demixing_matrix = substream_count + coupled_substream_count;
@@ -657,7 +589,7 @@ static int param_parse(void *s, IAMFContext *c, AVIOContext *pb,
 
     if (param_definition) {
         if (param_definition->param_size != param_size || memcmp(param_definition->param, param, param_size)) {
-            av_log(s, AV_LOG_ERROR, "Inconsistent parameters for parameter_id %u\n", parameter_id);
+            av_log(s, AV_LOG_ERROR, "Incosistent parameters for parameter_id %u\n", parameter_id);
             av_free(param);
             return AVERROR_INVALIDDATA;
         }
@@ -731,7 +663,7 @@ static int audio_element_obu(void *s, IAMFContext *c, AVIOContext *pb, int len)
 
     codec_config = ff_iamf_get_codec_config(c, codec_config_id);
     if (!codec_config) {
-        av_log(s, AV_LOG_ERROR, "Non existent codec config id %d referenced in an audio element\n", codec_config_id);
+        av_log(s, AV_LOG_ERROR, "Non existant codec config id %d referenced in an audio element\n", codec_config_id);
         ret = AVERROR_INVALIDDATA;
         goto fail;
     }
@@ -1062,8 +994,7 @@ static int mix_presentation_obu(void *s, IAMFContext *c, AVIOContext *pb, int le
                     goto fail;
                 }
                 av_channel_layout_copy(&submix_layout->sound_system, &ff_iamf_sound_system_map[sound_system].layout);
-            } else
-                submix_layout->sound_system = (AVChannelLayout)AV_CHANNEL_LAYOUT_BINAURAL;
+            }
 
             info_type = avio_r8(pbc);
             submix_layout->integrated_loudness = av_make_q(sign_extend(avio_rb16(pbc), 16), 1 << 8);

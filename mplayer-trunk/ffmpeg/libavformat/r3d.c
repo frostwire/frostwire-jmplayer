@@ -58,7 +58,7 @@ static int r3d_read_red1(AVFormatContext *s)
     char filename[258];
     int tmp;
     int ret;
-    av_unused int tmp2;
+    int av_unused tmp2;
     AVRational framerate;
 
     if (!st)
@@ -143,7 +143,7 @@ static int r3d_read_rdvo(AVFormatContext *s, Atom *atom)
 static void r3d_read_reos(AVFormatContext *s)
 {
     R3DContext *r3d = s->priv_data;
-    av_unused int tmp;
+    int av_unused tmp;
 
     r3d->rdvo_offset = avio_rb32(s->pb);
     avio_rb32(s->pb); // rdvs offset
@@ -220,7 +220,7 @@ static int r3d_read_redv(AVFormatContext *s, AVPacket *pkt, Atom *atom)
 {
     AVStream *st = s->streams[0];
     int tmp;
-    av_unused int tmp2;
+    int av_unused tmp2;
     int64_t pos = avio_tell(s->pb);
     unsigned dts;
     int ret;
@@ -275,7 +275,7 @@ static int r3d_read_reda(AVFormatContext *s, AVPacket *pkt, Atom *atom)
 {
     R3DContext *r3d = s->priv_data;
     AVStream *st;
-    av_unused int tmp, tmp2;
+    int av_unused tmp, tmp2;
     int samples, size;
     int64_t pos = avio_tell(s->pb);
     unsigned dts;

@@ -82,11 +82,9 @@ typedef struct ThreadData {
     int step;
 } ThreadData;
 
-static int query_formats(const AVFilterContext *ctx,
-                         AVFilterFormatsConfig **cfg_in,
-                         AVFilterFormatsConfig **cfg_out)
+static int query_formats(AVFilterContext *ctx)
 {
-    const RemapContext *s = ctx->priv;
+    RemapContext *s = ctx->priv;
     static const enum AVPixelFormat pix_fmts[] = {
         AV_PIX_FMT_YUVA444P,
         AV_PIX_FMT_YUV444P,
@@ -118,14 +116,14 @@ static int query_formats(const AVFilterContext *ctx,
     int ret;
 
     pix_formats = ff_make_format_list(s->format ? gray_pix_fmts : pix_fmts);
-    if ((ret = ff_formats_ref(pix_formats, &cfg_in[0]->formats)) < 0 ||
-        (ret = ff_formats_ref(pix_formats, &cfg_out[0]->formats)) < 0)
+    if ((ret = ff_formats_ref(pix_formats, &ctx->inputs[0]->outcfg.formats)) < 0 ||
+        (ret = ff_formats_ref(pix_formats, &ctx->outputs[0]->incfg.formats)) < 0)
         return ret;
 
     map_formats = ff_make_format_list(map_fmts);
-    if ((ret = ff_formats_ref(map_formats, &cfg_in[1]->formats)) < 0)
+    if ((ret = ff_formats_ref(map_formats, &ctx->inputs[1]->outcfg.formats)) < 0)
         return ret;
-    return ff_formats_ref(map_formats, &cfg_in[2]->formats);
+    return ff_formats_ref(map_formats, &ctx->inputs[2]->outcfg.formats);
 }
 
 /**
@@ -397,15 +395,15 @@ static const AVFilterPad remap_outputs[] = {
     },
 };
 
-const FFFilter ff_vf_remap = {
-    .p.name        = "remap",
-    .p.description = NULL_IF_CONFIG_SMALL("Remap pixels."),
-    .p.priv_class  = &remap_class,
-    .p.flags       = AVFILTER_FLAG_SLICE_THREADS,
+const AVFilter ff_vf_remap = {
+    .name          = "remap",
+    .description   = NULL_IF_CONFIG_SMALL("Remap pixels."),
     .priv_size     = sizeof(RemapContext),
     .uninit        = uninit,
     .activate      = activate,
     FILTER_INPUTS(remap_inputs),
     FILTER_OUTPUTS(remap_outputs),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
+    .priv_class    = &remap_class,
+    .flags         = AVFILTER_FLAG_SLICE_THREADS,
 };

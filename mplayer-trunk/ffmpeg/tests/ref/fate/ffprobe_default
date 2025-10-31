@@ -68,14 +68,12 @@ sample_aspect_ratio=1:1
 pict_type=I
 interlaced_frame=0
 top_field_first=0
-lossless=0
 repeat_pict=0
 color_range=unknown
 color_space=unknown
 color_primaries=unknown
 color_transfer=unknown
 chroma_location=unspecified
-alpha_mode=unspecified
 [/FRAME]
 [PACKET]
 codec_type=video
@@ -115,14 +113,12 @@ sample_aspect_ratio=1:1
 pict_type=I
 interlaced_frame=0
 top_field_first=0
-lossless=0
 repeat_pict=0
 color_range=unknown
 color_space=unknown
 color_primaries=unknown
 color_transfer=unknown
 chroma_location=unspecified
-alpha_mode=unspecified
 [/FRAME]
 [PACKET]
 codec_type=audio
@@ -194,14 +190,12 @@ sample_aspect_ratio=1:1
 pict_type=I
 interlaced_frame=0
 top_field_first=0
-lossless=0
 repeat_pict=0
 color_range=unknown
 color_space=unknown
 color_primaries=unknown
 color_transfer=unknown
 chroma_location=unspecified
-alpha_mode=unspecified
 [/FRAME]
 [PACKET]
 codec_type=video
@@ -241,14 +235,12 @@ sample_aspect_ratio=1:1
 pict_type=I
 interlaced_frame=0
 top_field_first=0
-lossless=0
 repeat_pict=0
 color_range=unknown
 color_space=unknown
 color_primaries=unknown
 color_transfer=unknown
 chroma_location=unspecified
-alpha_mode=unspecified
 [/FRAME]
 [PACKET]
 codec_type=audio
@@ -352,14 +344,12 @@ sample_aspect_ratio=1:1
 pict_type=I
 interlaced_frame=0
 top_field_first=0
-lossless=0
 repeat_pict=0
 color_range=unknown
 color_space=unknown
 color_primaries=unknown
 color_transfer=unknown
 chroma_location=unspecified
-alpha_mode=unspecified
 [/FRAME]
 [PACKET]
 codec_type=video
@@ -399,14 +389,12 @@ sample_aspect_ratio=1:1
 pict_type=I
 interlaced_frame=0
 top_field_first=0
-lossless=0
 repeat_pict=0
 color_range=unknown
 color_space=unknown
 color_primaries=unknown
 color_transfer=unknown
 chroma_location=unspecified
-alpha_mode=unspecified
 [/FRAME]
 [PACKET]
 codec_type=audio
@@ -510,14 +498,12 @@ sample_aspect_ratio=1:1
 pict_type=I
 interlaced_frame=0
 top_field_first=0
-lossless=0
 repeat_pict=0
 color_range=unknown
 color_space=unknown
 color_primaries=unknown
 color_transfer=unknown
 chroma_location=unspecified
-alpha_mode=unspecified
 [/FRAME]
 [PACKET]
 codec_type=video
@@ -557,14 +543,12 @@ sample_aspect_ratio=1:1
 pict_type=I
 interlaced_frame=0
 top_field_first=0
-lossless=0
 repeat_pict=0
 color_range=unknown
 color_space=unknown
 color_primaries=unknown
 color_transfer=unknown
 chroma_location=unspecified
-alpha_mode=unspecified
 [/FRAME]
 [STREAM]
 index=0
@@ -612,8 +596,8 @@ DISPOSITION:metadata=0
 DISPOSITION:dependent=0
 DISPOSITION:still_image=0
 DISPOSITION:multilayer=0
-TAG:encoder=Lavc pcm_s16le
 TAG:E=mc²
+TAG:encoder=Lavc pcm_s16le
 [/STREAM]
 [STREAM]
 index=1
@@ -626,6 +610,8 @@ width=320
 height=240
 coded_width=320
 coded_height=240
+closed_captions=0
+film_grain=0
 has_b_frames=0
 sample_aspect_ratio=1:1
 display_aspect_ratio=4:3
@@ -671,9 +657,9 @@ DISPOSITION:metadata=0
 DISPOSITION:dependent=0
 DISPOSITION:still_image=0
 DISPOSITION:multilayer=0
-TAG:encoder=Lavc rawvideo
 TAG:title=foobar
 TAG:duration_ts=field-and-tags-conflict-attempt
+TAG:encoder=Lavc rawvideo
 [/STREAM]
 [STREAM]
 index=2
@@ -686,6 +672,8 @@ width=100
 height=100
 coded_width=100
 coded_height=100
+closed_captions=0
+film_grain=0
 has_b_frames=0
 sample_aspect_ratio=1:1
 display_aspect_ratio=1:1

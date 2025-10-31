@@ -23,8 +23,6 @@
 #include "libavutil/imgutils.h"
 #include "libavutil/log.h"
 #include "libavutil/mem.h"
-#include "libavutil/refstruct.h"
-
 #include "decode.h"
 #include "lcevcdec.h"
 
@@ -141,7 +139,7 @@ static int lcevc_send_frame(void *logctx, FFLCEVCFrame *frame_ctx, const AVFrame
     if (!sd)
         return 1;
 
-    res = LCEVC_SendDecoderEnhancementData(lcevc->decoder, in->pts, sd->data, sd->size);
+    res = LCEVC_SendDecoderEnhancementData(lcevc->decoder, in->pts, 0, sd->data, sd->size);
     if (res != LCEVC_Success)
         return AVERROR_EXTERNAL;
 
@@ -149,7 +147,7 @@ static int lcevc_send_frame(void *logctx, FFLCEVCFrame *frame_ctx, const AVFrame
     if (ret < 0)
         return ret;
 
-    res = LCEVC_SendDecoderBase(lcevc->decoder, in->pts, picture, -1, NULL);
+    res = LCEVC_SendDecoderBase(lcevc->decoder, in->pts, 0, picture, -1, NULL);
     if (res != LCEVC_Success)
         return AVERROR_EXTERNAL;
 
@@ -242,7 +240,7 @@ static void event_callback(LCEVC_DecoderHandle dec, LCEVC_Event event,
     }
 }
 
-static void lcevc_free(AVRefStructOpaque unused, void *obj)
+static void lcevc_free(FFRefStructOpaque unused, void *obj)
 {
     FFLCEVCContext *lcevc = obj;
     if (lcevc->initialized)
@@ -280,7 +278,7 @@ static int lcevc_init(FFLCEVCContext *lcevc, void *logctx)
 
 int ff_lcevc_process(void *logctx, AVFrame *frame)
 {
-    FrameDecodeData  *fdd = frame->private_ref;
+    FrameDecodeData  *fdd = (FrameDecodeData*)frame->private_ref->data;
     FFLCEVCFrame *frame_ctx = fdd->post_process_opaque;
     FFLCEVCContext *lcevc = frame_ctx->lcevc;
     int ret;
@@ -313,7 +311,7 @@ int ff_lcevc_alloc(FFLCEVCContext **plcevc)
 {
     FFLCEVCContext *lcevc = NULL;
 #if CONFIG_LIBLCEVC_DEC
-    lcevc = av_refstruct_alloc_ext(sizeof(*lcevc), 0, NULL, lcevc_free);
+    lcevc = ff_refstruct_alloc_ext(sizeof(*lcevc), 0, NULL, lcevc_free);
     if (!lcevc)
         return AVERROR(ENOMEM);
 #endif
@@ -324,7 +322,7 @@ int ff_lcevc_alloc(FFLCEVCContext **plcevc)
 void ff_lcevc_unref(void *opaque)
 {
     FFLCEVCFrame *lcevc = opaque;
-    av_refstruct_unref(&lcevc->lcevc);
+    ff_refstruct_unref(&lcevc->lcevc);
     av_frame_free(&lcevc->frame);
     av_free(opaque);
 }

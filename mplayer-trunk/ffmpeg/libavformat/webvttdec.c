@@ -21,7 +21,7 @@
 /**
  * @file
  * WebVTT subtitle demuxer
- * @see https://www.w3.org/TR/webvtt1/
+ * @see http://dev.w3.org/html5/webvtt/
  */
 
 #include "avformat.h"
@@ -216,8 +216,7 @@ static const AVClass webvtt_demuxer_class = {
 const FFInputFormat ff_webvtt_demuxer = {
     .p.name         = "webvtt",
     .p.long_name    = NULL_IF_CONFIG_SMALL("WebVTT subtitle"),
-    .p.mime_type    = "text/vtt",
-    .p.extensions   = "vtt,webvtt",
+    .p.extensions   = "vtt",
     .p.priv_class   = &webvtt_demuxer_class,
     .priv_data_size = sizeof(WebVTTContext),
     .flags_internal = FF_INFMT_FLAG_INIT_CLEANUP,

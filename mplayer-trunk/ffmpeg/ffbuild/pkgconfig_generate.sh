@@ -50,7 +50,7 @@ includedir=${source_path}
 prefix=
 exec_prefix=
 libdir=\${pcfiledir}/../../../$name
-includedir=${includedir}
+includedir=${source_path}
 
 Name: $fullname
 Description: $comment

@@ -30,9 +30,7 @@
 #include "hpeldsp.h"
 #include "h264chroma.h"
 
-typedef void (*vc1op_pixels_func)(uint8_t *block/*align width (8 or 16)*/,
-                                  const uint8_t *pixels/*align 1*/,
-                                  ptrdiff_t line_size, int round);
+typedef void (*vc1op_pixels_func)(uint8_t *block/*align width (8 or 16)*/, const uint8_t *pixels/*align 1*/, ptrdiff_t line_size, int h);
 
 typedef struct VC1DSPContext {
     /* vc1 functions */

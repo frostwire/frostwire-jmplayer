@@ -71,7 +71,6 @@
 #include "bytestream.h"
 #include "jpeg2000.h"
 #include "version.h"
-#include "libavutil/attributes.h"
 #include "libavutil/common.h"
 #include "libavutil/mem.h"
 #include "libavutil/pixdesc.h"
@@ -581,7 +580,7 @@ static void init_quantization(Jpeg2000EncoderContext *s)
     }
 }
 
-static av_cold void init_luts(void)
+static void init_luts(void)
 {
     int i, a,
         mask = ~((1<<NMSEDEC_FRACBITS)-1);
@@ -1269,7 +1268,7 @@ static void makelayer(Jpeg2000EncoderContext *s, int layno, double thresh, Jpeg2
 
 static void makelayers(Jpeg2000EncoderContext *s, Jpeg2000Tile *tile)
 {
-    int precno, compno, reslevelno, bandno, cblkno, passno, layno;
+    int precno, compno, reslevelno, bandno, cblkno, lev, passno, layno;
     int i;
     double min = DBL_MAX;
     double max = 0;
@@ -1280,7 +1279,7 @@ static void makelayers(Jpeg2000EncoderContext *s, Jpeg2000Tile *tile)
     for (compno = 0; compno < s->ncomponents; compno++){
         Jpeg2000Component *comp = tile->comp + compno;
 
-        for (reslevelno = 0; reslevelno < codsty->nreslevels; reslevelno++){
+        for (reslevelno = 0, lev = codsty->nreslevels-1; reslevelno < codsty->nreslevels; reslevelno++, lev--){
             Jpeg2000ResLevel *reslevel = comp->reslevel + reslevelno;
 
             for (precno = 0; precno < reslevel->num_precincts_x * reslevel->num_precincts_y; precno++){
@@ -1727,7 +1726,7 @@ static av_cold int j2kenc_init(AVCodecContext *avctx)
     s->avctx = avctx;
     av_log(s->avctx, AV_LOG_DEBUG, "init\n");
     if (parse_layer_rates(s)) {
-        av_log(avctx, AV_LOG_WARNING, "Layer rates invalid. Encoding with 1 layer based on quality metric.\n");
+        av_log(s, AV_LOG_WARNING, "Layer rates invalid. Encoding with 1 layer based on quality metric.\n");
         s->nlayers = 1;
         s->layer_rates[0] = 0;
         s->compression_rate_enc = 0;
@@ -1803,7 +1802,7 @@ static int j2kenc_destroy(AVCodecContext *avctx)
     return 0;
 }
 
-// taken from the libopenjpeg wrapper so it matches
+// taken from the libopenjpeg wraper so it matches
 
 #define OFFSET(x) offsetof(Jpeg2000EncoderContext, x)
 #define VE AV_OPT_FLAG_VIDEO_PARAM | AV_OPT_FLAG_ENCODING_PARAM
@@ -1846,7 +1845,7 @@ const FFCodec ff_jpeg2000_encoder = {
     .init           = j2kenc_init,
     FF_CODEC_ENCODE_CB(encode_frame),
     .close          = j2kenc_destroy,
-    CODEC_PIXFMTS(
+    .p.pix_fmts     = (const enum AVPixelFormat[]) {
         AV_PIX_FMT_RGB24, AV_PIX_FMT_RGB48,
         AV_PIX_FMT_GBR24P,AV_PIX_FMT_GBRP9, AV_PIX_FMT_GBRP10, AV_PIX_FMT_GBRP12, AV_PIX_FMT_GBRP14, AV_PIX_FMT_GBRP16,
         AV_PIX_FMT_GRAY8, AV_PIX_FMT_GRAY9, AV_PIX_FMT_GRAY10, AV_PIX_FMT_GRAY12, AV_PIX_FMT_GRAY14, AV_PIX_FMT_GRAY16,
@@ -1863,7 +1862,9 @@ const FFCodec ff_jpeg2000_encoder = {
         AV_PIX_FMT_YUVA422P, AV_PIX_FMT_YUVA422P9, AV_PIX_FMT_YUVA422P10, AV_PIX_FMT_YUVA422P16,
         AV_PIX_FMT_YUVA444P, AV_PIX_FMT_YUVA444P9, AV_PIX_FMT_YUVA444P10, AV_PIX_FMT_YUVA444P16,
 
-        AV_PIX_FMT_PAL8),
+        AV_PIX_FMT_PAL8,
+        AV_PIX_FMT_NONE
+    },
     .color_ranges   = AVCOL_RANGE_MPEG,
     .p.priv_class   = &j2k_class,
     .caps_internal  = FF_CODEC_CAP_INIT_CLEANUP,

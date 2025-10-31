@@ -359,10 +359,6 @@ static void shuffle_bytes_##name (const uint8_t *src,                   \
 DEFINE_SHUFFLE_BYTES(1230_c, 1, 2, 3, 0)
 DEFINE_SHUFFLE_BYTES(3012_c, 3, 0, 1, 2)
 DEFINE_SHUFFLE_BYTES(3210_c, 3, 2, 1, 0)
-DEFINE_SHUFFLE_BYTES(3102_c, 3, 1, 0, 2)
-DEFINE_SHUFFLE_BYTES(2013_c, 2, 0, 1, 3)
-DEFINE_SHUFFLE_BYTES(2130_c, 2, 1, 3, 0)
-DEFINE_SHUFFLE_BYTES(1203_c, 1, 2, 0, 3)
 
 static inline void rgb24tobgr24_c(const uint8_t *src, uint8_t *dst, int src_size)
 {
@@ -649,7 +645,7 @@ static inline void uyvytoyv12_c(const uint8_t *src, uint8_t *ydst,
  */
 void ff_rgb24toyv12_c(const uint8_t *src, uint8_t *ydst, uint8_t *udst,
                    uint8_t *vdst, int width, int height, int lumStride,
-                   int chromStride, int srcStride, const int32_t *rgb2yuv)
+                   int chromStride, int srcStride, int32_t *rgb2yuv)
 {
     int32_t ry = rgb2yuv[RY_IDX], gy = rgb2yuv[GY_IDX], by = rgb2yuv[BY_IDX];
     int32_t ru = rgb2yuv[RU_IDX], gu = rgb2yuv[GU_IDX], bu = rgb2yuv[BU_IDX];
@@ -974,10 +970,6 @@ static av_cold void rgb2rgb_init_c(void)
     shuffle_bytes_1230 = shuffle_bytes_1230_c;
     shuffle_bytes_3012 = shuffle_bytes_3012_c;
     shuffle_bytes_3210 = shuffle_bytes_3210_c;
-    shuffle_bytes_3102 = shuffle_bytes_3102_c;
-    shuffle_bytes_2013 = shuffle_bytes_2013_c;
-    shuffle_bytes_2130 = shuffle_bytes_2130_c;
-    shuffle_bytes_1203 = shuffle_bytes_1203_c;
     rgb32tobgr16       = rgb32tobgr16_c;
     rgb32tobgr15       = rgb32tobgr15_c;
     yv12toyuy2         = yv12toyuy2_c;

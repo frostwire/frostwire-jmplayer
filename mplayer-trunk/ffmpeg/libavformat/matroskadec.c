@@ -38,6 +38,7 @@
 #include "libavutil/base64.h"
 #include "libavutil/bprint.h"
 #include "libavutil/dict.h"
+#include "libavutil/dict_internal.h"
 #include "libavutil/display.h"
 #include "libavutil/hdr_dynamic_metadata.h"
 #include "libavutil/intfloat.h"
@@ -85,7 +86,7 @@
 #define LEVEL_ENDED                   3 /* return value of ebml_parse when the
                                          * syntax level used for parsing ended. */
 #define SKIP_THRESHOLD      1024 * 1024 /* In non-seekable mode, if more than SKIP_THRESHOLD
-                                         * of unknown, potentially damaged data is encountered,
+                                         * of unkown, potentially damaged data is encountered,
                                          * it is considered an error. */
 #define UNKNOWN_EQUIV         50 * 1024 /* An unknown element is considered equivalent
                                          * to this many bytes of unknown data for the
@@ -1418,7 +1419,7 @@ static int ebml_parse(MatroskaDemuxContext *matroska,
         }
 
         if (!(pb->seekable & AVIO_SEEKABLE_NORMAL)) {
-            // Losing sync will likely manifest itself as encountering unknown
+            // Loosing sync will likely manifest itself as encountering unknown
             // elements which are not reliably distinguishable from elements
             // belonging to future extensions of the format.
             // We use a heuristic to detect such situations: If the current
@@ -1436,7 +1437,7 @@ static int ebml_parse(MatroskaDemuxContext *matroska,
             // UNKNOWN_EQUIV of skipped bytes for the check.
             // The whole check is only done for non-seekable output, because
             // in this situation skipped data can't simply be rechecked later.
-            // This is especially important when using unknown length elements
+            // This is especially important when using unkown length elements
             // as the check for whether a child exceeds its containing master
             // element is not effective in this situation.
             if (update_pos) {
@@ -1679,7 +1680,7 @@ static int matroska_decode_buffer(uint8_t **buf, int *buf_size,
     uint8_t *data = *buf;
     int isize = *buf_size;
     uint8_t *pkt_data = NULL;
-    av_unused uint8_t *newpktdata;
+    uint8_t av_unused *newpktdata;
     int pkt_size = isize;
     int result = 0;
     int olen;
@@ -2136,7 +2137,7 @@ static int matroska_aac_sri(int samplerate)
 static void matroska_metadata_creation_time(AVDictionary **metadata, int64_t date_utc)
 {
     /* Convert to seconds and adjust by number of seconds between 2001-01-01 and Epoch */
-    ff_dict_set_timestamp(metadata, "creation_time", date_utc / 1000 + 978307200000000LL);
+    avpriv_dict_set_timestamp(metadata, "creation_time", date_utc / 1000 + 978307200000000LL);
 }
 
 static int matroska_parse_flac(AVFormatContext *s,
@@ -3168,20 +3169,11 @@ static int matroska_parse_tracks(AVFormatContext *s)
                     track->default_duration = default_duration;
                 }
             }
-            int has_dimensions = track->video.pixel_width || track->video.pixel_height;
-            if ((matroska->ctx->strict_std_compliance >= FF_COMPLIANCE_STRICT &&
-                 (!track->video.pixel_width || !track->video.pixel_height)) ||
-                (track->video.pixel_cropl >= INT_MAX - track->video.pixel_cropr ||
+            if (track->video.pixel_cropl >= INT_MAX - track->video.pixel_cropr ||
                 track->video.pixel_cropt >= INT_MAX - track->video.pixel_cropb ||
-                (track->video.pixel_cropl + track->video.pixel_cropr) >= track->video.pixel_width  + !has_dimensions ||
-                (track->video.pixel_cropt + track->video.pixel_cropb) >= track->video.pixel_height + !has_dimensions)) {
-                av_log(matroska->ctx, AV_LOG_ERROR,
-                       "Invalid coded dimensions %"PRId64"x%"PRId64" [%"PRId64", %"PRId64", %"PRId64", %"PRId64"].\n",
-                       track->video.pixel_width, track->video.pixel_height,
-                       track->video.pixel_cropl, track->video.pixel_cropr,
-                       track->video.pixel_cropt, track->video.pixel_cropb);
+                (track->video.pixel_cropl + track->video.pixel_cropr) >= track->video.pixel_width ||
+                (track->video.pixel_cropt + track->video.pixel_cropb) >= track->video.pixel_height)
                 return AVERROR_INVALIDDATA;
-            }
             track->video.cropped_width  = track->video.pixel_width  -
                                           track->video.pixel_cropl  - track->video.pixel_cropr;
             track->video.cropped_height = track->video.pixel_height -
@@ -3838,6 +3830,9 @@ static int matroska_parse_webvtt(MatroskaDemuxContext *matroska,
         text_len = len;
     }
 
+    if (text_len <= 0)
+        return AVERROR_INVALIDDATA;
+
     err = av_new_packet(pkt, text_len);
     if (err < 0) {
         return err;
@@ -3940,7 +3935,7 @@ static int matroska_parse_block_additional(MatroskaDemuxContext *matroska,
         provider_code = bytestream2_get_be16u(&bc);
 
         if (country_code != ITU_T_T35_COUNTRY_CODE_US ||
-            provider_code != ITU_T_T35_PROVIDER_CODE_SAMSUNG)
+            provider_code != ITU_T_T35_PROVIDER_CODE_SMTPE)
             break; // ignore
 
         provider_oriented_code = bytestream2_get_be16u(&bc);

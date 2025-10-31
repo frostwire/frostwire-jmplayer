@@ -26,7 +26,6 @@
 template<typename T>
 using subsample_function_t = T (*)(cudaTextureObject_t tex, int xo, int yo,
                                    int dst_width, int dst_height,
-                                   int src_left, int src_top,
                                    int src_width, int src_height,
                                    int bit_depth, float param);
 
@@ -65,12 +64,11 @@ static inline __device__ ushort conv_16to10(ushort in)
              subsample_function_t<in_T_uv> subsample_func_uv>                                  \
     __device__ static inline void N(cudaTextureObject_t src_tex[4], T *dst[4], int xo, int yo, \
                                     int dst_width, int dst_height, int dst_pitch,              \
-                                    int src_left, int src_top, int src_width, int src_height, float param)
+                                    int src_width, int src_height, float param)
 
 #define SUB_F(m, plane) \
     subsample_func_##m(src_tex[plane], xo, yo, \
                        dst_width, dst_height,  \
-                       src_left, src_top,      \
                        src_width, src_height,  \
                        in_bit_depth, param)
 
@@ -1065,14 +1063,13 @@ template<typename T>
 __device__ static inline T Subsample_Nearest(cudaTextureObject_t tex,
                                              int xo, int yo,
                                              int dst_width, int dst_height,
-                                             int src_left, int src_top,
                                              int src_width, int src_height,
                                              int bit_depth, float param)
 {
     float hscale = (float)src_width / (float)dst_width;
     float vscale = (float)src_height / (float)dst_height;
-    float xi = (xo + 0.5f) * hscale + src_left;
-    float yi = (yo + 0.5f) * vscale + src_top;
+    float xi = (xo + 0.5f) * hscale;
+    float yi = (yo + 0.5f) * vscale;
 
     return tex2D<T>(tex, xi, yi);
 }
@@ -1081,14 +1078,13 @@ template<typename T>
 __device__ static inline T Subsample_Bilinear(cudaTextureObject_t tex,
                                               int xo, int yo,
                                               int dst_width, int dst_height,
-                                              int src_left, int src_top,
                                               int src_width, int src_height,
                                               int bit_depth, float param)
 {
     float hscale = (float)src_width / (float)dst_width;
     float vscale = (float)src_height / (float)dst_height;
-    float xi = (xo + 0.5f) * hscale + src_left;
-    float yi = (yo + 0.5f) * vscale + src_top;
+    float xi = (xo + 0.5f) * hscale;
+    float yi = (yo + 0.5f) * vscale;
     // 3-tap filter weights are {wh,1.0,wh} and {wv,1.0,wv}
     float wh = min(max(0.5f * (hscale - 1.0f), 0.0f), 1.0f);
     float wv = min(max(0.5f * (vscale - 1.0f), 0.0f), 1.0f);
@@ -1113,14 +1109,13 @@ template<typename T, coeffs_function_t coeffs_function>
 __device__ static inline T Subsample_Bicubic(cudaTextureObject_t tex,
                                              int xo, int yo,
                                              int dst_width, int dst_height,
-                                             int src_left, int src_top,
                                              int src_width, int src_height,
                                              int bit_depth, float param)
 {
     float hscale = (float)src_width / (float)dst_width;
     float vscale = (float)src_height / (float)dst_height;
-    float xi = (xo + 0.5f) * hscale - 0.5f + src_left;
-    float yi = (yo + 0.5f) * vscale - 0.5f + src_top;
+    float xi = (xo + 0.5f) * hscale - 0.5f;
+    float yi = (yo + 0.5f) * vscale - 0.5f;
     float px = floor(xi);
     float py = floor(yi);
     float fx = xi - px;
@@ -1152,7 +1147,7 @@ __device__ static inline T Subsample_Bicubic(cudaTextureObject_t tex,
     cudaTextureObject_t src_tex_2, cudaTextureObject_t src_tex_3, \
     T *dst_0, T *dst_1, T *dst_2, T *dst_3,                       \
     int dst_width, int dst_height, int dst_pitch,                 \
-    int src_left, int src_top, int src_width, int src_height, float param
+    int src_width, int src_height, float param
 
 #define SUBSAMPLE(Convert, T) \
     cudaTextureObject_t src_tex[4] =                    \
@@ -1164,7 +1159,6 @@ __device__ static inline T Subsample_Bicubic(cudaTextureObject_t tex,
     Convert(                                            \
         src_tex, dst, xo, yo,                           \
         dst_width, dst_height, dst_pitch,               \
-        src_left, src_top,                              \
         src_width, src_height, param);
 
 extern "C" {

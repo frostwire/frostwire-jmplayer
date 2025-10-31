@@ -52,9 +52,7 @@ static av_cold void cudaupload_uninit(AVFilterContext *ctx)
     av_buffer_unref(&s->hwdevice);
 }
 
-static int cudaupload_query_formats(const AVFilterContext *ctx,
-                                    AVFilterFormatsConfig **cfg_in,
-                                    AVFilterFormatsConfig **cfg_out)
+static int cudaupload_query_formats(AVFilterContext *ctx)
 {
     int ret;
 
@@ -73,13 +71,13 @@ static int cudaupload_query_formats(const AVFilterContext *ctx,
     AVFilterFormats *in_fmts  = ff_make_format_list(input_pix_fmts);
     AVFilterFormats *out_fmts;
 
-    ret = ff_formats_ref(in_fmts, &cfg_in[0]->formats);
+    ret = ff_formats_ref(in_fmts, &ctx->inputs[0]->outcfg.formats);
     if (ret < 0)
         return ret;
 
     out_fmts = ff_make_format_list(output_pix_fmts);
 
-    ret = ff_formats_ref(out_fmts, &cfg_out[0]->formats);
+    ret = ff_formats_ref(out_fmts, &ctx->outputs[0]->incfg.formats);
     if (ret < 0)
         return ret;
 
@@ -185,21 +183,20 @@ static const AVFilterPad cudaupload_outputs[] = {
     },
 };
 
-const FFFilter ff_vf_hwupload_cuda = {
-    .p.name        = "hwupload_cuda",
-    .p.description = NULL_IF_CONFIG_SMALL("Upload a system memory frame to a CUDA device."),
-
-    .p.priv_class  = &cudaupload_class,
+const AVFilter ff_vf_hwupload_cuda = {
+    .name        = "hwupload_cuda",
+    .description = NULL_IF_CONFIG_SMALL("Upload a system memory frame to a CUDA device."),
 
     .init      = cudaupload_init,
     .uninit    = cudaupload_uninit,
 
     .priv_size  = sizeof(CudaUploadContext),
+    .priv_class = &cudaupload_class,
 
     FILTER_INPUTS(cudaupload_inputs),
     FILTER_OUTPUTS(cudaupload_outputs),
 
-    FILTER_QUERY_FUNC2(cudaupload_query_formats),
+    FILTER_QUERY_FUNC(cudaupload_query_formats),
 
     .flags_internal = FF_FILTER_FLAG_HWFRAME_AWARE,
 };

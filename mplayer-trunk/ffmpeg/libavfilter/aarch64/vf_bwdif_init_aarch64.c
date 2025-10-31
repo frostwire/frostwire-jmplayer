@@ -122,3 +122,4 @@ ff_bwdif_init_aarch64(BWDIFDSPContext *s, int bit_depth)
     s->filter_edge  = filter_edge_helper;
     s->filter_line3 = filter_line3_helper;
 }
+

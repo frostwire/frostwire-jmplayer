@@ -36,7 +36,6 @@
 
 #include "avcodec.h"
 #include "blockdsp.h"
-#include "exif.h"
 #include "get_bits.h"
 #include "hpeldsp.h"
 #include "idctdsp.h"
@@ -119,8 +118,8 @@ typedef struct MJpegDecodeContext {
     int force_pal8;
     uint8_t permutated_scantable[64];
     BlockDSPContext bdsp;
+    HpelDSPContext hdsp;
     IDCTDSPContext idsp;
-    op_pixels_func copy_block;             ///< only set and used by mxpeg
 
     int restart_interval;
     int restart_count;
@@ -139,7 +138,7 @@ typedef struct MJpegDecodeContext {
     unsigned int ljpeg_buffer_size;
 
     int extern_huff;
-    AVExifMetadata exif_metadata;
+    AVDictionary *exif_metadata;
 
     AVStereo3D *stereo3d; ///!< stereoscopic information (cached, since it is read before frame allocation)
 

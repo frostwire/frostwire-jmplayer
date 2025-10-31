@@ -106,14 +106,11 @@ static int config_output(AVFilterLink *outlink)
     return 0;
 }
 
-static int query_formats(const AVFilterContext *ctx,
-                         AVFilterFormatsConfig **cfg_in,
-                         AVFilterFormatsConfig **cfg_out)
+static int query_formats(AVFilterContext *ctx)
 {
-    return ff_set_common_formats2(ctx, cfg_in, cfg_out,
-                                  ff_formats_pixdesc_filter(0, AV_PIX_FMT_FLAG_BITSTREAM |
-                                                               AV_PIX_FMT_FLAG_HWACCEL |
-                                                               AV_PIX_FMT_FLAG_PAL));
+    return ff_set_common_formats(ctx, ff_formats_pixdesc_filter(0, AV_PIX_FMT_FLAG_BITSTREAM |
+                                                                   AV_PIX_FMT_FLAG_HWACCEL |
+                                                                   AV_PIX_FMT_FLAG_PAL));
 }
 
 static int activate(AVFilterContext *ctx)
@@ -325,17 +322,17 @@ static const AVOption feedback_options[] = {
 
 AVFILTER_DEFINE_CLASS(feedback);
 
-const FFFilter ff_vf_feedback = {
-    .p.name        = "feedback",
-    .p.description = NULL_IF_CONFIG_SMALL("Apply feedback video filter."),
-    .p.priv_class  = &feedback_class,
-    .p.flags       = AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL,
+const AVFilter ff_vf_feedback = {
+    .name        = "feedback",
+    .description = NULL_IF_CONFIG_SMALL("Apply feedback video filter."),
+    .priv_class  = &feedback_class,
     .priv_size   = sizeof(FeedbackContext),
     .activate    = activate,
     .init        = init,
     .uninit      = uninit,
     FILTER_INPUTS(inputs),
     FILTER_OUTPUTS(outputs),
-    FILTER_QUERY_FUNC2(query_formats),
+    FILTER_QUERY_FUNC(query_formats),
+    .flags       = AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL,
     .process_command = ff_filter_process_command,
 };

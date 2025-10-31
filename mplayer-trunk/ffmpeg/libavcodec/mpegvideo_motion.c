@@ -29,7 +29,6 @@
 
 #include "avcodec.h"
 #include "h261.h"
-#include "h263.h"
 #include "mpegutils.h"
 #include "mpegvideo.h"
 #include "mpeg4videodec.h"
@@ -813,8 +812,7 @@ static av_always_inline void mpv_motion_internal(MpegEncContext *s,
             }
             break;
         }
-    default:
-        av_unreachable("No other mpegvideo MV types exist");
+    default: av_assert2(0);
     }
 }
 

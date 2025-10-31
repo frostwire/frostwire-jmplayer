@@ -24,7 +24,6 @@
  * Ut Video encoder
  */
 
-#include "libavutil/avassert.h"
 #include "libavutil/imgutils.h"
 #include "libavutil/intreadwrite.h"
 #include "libavutil/mem.h"
@@ -144,7 +143,9 @@ static av_cold int utvideo_encode_init(AVCodecContext *avctx)
         original_format  = UTVIDEO_444;
         break;
     default:
-        av_unreachable("Already checked via CODEC_PIXFMTS");
+        av_log(avctx, AV_LOG_ERROR, "Unknown pixel format: %d\n",
+               avctx->pix_fmt);
+        return AVERROR_INVALIDDATA;
     }
 
     ff_bswapdsp_init(&c->bdsp);
@@ -152,7 +153,7 @@ static av_cold int utvideo_encode_init(AVCodecContext *avctx)
 
     if (c->frame_pred == PRED_GRADIENT) {
         av_log(avctx, AV_LOG_ERROR, "Gradient prediction is not supported.\n");
-        return AVERROR_PATCHWELCOME;
+        return AVERROR_OPTION_NOT_FOUND;
     }
 
     /*
@@ -645,6 +646,7 @@ static const AVOption options[] = {
 { "pred", "Prediction method", OFFSET(frame_pred), AV_OPT_TYPE_INT, { .i64 = PRED_LEFT }, PRED_NONE, PRED_MEDIAN, VE, .unit = "pred" },
     { "none",     NULL, 0, AV_OPT_TYPE_CONST, { .i64 = PRED_NONE }, INT_MIN, INT_MAX, VE, .unit = "pred" },
     { "left",     NULL, 0, AV_OPT_TYPE_CONST, { .i64 = PRED_LEFT }, INT_MIN, INT_MAX, VE, .unit = "pred" },
+    { "gradient", NULL, 0, AV_OPT_TYPE_CONST, { .i64 = PRED_GRADIENT }, INT_MIN, INT_MAX, VE, .unit = "pred" },
     { "median",   NULL, 0, AV_OPT_TYPE_CONST, { .i64 = PRED_MEDIAN }, INT_MIN, INT_MAX, VE, .unit = "pred" },
 
     { NULL},
@@ -669,8 +671,10 @@ const FFCodec ff_utvideo_encoder = {
     .init           = utvideo_encode_init,
     FF_CODEC_ENCODE_CB(utvideo_encode_frame),
     .close          = utvideo_encode_close,
-    CODEC_PIXFMTS(AV_PIX_FMT_GBRP, AV_PIX_FMT_GBRAP,
-                  AV_PIX_FMT_YUV422P, AV_PIX_FMT_YUV420P, AV_PIX_FMT_YUV444P),
+    .p.pix_fmts     = (const enum AVPixelFormat[]) {
+                          AV_PIX_FMT_GBRP, AV_PIX_FMT_GBRAP, AV_PIX_FMT_YUV422P,
+                          AV_PIX_FMT_YUV420P, AV_PIX_FMT_YUV444P, AV_PIX_FMT_NONE
+                      },
     .color_ranges   = AVCOL_RANGE_MPEG,
     .caps_internal  = FF_CODEC_CAP_INIT_CLEANUP,
 };

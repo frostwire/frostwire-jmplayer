@@ -30,7 +30,6 @@
 
 #include "config_components.h"
 
-#include "libavutil/attributes.h"
 #include "libavutil/channel_layout.h"
 #include "libavutil/intfloat.h"
 #include "libavutil/mem_internal.h"
@@ -359,7 +358,7 @@ fail:
     return ret;
 }
 
-static av_cold void decode_flush(AVCodecContext *avctx)
+static void decode_flush(AVCodecContext *avctx)
 {
     BinkAudioContext *const s = avctx->priv_data;
 

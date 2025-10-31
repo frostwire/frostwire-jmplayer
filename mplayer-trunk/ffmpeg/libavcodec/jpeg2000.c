@@ -29,7 +29,6 @@
 #include "libavutil/avassert.h"
 #include "libavutil/common.h"
 #include "libavutil/imgutils.h"
-#include "libavutil/intfloat.h"
 #include "libavutil/mem.h"
 #include "libavutil/thread.h"
 #include "avcodec.h"
@@ -261,7 +260,9 @@ static void init_band_stepsize(AVCodecContext *avctx,
                 band->f_stepsize *= F_LFTG_X * F_LFTG_X * 4;
                 break;
         }
-        band->f_stepsize *= pow(F_LFTG_K, 2*(codsty->nreslevels2decode - reslevelno) + lband - 2);
+        if (codsty->transform == FF_DWT97) {
+            band->f_stepsize *= pow(F_LFTG_K, 2*(codsty->nreslevels2decode - reslevelno) + lband - 2);
+        }
     }
 
     if (band->f_stepsize > (INT_MAX >> 15)) {
@@ -269,7 +270,12 @@ static void init_band_stepsize(AVCodecContext *avctx,
         av_log(avctx, AV_LOG_ERROR, "stepsize out of range\n");
     }
 
-    band->i_stepsize = (int)floorf(band->f_stepsize * (1 << 15));
+    band->i_stepsize = band->f_stepsize * (1 << 15);
+
+    /* FIXME: In OpenJPEG code stepsize = stepsize * 0.5. Why?
+     * If not set output of entropic decoder is not correct. */
+    if (!av_codec_is_encoder(avctx->codec))
+        band->f_stepsize *= 0.5;
 }
 
 static int init_prec(AVCodecContext *avctx,

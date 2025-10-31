@@ -338,7 +338,7 @@ static void vp56_deblock_filter(VP56Context *s, uint8_t *yuv,
 }
 
 static void vp56_mc(VP56Context *s, int b, int plane, uint8_t *src,
-                    ptrdiff_t stride, int x, int y, ptrdiff_t ref_stride)
+                    ptrdiff_t stride, int x, int y)
 {
     uint8_t *dst = s->frames[VP56_FRAME_CURRENT]->data[plane] + s->block_offset[b];
     uint8_t *src_block;
@@ -364,17 +364,7 @@ static void vp56_mc(VP56Context *s, int b, int plane, uint8_t *src,
     x += dx - 2;
     y += dy - 2;
 
-    if (s->interlaced && s->il_block) {
-        /* extract 12*(4+16+4) block from frame (containing both fields), then treat src_block as specific field */
-        s->vdsp.emulated_edge_mc(s->edge_emu_buffer,
-                                 src + s->block_offset[b] + (dy-4)*ref_stride + (dx-2),
-                                 ref_stride, ref_stride,
-                                 12, 24, x, y - 2,
-                                 s->plane_width[plane],
-                                 s->plane_height[plane]);
-        src_block = s->edge_emu_buffer;
-        src_offset = 2 + 4*ref_stride;
-    } else if (x<0 || x+12>=s->plane_width[plane] ||
+    if (x<0 || x+12>=s->plane_width[plane] ||
         y<0 || y+12>=s->plane_height[plane]) {
         s->vdsp.emulated_edge_mc(s->edge_emu_buffer,
                                  src + s->block_offset[b] + (dy-2)*stride + (dx-2),
@@ -441,7 +431,6 @@ static av_always_inline void vp56_render_mb(VP56Context *s, int row, int col, in
     int b, ab, b_max, plane, off;
     AVFrame *frame_current, *frame_ref;
     VP56Frame ref_frame = ff_vp56_reference_frame[mb_type];
-    ptrdiff_t ref_stride[4];
 
     vp56_add_predictors_dc(s, ref_frame);
 
@@ -449,13 +438,6 @@ static av_always_inline void vp56_render_mb(VP56Context *s, int row, int col, in
     frame_ref = s->frames[ref_frame];
     if (mb_type != VP56_MB_INTRA && !frame_ref->data[0])
         return;
-
-    memcpy(ref_stride, s->stride, sizeof(s->stride));
-    if (s->interlaced && s->il_block) {
-        s->block_offset[2] -= s->stride[0] * 7;
-        s->block_offset[3] -= s->stride[0] * 7;
-        s->stride[0] *= 2;
-    }
 
     ab = 6*is_alpha;
     b_max = 6 - 2*is_alpha;
@@ -491,10 +473,10 @@ static av_always_inline void vp56_render_mb(VP56Context *s, int row, int col, in
         case VP56_MB_INTER_V2_GF:
             for (b=0; b<b_max; b++) {
                 int x_off = b==1 || b==3 ? 8 : 0;
-                int y_off = b==2 || b==3 ? (s->interlaced && s->il_block ? 1 : 8) : 0;
+                int y_off = b==2 || b==3 ? 8 : 0;
                 plane = ff_vp56_b2p[b+ab];
                 vp56_mc(s, b, plane, frame_ref->data[plane], s->stride[plane],
-                        16*col+x_off, 16*row+y_off, ref_stride[plane]);
+                        16*col+x_off, 16*row+y_off);
                 vp56_idct_add(s, frame_current->data[plane] + s->block_offset[b],
                               s->stride[plane], s->block_coeff[b], s->idct_selector[b]);
             }
@@ -505,31 +487,12 @@ static av_always_inline void vp56_render_mb(VP56Context *s, int row, int col, in
         s->block_coeff[4][0] = 0;
         s->block_coeff[5][0] = 0;
     }
-
-    if (s->interlaced && s->il_block) {
-        s->stride[0] /= 2;
-        s->block_offset[2] += s->stride[0] * 7;
-        s->block_offset[3] += s->stride[0] * 7;
-    }
 }
 
 static int vp56_decode_mb(VP56Context *s, int row, int col, int is_alpha)
 {
     VP56mb mb_type;
     int ret;
-
-    if (s->interlaced) {
-        int prob = s->il_prob;
-
-        if (col > 0) {
-            if (s->il_block)
-                prob -= prob >> 1;
-            else
-                prob += (256 - prob) >> 1;  /* can be simplified/combined */
-        }
-
-        s->il_block = vpx_rac_get_prob(&s->c, prob);
-    }
 
     if (s->frames[VP56_FRAME_CURRENT]->flags & AV_FRAME_FLAG_KEY)
         mb_type = VP56_MB_INTRA;
@@ -589,12 +552,12 @@ static int vp56_size_changed(VP56Context *s)
     av_reallocp_array(&s->macroblocks, s->mb_width*s->mb_height,
                       sizeof(*s->macroblocks));
     av_free(s->edge_emu_buffer_alloc);
-    s->edge_emu_buffer_alloc = av_malloc(16*stride*2);
+    s->edge_emu_buffer_alloc = av_malloc(16*stride);
     s->edge_emu_buffer = s->edge_emu_buffer_alloc;
     if (!s->above_blocks || !s->macroblocks || !s->edge_emu_buffer_alloc)
         return AVERROR(ENOMEM);
     if (s->flip < 0)
-        s->edge_emu_buffer += 15 * stride * 2;
+        s->edge_emu_buffer += 15 * stride;
 
     if (s->alpha_context)
         return vp56_size_changed(s->alpha_context);
@@ -723,11 +686,6 @@ static int ff_vp56_decode_mbs(AVCodecContext *avctx, void *data,
     if (s->parse_coeff_models(s))
         goto next;
 
-    if (s->interlaced) {
-       s->frames[VP56_FRAME_CURRENT]->flags |= AV_FRAME_FLAG_INTERLACED;
-       s->il_prob = vp56_rac_gets(&s->c, 8);
-    }
-
     memset(s->prev_dc, 0, sizeof(s->prev_dc));
     s->prev_dc[1][VP56_FRAME_CURRENT] = 128;
     s->prev_dc[2][VP56_FRAME_CURRENT] = 128;
@@ -828,7 +786,7 @@ av_cold int ff_vp56_init_context(AVCodecContext *avctx, VP56Context *s,
     ff_h264chroma_init(&s->h264chroma, 8);
     ff_hpeldsp_init(&s->hdsp, avctx->flags);
     ff_videodsp_init(&s->vdsp, 8);
-    ff_vp3dsp_init(&s->vp3dsp);
+    ff_vp3dsp_init(&s->vp3dsp, avctx->flags);
     for (i = 0; i < 64; i++) {
 #define TRANSPOSE(x) (((x) >> 3) | (((x) & 7) << 3))
         s->idct_scantable[i] = TRANSPOSE(ff_zigzag_direct[i]);

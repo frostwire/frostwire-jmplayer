@@ -168,7 +168,7 @@ typedef struct AacPsyContext{
  * LAME psy model preset struct
  */
 typedef struct PsyLamePreset {
-    int   quality;  ///< Quality to map the rest of the values to.
+    int   quality;  ///< Quality to map the rest of the vaules to.
      /* This is overloaded to be both kbps per channel in ABR mode, and
       * requested quality in constant quality mode.
       */
@@ -402,7 +402,7 @@ static const uint8_t window_grouping[9] = {
  * Tell encoder which window types to use.
  * @see 3GPP TS26.403 5.4.1 "Blockswitching"
  */
-av_unused static FFPsyWindowInfo psy_3gpp_window(FFPsyContext *ctx,
+static av_unused FFPsyWindowInfo psy_3gpp_window(FFPsyContext *ctx,
                                                  const int16_t *audio,
                                                  const int16_t *la,
                                                  int channel, int prev_type)
@@ -593,6 +593,7 @@ static float calc_reduced_thr_3gpp(AacPsyBand *band, float min_snr,
     return thr;
 }
 
+#ifndef calc_thr_3gpp
 static void calc_thr_3gpp(const FFPsyWindowInfo *wi, const int num_bands, AacPsyChannel *pch,
                           const uint8_t *band_sizes, const float *coefs, const int cutoff)
 {
@@ -621,7 +622,9 @@ static void calc_thr_3gpp(const FFPsyWindowInfo *wi, const int num_bands, AacPsy
         }
     }
 }
+#endif /* calc_thr_3gpp */
 
+#ifndef psy_hp_filter
 static void psy_hp_filter(const float *firbuf, float *hpfsmpl, const float *psy_fir_coeffs)
 {
     int i, j;
@@ -638,6 +641,7 @@ static void psy_hp_filter(const float *firbuf, float *hpfsmpl, const float *psy_
         hpfsmpl[i] = (sum1 + sum2) * 32768.0f;
     }
 }
+#endif /* psy_hp_filter */
 
 /**
  * Calculate band thresholds as suggested in 3GPP TS26.403

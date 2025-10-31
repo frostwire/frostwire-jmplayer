@@ -30,11 +30,12 @@
 #include "internal.h"
 #include "mux.h"
 
-#include "libavutil/bprint.h"
 #include "libavutil/log.h"
 #include "libavutil/mem.h"
 #include "libavutil/opt.h"
 #include "libavutil/mathematics.h"
+
+#define MAX_FILENAME_SIZE 1024
 
 typedef struct WebMChunkContext {
     const AVClass *class;
@@ -132,13 +133,16 @@ fail:
     return 0;
 }
 
-static int get_chunk_filename(AVFormatContext *s, AVBPrint *filename)
+static int get_chunk_filename(AVFormatContext *s, char filename[MAX_FILENAME_SIZE])
 {
     WebMChunkContext *wc = s->priv_data;
-    int ret = ff_bprint_get_frame_filename(filename, s->url, wc->chunk_index - 1, 0);
-    if (ret < 0) {
+    if (!filename) {
+        return AVERROR(EINVAL);
+    }
+    if (av_get_frame_filename(filename, MAX_FILENAME_SIZE,
+                              s->url, wc->chunk_index - 1) < 0) {
         av_log(s, AV_LOG_ERROR, "Invalid chunk filename template '%s'\n", s->url);
-        return ret;
+        return AVERROR(EINVAL);
     }
     return 0;
 }
@@ -181,7 +185,7 @@ static int chunk_end(AVFormatContext *s, int flush)
     int buffer_size;
     uint8_t *buffer;
     AVIOContext *pb;
-    AVBPrint filename;
+    char filename[MAX_FILENAME_SIZE];
     AVDictionary *options = NULL;
 
     if (!oc->pb)
@@ -192,21 +196,19 @@ static int chunk_end(AVFormatContext *s, int flush)
         av_write_frame(oc, NULL);
     buffer_size = avio_close_dyn_buf(oc->pb, &buffer);
     oc->pb = NULL;
-    av_bprint_init(&filename, 0, AV_BPRINT_SIZE_UNLIMITED);
-    ret = get_chunk_filename(s, &filename);
+    ret = get_chunk_filename(s, filename);
     if (ret < 0)
         goto fail;
     if (wc->http_method)
         if ((ret = av_dict_set(&options, "method", wc->http_method, 0)) < 0)
             goto fail;
-    ret = s->io_open(s, &pb, filename.str, AVIO_FLAG_WRITE, &options);
+    ret = s->io_open(s, &pb, filename, AVIO_FLAG_WRITE, &options);
     av_dict_free(&options);
     if (ret < 0)
         goto fail;
     avio_write(pb, buffer, buffer_size);
     ff_format_io_close(s, &pb);
 fail:
-    av_bprint_finalize(&filename, NULL);
     av_free(buffer);
     return (ret < 0) ? ret : 0;
 }

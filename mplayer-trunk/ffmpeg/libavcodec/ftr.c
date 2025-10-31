@@ -22,8 +22,6 @@
 #include "get_bits.h"
 #include "decode.h"
 
-#include "libavutil/attributes.h"
-
 typedef struct FTRContext {
     AVCodecContext *aac_avctx[64];   // wrapper context for AAC
     int nb_context;
@@ -53,7 +51,7 @@ static av_cold int ftr_init(AVCodecContext *avctx)
 
     codec = avcodec_find_decoder(AV_CODEC_ID_AAC);
     if (!codec)
-        return AVERROR_DECODER_NOT_FOUND;
+        return AVERROR_BUG;
 
     for (int i = 0; i < s->nb_context; i++) {
         s->aac_avctx[i] = avcodec_alloc_context3(codec);
@@ -175,7 +173,7 @@ static int ftr_decode_frame(AVCodecContext *avctx, AVFrame *frame,
     return get_bits_count(&gb) >> 3;
 }
 
-static av_cold void ftr_flush(AVCodecContext *avctx)
+static void ftr_flush(AVCodecContext *avctx)
 {
     FTRContext *s = avctx->priv_data;
 
@@ -205,6 +203,10 @@ const FFCodec ff_ftr_decoder = {
     .close          = ftr_close,
     .flush          = ftr_flush,
     .priv_data_size = sizeof(FTRContext),
-    .p.capabilities = AV_CODEC_CAP_DR1,
+    .p.capabilities =
+#if FF_API_SUBFRAMES
+                      AV_CODEC_CAP_SUBFRAMES |
+#endif
+                      AV_CODEC_CAP_DR1,
     .caps_internal  = FF_CODEC_CAP_INIT_CLEANUP,
 };

@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "libavutil/attributes.h"
 #include "libavutil/internal.h"
 #include "libavutil/intreadwrite.h"
 
@@ -193,7 +192,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
     return 0;
 }
 
-static av_cold void decode_flush(AVCodecContext *avctx)
+static void decode_flush(AVCodecContext *avctx)
 {
     ARBCContext *s = avctx->priv_data;
 

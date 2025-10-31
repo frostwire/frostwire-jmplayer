@@ -26,17 +26,22 @@
 #include "formats.h"
 #include "vaapi_vpp.h"
 
-int ff_vaapi_vpp_query_formats(const AVFilterContext *avctx,
-                               AVFilterFormatsConfig **cfg_in,
-                               AVFilterFormatsConfig **cfg_out)
+int ff_vaapi_vpp_query_formats(AVFilterContext *avctx)
 {
-    static const enum AVPixelFormat pix_fmts[] = {
+    enum AVPixelFormat pix_fmts[] = {
         AV_PIX_FMT_VAAPI, AV_PIX_FMT_NONE,
     };
     int err;
 
-    err = ff_set_common_formats_from_list2(avctx, cfg_in, cfg_out, pix_fmts);
-    if (err < 0)
+    if ((err = ff_formats_ref(ff_make_format_list(pix_fmts),
+                              &avctx->inputs[0]->outcfg.formats)) < 0)
+        return err;
+    if ((err = ff_formats_ref(ff_make_format_list(pix_fmts),
+                              &avctx->outputs[0]->incfg.formats)) < 0)
+        return err;
+
+    if ((err = ff_set_common_all_color_spaces(avctx)) < 0 ||
+        (err = ff_set_common_all_color_ranges(avctx)) < 0)
         return err;
 
     return 0;

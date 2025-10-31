@@ -311,7 +311,7 @@ static int chs_parse_header(DCAXllDecoder *s, DCAXllChSet *c, DCAExssAsset *asse
                 b->highest_pred_order = b->adapt_pred_order[i];
         }
         if (b->highest_pred_order > s->nsegsamples) {
-            av_log(s->avctx, AV_LOG_ERROR, "Invalid XLL adaptive prediction order\n");
+            av_log(s->avctx, AV_LOG_ERROR, "Invalid XLL adaptive predicition order\n");
             return AVERROR_INVALIDDATA;
         }
 
@@ -666,7 +666,7 @@ static void chs_filter_band_data(DCAXllDecoder *s, DCAXllChSet *c, int band)
         }
     }
 
-    // Inverse pairwise channel decorrelation
+    // Inverse pairwise channel decorrellation
     if (b->decor_enabled) {
         int32_t *tmp[DCA_XLL_CHANNELS_MAX];
 

@@ -63,8 +63,7 @@ static const int planar_fmts[] = {
 
 static void check_output_yuv2gbrp(void)
 {
-    SwsContext *sws;
-    SwsInternal *c;
+    struct SwsContext *ctx;
     const AVPixFmtDescriptor *desc;
     int fmi, fsi, isi, i;
     int dstW, byte_size, luma_filter_size, chr_filter_size;
@@ -72,11 +71,12 @@ static void check_output_yuv2gbrp(void)
 #define FILTER_SIZES 4
     static const int filter_sizes[] = {1, 4, 8, 16};
 #define LARGEST_INPUT_SIZE 512
+#define INPUT_SIZES 6
     static const int input_sizes[] = {8, 24, 128, 144, 256, 512};
     uint8_t *dst0[4];
     uint8_t *dst1[4];
 
-    declare_func(void, SwsInternal *c, const int16_t *lumFilter,
+    declare_func(void, struct SwsContext *c, const int16_t *lumFilter,
                        const int16_t **lumSrcx, int lumFilterSize,
                        const int16_t *chrFilter, const int16_t **chrUSrcx,
                        const int16_t **chrVSrcx, int chrFilterSize,
@@ -130,18 +130,17 @@ static void check_output_yuv2gbrp(void)
         alpha[i] = (int16_t *)(src_a + i*LARGEST_INPUT_SIZE);
     }
 
-    sws = sws_alloc_context();
-    if (sws_init_context(sws, NULL, NULL) < 0)
+    ctx = sws_alloc_context();
+    if (sws_init_context(ctx, NULL, NULL) < 0)
         fail();
 
-    c = sws_internal(sws);
-    sws->flags |= SWS_FULL_CHR_H_INT;
+    ctx->flags |= SWS_FULL_CHR_H_INT;
 
     for (fmi = 0; fmi < FF_ARRAY_ELEMS(planar_fmts); fmi++) {
         for (fsi = 0; fsi < FILTER_SIZES; fsi++) {
-            for (isi = 0; isi < FF_ARRAY_ELEMS(input_sizes); isi++ ) {
+            for (isi = 0; isi < INPUT_SIZES; isi++ ) {
                 desc = av_pix_fmt_desc_get(planar_fmts[fmi]);
-                sws->dst_format = planar_fmts[fmi];
+                ctx->dstFormat = planar_fmts[fmi];
 
                 dstW = input_sizes[isi];
                 luma_filter_size = filter_sizes[fsi];
@@ -155,17 +154,17 @@ static void check_output_yuv2gbrp(void)
                     byte_size = 1;
                 }
 
-                ff_sws_init_scale(c);
-                if (check_func(c->yuv2anyX, "yuv2%s_full_X_%d_%d", desc->name, luma_filter_size, dstW)) {
+                ff_sws_init_scale(ctx);
+                if (check_func(ctx->yuv2anyX, "yuv2%s_full_X_%d_%d", desc->name, luma_filter_size, dstW)) {
                     for (i = 0; i < 4; i ++) {
                         memset(dst0[i], 0xFF, LARGEST_INPUT_SIZE * sizeof(int32_t));
                         memset(dst1[i], 0xFF, LARGEST_INPUT_SIZE * sizeof(int32_t));
                     }
 
-                    call_ref(c, luma_filter, luma, luma_filter_size,
+                    call_ref(ctx, luma_filter, luma, luma_filter_size,
                              chr_filter, chru, chrv, chr_filter_size,
                              alpha, dst0, dstW, 0);
-                    call_new(c, luma_filter, luma, luma_filter_size,
+                    call_new(ctx, luma_filter, luma, luma_filter_size,
                              chr_filter, chru, chrv, chr_filter_size,
                              alpha, dst1, dstW, 0);
 
@@ -175,26 +174,27 @@ static void check_output_yuv2gbrp(void)
                         memcmp(dst0[3], dst1[3], dstW * byte_size) )
                         fail();
 
-                    bench_new(c, luma_filter, luma, luma_filter_size,
+                    bench_new(ctx, luma_filter, luma, luma_filter_size,
                               chr_filter, chru, chrv, chr_filter_size,
                               alpha, dst1, dstW, 0);
                 }
             }
         }
     }
-    sws_freeContext(sws);
+    sws_freeContext(ctx);
 }
 
 #undef LARGEST_INPUT_SIZE
+#undef INPUT_SIZES
 
 static void check_input_planar_rgb_to_y(void)
 {
-    SwsContext *sws;
-    SwsInternal *c;
+    struct SwsContext *ctx;
     const AVPixFmtDescriptor *desc;
     int fmi, isi;
     int dstW, byte_size;
 #define LARGEST_INPUT_SIZE 512
+#define INPUT_SIZES 6
     static const int input_sizes[] = {8, 24, 128, 144, 256, 512};
     const uint8_t *src[4];
     int32_t rgb2yuv[9] = {0};
@@ -221,21 +221,20 @@ static void check_input_planar_rgb_to_y(void)
     src[2] = (uint8_t*)src_r;
     src[3] = (uint8_t*)src_a;
 
-    sws = sws_alloc_context();
-    if (sws_init_context(sws, NULL, NULL) < 0)
+    ctx = sws_alloc_context();
+    if (sws_init_context(ctx, NULL, NULL) < 0)
         fail();
 
-    c = sws_internal(sws);
     for (fmi = 0; fmi < FF_ARRAY_ELEMS(planar_fmts); fmi++) {
-        for (isi = 0; isi < FF_ARRAY_ELEMS(input_sizes); isi++ ) {
+        for (isi = 0; isi < INPUT_SIZES; isi++ ) {
             desc = av_pix_fmt_desc_get(planar_fmts[fmi]);
-            sws->src_format = planar_fmts[fmi];
-            sws->dst_format = AV_PIX_FMT_YUVA444P16;
+            ctx->srcFormat = planar_fmts[fmi];
+            ctx->dstFormat = AV_PIX_FMT_YUVA444P16;
             byte_size = 2;
             dstW = input_sizes[isi];
 
-            ff_sws_init_scale(c);
-            if(check_func(c->readLumPlanar, "planar_%s_to_y_%d",  desc->name, dstW)) {
+            ff_sws_init_scale(ctx);
+            if(check_func(ctx->readLumPlanar, "planar_%s_to_y_%d",  desc->name, dstW)) {
                 memset(dst0_y, 0xFF, LARGEST_INPUT_SIZE * sizeof(int32_t));
                 memset(dst1_y, 0xFF, LARGEST_INPUT_SIZE * sizeof(int32_t));
 
@@ -250,19 +249,20 @@ static void check_input_planar_rgb_to_y(void)
             }
         }
     }
-    sws_freeContext(sws);
+    sws_freeContext(ctx);
 }
 
 #undef LARGEST_INPUT_SIZE
+#undef INPUT_SIZES
 
 static void check_input_planar_rgb_to_uv(void)
 {
-    SwsContext *sws;
-    SwsInternal *c;
+    struct SwsContext *ctx;
     const AVPixFmtDescriptor *desc;
     int fmi, isi;
     int dstW, byte_size;
 #define LARGEST_INPUT_SIZE 512
+#define INPUT_SIZES 6
     static const int input_sizes[] = {8, 24, 128, 144, 256, 512};
     const uint8_t *src[4];
     int32_t rgb2yuv[9] = {0};
@@ -292,21 +292,20 @@ static void check_input_planar_rgb_to_uv(void)
     src[2] = (uint8_t*)src_r;
     src[3] = (uint8_t*)src_a;
 
-    sws = sws_alloc_context();
-    if (sws_init_context(sws, NULL, NULL) < 0)
+    ctx = sws_alloc_context();
+    if (sws_init_context(ctx, NULL, NULL) < 0)
         fail();
 
-    c = sws_internal(sws);
     for (fmi = 0; fmi < FF_ARRAY_ELEMS(planar_fmts); fmi++) {
-        for (isi = 0; isi < FF_ARRAY_ELEMS(input_sizes); isi++ ) {
+        for (isi = 0; isi < INPUT_SIZES; isi++ ) {
             desc = av_pix_fmt_desc_get(planar_fmts[fmi]);
-            sws->src_format = planar_fmts[fmi];
-            sws->dst_format = AV_PIX_FMT_YUVA444P16;
+            ctx->srcFormat = planar_fmts[fmi];
+            ctx->dstFormat = AV_PIX_FMT_YUVA444P16;
             byte_size = 2;
             dstW = input_sizes[isi];
 
-            ff_sws_init_scale(c);
-            if(check_func(c->readChrPlanar, "planar_%s_to_uv_%d",  desc->name, dstW)) {
+            ff_sws_init_scale(ctx);
+            if(check_func(ctx->readChrPlanar, "planar_%s_to_uv_%d",  desc->name, dstW)) {
                 memset(dst0_u, 0xFF, LARGEST_INPUT_SIZE * sizeof(int32_t));
                 memset(dst0_v, 0xFF, LARGEST_INPUT_SIZE * sizeof(int32_t));
                 memset(dst1_u, 0xFF, LARGEST_INPUT_SIZE * sizeof(int32_t));
@@ -323,19 +322,20 @@ static void check_input_planar_rgb_to_uv(void)
             }
         }
     }
-    sws_freeContext(sws);
+    sws_freeContext(ctx);
 }
 
 #undef LARGEST_INPUT_SIZE
+#undef INPUT_SIZES
 
 static void check_input_planar_rgb_to_a(void)
 {
-    SwsContext *sws;
-    SwsInternal *c;
+    struct SwsContext *ctx;
     const AVPixFmtDescriptor *desc;
     int fmi, isi;
     int dstW, byte_size;
 #define LARGEST_INPUT_SIZE 512
+#define INPUT_SIZES 6
     static const int input_sizes[] = {8, 24, 128, 144, 256, 512};
     const uint8_t *src[4];
     int32_t rgb2yuv[9] = {0};
@@ -362,24 +362,23 @@ static void check_input_planar_rgb_to_a(void)
     src[2] = (uint8_t*)src_r;
     src[3] = (uint8_t*)src_a;
 
-    sws = sws_alloc_context();
-    if (sws_init_context(sws, NULL, NULL) < 0)
+    ctx = sws_alloc_context();
+    if (sws_init_context(ctx, NULL, NULL) < 0)
         fail();
 
-    c = sws_internal(sws);
     for (fmi = 0; fmi < FF_ARRAY_ELEMS(planar_fmts); fmi++) {
-        for (isi = 0; isi < FF_ARRAY_ELEMS(input_sizes); isi++ ) {
+        for (isi = 0; isi < INPUT_SIZES; isi++ ) {
             desc = av_pix_fmt_desc_get(planar_fmts[fmi]);
             if (!(desc->flags & AV_PIX_FMT_FLAG_ALPHA))
                 continue;
 
-            sws->src_format = planar_fmts[fmi];
-            sws->dst_format = AV_PIX_FMT_YUVA444P16;
+            ctx->srcFormat = planar_fmts[fmi];
+            ctx->dstFormat = AV_PIX_FMT_YUVA444P16;
             byte_size = 2;
             dstW = input_sizes[isi];
 
-            ff_sws_init_scale(c);
-            if(check_func(c->readAlpPlanar, "planar_%s_to_a_%d",  desc->name, dstW)) {
+            ff_sws_init_scale(ctx);
+            if(check_func(ctx->readAlpPlanar, "planar_%s_to_a_%d",  desc->name, dstW)) {
                 memset(dst0_a, 0x00, LARGEST_INPUT_SIZE * sizeof(int32_t));
                 memset(dst1_a, 0x00, LARGEST_INPUT_SIZE * sizeof(int32_t));
 
@@ -392,7 +391,7 @@ static void check_input_planar_rgb_to_a(void)
             }
         }
     }
-    sws_freeContext(sws);
+    sws_freeContext(ctx);
 }
 
 void checkasm_check_sw_gbrp(void)

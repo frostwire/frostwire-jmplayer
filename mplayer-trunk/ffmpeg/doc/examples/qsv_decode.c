@@ -219,8 +219,11 @@ int main(int argc, char **argv)
     ret = decode_packet(decoder_ctx, frame, sw_frame, NULL, output_ctx);
 
 finish:
-    if (ret < 0)
-        fprintf(stderr, "%s\n", av_err2str(ret));
+    if (ret < 0) {
+        char buf[1024];
+        av_strerror(ret, buf, sizeof(buf));
+        fprintf(stderr, "%s\n", buf);
+    }
 
     avformat_close_input(&input_ctx);
 

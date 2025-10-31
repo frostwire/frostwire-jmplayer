@@ -179,9 +179,7 @@ static int sap_read_header(AVFormatContext *s)
             goto fail;
         }
         st->id = i;
-        ret = avcodec_parameters_copy(st->codecpar, sap->sdp_ctx->streams[i]->codecpar);
-        if (ret < 0)
-            goto fail;
+        avcodec_parameters_copy(st->codecpar, sap->sdp_ctx->streams[i]->codecpar);
         st->time_base = sap->sdp_ctx->streams[i]->time_base;
     }
 

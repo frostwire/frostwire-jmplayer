@@ -21,7 +21,6 @@
 
 #include <stdarg.h>
 #include "avcodec.h"
-#include "libavutil/attributes.h"
 #include "libavutil/opt.h"
 #include "libavutil/intreadwrite.h"
 #include "libavutil/mem.h"
@@ -163,7 +162,7 @@ static const Box box_types[] = {
 
 const static size_t box_count = FF_ARRAY_ELEMS(box_types);
 
-static av_cold int mov_text_encode_close(AVCodecContext *avctx)
+static int mov_text_encode_close(AVCodecContext *avctx)
 {
     MovTextContext *s = avctx->priv_data;
 
@@ -260,7 +259,7 @@ static int encode_sample_description(AVCodecContext *avctx)
     // Build font table
     // We can't build a complete font table since that would require
     // scanning all dialogs first.  But we can at least fill in what
-    // is available in the ASS header
+    // is avaiable in the ASS header
     if (style && ass->styles_count) {
         // Find unique font names
         if (style->font_name) {

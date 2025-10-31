@@ -137,7 +137,6 @@ const CodecMime ff_id3v2_mime_tags[] = {
     { "image/png",  AV_CODEC_ID_PNG   },
     { "image/tiff", AV_CODEC_ID_TIFF  },
     { "image/bmp",  AV_CODEC_ID_BMP   },
-    { "image/webp", AV_CODEC_ID_WEBP  },
     { "JPG",        AV_CODEC_ID_MJPEG }, /* ID3v2.2  */
     { "PNG",        AV_CODEC_ID_PNG   }, /* ID3v2.2  */
     { "",           AV_CODEC_ID_NONE  },
@@ -268,24 +267,18 @@ static int decode_str(AVFormatContext *s, AVIOContext *pb, int encoding,
 
     case ID3v2_ENCODING_UTF16BOM:
         if ((left -= 2) < 0) {
-            av_log(s, AV_LOG_ERROR, "Cannot read BOM value, input too short %d\n", left);
+            av_log(s, AV_LOG_ERROR, "Cannot read BOM value, input too short\n");
             ffio_free_dyn_buf(&dynbuf);
             *dst = NULL;
             return AVERROR_INVALIDDATA;
         }
-        uint16_t bom = avio_rb16(pb);
-        switch (bom) {
+        switch (avio_rb16(pb)) {
         case 0xfffe:
             get = avio_rl16;
         case 0xfeff:
             break;
-        case 0: // empty string without bom
-            ffio_free_dyn_buf(&dynbuf);
-            *dst = NULL;
-            *maxread = left;
-            return 0;
         default:
-            av_log(s, AV_LOG_ERROR, "Incorrect BOM value: 0x%x\n", bom);
+            av_log(s, AV_LOG_ERROR, "Incorrect BOM value\n");
             ffio_free_dyn_buf(&dynbuf);
             *dst = NULL;
             *maxread = left;
@@ -310,7 +303,7 @@ static int decode_str(AVFormatContext *s, AVIOContext *pb, int encoding,
         }
         break;
     default:
-        av_log(s, AV_LOG_WARNING, "Unknown encoding %d\n", encoding);
+        av_log(s, AV_LOG_WARNING, "Unknown encoding\n");
     }
 
     if (ch)
@@ -903,7 +896,7 @@ static void id3v2_parse(AVIOContext *pb, AVDictionary **metadata,
         int tunsync         = 0;
         int tcomp           = 0;
         int tencr           = 0;
-        av_unused unsigned long dlen;
+        unsigned long av_unused dlen;
 
         if (isv34) {
             if (avio_read(pb, tag, 4) < 4)
@@ -1018,7 +1011,7 @@ static void id3v2_parse(AVIOContext *pb, AVDictionary **metadata,
                 if (tcomp) {
                     int err;
 
-                    av_log(s, AV_LOG_DEBUG, "Compressed frame %s tlen=%d dlen=%ld\n", tag, tlen, dlen);
+                    av_log(s, AV_LOG_DEBUG, "Compresssed frame %s tlen=%d dlen=%ld\n", tag, tlen, dlen);
 
                     if (tlen <= 0)
                         goto seek;

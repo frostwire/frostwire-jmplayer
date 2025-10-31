@@ -25,7 +25,6 @@
  * divided into 32 subbands.
  */
 
-#include "libavutil/attributes.h"
 #include "libavutil/channel_layout.h"
 #include "libavutil/internal.h"
 #include "libavutil/lfg.h"
@@ -297,7 +296,7 @@ static int mpc7_decode_frame(AVCodecContext *avctx, AVFrame *frame,
     return avpkt->size;
 }
 
-static av_cold void mpc7_decode_flush(AVCodecContext *avctx)
+static void mpc7_decode_flush(AVCodecContext *avctx)
 {
     MPCContext *c = avctx->priv_data;
 
@@ -324,5 +323,6 @@ const FFCodec ff_mpc7_decoder = {
     FF_CODEC_DECODE_CB(mpc7_decode_frame),
     .flush          = mpc7_decode_flush,
     .p.capabilities = AV_CODEC_CAP_DR1,
-    CODEC_SAMPLEFMTS(AV_SAMPLE_FMT_S16P),
+    .p.sample_fmts  = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_S16P,
+                                                      AV_SAMPLE_FMT_NONE },
 };

@@ -58,7 +58,8 @@ static void check_pixfmt_descriptors(void)
 
         for (int j = 0; j < FF_ARRAY_ELEMS(d->comp); j++) {
             const AVComponentDescriptor *c = &d->comp[j];
-            if (!c->depth) {
+            if (j >= d->nb_components) {
+                av_assert0(!c->plane && !c->step && !c->offset && !c->shift && !c->depth);
                 continue;
             }
             if (d->flags & AV_PIX_FMT_FLAG_BITSTREAM) {

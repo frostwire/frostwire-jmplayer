@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     FILE *infile            = NULL;
     char *graph_string      = NULL;
     AVFilterGraph *graph    = NULL;
-    int c;
+    char c;
 
     av_log_set_level(AV_LOG_DEBUG);
 

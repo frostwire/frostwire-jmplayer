@@ -96,10 +96,9 @@ static int tak_read_header(AVFormatContext *s)
             memset(buffer + size - 3, 0, AV_INPUT_BUFFER_PADDING_SIZE);
 
             ffio_init_checksum(pb, tak_check_crc, 0xCE04B7U);
-            ret = ffio_read_size(pb, buffer, size - 3);
-            if (ret < 0) {
+            if (avio_read(pb, buffer, size - 3) != size - 3) {
                 av_freep(&buffer);
-                return ret;
+                return AVERROR(EIO);
             }
             if (ffio_get_checksum(s->pb) != avio_rb24(pb)) {
                 av_log(s, AV_LOG_ERROR, "%d metadata block CRC error.\n", type);
@@ -117,9 +116,7 @@ static int tak_read_header(AVFormatContext *s)
             if (size != 19)
                 return AVERROR_INVALIDDATA;
             ffio_init_checksum(pb, tak_check_crc, 0xCE04B7U);
-            ret = ffio_read_size(pb, md5, 16);
-            if (ret < 0)
-                return ret;
+            avio_read(pb, md5, 16);
             if (ffio_get_checksum(s->pb) != avio_rb24(pb)) {
                 av_log(s, AV_LOG_ERROR, "MD5 metadata block CRC error.\n");
                 if (s->error_recognition & AV_EF_EXPLODE)
@@ -141,11 +138,10 @@ static int tak_read_header(AVFormatContext *s)
             tc->data_end += curpos;
             return 0;
         }
-        default: {
-            int64_t ret64 = avio_skip(pb, size);
-            if (ret64 < 0)
-                return ret64;
-        }
+        default:
+            ret = avio_skip(pb, size);
+            if (ret < 0)
+                return ret;
         }
 
         if (type == TAK_METADATA_STREAMINFO) {

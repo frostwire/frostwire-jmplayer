@@ -21,8 +21,8 @@
 #ifndef AVCODEC_RV10DEC_H
 #define AVCODEC_RV10DEC_H
 
-struct H263DecContext;
+#include "mpegvideo.h"
 
-int ff_rv_decode_dc(struct H263DecContext *const h, int n);
+int ff_rv_decode_dc(MpegEncContext *s, int n);
 
 #endif /* AVCODEC_RV10DEC_H */

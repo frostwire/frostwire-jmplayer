@@ -26,15 +26,9 @@ void ff_range_chr_to_jpeg_16_rvv(int16_t *, int16_t *, int);
 void ff_range_lum_from_jpeg_16_rvv(int16_t *, int);
 void ff_range_chr_from_jpeg_16_rvv(int16_t *, int16_t *, int);
 
-av_cold void ff_sws_init_range_convert_riscv(SwsInternal *c)
+av_cold static void ff_sws_init_range_convert_riscv(SwsContext *c, int flags)
 {
-    /* This code is currently disabled because of changes in the base
-     * implementation of these functions. This code should be enabled
-     * again once those changes are ported to this architecture. */
-#if 0
 #if HAVE_RVV
-    int flags = av_get_cpu_flags();
-
     static const struct {
         void (*lum)(int16_t *, int);
         void (*chr)(int16_t *, int16_t *, int);
@@ -43,14 +37,14 @@ av_cold void ff_sws_init_range_convert_riscv(SwsInternal *c)
         { ff_range_lum_from_jpeg_16_rvv, ff_range_chr_from_jpeg_16_rvv },
     };
 
-    if (c->dstBpc <= 14 &&
+    if (c->srcRange != c->dstRange && !isAnyRGB(c->dstFormat) &&
+        c->dstBpc <= 14 &&
         (flags & AV_CPU_FLAG_RVV_I32) && (flags & AV_CPU_FLAG_RVB)) {
-        bool from = c->opts.src_range != 0;
+        bool from = c->srcRange != 0;
 
         c->lumConvertRange = convs[from].lum;
         c->chrConvertRange = convs[from].chr;
     }
-#endif
 #endif
 }
 
@@ -71,13 +65,13 @@ RVV_INPUT(bgra32);
 RVV_INPUT(rgb24);
 RVV_INPUT(rgba32);
 
-av_cold void ff_sws_init_swscale_riscv(SwsInternal *c)
+av_cold void ff_sws_init_swscale_riscv(SwsContext *c)
 {
-#if HAVE_RVV
     int flags = av_get_cpu_flags();
 
+#if HAVE_RVV
     if ((flags & AV_CPU_FLAG_RVV_I32) && (flags & AV_CPU_FLAG_RVB)) {
-        switch (c->opts.src_format) {
+        switch (c->srcFormat) {
             case AV_PIX_FMT_ABGR:
                 c->lumToYV12 = ff_abgr32ToY_rvv;
                 if (c->chrSrcHSubSample)
@@ -128,4 +122,5 @@ av_cold void ff_sws_init_swscale_riscv(SwsInternal *c)
         }
     }
 #endif
+    ff_sws_init_range_convert_riscv(c, flags);
 }

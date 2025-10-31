@@ -427,21 +427,15 @@ static int avi_extract_stream_metadata(AVFormatContext *s, AVStream *st)
     tag = bytestream2_get_le32(&gb);
 
     switch (tag) {
-    case MKTAG('A', 'V', 'I', 'F'): {
-        AVExifMetadata ifd = { 0 };
-        int ret;
+    case MKTAG('A', 'V', 'I', 'F'):
         // skip 4 byte padding
         bytestream2_skip(&gb, 4);
         offset = bytestream2_tell(&gb);
 
         // decode EXIF tags from IFD, AVI is always little-endian
-        ret = av_exif_parse_buffer(s, data + offset, data_size - offset, &ifd, AV_EXIF_ASSUME_LE);
-        if (ret < 0)
-            return ret;
-        ret = av_exif_ifd_to_dict(s, &ifd, &st->metadata);
-        av_exif_free(&ifd);
-        return ret;
-    }
+        return avpriv_exif_decode_ifd(s, data + offset, data_size - offset,
+                                      1, 0, &st->metadata);
+        break;
     case MKTAG('C', 'A', 'S', 'I'):
         avpriv_request_sample(s, "RIFF stream data tag type CASI (%u)", tag);
         break;

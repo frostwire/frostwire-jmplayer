@@ -77,7 +77,6 @@ static void free_stream(AVFormatContext *s, int i)
 
     av_freep(&stream->private);
     av_freep(&stream->new_metadata);
-    av_freep(&stream->new_extradata);
 }
 
 //FIXME We could avoid some structure duplication
@@ -240,6 +239,10 @@ static int ogg_replace_stream(AVFormatContext *s, uint32_t serial, char *magic, 
     os->start_trimming = 0;
     os->end_trimming = 0;
 
+    /* Chained files have extradata as a new packet */
+    if (codec == &ff_opus_codec)
+        os->header = -1;
+
     return i;
 }
 
@@ -370,7 +373,7 @@ static int ogg_read_page(AVFormatContext *s, int *sid, int probing)
     flags   = avio_r8(bc);
     gp      = avio_rl64(bc);
     serial  = avio_rl32(bc);
-    avio_rl32(bc); /* seq */
+    avio_skip(bc, 4); /* seq */
 
     crc_tmp = ffio_get_checksum(bc);
     crc     = avio_rb32(bc);
@@ -602,26 +605,20 @@ static int ogg_packet(AVFormatContext *s, int *sid, int *dstart, int *dsize,
     } else {
         os->pflags    = 0;
         os->pduration = 0;
-
-        ret = 0;
         if (os->codec && os->codec->packet) {
             if ((ret = os->codec->packet(s, idx)) < 0) {
                 av_log(s, AV_LOG_ERROR, "Packet processing failed: %s\n", av_err2str(ret));
                 return ret;
             }
         }
-
-        if (!ret) {
-            if (sid)
-                *sid = idx;
-            if (dstart)
-                *dstart = os->pstart;
-            if (dsize)
-                *dsize = os->psize;
-            if (fpos)
-                *fpos = os->sync_pos;
-        }
-
+        if (sid)
+            *sid = idx;
+        if (dstart)
+            *dstart = os->pstart;
+        if (dsize)
+            *dsize = os->psize;
+        if (fpos)
+            *fpos = os->sync_pos;
         os->pstart  += os->psize;
         os->psize    = 0;
         if(os->pstart == os->bufpos)
@@ -880,23 +877,13 @@ retry:
     }
 
     if (os->new_metadata) {
-        ret = av_packet_add_side_data(pkt, AV_PKT_DATA_STRINGS_METADATA,
+        ret = av_packet_add_side_data(pkt, AV_PKT_DATA_METADATA_UPDATE,
                                       os->new_metadata, os->new_metadata_size);
         if (ret < 0)
             return ret;
 
         os->new_metadata      = NULL;
         os->new_metadata_size = 0;
-    }
-
-    if (os->new_extradata) {
-        ret = av_packet_add_side_data(pkt, AV_PKT_DATA_NEW_EXTRADATA,
-                                      os->new_extradata, os->new_extradata_size);
-        if (ret < 0)
-            return ret;
-
-        os->new_extradata      = NULL;
-        os->new_extradata_size = 0;
     }
 
     return psize;
