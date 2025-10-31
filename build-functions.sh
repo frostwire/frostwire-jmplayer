@@ -250,117 +250,26 @@ configure_ffmpeg_windows() {
   EXTRA_CFLAGS="-Os -I${OPENSSL_ROOT}/include"
   EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto"
   pushd mplayer-trunk/ffmpeg
-  echo "configure_ffmpeg_windows: About to ffmpeg configure for Windows"
+  echo "configure_ffmpeg_windows: About to ffmpeg configure for Windows (audio-only player)"
   press_any_key
   ./configure \
       --target-os=${TARGET_OS} \
       ${FFMPEG_OPTIONS} \
       --enable-nonfree \
       --enable-openssl \
-      --enable-cross-compile \
-      --disable-doc \
-      --disable-programs \
-      --disable-muxers \
-      --disable-demuxers \
-      --disable-devices \
-      --disable-filters \
-      --disable-iconv \
-      --disable-alsa \
-      --disable-openal \
-      --disable-lzma \
-      --disable-decoder=dirac \
-      --disable-decoder=snow \
-      --disable-decoder=amrnb \
-      --disable-decoder=amrwb \
-      --disable-decoder=g723_1 \
-      --disable-decoder=h264_oh \
-      --disable-decoder=hevc_oh \
-      --disable-parser=g723_1 \
-      --disable-parser=dirac \
-      --disable-encoder=dirac \
-      --disable-encoder=snow \
-      --disable-encoder=h264_oh \
-      --disable-encoder=hevc_oh \
-      --disable-demuxer=mcc \
-      --disable-muxer=mcc \
-      --disable-bsf=eia608_to_smpte436m \
-      --disable-bsf=smpte436m_to_eia608 \
-      ${ENABLED_PROTOCOLS_FLAGS} \
-      ${DISABLED_PROTOCOLS_FLAGS} \
-      ${DISABLED_DECODERS_FLAGS} \
-      ${ENABLED_DECODERS_FLAGS} \
-      ${DISABLED_ENCODERS_FLAGS} \
-      --extra-cflags="${EXTRA_CFLAGS}" \
-      --extra-ldflags="${EXTRA_LDFLAGS}"
-  echo "configure_ffmpeg_windows: Finished ffmpeg configure"
-  patch_ffmpeg_generated_lists
-  popd
-  pushd mplayer-trunk/ffmpeg
-}
-
-configure_ffmpeg_macos() {
-  TARGET_OS="darwin"
-  EXTRA_CFLAGS="-Os"
-  EXTRA_LDFLAGS=""
-  pushd mplayer-trunk/ffmpeg
-  echo "configure_ffmpeg_macos: About to ffmpeg configure for macOS"
-  press_any_key
-  ./configure \
-      --target-os=${TARGET_OS} \
-      --enable-nonfree \
-      --enable-openssl \
-      --disable-doc \
-      --disable-programs \
-      --disable-muxers \
-      --disable-demuxers \
-      --disable-devices \
-      --disable-filters \
-      --disable-iconv \
-      --disable-alsa \
-      --disable-openal \
-      --disable-lzma \
-      --disable-decoder=dirac \
-      --disable-decoder=snow \
-      --disable-decoder=amrnb \
-      --disable-decoder=amrwb \
-      --disable-decoder=g723_1 \
-      --disable-decoder=h264_oh \
-      --disable-decoder=hevc_oh \
-      --disable-parser=g723_1 \
-      --disable-parser=dirac \
-      --disable-encoder=dirac \
-      --disable-encoder=snow \
-      --disable-encoder=h264_oh \
-      --disable-encoder=hevc_oh \
-      --disable-demuxer=mcc \
-      --disable-muxer=mcc \
-      --disable-bsf=eia608_to_smpte436m \
-      --disable-bsf=smpte436m_to_eia608 \
-      ${ENABLED_PROTOCOLS_FLAGS} \
-      ${DISABLED_PROTOCOLS_FLAGS} \
-      ${DISABLED_DECODERS_FLAGS} \
-      ${ENABLED_DECODERS_FLAGS} \
-      ${DISABLED_ENCODERS_FLAGS} \
-      --extra-cflags="${EXTRA_CFLAGS}" \
-      --extra-ldflags="${EXTRA_LDFLAGS}"
-  echo "configure_ffmpeg_macos: Finished ffmpeg configure"
-  patch_ffmpeg_generated_lists
-  popd
-  pushd mplayer-trunk/ffmpeg
-}
-
-configure_ffmpeg_linux() {
-  TARGET_OS="linux"
-  EXTRA_CFLAGS="-Os"
-  EXTRA_LDFLAGS=""
-  pushd mplayer-trunk/ffmpeg
-  echo "configure_ffmpeg_linux: About to ffmpeg configure for Linux"
-  press_any_key
-  ./configure \
-      --target-os=${TARGET_OS} \
-      --enable-nonfree \
-      --enable-openssl \
       --disable-everything \
+      --disable-all \
+      --disable-programs \
+      --disable-doc \
+      --disable-filters \
+      --disable-muxers \
+      --disable-devices \
+      --disable-encoders \
+      --disable-swscale \
+      --disable-iconv \
+      --disable-alsa \
+      --disable-openal \
+      --disable-lzma \
       --enable-protocol=file \
       --enable-protocol=http \
       --enable-protocol=https \
@@ -371,10 +280,6 @@ configure_ffmpeg_linux() {
       --enable-demuxer=flac \
       --enable-demuxer=ogg \
       --enable-demuxer=matroska \
-      --enable-demuxer=mov \
-      --enable-demuxer=avi \
-      --enable-demuxer=mpegts \
-      --enable-demuxer=mpegps \
       --enable-demuxer=wav \
       --enable-decoder=aac \
       --enable-decoder=ac3 \
@@ -389,9 +294,126 @@ configure_ffmpeg_linux() {
       --enable-decoder=opus \
       --enable-decoder=wavpack \
       --enable-decoder=tta \
-      --enable-decoder=wmav1 \
-      --enable-decoder=wmav2 \
-      --enable-decoder=truehd \
+      --enable-parser=aac \
+      --enable-parser=ac3 \
+      --enable-parser=flac \
+      --enable-parser=mpegaudio \
+      --enable-parser=vorbis \
+      --enable-parser=opus \
+      --extra-cflags="${EXTRA_CFLAGS}" \
+      --extra-ldflags="${EXTRA_LDFLAGS}"
+  echo "configure_ffmpeg_windows: Finished ffmpeg configure"
+  patch_ffmpeg_generated_lists
+  popd
+  pushd mplayer-trunk/ffmpeg
+}
+
+configure_ffmpeg_macos() {
+  TARGET_OS="darwin"
+  EXTRA_CFLAGS="-Os"
+  EXTRA_LDFLAGS=""
+  pushd mplayer-trunk/ffmpeg
+  echo "configure_ffmpeg_macos: About to ffmpeg configure for macOS (audio-only player)"
+  press_any_key
+  ./configure \
+      --target-os=${TARGET_OS} \
+      --enable-nonfree \
+      --enable-openssl \
+      --disable-everything \
+      --disable-all \
+      --disable-programs \
+      --disable-doc \
+      --disable-filters \
+      --disable-muxers \
+      --disable-devices \
+      --disable-encoders \
+      --disable-swscale \
+      --disable-iconv \
+      --disable-alsa \
+      --disable-openal \
+      --disable-lzma \
+      --enable-protocol=file \
+      --enable-protocol=http \
+      --enable-protocol=https \
+      --enable-protocol=tcp \
+      --enable-protocol=tls \
+      --enable-demuxer=mp3 \
+      --enable-demuxer=aac \
+      --enable-demuxer=flac \
+      --enable-demuxer=ogg \
+      --enable-demuxer=matroska \
+      --enable-demuxer=wav \
+      --enable-decoder=aac \
+      --enable-decoder=ac3 \
+      --enable-decoder=eac3 \
+      --enable-decoder=alac \
+      --enable-decoder=dts \
+      --enable-decoder=dca \
+      --enable-decoder=flac \
+      --enable-decoder=mp2 \
+      --enable-decoder=mp3 \
+      --enable-decoder=vorbis \
+      --enable-decoder=opus \
+      --enable-decoder=wavpack \
+      --enable-decoder=tta \
+      --enable-parser=aac \
+      --enable-parser=ac3 \
+      --enable-parser=flac \
+      --enable-parser=mpegaudio \
+      --enable-parser=vorbis \
+      --enable-parser=opus \
+      --extra-cflags="${EXTRA_CFLAGS}" \
+      --extra-ldflags="${EXTRA_LDFLAGS}"
+  echo "configure_ffmpeg_macos: Finished ffmpeg configure"
+  patch_ffmpeg_generated_lists
+  popd
+  pushd mplayer-trunk/ffmpeg
+}
+
+configure_ffmpeg_linux() {
+  TARGET_OS="linux"
+  EXTRA_CFLAGS="-Os"
+  EXTRA_LDFLAGS=""
+  pushd mplayer-trunk/ffmpeg
+  echo "configure_ffmpeg_linux: About to ffmpeg configure for Linux (audio-only player)"
+  press_any_key
+  ./configure \
+      --target-os=${TARGET_OS} \
+      --enable-nonfree \
+      --enable-openssl \
+      --disable-everything \
+      --disable-all \
+      --disable-programs \
+      --disable-doc \
+      --disable-filters \
+      --disable-muxers \
+      --disable-devices \
+      --disable-encoders \
+      --disable-swscale \
+      --enable-protocol=file \
+      --enable-protocol=http \
+      --enable-protocol=https \
+      --enable-protocol=tcp \
+      --enable-protocol=tls \
+      --enable-demuxer=mp3 \
+      --enable-demuxer=aac \
+      --enable-demuxer=flac \
+      --enable-demuxer=ogg \
+      --enable-demuxer=matroska \
+      --enable-demuxer=wav \
+      --enable-decoder=aac \
+      --enable-decoder=ac3 \
+      --enable-decoder=eac3 \
+      --enable-decoder=alac \
+      --enable-decoder=dts \
+      --enable-decoder=dca \
+      --enable-decoder=flac \
+      --enable-decoder=mp2 \
+      --enable-decoder=mp3 \
+      --enable-decoder=vorbis \
+      --enable-decoder=opus \
+      --enable-decoder=wavpack \
+      --enable-decoder=tta \
       --enable-parser=aac \
       --enable-parser=ac3 \
       --enable-parser=flac \
