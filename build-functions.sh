@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+M#!/usr/bin/env bash
 ################################################################################
 # OS Detection Functions
 ################################################################################
@@ -127,13 +127,13 @@ prepare_enabled_protocol_flags() {
 # ENABLED_DECODERS_FLAGS
 ################################################################################
 prepare_ffmpeg_flags() {
-  if [ ! -f "prepare_ffmpeg_flags.sh" ]; then
+  if [ ! -f "prepare_ffmpeg_flags.py" ]; then
     echo "Error: prepare_ffmpeg_flags.sh not found, can't prepare ffmpeg flags"
     echo
     exit 1
   fi
 
-  eval "$(./prepare_ffmpeg_flags.sh)"
+  eval "$(./prepare_ffmpeg_flags.py)"
   return 0
 }
 ################################################################################
@@ -249,58 +249,15 @@ configure_ffmpeg_windows() {
   FFMPEG_OPTIONS="--cc=${CC} --enable-cross-compile"
   EXTRA_CFLAGS="-Os -I${OPENSSL_ROOT}/include"
   EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto"
-  pushd mplayer-trunk/ffmpeg
   echo "configure_ffmpeg_windows: About to ffmpeg configure for Windows (audio-only player)"
   press_any_key
   ./configure \
       --target-os=${TARGET_OS} \
       ${FFMPEG_OPTIONS} \
-      --enable-nonfree \
-      --enable-openssl \
-      --disable-everything \
-      --disable-programs \
-      --disable-doc \
-      --disable-filters \
-      --disable-muxers \
-      --disable-devices \
-      --disable-encoders \
-      --disable-swscale \
-      --disable-avdevice \
-      --disable-iconv \
-      --disable-alsa \
-      --disable-openal \
-      --disable-lzma \
-      --enable-swresample \
-      --enable-protocol=file \
-      --enable-protocol=http \
-      --enable-protocol=https \
-      --enable-protocol=tcp \
-      --enable-protocol=tls \
-      --enable-demuxer=mp3 \
-      --enable-demuxer=aac \
-      --enable-demuxer=flac \
-      --enable-demuxer=ogg \
-      --enable-demuxer=matroska \
-      --enable-demuxer=wav \
-      --enable-decoder=aac \
-      --enable-decoder=ac3 \
-      --enable-decoder=eac3 \
-      --enable-decoder=alac \
-      --enable-decoder=dts \
-      --enable-decoder=dca \
-      --enable-decoder=flac \
-      --enable-decoder=mp2 \
-      --enable-decoder=mp3 \
-      --enable-decoder=vorbis \
-      --enable-decoder=opus \
-      --enable-decoder=wavpack \
-      --enable-decoder=tta \
-      --enable-parser=aac \
-      --enable-parser=ac3 \
-      --enable-parser=flac \
-      --enable-parser=mpegaudio \
-      --enable-parser=vorbis \
-      --enable-parser=opus \
+      ${ENABLED_PROTOCOLS_FLAGS} \
+      ${DISABLED_DECODERS_FLAGS} \
+      ${DISABLED_ENCODERS_FLAGS} \
+      ${ENABLED_DECODERS_FLAGS} \
       --extra-cflags="${EXTRA_CFLAGS}" \
       --extra-ldflags="${EXTRA_LDFLAGS}"
   echo "configure_ffmpeg_windows: Finished ffmpeg configure"
@@ -318,52 +275,10 @@ configure_ffmpeg_macos() {
   press_any_key
   ./configure \
       --target-os=${TARGET_OS} \
-      --enable-nonfree \
-      --enable-openssl \
-      --disable-everything \
-      --disable-programs \
-      --disable-doc \
-      --disable-filters \
-      --disable-muxers \
-      --disable-devices \
-      --disable-encoders \
-      --disable-swscale \
-      --disable-avdevice \
-      --disable-iconv \
-      --disable-alsa \
-      --disable-openal \
-      --disable-lzma \
-      --enable-swresample \
-      --enable-protocol=file \
-      --enable-protocol=http \
-      --enable-protocol=https \
-      --enable-protocol=tcp \
-      --enable-protocol=tls \
-      --enable-demuxer=mp3 \
-      --enable-demuxer=aac \
-      --enable-demuxer=flac \
-      --enable-demuxer=ogg \
-      --enable-demuxer=matroska \
-      --enable-demuxer=wav \
-      --enable-decoder=aac \
-      --enable-decoder=ac3 \
-      --enable-decoder=eac3 \
-      --enable-decoder=alac \
-      --enable-decoder=dts \
-      --enable-decoder=dca \
-      --enable-decoder=flac \
-      --enable-decoder=mp2 \
-      --enable-decoder=mp3 \
-      --enable-decoder=vorbis \
-      --enable-decoder=opus \
-      --enable-decoder=wavpack \
-      --enable-decoder=tta \
-      --enable-parser=aac \
-      --enable-parser=ac3 \
-      --enable-parser=flac \
-      --enable-parser=mpegaudio \
-      --enable-parser=vorbis \
-      --enable-parser=opus \
+      ${ENABLED_PROTOCOLS_FLAGS} \
+      ${DISABLED_DECODERS_FLAGS} \
+      ${DISABLED_ENCODERS_FLAGS} \
+      ${ENABLED_DECODERS_FLAGS} \     
       --extra-cflags="${EXTRA_CFLAGS}" \
       --extra-ldflags="${EXTRA_LDFLAGS}"
   echo "configure_ffmpeg_macos: Finished ffmpeg configure"
@@ -376,59 +291,25 @@ configure_ffmpeg_linux() {
   TARGET_OS="linux"
   EXTRA_CFLAGS="-Os"
   EXTRA_LDFLAGS=""
-  pushd mplayer-trunk/ffmpeg
   echo "configure_ffmpeg_linux: About to ffmpeg configure for Linux (audio-only player)"
   press_any_key
   ./configure \
       --target-os=${TARGET_OS} \
-      --enable-nonfree \
-      --enable-openssl \
-      --disable-everything \
-      --disable-programs \
-      --disable-doc \
-      --disable-filters \
-      --disable-muxers \
-      --disable-devices \
-      --disable-encoders \
-      --disable-swscale \
-      --disable-avdevice \
-      --enable-swresample \
-      --enable-protocol=file \
-      --enable-protocol=http \
-      --enable-protocol=https \
-      --enable-protocol=tcp \
-      --enable-protocol=tls \
-      --enable-demuxer=mp3 \
-      --enable-demuxer=aac \
-      --enable-demuxer=flac \
-      --enable-demuxer=ogg \
-      --enable-demuxer=matroska \
-      --enable-demuxer=wav \
-      --enable-decoder=aac \
-      --enable-decoder=ac3 \
-      --enable-decoder=eac3 \
-      --enable-decoder=alac \
-      --enable-decoder=dts \
-      --enable-decoder=dca \
-      --enable-decoder=flac \
-      --enable-decoder=mp2 \
-      --enable-decoder=mp3 \
-      --enable-decoder=vorbis \
-      --enable-decoder=opus \
-      --enable-decoder=wavpack \
-      --enable-decoder=tta \
-      --enable-parser=aac \
-      --enable-parser=ac3 \
-      --enable-parser=flac \
-      --enable-parser=mpegaudio \
-      --enable-parser=vorbis \
-      --enable-parser=opus \
-      --extra-cflags="${EXTRA_CFLAGS}" \
-      --extra-ldflags="${EXTRA_LDFLAGS}"
+      ${ENABLED_PROTOCOLS_FLAGS} \
+      ${DISABLED_DECODERS_FLAGS} \
+      ${DISABLED_ENCODERS_FLAGS} \
+      ${ENABLED_DECODERS_FLAGS}
+  
   echo "configure_ffmpeg_linux: Finished ffmpeg configure"
+  echo ./configure 
+  echo    --target-os=${TARGET_OS} 
+  echo    ${ENABLED_PROTOCOLS_FLAGS} 
+  echo    ${DISABLED_DECODERS_FLAGS} 
+  echo    ${DISABLED_ENCODERS_FLAGS} 
+  echo    ${ENABLED_DECODERS_FLAGS}        
 
   # Patch generated codec lists to remove problematic codecs
-  patch_ffmpeg_generated_lists
+  #patch_ffmpeg_generated_lists
 
   # Stay in ffmpeg directory for the patch to work
   echo "configure_ffmpeg_linux: Patching complete, exiting ffmpeg directory"

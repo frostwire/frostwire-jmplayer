@@ -53,22 +53,20 @@ fi
 verify_mplayer_source || exit 1
 verify_ffmpeg_source || exit 1
 
+echo "Before prepare_ffmpeg_flags we are standing at..."
+pwd
 prepare_ffmpeg_flags
 verify_ffmpeg_flags || exit 1
 
-# Build FFmpeg (configure + build)
-# NOTE: configure_ffmpeg_linux does pushd mplayer-trunk/ffmpeg at the end
-configure_ffmpeg_linux
-
-# Patch FFmpeg generated lists to remove problematic codec references
-# This must be done after configure and before make
-patch_ffmpeg_generated_lists
 
 # Build FFmpeg (we're now in mplayer-trunk/ffmpeg from the pushd above)
-make -j 8
+ensure_cd "mplayer-trunk/ffmpeg"
+configure_ffmpeg_linux
+make -j 16
 
 # Pop back to where we were (should be project root based on build script start)
-popd
+cd ..
+pwd
 
 # Ensure we're in mplayer-trunk directory for mplayer configuration
 ensure_cd "mplayer-trunk" || exit 1
