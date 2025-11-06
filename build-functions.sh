@@ -1,4 +1,4 @@
-M#!/usr/bin/env bash
+#!/usr/bin/env bash
 ################################################################################
 # OS Detection Functions
 ################################################################################
@@ -12,93 +12,6 @@ is_linux() {
 is_macos() {
     [ "$(uname -s)" = "Darwin" ]
     return
-}
-
-################################################################################
-# Smart directory navigation - ensures we're at target directory
-# Handles being in project root, mplayer-trunk, or mplayer-trunk/ffmpeg
-# Usage: ensure_cd "mplayer-trunk" or ensure_cd "mplayer-trunk/ffmpeg" or ensure_cd "."
-################################################################################
-ensure_cd() {
-    local target_dir="$1"
-    local current_dir
-
-    if [ -z "$target_dir" ]; then
-        echo "Error: ensure_cd requires a target directory argument"
-        return 1
-    fi
-
-    current_dir=$(pwd)
-
-    # Normalize the target path
-    target_dir=$(echo "$target_dir" | sed 's:/*$::')  # Remove trailing slashes
-
-    # If target is ".", we want project root
-    if [ "$target_dir" = "." ]; then
-        target_dir=""
-    fi
-
-    # Check if we're already in the target directory
-    if [ -z "$target_dir" ]; then
-        # Target is project root - check if mplayer-trunk and build-functions.sh exist
-        if [ -d "mplayer-trunk" ] && [ -f "build-functions.sh" ]; then
-            return 0
-        fi
-    else
-        # Check if target exists relative to current directory
-        if [ -d "$target_dir" ]; then
-            cd "$target_dir" || return 1
-            return 0
-        fi
-    fi
-
-    # We're not in the right place, figure out where we are and navigate
-    # Check project structure markers
-    if [ -f "build-functions.sh" ] && [ -d "mplayer-trunk" ]; then
-        # We're at project root
-        if [ -n "$target_dir" ]; then
-            cd "$target_dir" || return 1
-        fi
-        return 0
-    elif [ -f "binary.ver" ] || [ -f "Makefile" ] && [ -d "ffmpeg" ]; then
-        # We're in mplayer-trunk
-        if [ "$target_dir" = "mplayer-trunk" ]; then
-            return 0
-        elif [ "$target_dir" = "mplayer-trunk/ffmpeg" ] || [ "$target_dir" = "ffmpeg" ]; then
-            cd ffmpeg || return 1
-            return 0
-        elif [ -z "$target_dir" ]; then
-            # Need to go to project root
-            cd .. || return 1
-            return 0
-        else
-            cd "$target_dir" || return 1
-            return 0
-        fi
-    elif [ -f "version.h" ] || ([ -d "libavcodec" ] && [ -d "libavformat" ]); then
-        # We're in mplayer-trunk/ffmpeg
-        if [ "$target_dir" = "mplayer-trunk/ffmpeg" ] || [ "$target_dir" = "ffmpeg" ]; then
-            return 0
-        elif [ "$target_dir" = "mplayer-trunk" ]; then
-            cd .. || return 1
-            return 0
-        elif [ -z "$target_dir" ]; then
-            # Need to go to project root
-            cd ../.. || return 1
-            return 0
-        else
-            cd "$target_dir" || return 1
-            return 0
-        fi
-    else
-        # Unknown location - try to find our way back to project root
-        echo "Warning: Cannot determine current location in project structure"
-        echo "Current directory: $current_dir"
-        echo "Attempting to navigate to: $target_dir"
-        cd "$target_dir" 2>/dev/null || return 1
-    fi
-
-    return 0
 }
 
 ################################################################################
@@ -261,16 +174,12 @@ configure_ffmpeg_windows() {
       --extra-cflags="${EXTRA_CFLAGS}" \
       --extra-ldflags="${EXTRA_LDFLAGS}"
   echo "configure_ffmpeg_windows: Finished ffmpeg configure"
-  patch_ffmpeg_generated_lists
-  popd
-  pushd mplayer-trunk/ffmpeg
 }
 
 configure_ffmpeg_macos() {
   TARGET_OS="darwin"
   EXTRA_CFLAGS="-Os"
   EXTRA_LDFLAGS=""
-  pushd mplayer-trunk/ffmpeg
   echo "configure_ffmpeg_macos: About to ffmpeg configure for macOS (audio-only player)"
   press_any_key
   ./configure \
@@ -282,101 +191,33 @@ configure_ffmpeg_macos() {
       --extra-cflags="${EXTRA_CFLAGS}" \
       --extra-ldflags="${EXTRA_LDFLAGS}"
   echo "configure_ffmpeg_macos: Finished ffmpeg configure"
-  patch_ffmpeg_generated_lists
-  popd
-  pushd mplayer-trunk/ffmpeg
 }
 
 configure_ffmpeg_linux() {
   TARGET_OS="linux"
   EXTRA_CFLAGS="-Os"
   EXTRA_LDFLAGS=""
-  echo "configure_ffmpeg_linux: About to ffmpeg configure for Linux (audio-only player)"
+  echo "configure_ffmpeg_linux: About to ffmpeg configure for Linux (audio-only player) @ $(pwd)"
   press_any_key
   ./configure \
       --target-os=${TARGET_OS} \
-      ${ENABLED_PROTOCOLS_FLAGS} \
-      ${DISABLED_DECODERS_FLAGS} \
-      ${DISABLED_ENCODERS_FLAGS} \
-      ${ENABLED_DECODERS_FLAGS}
-  
-  echo "configure_ffmpeg_linux: Finished ffmpeg configure"
-  echo ./configure 
-  echo    --target-os=${TARGET_OS} 
-  echo    ${ENABLED_PROTOCOLS_FLAGS} 
-  echo    ${DISABLED_DECODERS_FLAGS} 
-  echo    ${DISABLED_ENCODERS_FLAGS} 
-  echo    ${ENABLED_DECODERS_FLAGS}        
-
-  # Patch generated codec lists to remove problematic codecs
-  #patch_ffmpeg_generated_lists
-
-  # Stay in ffmpeg directory for the patch to work
-  echo "configure_ffmpeg_linux: Patching complete, exiting ffmpeg directory"
-  popd
-  pushd mplayer-trunk/ffmpeg
-}
-
-configure_ffmpeg() {
-  TARGET_OS="darwin"
-  LINUX_FFMPEG_OPTIONS=""
-  EXTRA_CFLAGS="-Os"
-  EXTRA_LDFLAGS=""
-  if [ ${IS_LINUX} -eq 1 ]; then
-      CC="x86_64-w64-mingw32-gcc"
-      TARGET_OS="mingw64"
-      LINUX_FFMPEG_OPTIONS="--cc=${CC} --enable-cross-compile"
-      #-fno-reorder-functions
-      EXTRA_CFLAGS="-Os -I${OPENSSL_ROOT}/include"
-      EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto"
-  fi
-  pushd mplayer-trunk/ffmpeg
-  echo "configure_ffmpeg: About to ffmpeg configure"
-  press_any_key
-  ./configure \
-      --target-os=${TARGET_OS} \
-      ${LINUX_FFMPEG_OPTIONS} \
-      --enable-nonfree \
-      --enable-openssl \
-      --enable-cross-compile \
+      --enable-static --disable-shared \
+      --disable-pthreads --disable-w32threads --disable-os2threads \
+      --disable-encoders --disable-muxers \
+      --enable-avformat --enable-avcodec \
+      --disable-avfilter \
+      --disable-postproc \
+      --disable-autodetect \
       --disable-doc \
       --disable-programs \
-      --disable-muxers \
-      --disable-demuxers \
-      --disable-devices \
-      --disable-filters \
-      --disable-iconv \
-      --disable-alsa \
-      --disable-openal \
-      --disable-lzma \
-      --disable-decoder=dirac \
-      --disable-decoder=snow \
-      --disable-decoder=amrnb \
-      --disable-decoder=amrwb \
-      --disable-decoder=g723_1 \
-      --disable-decoder=h264_oh \
-      --disable-decoder=hevc_oh \
-      --disable-parser=g723_1 \
-      --disable-parser=dirac \
-      --disable-encoder=dirac \
-      --disable-encoder=snow \
-      --disable-encoder=h264_oh \
-      --disable-encoder=hevc_oh \
-      --disable-demuxer=mcc \
-      --disable-muxer=mcc \
-      --disable-bsf=eia608_to_smpte436m \
-      --disable-bsf=smpte436m_to_eia608 \
-      ${ENABLED_PROTOCOLS_FLAGS} \
-      ${DISABLED_PROTOCOLS_FLAGS} \
-      ${DISABLED_DECODERS_FLAGS} \
-      ${ENABLED_DECODERS_FLAGS} \
-      ${DISABLED_ENCODERS_FLAGS} \
-      --extra-cflags="${EXTRA_CFLAGS}" \
-      --extra-ldflags="${EXTRA_LDFLAGS}"
-  echo "configure_ffmpeg: Finished ffmpeg configure"
-  popd
-  pushd mplayer-trunk/ffmpeg
+      --disable-avdevice \
+      --disable-swresample \
+      --disable-swscale \
+      --disable-network \
+      ${DISABLED_DECODERS_FLAGS} ${DISABLED_ENCODERS_FLAGS} ${ENABLED_DECODERS_FLAGS} \
+      --extra-cflags="${CFLAGS}" --extra-ldflags="${LDFLAGS}"
 }
+
 
 ################################################################################
 # Clean MPlayer and FFmpeg build artifacts
@@ -422,7 +263,7 @@ clean_build_artifacts() {
 ################################################################################
 # Clean FFmpeg build completely with distclean
 # This is more thorough than 'make clean' and removes all configuration
-# Must be called when in the ffmpeg directory or with ensure_cd first
+# Must be called when in the ffmpeg directory
 ################################################################################
 distclean_ffmpeg() {
   echo "Running make distclean on FFmpeg..."
@@ -440,122 +281,6 @@ distclean_ffmpeg() {
   return 0
 }
 
-################################################################################
-# Clean up problematic FFmpeg object files after build (DEPRECATED)
-# This function is kept for reference but should not be needed if Makefile
-# patching works correctly
-#
-# Must be called from within the ffmpeg directory (after pushd mplayer-trunk/ffmpeg)
-################################################################################
-cleanup_ffmpeg_problematic_objects() {
-  echo "Cleaning up problematic FFmpeg object files from archives..."
-  local current_dir=$(pwd)
-  echo "Current directory: $current_dir"
-
-  # Verify we're in the ffmpeg directory
-  if [ ! -d "libavcodec" ] || [ ! -d "libavformat" ]; then
-    echo "Error: cleanup_ffmpeg_problematic_objects must be called from ffmpeg directory"
-    echo "Expected to find libavcodec and libavformat subdirectories"
-    return 1
-  fi
-
-  # Define lists of problematic object files with full paths (as they appear in thin archives)
-  local LIBAVCODEC_PROBLEMATIC=(
-    "libavcodec/g723_1.o"
-    "libavcodec/g723_1dec.o"
-    "libavcodec/g723_1_parser.o"
-    "libavcodec/amrnbdec.o"
-    "libavcodec/amrwbdec.o"
-    "libavcodec/cbrt_data.o"
-    "libavcodec/cbrt_data_fixed.o"
-    "libavcodec/diracdec.o"
-    "libavcodec/dirac.o"
-    "libavcodec/dirac_arith.o"
-    "libavcodec/dirac_dwt.o"
-    "libavcodec/dirac_parser.o"
-    "libavcodec/dirac_vlc.o"
-    "libavcodec/diracdsp.o"
-    "libavcodec/diractab.o"
-    "libavcodec/snow.o"
-    "libavcodec/snow_dwt.o"
-    "libavcodec/snowdec.o"
-    "libavcodec/snowenc.o"
-    "libavcodec/mpegvideo_enc.o"
-    "libavcodec/mpegvideoencdsp.o"
-    "libavcodec/acelp_pitch_delay.o"
-    "libavcodec/celp_filters.o"
-    "libavcodec/bsf/eia608_to_smpte436m.o"
-    "libavcodec/bsf/smpte436m_to_eia608.o"
-  )
-
-  local LIBAVFORMAT_PROBLEMATIC=(
-    "libavformat/mccdec.o"
-    "libavformat/mccenc.o"
-  )
-
-  # Clean libavcodec.a (convert thin archive to regular archive, remove problematic objects)
-  if [ -f "libavcodec/libavcodec.a" ]; then
-    echo "Processing libavcodec.a (thin archive)..."
-
-    # Step 1: Extract all members from thin archive
-    echo "  Extracting all objects from thin archive..."
-    local temp_dir="$(mktemp -d)"
-    local saved_dir="$(pwd)"
-    cd "$temp_dir"
-    ar x "${saved_dir}/libavcodec/libavcodec.a"
-
-    # Step 2: Remove problematic object files
-    echo "  Removing problematic object files..."
-    for obj in "${LIBAVCODEC_PROBLEMATIC[@]}"; do
-      rm -f "$(basename "$obj")" 2>/dev/null || true
-    done
-
-    # Step 3: Create a new regular (non-thin) archive
-    echo "  Creating new archive without problematic objects..."
-    ar rcs "${saved_dir}/libavcodec/libavcodec.a.new" *.o
-
-    # Step 4: Replace old archive with new one
-    mv "${saved_dir}/libavcodec/libavcodec.a.new" "${saved_dir}/libavcodec/libavcodec.a"
-
-    # Cleanup temp directory
-    cd "$saved_dir"
-    rm -rf "$temp_dir"
-    echo "  libavcodec.a cleaned and converted to regular archive"
-  fi
-
-  # Clean libavformat.a (convert thin archive to regular archive, remove problematic objects)
-  if [ -f "libavformat/libavformat.a" ]; then
-    echo "Processing libavformat.a (thin archive)..."
-
-    # Step 1: Extract all members from thin archive
-    echo "  Extracting all objects from thin archive..."
-    local temp_dir="$(mktemp -d)"
-    local saved_dir="$(pwd)"
-    cd "$temp_dir"
-    ar x "${saved_dir}/libavformat/libavformat.a"
-
-    # Step 2: Remove problematic object files
-    echo "  Removing problematic object files..."
-    for obj in "${LIBAVFORMAT_PROBLEMATIC[@]}"; do
-      rm -f "$(basename "$obj")" 2>/dev/null || true
-    done
-
-    # Step 3: Create a new regular (non-thin) archive
-    echo "  Creating new archive without problematic objects..."
-    ar rcs "${saved_dir}/libavformat/libavformat.a.new" *.o
-
-    # Step 4: Replace old archive with new one
-    mv "${saved_dir}/libavformat/libavformat.a.new" "${saved_dir}/libavformat/libavformat.a"
-
-    # Cleanup temp directory
-    cd "$saved_dir"
-    rm -rf "$temp_dir"
-    echo "  libavformat.a cleaned and converted to regular archive"
-  fi
-
-  echo "Done cleaning problematic FFmpeg object files"
-  return 0
-}
 
 press_any_key() {
   read -s -n 1 -p "[Press any key to continue]" && echo ""

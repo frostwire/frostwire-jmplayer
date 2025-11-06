@@ -43,132 +43,46 @@ fi
 echo "Building native Linux player for architecture: ${ARCH}"
 press_any_key
 
-prepare_enabled_protocol_flags
-if [ -z "${ENABLED_PROTOCOLS_FLAGS}" ]; then
-  echo "Error: ENABLED_PROTOCOLS_FLAGS is unset"
-  echo ${ENABLED_PROTOCOLS_FLAGS}
-  exit 1
-fi
 
-verify_mplayer_source || exit 1
-verify_ffmpeg_source || exit 1
+cd MPlayer-1.5
 
-echo "Before prepare_ffmpeg_flags we are standing at..."
-pwd
-prepare_ffmpeg_flags
-verify_ffmpeg_flags || exit 1
+make clean
+make -C ffmpeg clean
 
-
-# Build FFmpeg (we're now in mplayer-trunk/ffmpeg from the pushd above)
-ensure_cd "mplayer-trunk/ffmpeg"
-configure_ffmpeg_linux
-make -j 16
-
-# Pop back to where we were (should be project root based on build script start)
-cd ..
-pwd
-
-# Ensure we're in mplayer-trunk directory for mplayer configuration
-ensure_cd "mplayer-trunk" || exit 1
-
-echo "FFMpeg compilation finished"
-press_any_key
-
-################################################################################
-# Configure MPlayer Build for Linux
-################################################################################
-
-WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else'
-
-EXTRA_LDFLAGS="-Lffmpeg/libavutil -lavutil -L${OPENSSL_ROOT}/lib -lssl -lcrypto"
-
-EXTRA_CFLAGS="${WARNING_FLAGS} -Os -fPIC -I${OPENSSL_ROOT}/include"
-
-CONFIG_OPTS=''
-
+# We now build everything with a single configure from MPlayer and it will sub-sequently build ffmpeg for us
+#--enable-static \
 ./configure \
-${CONFIG_OPTS} \
---enable-openssl-nondistributable \
---disable-gnutls \
---disable-iconv \
---disable-mencoder \
---disable-vidix \
---disable-vidix-pcidb \
---disable-matrixview \
---disable-xss \
---disable-tga \
---disable-pnm \
---disable-md5sum \
---disable-yuv4mpeg \
---disable-png \
---disable-quartz \
---disable-vcd \
---disable-bluray \
---disable-dvdnav \
---disable-dvdread \
---disable-alsa \
---disable-ossaudio \
---disable-arts \
+--disable-gui \
+--disable-x11 \
+--disable-gl \
 --disable-esd \
---disable-pulse \
+--disable-alsa \
+--disable-arts \
+--disable-nas \
 --disable-jack \
 --disable-openal \
---disable-nas \
---disable-sgiaudio \
---disable-sunaudio \
---disable-kai \
---disable-dart \
---disable-win32waveout \
---disable-select \
---disable-win32dll \
---disable-gl \
---disable-matrixview \
---disable-vesa \
---disable-sdl \
---disable-aa \
---disable-caca \
---disable-ggi \
---disable-ggiwmh \
---disable-direct3d \
---disable-directx \
---disable-dxr2 \
---disable-dxr3 \
---disable-v4l2 \
---disable-dvb \
---disable-mga \
---disable-xmga \
---disable-xv \
---disable-vda \
---disable-vdpau \
---disable-vm \
---disable-xinerama \
---disable-x11 \
---disable-xshape \
---disable-fbdev \
---disable-mlib \
---disable-3dfx \
---disable-tdfxfb \
---disable-s3fb \
---disable-wii \
---disable-directfb \
---disable-zr \
---disable-bl \
---disable-tdfxvid \
---disable-xvr100 \
---extra-cflags="${EXTRA_CFLAGS}" \
---extra-ldflags="${EXTRA_LDFLAGS}"
+--disable-mencoder \
+--disable-pulse \
+--disable-runtime-cpudetection \
+--enable-mad \
+--enable-sdl \
+--enable-liba52 \
+--enable-libvorbis \
+--enable-mp3lame \
+--disable-live \
+--disable-postproc \
+--disable-decoder=all \
+--enable-decoder=mp3 \
+--enable-decoder=ac3 \
+--enable-decoder=vorbis \
+--extra-cflags="$(sdl-config --cflags) -Wno-error=implicit-function-declaration -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -mtune=generic -fPIC -Os -I/home/gubatron/src/openssl/include" \
+--extra-ldflags="-L${OPENSSL_ROOT}/lib -lssl -lcrypto -la52 -lvorbis -logg -lmad -lpthread $(sdl-config --libs)"
 
+echo "Done with ./configure, next we build @ $(pwd)"
 press_any_key
 
-# Re-patch FFmpeg before MPlayer build (MPlayer's make will rebuild FFmpeg)
-ensure_cd "ffmpeg" || exit 1
-patch_ffmpeg_generated_lists
-popd  # back to mplayer-trunk
+make -j 16
 
-make -j 8
-
+echo "Done building, now we'll rename mplayer to its new form for FrostWire @ $(pwd)"
 strip_and_upx_final_executable "linux" "${ARCH}"
-
-popd
-pwd
 set +x

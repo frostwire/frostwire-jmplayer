@@ -1,1 +1,1 @@
-aac ac3 eac3 alac dts dca flac mp2 mp3 vorbis opus wavpack tta wmav1 wmav2 adpcm_g726 truehd
+aac ac3 eac3 alac dta dca flac mp2 mp3 vorbis opus wavpack tta wmav1 wmav2 adpcm_g726 truehd
