@@ -3,6 +3,7 @@
 # Author: @gubatron - September 2019
 # Modified: 2025 - Refactored for native macOS builds with simplified single-step build
 # This script builds a native fwplayer_osx binary for the host macOS architecture
+# Audio-only player (no video support)
 # We now build everything with a single configure from MPlayer and it will
 # subsequently build ffmpeg for us
 # functions are defined in build-functions.sh
@@ -52,9 +53,11 @@ MACOS_USR_INCLUDES='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/incl
 
 WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-nullability-completeness -Wno-logical-op-parentheses -Wno-parentheses -Wdangling-else'
 
-EXTRA_LDFLAGS="-framework CoreMedia -framework Security -framework VideoToolbox -liconv -L${OPENSSL_ROOT}/lib -lssl -lcrypto"
+HOMEBREW_PREFIX=$(brew --prefix)
 
-EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
+EXTRA_LDFLAGS="-framework CoreMedia -framework Security -framework VideoToolbox -liconv -L${OPENSSL_ROOT}/lib -lssl -lcrypto -L${HOMEBREW_PREFIX}/opt/mad/lib -lmad -L${HOMEBREW_PREFIX}/opt/a52dec/lib -la52 -L${HOMEBREW_PREFIX}/lib -lvorbis -logg"
+
+EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include -I${HOMEBREW_PREFIX}/opt/mad/include -I${HOMEBREW_PREFIX}/opt/a52dec/include -I${HOMEBREW_PREFIX}/include"
 
 CONFIG_OPTS=''
 
@@ -138,6 +141,17 @@ ${CONFIG_OPTS} \
 --disable-bl \
 --disable-tdfxvid \
 --disable-xvr100 \
+--enable-sdl \
+--enable-mad \
+--enable-liba52 \
+--enable-libvorbis \
+--enable-mp3lame \
+--disable-decoder=all \
+--enable-decoder=mp3 \
+--enable-decoder=ac3 \
+--enable-decoder=vorbis \
+--disable-live \
+--disable-postproc \
 --extra-cflags="${EXTRA_CFLAGS}" \
 --extra-ldflags="${EXTRA_LDFLAGS}"
 

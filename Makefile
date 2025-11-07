@@ -134,9 +134,7 @@ ifeq ($(DETECTED_OS),Linux)
 	@if [ -f ./prepare-ubuntu-environment.sh ]; then ./prepare-ubuntu-environment.sh; fi
 else ifeq ($(DETECTED_OS),macOS)
 	@echo "$(BLUE)Installing macOS build dependencies...$(RESET)"
-	@command -v brew >/dev/null || (echo "$(BLUE)Installing Homebrew...$(RESET)" && /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)")
-	@brew install upx yasm 2>/dev/null || true
-	@echo "$(BLUE)✓$(RESET) macOS dependencies installed"
+	@if [ -f ./prepare-macos-environment.sh ]; then ./prepare-macos-environment.sh; fi
 else
 	@echo "$(BLUE)Error:$(RESET) Unsupported platform: $(DETECTED_OS)"
 	@exit 1
