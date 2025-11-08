@@ -12,20 +12,6 @@
 ################################################################################
 #set -x
 
-if [ -z "${OPENSSL_ROOT}" ]; then
-    set +x
-    clear
-    echo "OPENSSL_ROOT not set."
-    echo
-    echo "   It should point to an openssl installation folder (not the sources)"
-    echo
-    echo "   For macOS native builds:"
-    echo "   export OPENSSL_ROOT=${HOME}/src/openssl"
-    echo
-    exit 1
-fi
-
-export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
 source build-functions.sh
 
 # Verify we're on macOS
@@ -44,6 +30,9 @@ press_any_key
 
 cd MPlayer-1.5
 
+export TMPDIR="${PWD}/tmp"
+mkdir -p "${TMPDIR}"
+
 make clean
 make -C ffmpeg clean
 
@@ -55,9 +44,9 @@ WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-d
 
 HOMEBREW_PREFIX=$(brew --prefix)
 
-EXTRA_LDFLAGS="-framework CoreMedia -framework Security -framework VideoToolbox -liconv -L${OPENSSL_ROOT}/lib -lssl -lcrypto -L${HOMEBREW_PREFIX}/opt/mad/lib -lmad -L${HOMEBREW_PREFIX}/opt/a52dec/lib -la52 -L${HOMEBREW_PREFIX}/lib -lvorbis -logg"
+EXTRA_LDFLAGS="-framework CoreMedia -framework Security -framework VideoToolbox -liconv -L${HOMEBREW_PREFIX}/opt/mad/lib -lmad -L${HOMEBREW_PREFIX}/opt/a52dec/lib -la52 -L${HOMEBREW_PREFIX}/lib -lvorbis -logg"
 
-EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include -I${HOMEBREW_PREFIX}/opt/mad/include -I${HOMEBREW_PREFIX}/opt/a52dec/include -I${HOMEBREW_PREFIX}/include"
+EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${HOMEBREW_PREFIX}/opt/mad/include -I${HOMEBREW_PREFIX}/opt/a52dec/include -I${HOMEBREW_PREFIX}/include"
 
 CONFIG_OPTS=''
 
@@ -74,8 +63,8 @@ fi
 # We now build everything with a single configure from MPlayer and it will sub-sequently build ffmpeg for us
 ./configure \
 ${CONFIG_OPTS} \
---enable-openssl-nondistributable \
 --disable-gnutls \
+--disable-librtmp \
 --disable-iconv \
 --disable-mencoder \
 --disable-vidix \

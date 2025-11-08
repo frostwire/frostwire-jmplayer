@@ -47,13 +47,21 @@ help tasks:  ## Display this help message
 # CONFIGURATION & CHECKS
 # ============================================================================
 
-check-env:  ## Check if OPENSSL_ROOT is set
-	@if [ -z "$(OPENSSL_ROOT)" ]; then \
-		echo "$(BLUE)Error:$(RESET) OPENSSL_ROOT not set"; \
-		echo "Please set: export OPENSSL_ROOT=\$${HOME}/src/openssl"; \
-		exit 1; \
+check-env:  ## Check if OPENSSL_ROOT is set when required
+	@if [ "$(DETECTED_OS)" = "macOS" ]; then \
+		if [ -n "$(OPENSSL_ROOT)" ]; then \
+			echo "$(BLUE)✓$(RESET) OPENSSL_ROOT=$(OPENSSL_ROOT)"; \
+		else \
+			echo "$(BLUE)i$(RESET) OPENSSL_ROOT not set (not required for macOS builds)"; \
+		fi; \
 	else \
-		echo "$(BLUE)✓$(RESET) OPENSSL_ROOT=$(OPENSSL_ROOT)"; \
+		if [ -z "$(OPENSSL_ROOT)" ]; then \
+			echo "$(BLUE)Error:$(RESET) OPENSSL_ROOT not set"; \
+			echo "Please set: export OPENSSL_ROOT=\$${HOME}/src/openssl"; \
+			exit 1; \
+		else \
+			echo "$(BLUE)✓$(RESET) OPENSSL_ROOT=$(OPENSSL_ROOT)"; \
+		fi; \
 	fi
 
 show-config:  ## Show build configuration
