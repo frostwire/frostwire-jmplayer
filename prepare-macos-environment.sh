@@ -22,6 +22,7 @@ brew install mad a52dec libvorbis lame 2>/dev/null || true
 
 echo "Installing other dependencies..."
 brew install libxml2 sdl 2>/dev/null || true
+brew install pkg-config 2>/dev/null || true
 
 echo "✓ macOS build environment ready!"
 echo ""
