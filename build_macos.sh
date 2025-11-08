@@ -44,7 +44,7 @@ WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-d
 
 HOMEBREW_PREFIX=$(brew --prefix)
 
-EXTRA_LDFLAGS="-framework CoreMedia -framework Security -framework VideoToolbox -liconv -L${HOMEBREW_PREFIX}/opt/mad/lib -lmad -L${HOMEBREW_PREFIX}/opt/a52dec/lib -la52 -L${HOMEBREW_PREFIX}/lib -lvorbis -logg"
+EXTRA_LDFLAGS="-framework CoreMedia -framework Security -liconv -L${HOMEBREW_PREFIX}/opt/mad/lib -lmad -L${HOMEBREW_PREFIX}/opt/a52dec/lib -la52 -L${HOMEBREW_PREFIX}/lib -lvorbis -logg"
 
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${HOMEBREW_PREFIX}/opt/mad/include -I${HOMEBREW_PREFIX}/opt/a52dec/include -I${HOMEBREW_PREFIX}/include"
 
@@ -76,6 +76,7 @@ ${CONFIG_OPTS} \
 --disable-md5sum \
 --disable-yuv4mpeg \
 --disable-png \
+--disable-corevideo \
 --disable-quartz \
 --disable-vcd \
 --disable-bluray \
@@ -130,11 +131,11 @@ ${CONFIG_OPTS} \
 --disable-bl \
 --disable-tdfxvid \
 --disable-xvr100 \
---enable-sdl \
 --enable-mad \
 --enable-liba52 \
 --enable-libvorbis \
 --enable-mp3lame \
+--enable-coreaudio \
 --disable-decoder=all \
 --enable-decoder=mp3 \
 --enable-decoder=ac3 \
@@ -143,6 +144,18 @@ ${CONFIG_OPTS} \
 --disable-postproc \
 --extra-cflags="${EXTRA_CFLAGS}" \
 --extra-ldflags="${EXTRA_LDFLAGS}"
+
+echo "Enforcing audio-only configuration (disabling macOS video stacks)"
+if [ -f config.mak ]; then
+    sed -i '' 's/^CONFIG_COREVIDEO[[:space:]]*=.*/CONFIG_COREVIDEO = no/' config.mak
+fi
+if [ -f config.h ]; then
+    sed -i '' 's/#define CONFIG_COREVIDEO 1/#define CONFIG_COREVIDEO 0/' config.h
+    sed -i '' 's/#define CONFIG_VIDEOTOOLBOX 1/#define CONFIG_VIDEOTOOLBOX 0/' config.h
+fi
+if [ -f ffmpeg/config.mak ]; then
+    sed -i '' 's/^CONFIG_VIDEOTOOLBOX[[:space:]]*=.*/CONFIG_VIDEOTOOLBOX = no/' ffmpeg/config.mak
+fi
 
 echo "Done with ./configure, next we build @ $(pwd)"
 
