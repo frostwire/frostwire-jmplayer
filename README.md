@@ -150,9 +150,9 @@ macOS builds are intentionally audio-only. CoreVideo, VideoToolbox, and the macO
 video output stack are disabled so the resulting binary remains small while
 continuing to use CoreAudio for playback.
 
-UPX (binary compressor) doesn't work with arm64 binaries. On Apple Silicon
-(M1/M2/M3), the player will be built without UPX compression. For x86_64 Macs,
-UPX will automatically reduce binary size.
+UPX (binary compressor) is skipped entirely on macOS (both x86_64 and arm64)
+because the tool isn't reliable on that platform. The stripped binary is copied
+directly after the build completes.
 
 ### Linux
 

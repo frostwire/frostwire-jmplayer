@@ -326,6 +326,13 @@ strip_and_upx_final_executable() {
       rm -rf ${MPLAYER_UPX_EXEC}
     fi
 
+    if [ "${PLATFORM}" = "macos" ]; then
+      echo "Skipping UPX on macOS (not supported)"
+      cp -p ${MPLAYER_EXEC} ../${FWPLAYER_EXEC}
+      echo "Done."
+      return 0
+    fi
+
     # Skip UPXing for arm64 architectures
     if [ ${ARCH} == "arm64" ]; then
         cp -p ${MPLAYER_EXEC} ../${FWPLAYER_EXEC}
