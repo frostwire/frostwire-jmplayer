@@ -158,7 +158,7 @@ fi
 
 press_any_key
 
-make -j 8
+make -j 16
 
 echo "Done building, now we'll rename mplayer to its new form for FrostWire @ $(pwd)"
 strip_and_upx_final_executable "macos" "${ARCH}"

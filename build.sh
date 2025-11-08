@@ -7,20 +7,6 @@
 ################################################################################
 #set -x
 
-if [ -z "${OPENSSL_ROOT}" ]; then
-    set +x
-    clear
-    echo "OPENSSL_ROOT not set."
-    echo
-    echo "   It should point to an openssl installation folder (not the sources)"
-    echo
-    echo "   try: 'export OPENSSL_ROOT=${HOME}/src/openssl'           (mac, to build for mac)"
-    echo "    or: 'export OPENSSL_ROOT=${HOME}/src/openssl-win64-x86_64' (ubuntu, to build for windows)"
-    echo
-    exit 1
-fi
-
-export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
 source build-functions.sh
 
 ARCH=`arch`
@@ -70,9 +56,9 @@ MACOS_USR_INCLUDES='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/incl
 
 WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-nullability-completeness -Wno-logical-op-parentheses -Wno-parentheses -Wdangling-else'
 
-EXTRA_LDFLAGS="-framework CoreMedia -framework Security -framework VideoToolbox -liconv -Lffmpeg/libavutil -lavutil -L${OPENSSL_ROOT}/lib -lssl -lcrypto"
+EXTRA_LDFLAGS="-framework CoreMedia -framework Security -framework VideoToolbox -liconv -Lffmpeg/libavutil -lavutil"
 
-EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${OPENSSL_ROOT}/include"
+EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES}"
 CONFIG_LINUX_OPTS=''
 
 if is_linux; then
@@ -82,8 +68,8 @@ if is_linux; then
   #--enable-runtime-cpudetection --enable-static
   CONFIG_LINUX_OPTS="--enable-static --windres=${WINDRES} --disable-pthreads --target=x86_64-mingw32 --enable-cross-compile --cc=${CC} --enable-winsock2_h"
   # Maybe -L/usr/x86_64-w64-mingw32/lib
-  EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto -Lffmpeg/libavutil -lavutil"
-  EXTRA_CFLAGS="${WARNING_FLAGS} -mtune=generic -fPIC -Os -I/usr/x86_64-w64-mingw32/include -I${OPENSSL_ROOT}/include"
+  EXTRA_LDFLAGS="-Lffmpeg/libavutil -lavutil"
+  EXTRA_CFLAGS="${WARNING_FLAGS} -mtune=generic -fPIC -Os -I/usr/x86_64-w64-mingw32/include"
 fi
 ################################################################################
 # Configure MPlayer Build
@@ -98,8 +84,8 @@ fi
 
 ./configure \
 ${CONFIG_LINUX_OPTS} \
---enable-openssl-nondistributable \
 --disable-gnutls \
+--disable-librtmp \
 --disable-iconv \
 --disable-mencoder \
 --disable-vidix \

@@ -19,7 +19,7 @@ is_macos() {
 ################################################################################
 prepare_enabled_protocol_flags() {
   ENABLED_PROTOCOLS_FLAGS=''
-  ENABLED_PROTOCOLS=(file pipe tcp tls rtmp rtmps http https httpproxy icecast hls)
+  ENABLED_PROTOCOLS=(file pipe)
   for PROTOCOL in ${ENABLED_PROTOCOLS[@]}
   do
     ENABLED_PROTOCOLS_FLAGS+="--enable-protocol=${PROTOCOL} "
@@ -160,8 +160,8 @@ configure_ffmpeg_windows() {
   TARGET_OS="mingw64"
   CC="x86_64-w64-mingw32-gcc"
   FFMPEG_OPTIONS="--cc=${CC} --enable-cross-compile"
-  EXTRA_CFLAGS="-Os -I${OPENSSL_ROOT}/include"
-  EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto"
+  EXTRA_CFLAGS="-Os"
+  EXTRA_LDFLAGS=""
   echo "configure_ffmpeg_windows: About to ffmpeg configure for Windows (audio-only player)"
   press_any_key
   ./configure \

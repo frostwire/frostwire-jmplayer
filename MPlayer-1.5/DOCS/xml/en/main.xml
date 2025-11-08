@@ -3,7 +3,7 @@
      This file is generated automatically. DO NOT EDIT.
      ************************************************** -->
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-    "/usr/share/xml/docbook/schema/dtd/4.0/docbookx.dtd"
+    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"
 [
 <!ENTITY bugreports.xml SYSTEM "bugreports.xml">
 <!ENTITY documentation.xml SYSTEM "documentation.xml">

@@ -9,20 +9,6 @@
 ################################################################################
 #set -x
 
-if [ -z "${OPENSSL_ROOT}" ]; then
-    set +x
-    clear
-    echo "OPENSSL_ROOT not set."
-    echo
-    echo "   It should point to an openssl installation folder (not the sources)"
-    echo
-    echo "   For Linux native builds:"
-    echo "   export OPENSSL_ROOT=${HOME}/src/openssl"
-    echo
-    exit 1
-fi
-
-export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
 source build-functions.sh
 
 # Verify we're on Linux
@@ -53,6 +39,8 @@ make -C ffmpeg clean
 #--enable-static \
 ./configure \
 --disable-gui \
+--disable-gnutls \
+--disable-librtmp \
 --disable-x11 \
 --disable-gl \
 --disable-esd \
@@ -75,8 +63,8 @@ make -C ffmpeg clean
 --enable-decoder=mp3 \
 --enable-decoder=ac3 \
 --enable-decoder=vorbis \
---extra-cflags="$(sdl-config --cflags) -Wno-error=implicit-function-declaration -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -mtune=generic -fPIC -Os -I/home/gubatron/src/openssl/include" \
---extra-ldflags="-L${OPENSSL_ROOT}/lib -lssl -lcrypto -la52 -lvorbis -logg -lmad -lpthread $(sdl-config --libs)"
+--extra-cflags="$(sdl-config --cflags) -Wno-error=implicit-function-declaration -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else -mtune=generic -fPIC -Os" \
+--extra-ldflags="-la52 -lvorbis -logg -lmad -lpthread $(sdl-config --libs)"
 
 echo "Done with ./configure, next we build @ $(pwd)"
 press_any_key

@@ -9,20 +9,6 @@
 ################################################################################
 #set -x
 
-if [ -z "${OPENSSL_ROOT}" ]; then
-    set +x
-    clear
-    echo "OPENSSL_ROOT not set."
-    echo
-    echo "   It should point to an openssl installation folder (not the sources)"
-    echo
-    echo "   For Windows cross-compilation from Linux:"
-    echo "   export OPENSSL_ROOT=${HOME}/src/openssl-win64-x86_64"
-    echo
-    exit 1
-fi
-
-export PKG_CONFIG_PATH="${OPENSSL_ROOT}/lib/pkgconfig"
 source build-functions.sh
 
 # Verify we're on Linux for cross-compilation
@@ -76,13 +62,13 @@ CC="x86_64-w64-mingw32-gcc"
 WINDRES="x86_64-w64-mingw32-windres"
 WARNING_FLAGS='-Wno-error=implicit-function-declaration -Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-deprecated-declarations -Wno-shift-negative-value -Wno-pointer-sign -Wno-parentheses -Wdangling-else'
 CONFIG_OPTS="--enable-static --windres=${WINDRES} --disable-pthreads --target=x86_64-mingw32 --enable-cross-compile --cc=${CC} --enable-winsock2_h"
-EXTRA_LDFLAGS="-L${OPENSSL_ROOT}/lib -lssl -lcrypto -Lffmpeg/libavutil -lavutil"
-EXTRA_CFLAGS="${WARNING_FLAGS} -mtune=generic -fPIC -Os -I/usr/x86_64-w64-mingw32/include -I${OPENSSL_ROOT}/include"
+EXTRA_LDFLAGS="-Lffmpeg/libavutil -lavutil"
+EXTRA_CFLAGS="${WARNING_FLAGS} -mtune=generic -fPIC -Os -I/usr/x86_64-w64-mingw32/include"
 
 ./configure \
 ${CONFIG_OPTS} \
---enable-openssl-nondistributable \
 --disable-gnutls \
+--disable-librtmp \
 --disable-iconv \
 --disable-mencoder \
 --disable-vidix \

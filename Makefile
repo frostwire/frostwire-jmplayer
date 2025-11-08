@@ -47,28 +47,13 @@ help tasks:  ## Display this help message
 # CONFIGURATION & CHECKS
 # ============================================================================
 
-check-env:  ## Check if OPENSSL_ROOT is set when required
-	@if [ "$(DETECTED_OS)" = "macOS" ]; then \
-		if [ -n "$(OPENSSL_ROOT)" ]; then \
-			echo "$(BLUE)✓$(RESET) OPENSSL_ROOT=$(OPENSSL_ROOT)"; \
-		else \
-			echo "$(BLUE)i$(RESET) OPENSSL_ROOT not set (not required for macOS builds)"; \
-		fi; \
-	else \
-		if [ -z "$(OPENSSL_ROOT)" ]; then \
-			echo "$(BLUE)Error:$(RESET) OPENSSL_ROOT not set"; \
-			echo "Please set: export OPENSSL_ROOT=\$${HOME}/src/openssl"; \
-			exit 1; \
-		else \
-			echo "$(BLUE)✓$(RESET) OPENSSL_ROOT=$(OPENSSL_ROOT)"; \
-		fi; \
-	fi
+check-env:  ## Check if required build tools are available
+	@echo "$(BLUE)✓$(RESET) Build environment detected: $(DETECTED_OS) ($(DETECTED_ARCH))"
 
 show-config:  ## Show build configuration
 	@echo "$(BLUE)Build Configuration:$(RESET)"
 	@echo "  Operating System:  $(DETECTED_OS)"
 	@echo "  Architecture:       $(DETECTED_ARCH)"
-	@echo "  OPENSSL_ROOT:       $(OPENSSL_ROOT)"
 	@echo "  MPlayer Status:     $(if $(shell [ -d mplayer-trunk ] && echo yes),$(BLUE)✓$(RESET) Present,$(BLUE)✗$(RESET) Not cloned)"
 	@echo "  FFmpeg Status:      $(if $(shell [ -d mplayer-trunk/ffmpeg ] && echo yes),$(BLUE)✓$(RESET) Present,$(BLUE)✗$(RESET) Not cloned)"
 

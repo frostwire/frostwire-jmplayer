@@ -140,18 +140,7 @@ make show-config
 
 This displays:
 - Your operating system and architecture
-- OpenSSL installation path
 - MPlayer and FFmpeg source status
-
-## Missing OPENSSL_ROOT
-
-The Makefile automatically checks if `OPENSSL_ROOT` is set. If you get an error, run:
-
-```bash
-make setup
-```
-
-This will build OpenSSL and set up the environment for you.
 
 ## Platform-Specific Notes
 
