@@ -19,7 +19,7 @@ bash build_windows.sh    # Windows cross-compile (from Linux)
 2. **MPlayer Linking**
    - Links against compiled FFmpeg libraries
    - Strips the final binary (Windows builds are additionally UPX-compressed)
-   - Output: `fwplayer_linux`, `fwplayer_osx`, or `fwplayer.exe`
+   - Output: `fwplayer_linux`, `fwplayer_macos`, or `fwplayer.exe`
 
 ## Codec Strategy
 
@@ -33,7 +33,7 @@ This whitelist approach avoids obscure codecs that cause build issues.
 ## Build Output
 
 - **Linux**: `mplayer-trunk/mplayer` → stripped to `fwplayer_linux.arm64` or `fwplayer_linux.x86_64`
-- **macOS**: `mplayer-trunk/mplayer` → stripped to `fwplayer_osx.arm64` or `fwplayer_osx.x86_64`
+- **macOS**: `mplayer-trunk/mplayer` → stripped to `fwplayer_macos.arm64` or `fwplayer_macos.x86_64`
 - **Windows**: `mplayer-trunk/mplayer.exe` → stripped and UPX-compressed as `fwplayer.exe`
 
 ## Key Features

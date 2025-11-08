@@ -299,7 +299,7 @@ strip_and_upx_final_executable() {
       FORCE_OPTION="--force"  # Windows UPX needs force flag
       ;;
     macos)
-      FWPLAYER_EXEC="fwplayer_osx.${ARCH}"
+      FWPLAYER_EXEC="fwplayer_macos.${ARCH}"
       MPLAYER_EXEC="mplayer"
       MPLAYER_UPX_EXEC="mplayer-upx"
       FORCE_OPTION=""

@@ -2,7 +2,7 @@
 ################################################################################
 # Author: @gubatron - September 2019
 # Modified: 2025 - Refactored for native macOS builds with simplified single-step build
-# This script builds a native fwplayer_osx binary for the host macOS architecture
+# This script builds a native fwplayer_macos binary for the host macOS architecture
 # Audio-only player (no video support)
 # We now build everything with a single configure from MPlayer and it will
 # subsequently build ffmpeg for us

@@ -83,7 +83,7 @@ ifeq ($(DETECTED_OS),Linux)
 	@echo "$(BLUE)Building fwplayer_linux.$(DETECTED_ARCH)...$(RESET)"
 	@./build_linux.sh
 else ifeq ($(DETECTED_OS),macOS)
-	@echo "$(BLUE)Building fwplayer_osx.$(DETECTED_ARCH)...$(RESET)"
+	@echo "$(BLUE)Building fwplayer_macos.$(DETECTED_ARCH)...$(RESET)"
 	@./build_macos.sh
 else
 	@echo "$(BLUE)Error:$(RESET) Unsupported platform: $(DETECTED_OS)"
@@ -99,9 +99,9 @@ else
 	@exit 1
 endif
 
-build-macos: check-env  ## Build fwplayer_osx for macOS (x86_64 or arm64)
+build-macos: check-env  ## Build fwplayer_macos for macOS (x86_64 or arm64)
 ifeq ($(DETECTED_OS),macOS)
-	@echo "$(BLUE)Building fwplayer_osx.$(DETECTED_ARCH)...$(RESET)"
+	@echo "$(BLUE)Building fwplayer_macos.$(DETECTED_ARCH)...$(RESET)"
 	@./build_macos.sh
 else
 	@echo "$(BLUE)Error:$(RESET) macOS builds only supported on macOS"

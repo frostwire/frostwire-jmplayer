@@ -3,7 +3,7 @@
 FrostWire FWPlayer is a custom, audio-only mplayer build included with FrostWire for Desktop. This repository contains a comprehensive build system for creating minimal, audio-focused player binaries for multiple platforms:
 
 - **Windows**: `fwplayer.exe` (cross-compiled from Linux for x86_64)
-- **macOS**: `fwplayer_osx.x86_64` or `fwplayer_osx.arm64` (native builds)
+- **macOS**: `fwplayer_macos.x86_64` or `fwplayer_macos.arm64` (native builds)
 - **Linux**: `fwplayer_linux.x86_64` or `fwplayer_linux.arm64` (native builds)
 
 The build system is **pure bash** - no C compilation required. All scripts are portable and work across different environments without needing to compile helper utilities.
@@ -43,8 +43,8 @@ make build
 This will create:
 - On **Linux x86_64**: `fwplayer_linux.x86_64`
 - On **Linux arm64**: `fwplayer_linux.arm64`
-- On **macOS x86_64**: `fwplayer_osx.x86_64`
-- On **macOS arm64**: `fwplayer_osx.arm64`
+- On **macOS x86_64**: `fwplayer_macos.x86_64`
+- On **macOS arm64**: `fwplayer_macos.arm64`
 
 ## Build for Windows (from Linux only)
 
