@@ -1,4 +1,4 @@
-.PHONY: help build build-windows build-macos build-linux build-openssl-windows build-openssl-native clean-build clean check-env install-deps show-config
+.PHONY: help build build-windows build-macos build-linux clean-build clean check-env install-deps show-config
 
 # Color codes for help output
 BLUE := \033[36m
@@ -38,8 +38,8 @@ help tasks:  ## Display this help message
 	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  $(BLUE)%-25s$(RESET) %s\n", $$1, $$2}'
 	@echo ""
 	@echo "$(BLUE)Quick Start:$(RESET)"
+	@echo "  make setup              # Install build dependencies"
 	@echo "  make build              # Build for current platform"
-	@echo "  make build-openssl-native # Build OpenSSL for current platform"
 	@echo "  make clean              # Clean all build artifacts"
 	@echo ""
 
@@ -56,23 +56,6 @@ show-config:  ## Show build configuration
 	@echo "  Architecture:       $(DETECTED_ARCH)"
 	@echo "  MPlayer Status:     $(if $(shell [ -d mplayer-trunk ] && echo yes),$(BLUE)✓$(RESET) Present,$(BLUE)✗$(RESET) Not cloned)"
 	@echo "  FFmpeg Status:      $(if $(shell [ -d mplayer-trunk/ffmpeg ] && echo yes),$(BLUE)✓$(RESET) Present,$(BLUE)✗$(RESET) Not cloned)"
-
-# ============================================================================
-# OPENSSL BUILDS
-# ============================================================================
-
-build-openssl-native:  ## Build OpenSSL for current platform (native)
-	@echo "$(BLUE)Building OpenSSL for $(DETECTED_OS) ($(DETECTED_ARCH))...$(RESET)"
-	@./build-openssl.sh
-
-build-openssl-windows:  ## Build OpenSSL for Windows x86_64 (from Linux only)
-ifeq ($(DETECTED_OS),Linux)
-	@echo "$(BLUE)Building OpenSSL for Windows x86_64...$(RESET)"
-	@BUILD_FOR_WINDOWS=1 ./build-openssl.sh
-else
-	@echo "$(BLUE)Error:$(RESET) Windows cross-compilation only supported from Linux"
-	@exit 1
-endif
 
 # ============================================================================
 # PLAYER BUILDS
@@ -121,7 +104,7 @@ endif
 # SETUP & INITIALIZATION
 # ============================================================================
 
-install-deps:  ## Install system dependencies for building
+setup:  ## Install system dependencies for building
 ifeq ($(DETECTED_OS),Linux)
 	@echo "$(BLUE)Installing Linux build dependencies...$(RESET)"
 	@if [ -f ./prepare-ubuntu-environment.sh ]; then ./prepare-ubuntu-environment.sh; fi
@@ -133,19 +116,14 @@ else
 	@exit 1
 endif
 
-setup: install-deps build-openssl-native  ## Complete setup: install dependencies and build OpenSSL
-	@echo "$(BLUE)✓$(RESET) Setup complete! Run 'make build' to build the player"
-
 # ============================================================================
 # CLEANING
 # ============================================================================
 
-clean-build:  ## Clean MPlayer and FFmpeg build artifacts
+clean:  ## Clean MPlayer and FFmpeg build artifacts
 	@echo "$(BLUE)Cleaning build artifacts...$(RESET)"
 	@bash -c 'source build-functions.sh && clean_build_artifacts'
 	@echo "$(BLUE)✓$(RESET) Build artifacts cleaned"
-
-clean: clean-build  ## Clean all build artifacts (alias for clean-build)
 	@echo "$(BLUE)✓$(RESET) Clean complete"
 
 # ============================================================================
@@ -165,6 +143,5 @@ info:  ## Show build information and status
 
 version:  ## Show script versions
 	@echo "$(BLUE)Component Versions:$(RESET)"
-	@if [ -f build-openssl.sh ]; then grep "OPENSSL_VERSION" build-openssl.sh | head -1; fi
-	@echo "  MPlayer: SVN trunk"
+	@echo "  MPlayer: 1.5"
 	@echo "  FFmpeg:  Git latest"
