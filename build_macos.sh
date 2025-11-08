@@ -44,7 +44,7 @@ WARNING_FLAGS='-Wno-unused-function -Wno-switch -Wno-expansion-to-defined -Wno-d
 
 HOMEBREW_PREFIX=$(brew --prefix)
 
-EXTRA_LDFLAGS="-framework CoreMedia -framework Security -liconv -L${HOMEBREW_PREFIX}/opt/mad/lib -lmad -L${HOMEBREW_PREFIX}/opt/a52dec/lib -la52 -L${HOMEBREW_PREFIX}/lib -lvorbis -logg"
+EXTRA_LDFLAGS="-framework CoreMedia -framework Security -liconv -framework CoreFoundation ${HOMEBREW_PREFIX}/opt/mad/lib/libmad.a ${HOMEBREW_PREFIX}/opt/a52dec/lib/liba52.a ${HOMEBREW_PREFIX}/lib/libvorbis.a ${HOMEBREW_PREFIX}/lib/libogg.a ${HOMEBREW_PREFIX}/lib/libmp3lame.a"
 
 EXTRA_CFLAGS="${WARNING_FLAGS} -Os -mmacosx-version-min=10.9 -I${MACOS_FRAMEWORKS} -I${MACOS_USR_INCLUDES} -I${HOMEBREW_PREFIX}/opt/mad/include -I${HOMEBREW_PREFIX}/opt/a52dec/include -I${HOMEBREW_PREFIX}/include"
 
@@ -148,6 +148,13 @@ ${CONFIG_OPTS} \
 echo "Enforcing audio-only configuration (disabling macOS video stacks)"
 if [ -f config.mak ]; then
     sed -i '' 's/^CONFIG_COREVIDEO[[:space:]]*=.*/CONFIG_COREVIDEO = no/' config.mak
+    # Remove dynamic library flags for audio codecs, keeping only static .a files
+    # This prevents linker errors when only static libraries are available
+    sed -i '' 's/ -lmad//g' config.mak
+    sed -i '' 's/ -la52//g' config.mak
+    sed -i '' 's/ -lvorbis//g' config.mak
+    sed -i '' 's/ -logg//g' config.mak
+    sed -i '' 's/ -lmp3lame//g' config.mak
 fi
 if [ -f config.h ]; then
     sed -i '' 's/#define CONFIG_COREVIDEO 1/#define CONFIG_COREVIDEO 0/' config.h
