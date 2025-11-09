@@ -12,19 +12,10 @@
 
 source build-functions.sh
 
-# Verify we're on Ubuntu x86_64 for cross-compilation
-if ! is_linux; then
-    echo "Error: Windows builds must be done from Linux (cross-compilation)"
-    exit 1
-fi
-
-if ! grep -q "Ubuntu" /etc/os-release 2>/dev/null; then
-    echo "Error: Windows cross-compilation requires Ubuntu Linux"
-    exit 1
-fi
-
+# Verify we're on x86_64 architecture
+# (Ubuntu Linux is verified by Docker or the calling script)
 if [ "$(uname -m)" != "x86_64" ]; then
-    echo "Error: Windows cross-compilation requires Ubuntu x86_64"
+    echo "Error: Windows cross-compilation requires x86_64 architecture"
     exit 1
 fi
 

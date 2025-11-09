@@ -1,0 +1,67 @@
+# Build outputs and logs
+build_output.log
+build_output2.log
+build_output_final.log
+*.bak
+
+# Build artifacts
+MPlayer-1.5/mplayer
+MPlayer-1.5/mplayer.exe
+MPlayer-1.5/mplayer-upx
+MPlayer-1.5/mplayer-upx.exe
+MPlayer-1.5/help_mp.h
+MPlayer-1.5/version.h
+MPlayer-1.5/codec-cfg
+MPlayer-1.5/codecs.conf.h
+
+# FFmpeg build artifacts
+MPlayer-1.5/ffmpeg/*.o
+MPlayer-1.5/ffmpeg/*.a
+MPlayer-1.5/ffmpeg/lib*.a
+MPlayer-1.5/ffmpeg/libavcodec/libavcodec.version
+MPlayer-1.5/ffmpeg/libavdevice/libavdevice.version
+MPlayer-1.5/ffmpeg/libavfilter/libavfilter.version
+MPlayer-1.5/ffmpeg/libavformat/libavformat.version
+MPlayer-1.5/ffmpeg/libavutil/libavutil.version
+MPlayer-1.5/ffmpeg/libpostproc/libpostproc.version
+MPlayer-1.5/ffmpeg/libswresample/libswresample.version
+MPlayer-1.5/ffmpeg/libswscale/libswscale.version
+
+# Final output binaries (can be regenerated)
+fwplayer_windows.exe
+fwplayer_linux.*
+fwplayer_macos.*
+
+# Git and version control
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+*.md
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# CI/CD
+.gitlab-ci.yml
+.circleci
+.travis.yml
+
+# Docker files (don't need to copy into image)
+Dockerfile*
+docker-compose.yml

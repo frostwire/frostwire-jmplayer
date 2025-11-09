@@ -1,0 +1,129 @@
+################################################################################
+# Dockerfile for FrostWire FWPlayer Windows x86_64 Build
+#
+# This Dockerfile creates a complete Ubuntu x86_64 build environment for
+# cross-compiling fwplayer_windows.exe from Linux using MinGW-w64.
+#
+# Build:
+#   docker build -f Dockerfile.windows -t fwplayer-builder:windows .
+#
+# Run:
+#   docker run --rm -v $(pwd):/workspace fwplayer-builder:windows ./build_windows.sh
+#
+# Or with output directory:
+#   docker run --rm -v $(pwd):/workspace -v /output:/workspace/output fwplayer-builder:windows
+#
+################################################################################
+
+FROM ubuntu:24.04
+
+LABEL maintainer="FrostWire Development"
+LABEL description="Ubuntu x86_64 build environment for Windows cross-compilation of FWPlayer"
+
+# Set non-interactive installation mode
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Set working directory
+WORKDIR /workspace
+
+################################################################################
+# System Updates and Core Build Tools
+################################################################################
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    pkg-config \
+    git \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+################################################################################
+# Compilation and Assembly Tools
+################################################################################
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    yasm \
+    upx \
+    && rm -rf /var/lib/apt/lists/*
+
+################################################################################
+# MinGW-w64 Cross-Compilation Toolchain
+################################################################################
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    mingw-w64 \
+    mingw-w64-tools \
+    mingw-w64-common \
+    mingw-w64-i686-dev \
+    mingw-w64-x86-64-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+################################################################################
+# Native Linux Development Libraries
+# (Kept for potential native Linux builds and reference)
+################################################################################
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libmad0-dev \
+    liba52-dev \
+    libvorbis-dev \
+    libmp3lame-dev \
+    libavcodec-dev \
+    libavformat-dev \
+    libavutil-dev \
+    libswscale-dev \
+    libswresample-dev \
+    libxml2-dev \
+    libzstd-dev \
+    libsdl1.2-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+################################################################################
+# MinGW-w64 Audio Codec Libraries for Windows Cross-Compilation
+################################################################################
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    mingw-w64-x86-64-zlib-dev \
+    || true && rm -rf /var/lib/apt/lists/*
+
+# Optional MinGW-w64 libraries (may not be available in all repos)
+RUN apt-get update && \
+    (apt-get install -y --no-install-recommends mingw-w64-x86-64-libogg-dev || true) && \
+    (apt-get install -y --no-install-recommends mingw-w64-x86-64-libvorbis-dev || true) && \
+    rm -rf /var/lib/apt/lists/*
+
+################################################################################
+# Verification
+################################################################################
+RUN echo "=== Build Environment Verification ===" && \
+    echo "Platform: $(uname -m)" && \
+    echo "OS: $(cat /etc/os-release | grep PRETTY_NAME)" && \
+    echo "" && \
+    echo "MinGW-w64 toolchain:" && \
+    which x86_64-w64-mingw32-gcc && \
+    x86_64-w64-mingw32-gcc --version | head -1 && \
+    echo "" && \
+    echo "Build tools:" && \
+    yasm --version | head -1 && \
+    make --version | head -1 && \
+    upx --version | head -1 && \
+    echo "" && \
+    echo "Audio codec libraries for Windows:" && \
+    ls -lh /usr/x86_64-w64-mingw32/lib/lib*.a 2>/dev/null | head -5 || echo "Note: Some libraries may need to be installed separately" && \
+    echo "" && \
+    echo "=== Environment ready for Windows cross-compilation ==="
+
+################################################################################
+# Copy build scripts
+################################################################################
+COPY build-functions.sh /workspace/
+COPY build_windows.sh /workspace/
+RUN chmod +x /workspace/build_windows.sh /workspace/build-functions.sh
+
+################################################################################
+# Copy MPlayer source (assuming it exists in the build context)
+################################################################################
+# If MPlayer-1.5 is in the repository, copy it:
+COPY MPlayer-1.5 /workspace/MPlayer-1.5/
+
+################################################################################
+# Entry point
+################################################################################
+# Allow running the build script or interactive shell
+ENTRYPOINT ["/bin/bash"]
+CMD ["-c", "echo 'FrostWire FWPlayer Windows Builder' && echo 'Run: ./build_windows.sh' && /bin/bash"]
