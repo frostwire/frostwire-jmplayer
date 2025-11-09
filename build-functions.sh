@@ -38,7 +38,7 @@ strip_and_upx_final_executable() {
   # Determine output executable names based on platform
   case ${PLATFORM} in
     windows)
-      FWPLAYER_EXEC="fwplayer_windows.exe"
+      FWPLAYER_EXEC="fwplayer.exe"
       MPLAYER_EXEC="mplayer.exe"
       MPLAYER_UPX_EXEC="mplayer-upx.exe"
       FORCE_OPTION="--force"  # Windows UPX needs force flag

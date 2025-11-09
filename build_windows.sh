@@ -2,7 +2,7 @@
 ################################################################################
 # Author: @gubatron - September 2019
 # Modified: 2025 - Refactored for Windows build (cross-compile from Linux)
-# This script builds fwplayer_windows.exe for Windows x86_64
+# This script builds fwplayer.exe for Windows x86_64
 # Audio-only player (no video support)
 # We build everything with a single configure from MPlayer and it will
 # subsequently build ffmpeg for us
@@ -29,7 +29,7 @@ if [ "$(uname -m)" != "x86_64" ]; then
 fi
 
 ARCH="x86_64"
-echo "Building fwplayer_windows.exe for Windows (${ARCH}) from Linux"
+echo "Building fwplayer.exe for Windows (${ARCH}) from Linux"
 press_any_key
 
 cd MPlayer-1.5
