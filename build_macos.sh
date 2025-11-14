@@ -33,8 +33,10 @@ cd MPlayer-1.5
 export TMPDIR="${PWD}/tmp"
 mkdir -p "${TMPDIR}"
 
-make clean
-make -C ffmpeg clean
+# Clean only object files, not Makefile or config files
+if [ -f Makefile ]; then
+    make clean
+fi
 
 # Paths found in MacOS 10.14.6 - September 2019
 MACOS_FRAMEWORKS='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks'

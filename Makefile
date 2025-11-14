@@ -73,12 +73,15 @@ else
 	@exit 1
 endif
 
-build-windows: check-env  ## Build fwplayer.exe for Windows (cross-compile from Linux only)
+build-windows: check-env  ## Build fwplayer.exe for Windows (Docker required)
 ifeq ($(DETECTED_OS),Linux)
-	@echo "$(BLUE)Building fwplayer.exe for Windows x86_64...$(RESET)"
+	@echo "$(BLUE)Building fwplayer.exe for Windows x86_64 (native)...$(RESET)"
 	@./build_windows.sh
+else ifeq ($(DETECTED_OS),macOS)
+	@echo "$(BLUE)Building fwplayer.exe for Windows x86_64 (Docker)...$(RESET)"
+	@./docker_build_windows.sh
 else
-	@echo "$(BLUE)Error:$(RESET) Windows builds only supported from Linux"
+	@echo "$(BLUE)Error:$(RESET) Windows builds require Linux or Docker"
 	@exit 1
 endif
 
