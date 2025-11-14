@@ -15,7 +15,7 @@
 #
 ################################################################################
 
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 
 LABEL maintainer="FrostWire Development"
 LABEL description="Ubuntu x86_64 build environment for Windows cross-compilation of FWPlayer"
@@ -27,65 +27,72 @@ ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /workspace
 
 ################################################################################
+# Fix time sync issues and update package lists
+################################################################################
+RUN apt update || true
+RUN apt install -y --fix-broken || true
+RUN apt upgrade -y || true
+
+################################################################################
 # System Updates and Core Build Tools
 ################################################################################
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    pkg-config \
-    git \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt install -y --no-install-recommends build-essential
+RUN apt install -y --no-install-recommends pkg-config
+RUN apt install -y --no-install-recommends git
+RUN apt install -y --no-install-recommends ca-certificates
+RUN apt install -y --no-install-recommends wget
+RUN apt install -y --no-install-recommends less
 
 ################################################################################
 # Compilation and Assembly Tools
 ################################################################################
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    yasm \
-    upx \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt install -y --no-install-recommends yasm
+RUN apt install -y --no-install-recommends upx
 
 ################################################################################
 # MinGW-w64 Cross-Compilation Toolchain
 ################################################################################
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    mingw-w64 \
-    mingw-w64-tools \
-    mingw-w64-common \
-    mingw-w64-i686-dev \
-    mingw-w64-x86-64-dev \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt install -y --no-install-recommends mingw-w64
+RUN apt install -y --no-install-recommends mingw-w64-tools
+RUN apt install -y --no-install-recommends mingw-w64-common
+RUN apt install -y --no-install-recommends mingw-w64-i686-dev
+RUN apt install -y --no-install-recommends mingw-w64-x86-64-dev
 
 ################################################################################
 # Native Linux Development Libraries
 # (Kept for potential native Linux builds and reference)
 ################################################################################
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libmad0-dev \
-    liba52-dev \
-    libvorbis-dev \
-    libmp3lame-dev \
-    libavcodec-dev \
-    libavformat-dev \
-    libavutil-dev \
-    libswscale-dev \
-    libswresample-dev \
-    libxml2-dev \
-    libzstd-dev \
-    libsdl1.2-dev \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt install -y --no-install-recommends libmad0-dev
+RUN apt install -y --no-install-recommends liba52-dev
+RUN apt install -y --no-install-recommends libvorbis-dev
+RUN apt install -y --no-install-recommends libmp3lame-dev
+RUN apt install -y --no-install-recommends libavcodec-dev
+RUN apt install -y --no-install-recommends libavformat-dev
+RUN apt install -y --no-install-recommends libavutil-dev
+RUN apt install -y --no-install-recommends libswscale-dev
+RUN apt install -y --no-install-recommends libswresample-dev
+RUN apt install -y --no-install-recommends libxml2-dev
+RUN apt install -y --no-install-recommends libzstd-dev
+RUN apt install -y --no-install-recommends libsdl1.2-dev
 
 ################################################################################
 # MinGW-w64 Audio Codec Libraries for Windows Cross-Compilation
 ################################################################################
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    mingw-w64-x86-64-zlib-dev \
-    || true && rm -rf /var/lib/apt/lists/*
+RUN apt install -y --no-install-recommends mingw-w64-x86-64-zlib-dev || true
+RUN apt install -y --no-install-recommends mingw-w64-x86-64-libogg-dev || true
+RUN apt install -y --no-install-recommends mingw-w64-x86-64-libvorbis-dev || true
 
-# Optional MinGW-w64 libraries (may not be available in all repos)
-RUN apt-get update && \
-    (apt-get install -y --no-install-recommends mingw-w64-x86-64-libogg-dev || true) && \
-    (apt-get install -y --no-install-recommends mingw-w64-x86-64-libvorbis-dev || true) && \
-    rm -rf /var/lib/apt/lists/*
+################################################################################
+# Note: Audio codec libraries for Windows cross-compilation are not available
+# in pre-built form for MinGW-w64. Building from source requires special patches
+# for deprecated compiler flags. For now, we'll rely on MPlayer's internal
+# codecs (FFmpeg) and disable external audio codec support.
+################################################################################
+
+################################################################################
+# Cleanup package lists and temp files
+################################################################################
+RUN rm -rf /var/lib/apt/lists/* /tmp/*
 
 ################################################################################
 # Verification
@@ -109,17 +116,8 @@ RUN echo "=== Build Environment Verification ===" && \
     echo "=== Environment ready for Windows cross-compilation ==="
 
 ################################################################################
-# Copy build scripts
+# Project files and MPlayer source will be mounted as volumes from host
 ################################################################################
-COPY build-functions.sh /workspace/
-COPY build_windows.sh /workspace/
-RUN chmod +x /workspace/build_windows.sh /workspace/build-functions.sh
-
-################################################################################
-# Copy MPlayer source (assuming it exists in the build context)
-################################################################################
-# If MPlayer-1.5 is in the repository, copy it:
-COPY MPlayer-1.5 /workspace/MPlayer-1.5/
 
 ################################################################################
 # Entry point

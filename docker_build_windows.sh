@@ -146,7 +146,7 @@ build_docker() {
     print_status "Docker image built successfully"
     echo ""
 
-    # Run build in container
+    # Run build in container with volume mounts
     print_status "Running Windows build in Docker container..."
     echo ""
 
@@ -192,7 +192,7 @@ build_image_only() {
     print_status "Docker image built successfully: $IMAGE_NAME"
     echo ""
     print_info "To run the build, execute:"
-    echo "  docker run --rm -it -v \$(pwd):/workspace $IMAGE_NAME ./build_windows.sh"
+    echo "  docker run --rm -it -v \$(pwd):/workspace -w /workspace $IMAGE_NAME ./build_windows.sh"
 }
 
 # Main execution
