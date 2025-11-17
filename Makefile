@@ -101,8 +101,15 @@ endif
 
 setup:  ## Install system dependencies for building
 ifeq ($(DETECTED_OS),Linux)
-	@echo "$(BLUE)Installing Linux build dependencies...$(RESET)"
-	@if [ -f ./prepare-ubuntu-environment.sh ]; then ./prepare-ubuntu-environment.sh; fi
+	@echo "$(BLUE)Installing Linux build dependencies for $(DETECTED_ARCH)...$(RESET)"
+	@if [ "$(DETECTED_ARCH)" = "x86_64" ]; then \
+		if [ -f ./prepare-x86_64-ubuntu-environment.sh ]; then ./prepare-x86_64-ubuntu-environment.sh; fi; \
+	elif [ "$(DETECTED_ARCH)" = "arm64" ]; then \
+		if [ -f ./prepare-arm64-ubuntu-environment.sh ]; then ./prepare-arm64-ubuntu-environment.sh; fi; \
+	else \
+		echo "$(BLUE)Error:$(RESET) No setup script available for Linux $(DETECTED_ARCH)"; \
+		exit 1; \
+	fi
 else ifeq ($(DETECTED_OS),macOS)
 	@echo "$(BLUE)Installing macOS build dependencies...$(RESET)"
 	@if [ -f ./prepare-macos-environment.sh ]; then ./prepare-macos-environment.sh; fi
